@@ -11,7 +11,7 @@ const path = require('path'); const fs = require('fs');
   fs.mkdirSync(out, { recursive: true });
   const fps = 24;
   if (mode === 'test') {
-    for (const t of [3, 8, 12, 20, 24, 29, 36]) {
+    for (const t of [9, 14, 34, 38]) {
       await page.evaluate(async t => { await render(t); }, t);
       await page.screenshot({ path: path.join(out, `t${t}.png`) });
     }

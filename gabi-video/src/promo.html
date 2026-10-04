@@ -34,7 +34,7 @@ html,body{margin:0;background:#050b18}
 .pf .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,24,0) 55%,rgba(5,11,24,.55))}
 .pf .patch{position:absolute;left:2.5%;top:3%;width:47%;height:43%;box-sizing:border-box;border:1.5px solid rgba(61,225,255,.7);border-radius:12px;
   background:linear-gradient(160deg,#081a38,#0b2450);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
-.pf .patch b{font-size:34px;font-weight:800;color:#fff;line-height:1}
+.pf .patch b{font-size:28px;font-weight:800;color:#fff;line-height:1}
 .pf .patch .o{font-size:10px;color:var(--cy);letter-spacing:3px}
 .pf .tag{position:absolute;left:14px;bottom:12px;font-size:11px;color:var(--cy);display:flex;align-items:center;gap:7px}
 .pf .tag i{display:block;width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)}
@@ -157,7 +157,9 @@ $('dots').innerHTML=DOTS.map(()=>'<div class="dot"></div>').join('');
 // panel builder
 function panel(id,src,opts={}){
   const el=$(id);
-  el.innerHTML=`<div class="z"><img src="${src}" style="${opts.img||''}"><div class="tint"></div>${opts.patch===false?'':'<div class="patch"><b>גבי</b><span class="o">AI VOICE AGENT</span></div>'}</div><div class="scan"></div><div class="tag o"><i></i>${opts.tag||'LIVE'}</div>`;
+  const bx=opts.box?`left:${opts.box[0]}%;top:${opts.box[1]}%;width:${opts.box[2]}%;height:${opts.box[3]}%`:'';
+  const patchHTML=opts.patch===false?'':`<div class="patch" style="${bx}"><b>גבי</b><span class="o">AI VOICE AGENT</span></div>`;
+  el.innerHTML=`<div class="z"><img src="${src}" style="${opts.img||''}"><div class="tint"></div>${patchHTML}</div><div class="scan"></div><div class="tag o"><i></i>${opts.tag||'LIVE'}</div>`;
   const wrap=document.createElement('div');
   return el;
 }
@@ -167,12 +169,12 @@ function addBrackets(id){
   b.innerHTML='<i class="brk a"></i><i class="brk b"></i><i class="brk c"></i><i class="brk d"></i>';
   el.parentNode.appendChild(b);
 }
-panel('p2','img/b0.jpg',{tag:'GABI · ONLINE'});
-panel('p3','img/a0.jpg',{tag:'LIVE CALL'});
-panel('p4','img/a2.jpg',{tag:'AUTOMATION'});
+panel('p2','img/b0.jpg',{tag:'GABI · ONLINE',box:[7,8,39,33]});
+panel('p3','img/a0.jpg',{tag:'LIVE CALL',box:[5,6,41,35]});
+panel('p4','img/a2.jpg',{tag:'AUTOMATION',box:[5,4.5,40,35]});
 panel('p5','img/a1.jpg',{patch:false,tag:'SYSTEM',img:'top:-72%;height:172%;'});
-panel('p6','img/b1.jpg',{tag:'INTEGRATION'});
-panel('p7','img/a3.jpg',{tag:'GABI · READY'});
+panel('p6','img/b1.jpg',{tag:'INTEGRATION',box:[9,8,36,28]});
+panel('p7','img/a3.jpg',{tag:'GABI · READY',box:[6,6.5,32,31.5]});
 ['p2','p3','p4','p5','p6','p7'].forEach(addBrackets);
 function showPanel(id,lt,d,dur){
   const el=$(id),br=$(id+'b'),p=seg(lt,d,.9);
