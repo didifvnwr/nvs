@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><title>גבי</title>
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-300.ttf);font-weight:300}
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+:root{--gold:#d4aa72;--blue:#5fb0e8;--ink:#eef4ff;--dim:rgba(238,244,255,.62);--line:rgba(238,244,255,.18)}
+html,body{margin:0;background:#08101f}
+#stage{position:relative;width:1280px;height:720px;overflow:hidden;font-family:H,sans-serif;color:var(--ink);direction:rtl;
+  background:radial-gradient(900px 620px at 72% 18%,#1a3866 0%,#0f1f3d 52%,#08101f 100%)}
+.scene{position:absolute;inset:0;opacity:0}
+.abs{position:absolute}
+.h1{font-size:92px;font-weight:800;line-height:1.05;letter-spacing:-2px}
+.h2{font-size:64px;font-weight:300;line-height:1.1;letter-spacing:-1px}
+.sub{font-size:30px;font-weight:300;color:var(--dim)}
+.gold{color:var(--gold)}
+.card{box-sizing:border-box;border:1.5px solid var(--line);border-radius:22px;background:rgba(255,255,255,.05);backdrop-filter:blur(2px)}
+.bub{position:absolute;border-radius:22px;padding:16px 24px;font-size:28px;line-height:1.3;max-width:470px}
+.bub.c{background:rgba(255,255,255,.12)}
+.bub.g{background:var(--gold);color:#0c1a33;font-weight:500}
+.chip{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:6px 20px;font-size:24px;margin-inline-start:10px}
+.row{display:flex;justify-content:space-between;gap:24px;padding:12px 0;border-bottom:1px solid var(--line);font-size:27px}
+.row b{font-weight:500;color:var(--gold)}
+.wm{position:absolute;top:34px;inset-inline-start:48px;font-size:26px;font-weight:500;letter-spacing:.5px;color:var(--dim)}
+.wm i{font-style:normal;color:var(--gold)}
+.subtitle{position:absolute;inset-inline:120px;bottom:40px;text-align:center;font-size:32px;font-weight:500;line-height:1.35;
+  background:rgba(4,10,22,.62);border-radius:16px;padding:12px 26px;opacity:0}
+.ltr{direction:ltr;unicode-bidi:isolate}
+svg{display:block}
+</style></head><body>
+<div id="stage">
+  <div class="wm">הקול <i>החדש</i></div>
+
+  <!-- S1 -->
+  <div class="scene" id="s1">
+    <div class="abs" id="rings" style="left:230px;top:360px;width:0;height:0"></div>
+    <div class="abs" id="s1a" style="right:90px;top:150px"><div class="h1">הלקוחות שלכם<br>מתקשרים</div></div>
+    <div class="abs h1 gold" id="s1b" style="right:90px;top:370px">בכל שעה.</div>
+    <div class="abs h2" id="s1c" style="right:90px;top:480px">מי עונה להם?</div>
+    <div class="abs card" id="s1call" style="left:120px;top:290px;width:300px;padding:22px 26px;text-align:center">
+      <div class="sub" style="font-size:24px">שיחה נכנסת</div>
+      <div class="ltr" style="font-size:60px;font-weight:300">02:13</div>
+    </div>
+  </div>
+
+  <!-- S2 -->
+  <div class="scene" id="s2">
+    <div class="abs" id="orb2" style="left:150px;top:150px;width:330px;height:330px"></div>
+    <div class="abs h1" id="s2a" style="right:90px;top:190px">הכירו<br>את <span class="gold">גבי</span></div>
+    <div class="abs sub" id="s2b" style="right:90px;top:430px;width:560px;line-height:1.35">סוכנת קולית מבוססת בינה מלאכותית.<br>מדברת בקול אנושי.</div>
+  </div>
+
+  <!-- S3 -->
+  <div class="scene" id="s3">
+    <div class="abs" id="s3a" style="right:90px;top:110px"><div class="h1 gold ltr" style="font-size:150px;line-height:1">24/7</div><div class="sub" style="margin-top:10px">עונה בכל שעה.<br>בלי המתנה.</div></div>
+    <div class="abs" id="s3chips" style="right:90px;top:420px"><span class="chip">שיחה חופשית</span><span class="chip">בלי "הקישו 1"</span></div>
+    <div class="bub c" id="b1" style="left:90px;top:130px">היי, אני רוצה לשנות את ההזמנה שלי</div>
+    <div class="bub g" id="b2" style="left:230px;top:240px">בטח. מה שם ההזמנה?</div>
+    <div class="bub c" id="b3" style="left:90px;top:350px">דנה לוי, הזמנה מחר בבוקר</div>
+    <div class="abs" id="wave3" style="left:150px;top:470px;width:420px;height:80px"></div>
+  </div>
+
+  <!-- S4 -->
+  <div class="scene" id="s4">
+    <div class="abs h2" id="s4h" style="right:90px;top:120px">גבי לא רק עונה. <span class="gold">היא עושה.</span></div>
+    <div id="s4cards"></div>
+  </div>
+
+  <!-- S5 -->
+  <div class="scene" id="s5">
+    <div class="abs card" id="crm" style="right:90px;top:100px;width:520px;padding:26px 34px">
+      <div style="font-size:24px;color:var(--dim);margin-bottom:6px">כרטיס לקוח · CRM</div>
+      <div class="row" id="r1"><span style="color:var(--dim)">שם</span><b>דנה לוי</b></div>
+      <div class="row" id="r2"><span style="color:var(--dim)">סיבת פנייה</span><b>קביעת פגישה</b></div>
+      <div class="row" id="r3"><span style="color:var(--dim)">מקור</span><b>שיחה עם גבי</b></div>
+      <div class="row" id="r4" style="border:0"><span style="color:var(--dim)">סטטוס</span><b>נקבע</b></div>
+      <div style="font-size:18px;color:var(--dim);margin-top:8px">נתוני דוגמה</div>
+    </div>
+    <div class="abs card" id="dash" style="left:90px;top:100px;width:520px;padding:26px 34px">
+      <div style="font-size:24px;color:var(--dim);margin-bottom:18px">סיכום נתונים · מעקב ביצועים</div>
+      <div id="bars"></div>
+    </div>
+    <div class="abs h2" id="s5t" style="right:90px;top:455px;font-size:54px">הכול נרשם. <span class="gold">הכול נמדד.</span></div>
+  </div>
+
+  <!-- S6 -->
+  <div class="scene" id="s6">
+    <div class="abs h2" id="s6h" style="right:90px;top:120px">מתחברת למה שכבר <span class="gold">יש לכם</span></div>
+    <div class="abs card" id="n1" style="right:120px;top:300px;width:260px;padding:30px 0;text-align:center;font-size:34px">טלפון</div>
+    <div class="abs card" id="n2" style="right:510px;top:300px;width:260px;padding:30px 0;text-align:center;font-size:40px;font-weight:800;border-color:var(--gold);color:var(--gold)">גבי</div>
+    <div class="abs card" id="n3" style="right:900px;top:300px;width:260px;padding:30px 0;text-align:center;font-size:34px">המרכזייה שלכם</div>
+    <div class="abs" id="ln1" style="right:380px;top:360px;height:4px;width:130px;background:var(--gold);transform-origin:right"></div>
+    <div class="abs" id="ln2" style="right:770px;top:360px;height:4px;width:130px;background:var(--gold);transform-origin:right"></div>
+    <div class="abs" id="s6chips" style="right:120px;top:440px"><span class="chip ltr">Cisco</span><span class="chip ltr">Avaya</span><span class="chip ltr">Bezeq</span><span class="chip ltr">012</span><span class="chip ltr">Yes</span></div>
+    <div class="abs sub" id="s6s" style="right:120px;top:510px">בלי להחליף תשתית.</div>
+  </div>
+
+  <!-- S7 -->
+  <div class="scene" id="s7">
+    <div class="abs" id="orb7" style="left:130px;top:130px;width:300px;height:300px"></div>
+    <div class="abs h1" id="s7a" style="right:90px;top:90px">גבי.<br><span class="gold">עונה כשאתם לא.</span></div>
+    <div class="abs card" id="s7b" style="right:90px;top:330px;width:640px;padding:22px 34px">
+      <div class="row"><span>נסו את גבי</span><b class="ltr" style="font-size:36px">076-532-4380</b></div>
+      <div class="row" style="border:0"><span>להזמנות</span><b class="ltr" style="font-size:36px">03-945-1111</b></div>
+    </div>
+    <div class="abs sub ltr" id="s7c" style="right:90px;top:530px;text-align:right">nvs.co.il</div>
+  </div>
+
+  <div class="subtitle" id="subtitle"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const seg=(lt,d,dur)=>ease((lt-d)/dur);
+function show(el,lt,d,dur=.55,dy=26){const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
+
+const SCENES=[[0,5,'s1'],[5,11,'s2'],[11,17,'s3'],[17,24,'s4'],[24,30,'s5'],[30,35,'s6'],[35,42,'s7']];
+const SUBS=[
+[0.3,4.7,"הלקוחות שלכם מתקשרים בכל שעה. השאלה היא מי עונה להם."],
+[5.3,10.7,"הכירו את גבי, הסוכנת הקולית של הקול החדש. בינה מלאכותית שמדברת בקול אנושי."],
+[11.3,16.7,"היא עונה 24 שעות ביממה, בלי המתנה, ומנהלת שיחה אמיתית. בלי הקישו אחת."],
+[17.3,23.7,"היא קובעת פגישות ומסתנכרנת עם היומן, מנתבת לנציג הנכון, ושולחת אישור ב-SMS ובמייל."],
+[24.3,29.7,"כל פנייה נרשמת ב-CRM שלכם, ואתם מקבלים סיכום נתונים ומעקב ביצועים."],
+[30.3,34.7,"והיא מתחברת למרכזייה שכבר יש לכם. בלי להחליף תשתית."],
+[35.3,41.7,"גבי. עונה כשאתם לא. התקשרו לשמוע אותה, או להזמנה."]];
+
+// rings
+$('rings').innerHTML=[0,1,2].map(i=>`<div style="position:absolute;left:0;top:0;width:300px;height:300px;margin:-150px 0 0 -150px;border:3px solid #d4aa72;border-radius:50%" class="ring"></div>`).join('');
+// orbs + waves
+function orbHTML(n){return `<div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 35%,#ffe3b0 0%,#d4aa72 38%,#7a5a2a 100%);box-shadow:0 0 90px rgba(212,170,114,.55)" class="orbbody"></div>
+<div class="orbwave" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;direction:ltr">${Array.from({length:9},()=>'<i style="display:block;width:12px;border-radius:6px;background:#0c1a33;height:40px"></i>').join('')}</div>`}
+$('orb2').innerHTML=orbHTML();$('orb7').innerHTML=orbHTML();
+$('wave3').innerHTML=`<div class="wv" style="display:flex;gap:8px;align-items:center;height:80px;direction:ltr">${Array.from({length:30},()=>'<i style="display:block;width:8px;border-radius:4px;background:#d4aa72;height:20px"></i>').join('')}</div>`;
+function wave(el,t,amp,k){[...el.querySelectorAll('i')].forEach((b,i)=>{b.style.height=(10+amp*(0.5+0.5*Math.sin(t*7+i*k))*(0.6+0.4*Math.sin(t*2.3+i)))+'px'})}
+
+// S4 cards
+const ICON={
+ cal:'<svg width="70" height="70" viewBox="0 0 70 70" fill="none" stroke="#d4aa72" stroke-width="4" stroke-linecap="round"><rect x="8" y="14" width="54" height="48" rx="8"/><path d="M8 28h54M22 6v14M48 6v14"/><rect id="slot" x="36" y="38" width="14" height="12" rx="3" fill="#d4aa72"/></svg>',
+ route:'<svg width="70" height="70" viewBox="0 0 70 70" fill="none" stroke="#d4aa72" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="35" r="7"/><path d="M21 35h14l12-16M35 35h14M35 35l12 16"/><circle cx="56" cy="17" r="5"/><circle cx="56" cy="35" r="5"/><circle cx="56" cy="53" r="5"/></svg>',
+ chat:'<svg width="70" height="70" viewBox="0 0 70 70" fill="none" stroke="#d4aa72" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14h50v32H34L20 58V46H10z"/><path d="M22 28h26M22 36h16"/></svg>',
+ mail:'<svg width="70" height="70" viewBox="0 0 70 70" fill="none" stroke="#d4aa72" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="16" width="54" height="40" rx="7"/><path d="M10 20l25 20 25-20"/></svg>'};
+const CARDS=[['cal','קובעת פגישות','ומסתנכרנת עם היומן'],['route','מנתבת','לנציג או למחלקה הנכונים'],['chat','שולחת SMS','אישור מיידי ללקוח'],['mail','שולחת מייל','עם כל הפרטים']];
+$('s4cards').innerHTML=CARDS.map((c,i)=>`<div class="abs card c4" style="right:${90+i*285}px;top:230px;width:255px;height:290px;padding:30px 22px;box-sizing:border-box">${ICON[c[0]]}<div style="font-size:34px;font-weight:500;margin-top:22px">${c[1]}</div><div style="font-size:24px;color:var(--dim);margin-top:8px;line-height:1.3">${c[2]}</div></div>`).join('');
+// S5 bars
+const KP=[['שיחות שנענו',.92],['פגישות שנקבעו',.64],['הועברו לנציג',.31]];
+$('bars').innerHTML=KP.map(k=>`<div style="margin-bottom:26px"><div style="font-size:26px;margin-bottom:8px">${k[0]}</div><div style="height:18px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden"><div class="fill" data-v="${k[1]}" style="height:100%;width:0;background:linear-gradient(90deg,#5fb0e8,#d4aa72);border-radius:9px;float:right"></div></div></div>`).join('')+'<div style="font-size:18px;color:var(--dim)">הגרף להמחשה בלבד</div>';
+
+function render(t){
+  // scene visibility
+  SCENES.forEach(([a,b,id])=>{
+    const el=$(id);let o=0;
+    if(t>=a&&t<b){o=Math.min(clamp((t-a)/.4),clamp((b-t)/.4));}
+    if(id==='s1')o=Math.min(1,clamp((b-t)/.4),clamp(t/.3));
+    el.style.opacity=o;
+  });
+  // S1
+  if(t<5){
+    const lt=t;
+    show($('s1a'),lt,.3);show($('s1b'),lt,1.4);show($('s1c'),lt,2.6);
+    document.querySelectorAll('.ring').forEach((r,i)=>{const p=((lt*.7+i/3)%1);r.style.transform=`scale(${.35+p*1.4})`;r.style.opacity=(1-p)*.7;});
+    const sh=Math.sin(lt*38)*(Math.sin(lt*3)>0.3?4:0);
+    show($('s1call'),lt,.2,.5,0);$('s1call').style.transform=`rotate(${sh}deg)`;
+  }
+  // S2
+  if(t>=5&&t<11){const lt=t-5;
+    $('orb2').style.transform=`scale(${.85+.15*ease(lt/.8)+.02*Math.sin(lt*5)})`;
+    $('orb2').style.opacity=ease(lt/.6);
+    wave($('orb2'),lt,150*Math.min(1,lt/1.2),.9);
+    show($('s2a'),lt,.4);show($('s2b'),lt,1.4);
+  }
+  // S3
+  if(t>=11&&t<17){const lt=t-11;
+    show($('s3a'),lt,.2);show($('s3chips'),lt,4.2);
+    show($('b1'),lt,1.0);show($('b2'),lt,2.6);show($('b3'),lt,3.8);
+    wave($('wave3'),lt,70,.55);
+  }
+  // S4
+  if(t>=17&&t<24){const lt=t-17;
+    show($('s4h'),lt,.1);
+    document.querySelectorAll('.c4').forEach((c,i)=>show(c,lt,.7+i*.8));
+    const s=document.getElementById('slot');if(s)s.style.opacity=.3+.7*(0.5+0.5*Math.sin(lt*4));
+  }
+  // S5
+  if(t>=24&&t<30){const lt=t-24;
+    show($('crm'),lt,.1);['r1','r2','r3','r4'].forEach((id,i)=>show($(id),lt,.7+i*.6,.4,10));
+    show($('dash'),lt,1.0);
+    document.querySelectorAll('.fill').forEach((f,i)=>{f.style.width=(ease((lt-1.6-i*.4)/1.2)*parseFloat(f.dataset.v)*100)+'%';});
+    show($('s5t'),lt,3.4);
+  }
+  // S6
+  if(t>=30&&t<35){const lt=t-30;
+    show($('s6h'),lt,.1);show($('n1'),lt,.5);show($('n2'),lt,1.0);show($('n3'),lt,1.5);
+    $('ln1').style.transform=`scaleX(${seg(lt,.9,.5)})`;$('ln2').style.transform=`scaleX(${seg(lt,1.4,.5)})`;
+    show($('s6chips'),lt,2.2);show($('s6s'),lt,3.0);
+  }
+  // S7
+  if(t>=35){const lt=t-35;
+    $('orb7').style.opacity=ease(lt/.6);$('orb7').style.transform=`scale(${.9+.1*ease(lt/.8)})`;
+    wave($('orb7'),lt,130*(lt<4.8?1:Math.max(0,1-(lt-4.8)*1.5)),.9);
+    show($('s7a'),lt,.3);show($('s7b'),lt,1.6);show($('s7c'),lt,2.4);
+  }
+  // subtitles
+  const st=$('subtitle');let cur=null;SUBS.forEach(s=>{if(t>=s[0]&&t<s[1])cur=s});
+  if(cur){st.textContent=cur[2];st.style.opacity=Math.min(clamp((t-cur[0])/.25),clamp((cur[1]-t)/.25));}else st.style.opacity=0;
+}
+window.render=render;render(0);
+</script></body></html>
