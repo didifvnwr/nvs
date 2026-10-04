@@ -76,7 +76,7 @@ svg{display:block}
     <div class="pf" id="p3" style="left:80px;top:110px;width:620px;height:338px"></div>
     <div class="abs o gt" id="s3a" style="right:90px;top:150px;font-size:92px;line-height:1">24/7</div>
     <div class="abs sub" id="s3b" style="right:90px;top:270px;width:420px">עונה בכל שעה.<br>בלי המתנה.</div>
-    <div class="abs" id="s3c" style="right:90px;top:360px"><span class="chip">שיחה חופשית</span><span class="chip">בלי "הקישו 1"</span></div>
+    <div class="abs" id="s3c" style="right:90px;top:360px"><span class="chip">שיחה חופשית</span><span class="chip">בלי הקשות</span></div>
     <div class="bub c" id="b1" style="left:80px;top:490px">היי, אני רוצה לשנות את ההזמנה שלי</div>
     <div class="bub g" id="b2" style="left:230px;top:546px">בטח. מה שם ההזמנה?</div>
     <div class="bub c" id="b3" style="left:80px;top:602px">דנה לוי, הזמנה למחר בבוקר</div>
@@ -147,7 +147,7 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 function show(el,lt,d,dur=.55,dy=24){const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
-const SCENES=[[0,5,'s1'],[5,10.5,'s2'],[10.5,17,'s3'],[17,24.9,'s4'],[24.9,31.3,'s5'],[31.3,35.6,'s6'],[35.6,42,'s7']];
+const SCENES=[[0,5,'s1'],[5,10.5,'s2'],[10.5,17.2,'s3'],[17.2,24.9,'s4'],[24.9,31.5,'s5'],[31.5,35.9,'s6'],[35.9,42,'s7']];
 const TOTAL=42;
 
 // background particles
@@ -232,36 +232,36 @@ function render(t){
   }
   // S2
   if(t>=5&&t<10.5){const lt=t-5;
-    showPanel('p2',lt,0,6);show($('s2a'),lt,.5);show($('s2b'),lt,2.2);
+    showPanel('p2',lt,0,6);show($('s2a'),lt,.5);show($('s2b'),lt,2.6);
     $('wave2').style.opacity=seg(lt,1.8,.5);wave($('wave2'),lt,54*Math.min(1,lt/1.6),.8);
   }
   // S3
-  if(t>=10.5&&t<17){const lt=t-10.5;
-    showPanel('p3',lt,0,6);show($('s3a'),lt,.3);show($('s3b'),lt,.7);show($('s3c'),lt,4.8);
+  if(t>=10.5&&t<17.2){const lt=t-10.5;
+    showPanel('p3',lt,0,6);show($('s3a'),lt,.3);show($('s3b'),lt,.7);show($('s3c'),lt,4.2);
     show($('b1'),lt,1.0,.5,14);show($('b2'),lt,2.4,.5,14);show($('b3'),lt,3.6,.5,14);
     $('wave3').style.opacity=seg(lt,2.4,.5)*.0;
   }
   // S4
-  if(t>=17&&t<24.9){const lt=t-17;
+  if(t>=17.2&&t<24.9){const lt=t-17.2;
     show($('s4h'),lt,.1);showPanel('p4',lt,.3,7);
-    document.querySelectorAll('.r4').forEach((c,i)=>show(c,lt,[.7,3.5,5.1,6.2][i],.5,18));
+    document.querySelectorAll('.r4').forEach((c,i)=>show(c,lt,[.7,3.4,5.0,6.3][i],.5,18));
   }
   // S5
-  if(t>=24.9&&t<31.3){const lt=t-24.9;
+  if(t>=24.9&&t<31.5){const lt=t-24.9;
     show($('s5h'),lt,.1);showPanel('p5',lt,.2,6);
     show($('crm'),lt,.5);['r1','r2','r3','r4'].forEach((id,i)=>show($(id),lt,1.0+i*.55,.4,8));
-    show($('dash'),lt,3.5);show($('s5n'),lt,4.3);
-    document.querySelectorAll('.fill').forEach((f,i)=>{f.style.width=(ease((lt-4.0-i*.4)/1.2)*parseFloat(f.dataset.v)*100)+'%';});
+    show($('dash'),lt,3.8);show($('s5n'),lt,4.5);
+    document.querySelectorAll('.fill').forEach((f,i)=>{f.style.width=(ease((lt-4.3-i*.4)/1.2)*parseFloat(f.dataset.v)*100)+'%';});
   }
   // S6
-  if(t>=31.3&&t<35.6){const lt=t-31.3;
+  if(t>=31.5&&t<35.9){const lt=t-31.5;
     showPanel('p6',lt,0,5);show($('s6h'),lt,.4);
     show($('n1'),lt,1.0,.4,12);show($('n2'),lt,1.5,.4,12);show($('n3'),lt,2.0,.4,12);
     $('ln1').style.transform=`scaleX(${seg(lt,1.3,.4)})`;$('ln2').style.transform=`scaleX(${seg(lt,1.8,.4)})`;
     show($('s6chips'),lt,2.6);show($('s6s'),lt,3.3);
   }
   // S7
-  if(t>=35.6){const lt=t-35.6;
+  if(t>=35.9){const lt=t-35.9;
     showPanel('p7',lt,0,7);show($('s7a'),lt,.4);show($('s7b'),lt,1.4);show($('s7c'),lt,2.2);
   }
 }
