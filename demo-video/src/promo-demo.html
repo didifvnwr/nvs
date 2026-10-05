@@ -148,6 +148,31 @@ $('a1c').innerHTML=['ענן','ניתוב חכם','הקלטה ותמלול','CRM'
 $('a4d').innerHTML=Array.from({length:6},(_,i)=>`<i id="a4d${i}" style="display:block;width:26px;height:26px;border-radius:50%;background:var(--cy);box-shadow:0 0 14px var(--cy)"></i>`).join('');
 $('a2n').innerHTML=[['מהמשרד',110,110],['מהבית',470,130],['מחו״ל',120,400],['מכל מקום',460,390]].map(([t,x,y],i)=>`<g id="a2n${i}"><circle cx="${x}" cy="${y}" r="34" fill="rgba(10,24,52,.85)" stroke="#e0b877" stroke-width="2"/><text x="${x}" y="${y+6}" text-anchor="middle" fill="#eaf6ff" font-size="17" font-family="H">${t}</text></g>`).join('');
 
+
+// ---- vertical (9:16) variant: ?v=1 ----
+if(location.search.includes('v=1')){
+ const st=document.createElement('style');
+ st.textContent='#stage{width:720px;height:1280px}.vbg{width:720px;height:1280px}.vtint{background:linear-gradient(180deg,rgba(5,11,24,.25),rgba(5,11,24,.72) 35%,rgba(5,11,24,.92)) !important}';
+ document.head.appendChild(st);
+ const DY=100;const P=(id,o)=>{const e=$(id);if(!e)return;for(const k in o){let v=o[k];if(k==='top'&&typeof v==='number'&&id.length>2&&id!=='a12l')v+=DY;e.style[k]=typeof v==='number'?v+'px':v}};
+ const R=(id,top,w,h,right=40)=>P(id,{top,width:w,right,left:'auto',...(h?{height:h}:{})});
+ const logo=document.querySelector('#hud > .logo');P2=(el,o)=>{for(const k in o)el.style[k]=o[k]+'px'};
+ P2(logo,{top:78,right:36});$('nvs').style.top='86px';$('nvs').style.right='164px';
+ const hud=[...document.querySelectorAll('#hud > .abs')];P2(hud[2],{top:92,left:36});hud[3].style.cssText='position:absolute;left:36px;right:36px;bottom:300px;height:2px;background:rgba(255,255,255,.12)';
+ R('a1h',300,640);R('a1s',560,640);R('a1c',660,640);
+ R('a2k',250,640);R('a2h',275,640);R('a2sig',470,60);P('a2s',{top:480,right:150,width:420});
+ P('a2map',{left:40,top:600});$('a2map').setAttribute('width',640);$('a2map').setAttribute('height',570);
+ R('a3k',240,640);R('a3h',265,640);R('a3c1',470,640,130);R('a3c2',620,640,150);R('a3p',800,640);
+ R('a4k',230,640);R('a4h',255,640);R('a4q',360,640,90);R('a4a',462,640);R('a4s',500,200,84);P('a4w',{top:500,right:260,width:300});R('a4p',640,250,136);P('a4b',{top:662,right:310,width:370});
+ R('a5h',250,640);R('a5d',380,300,150);P('a5n',{top:380,right:360,width:300});R('a5m',580,640,120);
+ R('a6h',250,640);R('a6r',420,640,110);R('a6t',560,640);
+ R('a7h',250,640);R('a7c',400,640);R('a7x',730,640,86);
+ R('a8h',250,640);R('a8s',340,640);R('a8c',430,640);R('a8y',770,0);
+ R('a9h',250,640);R('a9a',390,310,140);P('a9b',{top:390,right:370,width:310});R('a9c',550,310,140);P('a9d',{top:550,right:370,width:310});
+ R('a10h',250,640);R('a10c',430,640,330);
+ R('a11h',260,640);R('a11a',470,300,110);P('a11b',{top:470,right:360,width:320});R('a11c',610,640,110);
+ P('a12l',{top:320});P('a12h',{top:580,fontSize:'58px'});P('a12c',{top:700,fontSize:'26px'});
+}
 async function render(t){
   const jobs=[];
   SEG.forEach(([a,b,id],i)=>{

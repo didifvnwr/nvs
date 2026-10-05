@@ -1,12 +1,12 @@
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const path = require('path'), fs = require('fs');
 (async () => {
-  const mode = process.argv[2] || 'test';
+  const mode = process.argv[2] || 'test'; const VERT = process.env.VERT==='1';
   const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'] });
-  const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: mode === 'test' ? 1 : 1.5 });
-  await page.goto('file://' + path.join(__dirname, 'promo-demo.html'));
+  const page = await browser.newPage({ viewport: VERT ? { width: 720, height: 1280 } : { width: 1280, height: 720 }, deviceScaleFactor: mode === 'test' ? 1 : 1.5 });
+  await page.goto('file://' + path.join(__dirname, 'promo-demo.html') + (VERT ? '?v=1' : ''));
   await page.evaluate(() => document.fonts.ready);
-  const out = path.join(__dirname, mode === 'test' ? 'test' : 'frames');
+  const out = path.join(__dirname, mode === 'test' ? (VERT ? 'testv' : 'test') : (VERT ? 'framesv' : 'frames'));
   fs.mkdirSync(out, { recursive: true });
   const fps = 24;
   if (mode === 'test') {
