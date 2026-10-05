@@ -149,7 +149,7 @@ const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 function show(el,lt,d,dur=.55,dy=22){const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
 const SC=[[0,6],[6,17],[17,28.4],[28.4,37.4],[37.4,51.6],[51.6,57.5]];
-const TOTAL=57.5, FPS=24, REAL=63.7, INS_A=12.12, INS_B=18.31;
+const TOTAL=57.5, FPS=24, REAL=57.5, INS_A=12.12, INS_B=12.12;
 
 function panel(id,src,opts={}){
   const el=$(id);

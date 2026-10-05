@@ -11,12 +11,12 @@ const path = require('path'); const fs = require('fs');
   fs.mkdirSync(out, { recursive: true });
   const fps = 24;
   if (mode === 'test') {
-    for (const t of [44, 48, 59, 62]) {
+    for (const t of [13, 30, 45, 56]) {
       await page.evaluate(async t => { await render(t); }, t);
       await page.screenshot({ path: path.join(out, `t${t}.png`) });
     }
   } else {
-    const total = 63.7 * fps;
+    const total = 57.5 * fps;
     for (let i = 0; i < total; i++) {
       await page.evaluate(async t => { await render(t); }, i / fps);
       await page.screenshot({ path: path.join(out, `f${String(i).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 92 });
