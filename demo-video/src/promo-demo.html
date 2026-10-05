@@ -58,7 +58,7 @@ const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 function show(id,lt,d,dur=.55,dy=22){const el=typeof id==='string'?$(id):id;const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
 const TOTAL=134;
-const SEG=[[0,12.8,'a1'],[12.8,23.7,'a2'],[23.7,38.3,'a3'],[38.3,50.96,'a4'],[50.96,56.9,'a5'],[56.9,65.2,'a6'],[65.2,79.4,'a7'],[79.4,88.3,'a8'],[88.3,100.9,'a9'],[100.9,112.5,'a10'],[112.5,118.7,'a11'],[118.7,TOTAL,'a12']];
+const SEG=[[0,12.1,'a1'],[12.1,23.0,'a2'],[23.0,37.85,'a3'],[37.85,50.7,'a4'],[50.7,56.7,'a5'],[56.7,65.0,'a6'],[65.0,79.3,'a7'],[79.3,88.4,'a8'],[88.4,100.8,'a9'],[100.8,112.2,'a10'],[112.2,118.5,'a11'],[118.5,TOTAL,'a12']];
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
 const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
 async function setImg(el,src){if(el.getAttribute('data-s')===src)return;el.setAttribute('data-s',src);el.src=src;try{await el.decode()}catch(e){}}
@@ -169,37 +169,36 @@ async function render(t){
   show('a2k',lt,.1);show('a2h',lt,.3);
   show('a2sig',lt,1.8);show('a2s',lt,2.2);
   [...$('sigb').children].forEach((r,i)=>r.style.opacity=lt>2+i*.35?1:.18);
-  $('a2map').style.opacity=seg(lt,4.8,.6);
-  [...$('a2lines').children].forEach((p,i)=>{const s=seg(lt,5.4+i*.5,.6);p.style.strokeDashoffset=(1-s)*300;p.style.opacity=s});
-  for(let i=0;i<4;i++){$('a2n'+i).style.opacity=seg(lt,5.2+i*.5,.5)}
+  $('a2map').style.opacity=seg(lt,5.2,.6);
+  [...$('a2lines').children].forEach((p,i)=>{const s=seg(lt,5.6+i*.4,.6);p.style.strokeDashoffset=(1-s)*300;p.style.opacity=s});
+  [8.7,9.4,10.1,7.9].forEach((d,i)=>{$('a2n'+i).style.opacity=seg(lt,d,.5)})
   lt=L(2);jobs.push(setImg($('a3v'),pp('robot',lt*24,289)));
-  show('a3k',lt,.1);show('a3h',lt,.3);show('a3c1',lt,1.4,.55,18);show('a3c2',lt,3.0,.55,18);animWave('a3w',lt,lt>3.2,20);show('a3p',lt,10.8);
+  show('a3k',lt,.1);show('a3h',lt,.3);show('a3c1',lt,2.3,.55,18);show('a3c2',lt,4.4,.55,18);animWave('a3w',lt,lt>4.6,20);show('a3p',lt,11.25);
   lt=L(3);jobs.push(setImg($('a4v'),pp('chatbot',lt*24,293)));
   show('a4k',lt,.1);show('a4h',lt,.3);show('a4q',lt,.9);
   const nq=Math.round(clamp(lt/3.2)*6);
-  for(let i=0;i<6;i++){const el=$('a4d'+i);const on=(i<nq&&lt<3.6)||(lt>=3.6&&i<Math.max(0,6-Math.floor((lt-3.6)*1.2)));el.style.opacity=on?1:.15}
+  for(let i=0;i<6;i++){const el=$('a4d'+i);const on=(i<nq&&lt<3.8)||(lt>=3.8&&i<Math.max(0,6-Math.floor((lt-3.8)*1.2)));el.style.opacity=on?1:.15}
   const shown=[...$('a4d').children].filter(e=>e.style.opacity==1).length;$('a4n').textContent=String(shown).padStart(2,'0');
-  show('a4a',lt,3.4);show('a4s',lt,3.8);show('a4w',lt,4.5);
-  show('a4p',lt,7.4);show('a4b',lt,7.9);
+  show('a4a',lt,3.8);show('a4s',lt,5.0);show('a4w',lt,6.4);
+  show('a4p',lt,8.5);show('a4b',lt,8.9);
   lt=L(4);show('a5h',lt,.2);
-  show('a5d',lt,.6);show('a5n',lt,1.2);
-  $('a5d').style.boxShadow=lt<2.2?'0 0 40px rgba(224,184,119,.5)':'none';$('a5n').style.boxShadow=lt>=2.2?'0 0 40px rgba(61,225,255,.5)':'none';
-  show('a5m',lt,2.7);animWave('a5w',lt,lt>2.9&&lt<5,28);
+  show('a5d',lt,.6);show('a5n',lt,2.0);
+  $('a5d').style.boxShadow=lt<2.8?'0 0 40px rgba(224,184,119,.5)':'none';$('a5n').style.boxShadow=lt>=2.8?'0 0 40px rgba(61,225,255,.5)':'none';
+  show('a5m',lt,3.45);animWave('a5w',lt,lt>3.6&&lt<5.6,28);
   lt=L(5);jobs.push(setImg($('a6v'),pp('phone',lt*24,192)));
   show('a6h',lt,.2);show('a6r',lt,.7);animWave('a6w',lt,true,40);$('a6dot').style.opacity=.4+.6*Math.abs(Math.sin(lt*4));
-  show('a6t',lt,4.0);show('a6l1',lt,4.4,.4,8);show('a6l2',lt,5.6,.4,8);show('a6l3',lt,6.6,.4,8);
+  show('a6t',lt,4.8);show('a6l1',lt,5.2,.4,8);show('a6l2',lt,6.4,.4,8);show('a6l3',lt,7.3,.4,8);
   lt=L(6);jobs.push(setImg($('a7v'),pp('chatbot',lt*24+90,293)));
-  show('a7h',lt,.2);show('a7c',lt,.7);show('a7r1',lt,5.0,.4,8);show('a7r2',lt,6.2,.4,8);show('a7r3',lt,7.0,.4,8);
-  $('a7r1').style.opacity=Math.max(seg(lt,5.0,.4),.0);
-  show('a7x',lt,8.9);
+  show('a7h',lt,.2);show('a7c',lt,.7);show('a7r1',lt,5.6,.4,8);show('a7r2',lt,6.6,.4,8);show('a7r3',lt,7.6,.4,8);
+  show('a7x',lt,9.3);
   lt=L(7);show('a8h',lt,.2);show('a8s',lt,.8);show('a8c',lt,1.4);
   for(let i=1;i<=4;i++)show('a8r'+i,lt,2.2+i*.7,.4,8);
-  show('a8y',lt,6.2);
+  show('a8y',lt,6.6);
   lt=L(8);jobs.push(setImg($('a9v'),pp('phone',lt*24+60,192)));
-  show('a9h',lt,.2);show('a9a',lt,.8);show('a9b',lt,2.4);show('a9c',lt,4.4);show('a9d',lt,7.0);
+  show('a9h',lt,.2);show('a9a',lt,.8);show('a9b',lt,3.2);show('a9c',lt,5.1);show('a9d',lt,7.2);
   lt=L(9);jobs.push(setImg($('a10v'),pp('robot',lt*24+120,289)));
-  show('a10h',lt,.2);show('a10c',lt,1.2);show('a10u',lt,3.1,.5,14);show('a10a',lt,7.2,.5,14);show('a10t',lt,8.6,.5,10);
-  lt=L(10);show('a11h',lt,.2);show('a11a',lt,1.4);show('a11b',lt,2.2);show('a11c',lt,3.2);
+  show('a10h',lt,.2);show('a10c',lt,1.2);show('a10u',lt,3.6,.5,14);show('a10a',lt,7.5,.5,14);show('a10t',lt,8.6,.5,10);
+  lt=L(10);show('a11h',lt,.2);show('a11a',lt,2.3);show('a11b',lt,3.4);show('a11c',lt,4.2);
   lt=L(11);jobs.push(setImg($('a12v'),pp('robot',lt*24,289)));
   show('a12l',lt,.2,.7,0);show('a12h',lt,1.0);show('a12c',lt,2.0);
   await Promise.all(jobs);
