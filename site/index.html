@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מרכז כלים ואתרים | הקול החדש</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#faf8f4;--white:#fff;--border:#e8e3db;--text:#1c1c1c;--muted:#78746e;--gold:#b8955a;--goldp:rgba(184,149,90,.12);--dark:#1a1a1a}
+  @media (prefers-color-scheme:dark){:root{--cream:#141311;--white:#1e1c19;--border:#34302a;--text:#f2eee8;--muted:#a39d93;--goldp:rgba(184,149,90,.16)}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Heebo',system-ui,sans-serif;background:var(--cream);color:var(--text);font-weight:300;line-height:1.6}
+  header{padding:22px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;max-width:1040px;margin:0 auto}
+  .logo{font-weight:700;font-size:1.15rem;display:flex;align-items:center;gap:8px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--gold)}
+  header a.ext{color:var(--muted);font-size:.9rem;text-decoration:none}
+  main{max-width:1040px;margin:0 auto;padding:36px 16px 70px}
+  .eye{color:var(--gold);font-size:.8rem;letter-spacing:.12em;margin-bottom:6px;font-weight:500}
+  h1{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:300;line-height:1.25;margin-bottom:10px}
+  h1 strong{font-weight:700}
+  .lead{color:var(--muted);max-width:620px;margin-bottom:34px}
+  h2{font-size:1.05rem;font-weight:700;margin:34px 0 12px;display:flex;align-items:center;gap:10px}
+  h2::after{content:"";flex:1;height:1px;background:var(--border)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  a.card{display:block;text-decoration:none;color:inherit;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px;transition:.15s}
+  a.card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 24px var(--goldp)}
+  .ico{font-size:1.5rem;margin-bottom:6px}
+  .t{font-weight:500;font-size:1.02rem}
+  .d{color:var(--muted);font-size:.88rem;margin:2px 0 8px}
+  .u{color:var(--gold);font-size:.8rem;direction:ltr;text-align:right;word-break:break-all}
+  a.card.feat{grid-column:1/-1;background:var(--dark);color:#fff;border-color:var(--dark);display:flex;gap:16px;align-items:center}
+  a.card.feat .d{color:#c9c3b8}
+  a.card.feat .ico{font-size:2.2rem;margin:0}
+  a.card.feat .go{margin-inline-start:auto;background:var(--gold);color:#fff;padding:10px 18px;border-radius:100px;font-weight:500;white-space:nowrap}
+  @media(max-width:560px){a.card.feat{flex-direction:column;align-items:flex-start}a.card.feat .go{margin:0}}
+  footer{text-align:center;color:var(--muted);font-size:.8rem;padding:24px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span class="dot"></span>הקול החדש</div>
+  <a class="ext" href="https://nvs.co.il" target="_blank" rel="noopener">nvs.co.il ←</a>
+</header>
+<main>
+  <div class="eye">מרכז כלים ואתרים</div>
+  <h1>כל הכלים והאתרים <strong>במקום אחד</strong></h1>
+  <p class="lead">עורך הקלטות למרכזיות, כלי המרה, והאתרים והמערכות שלנו – גישה מהירה מכל מחשב.</p>
+
+  <div class="grid">
+    <a class="card feat" href="audio-editor/">
+      <div class="ico">🎙️</div>
+      <div><div class="t">עורך הקלטות למרכזיות</div><div class="d">קריינות + מוזיקה עם פייד בהתחלה ובסוף. ייצוא MP3 / WAV / μ-law / A-law בעיבוד טלפוניה.</div></div>
+      <span class="go">פתח את העורך</span>
+    </a>
+    <a class="card" href="https://nvs.co.il/hamarat-audio-lemerkaziyot" target="_blank" rel="noopener"><div class="ico">🔁</div><div class="t">המרת אודיו למרכזיות</div><div class="d">המרת קובץ קיים ל-8kHz מונו.</div><div class="u">nvs.co.il/hamarat-audio-lemerkaziyot</div></a>
+  </div>
+
+  <h2>הקול החדש</h2>
+  <div class="grid">
+    <a class="card" href="https://nvs.co.il" target="_blank" rel="noopener"><div class="ico">🌐</div><div class="t">אתר הקול החדש</div><div class="d">האתר הראשי</div><div class="u">nvs.co.il</div></a>
+    <a class="card" href="https://hakol-orders.netlify.app" target="_blank" rel="noopener"><div class="ico">🧾</div><div class="t">הזמנות</div><div class="d">מערכת הזמנות</div><div class="u">hakol-orders.netlify.app</div></a>
+    <a class="card" href="https://hakol-hachadash-crm.netlify.app" target="_blank" rel="noopener"><div class="ico">👥</div><div class="t">CRM הקול החדש</div><div class="d">ניהול לקוחות</div><div class="u">hakol-hachadash-crm.netlify.app</div></a>
+    <a class="card" href="https://hakol-hachadash-digital.netlify.app" target="_blank" rel="noopener"><div class="ico">💻</div><div class="t">הקול החדש – דיגיטל</div><div class="d">&nbsp;</div><div class="u">hakol-hachadash-digital.netlify.app</div></a>
+    <a class="card" href="https://hakol-hachadash-preview.netlify.app" target="_blank" rel="noopener"><div class="ico">👁️</div><div class="t">תצוגה מקדימה</div><div class="d">גרסת בדיקה של האתר</div><div class="u">hakol-hachadash-preview.netlify.app</div></a>
+    <a class="card" href="https://paperless-tracker-hakolhehadash.netlify.app" target="_blank" rel="noopener"><div class="ico">📄</div><div class="t">Paperless Tracker</div><div class="d">מעקב מסמכים</div><div class="u">paperless-tracker-hakolhehadash.netlify.app</div></a>
+  </div>
+
+  <h2>מיצי תקשורת</h2>
+  <div class="grid">
+    <a class="card" href="https://mitsi.co.il" target="_blank" rel="noopener"><div class="ico">📱</div><div class="t">מיצי תקשורת</div><div class="d">האתר הראשי</div><div class="u">mitsi.co.il</div></a>
+    <a class="card" href="https://crm.mitsi.co.il" target="_blank" rel="noopener"><div class="ico">👥</div><div class="t">CRM מיצי</div><div class="d">ניהול לקוחות</div><div class="u">crm.mitsi.co.il</div></a>
+    <a class="card" href="https://mitsi-voice-agent-preview.netlify.app" target="_blank" rel="noopener"><div class="ico">🤖</div><div class="t">סוכן קולי</div><div class="d">תצוגה מקדימה</div><div class="u">mitsi-voice-agent-preview.netlify.app</div></a>
+  </div>
+
+  <h2>נוספים</h2>
+  <div class="grid">
+    <a class="card" href="https://itayazulay.co.il" target="_blank" rel="noopener"><div class="ico">🧭</div><div class="t">איתי אזולאי – אימון</div><div class="d">&nbsp;</div><div class="u">itayazulay.co.il</div></a>
+    <a class="card" href="https://optitor.netlify.app" target="_blank" rel="noopener"><div class="ico">⚙️</div><div class="t">Optitor</div><div class="d">&nbsp;</div><div class="u">optitor.netlify.app</div></a>
+    <a class="card" href="https://space-english-app.netlify.app" target="_blank" rel="noopener"><div class="ico">🚀</div><div class="t">Space English</div><div class="d">אפליקציית אנגלית</div><div class="u">space-english-app.netlify.app</div></a>
+    <a class="card" href="https://lev-habayit.netlify.app" target="_blank" rel="noopener"><div class="ico">🏠</div><div class="t">לב הבית</div><div class="d">&nbsp;</div><div class="u">lev-habayit.netlify.app</div></a>
+    <a class="card" href="https://tazrim-esek.netlify.app" target="_blank" rel="noopener"><div class="ico">💰</div><div class="t">תזרים עסק</div><div class="d">&nbsp;</div><div class="u">tazrim-esek.netlify.app</div></a>
+    <a class="card" href="https://tazrim-mishpachti.netlify.app" target="_blank" rel="noopener"><div class="ico">👨‍👩‍👧</div><div class="t">תזרים משפחתי</div><div class="d">&nbsp;</div><div class="u">tazrim-mishpachti.netlify.app</div></a>
+  </div>
+</main>
+<footer>© הקול החדש | NVS.CO.IL</footer>
+</body>
+</html>
