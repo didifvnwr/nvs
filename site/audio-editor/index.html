@@ -7,7 +7,7 @@
 <style>
   :root{
     --bg:#f4f6fa; --card:#fff; --ink:#1b2430; --muted:#6b7686; --line:#dde3ec;
-    --accent:#2563eb; --accent-ink:#fff; --ok:#16a34a; --wave:#2563eb; --music:#f59e0b;
+    --accent:#2563eb; --accent-ink:#fff; --ok:#16a34a; --wave:#2563eb; --music:#f59e0b; --danger:#dc2626;
   }
   @media (prefers-color-scheme: dark){
     :root{ --bg:#0f141b; --card:#18202b; --ink:#e8edf4; --muted:#93a0b2; --line:#2a3544; --accent:#3b82f6; --wave:#60a5fa; }
@@ -19,51 +19,72 @@
   .sub{color:var(--muted);margin:0 0 20px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
   .card h2{font-size:1.05rem;margin:0 0 12px}
-  .drops{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:640px){.drops{grid-template-columns:1fr}}
-  .drop{border:2px dashed var(--line);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:.15s}
-  .drop:hover,.drop.over{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
-  .drop b{display:block;margin-bottom:4px}
-  .drop .fn{color:var(--muted);font-size:.9rem;word-break:break-all}
-  .drop.has{border-style:solid;border-color:var(--ok)}
-  .drop input{display:none}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
   label{display:flex;flex-direction:column;gap:4px;font-size:.92rem}
-  label span.h{color:var(--muted);font-size:.8rem}
+  label span.h,.h{color:var(--muted);font-size:.8rem}
   input[type=number],select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%}
   input[type=range]{width:100%}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 16px}
   button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  button.sm{padding:6px 12px;font-size:.85rem}
   button:disabled{opacity:.45;cursor:not-allowed}
-  canvas{width:100%;height:120px;display:block;border-radius:8px;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+  canvas{width:100%;height:90px;display:block;border-radius:8px;background:color-mix(in srgb,var(--ink) 4%,transparent)}
   .legend{display:flex;gap:16px;font-size:.82rem;color:var(--muted);margin-top:6px}
   .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-inline-end:5px}
-  .dl{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:640px){.dl{grid-template-columns:1fr}}
-  .dl a{display:block;text-align:center;text-decoration:none;padding:14px;border-radius:12px;background:var(--ok);color:#fff;font-weight:600}
-  .dl a small{display:block;font-weight:400;opacity:.9}
-  .dl a.off{background:var(--line);color:var(--muted);pointer-events:none}
   .status{color:var(--muted);font-size:.9rem;min-height:1.4em}
   .presets button{padding:6px 12px;font-size:.85rem}
+
+  /* narration list */
+  .files{display:flex;flex-direction:column;gap:8px}
+  .file{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .file .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .file .du{color:var(--muted);font-size:.85rem;white-space:nowrap}
+  .file .rm{border:none;background:none;color:var(--danger);padding:4px 8px;font-size:1.1rem}
+  .add{display:flex;align-items:center;justify-content:center;gap:8px;border:2px dashed var(--line);border-radius:10px;padding:14px;cursor:pointer;color:var(--muted);transition:.15s;margin-top:8px}
+  .add:hover,.add.over{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
+  .add b{font-size:1.4rem;line-height:1}
+  .add input{display:none}
+  .mrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .mrow select{flex:1;min-width:220px;width:auto}
+
+  /* results */
+  .res{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+  .res h3{margin:0 0 8px;font-size:1rem;display:flex;justify-content:space-between;gap:8px}
+  .res h3 small{color:var(--muted);font-weight:400}
+  .dl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  @media (max-width:640px){.dl{grid-template-columns:1fr}}
+  .dl a{display:block;text-align:center;text-decoration:none;padding:12px;border-radius:10px;background:var(--ok);color:#fff;font-weight:600;font-size:.95rem}
+  .dl a small{display:block;font-weight:400;opacity:.9;word-break:break-all}
+  .dl a.off{background:var(--line);color:var(--muted);pointer-events:none}
+  .zipbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 </style>
 </head>
 <body>
 <main>
   <a href="../" style="color:var(--muted);font-size:.85rem;text-decoration:none">→ חזרה למרכז הכלים</a>
   <h1>🎙️ עורך הקלטות למרכזיות</h1>
-  <p class="sub">מעלים קריינות + מוזיקה, ומקבלים שני קבצים: קריינות נקייה, וקריינות עם מוזיקה בתחילה ובסוף עם פייד. הכול רץ בדפדפן – הקבצים לא עוזבים את המחשב.</p>
+  <p class="sub">מעלים קריינות אחת או יותר, בוחרים מוזיקה, ומקבלים לכל קריינות שני קבצים: קריינות נקייה, וקריינות עם מוזיקה בתחילה ובסוף עם פייד. הכול רץ בדפדפן – הקבצים לא עוזבים את המחשב.</p>
 
   <section class="card">
-    <h2>1. העלאת קבצים</h2>
-    <div class="drops">
-      <div class="drop" id="dropVoice"><b>🗣️ קובץ קריינות</b><span class="fn">גרור לכאן או לחץ לבחירה</span><input type="file" accept="audio/*,.wav,.mp3,.m4a,.ogg"></div>
-      <div class="drop" id="dropMusic"><b>🎵 קובץ מוזיקה</b><span class="fn">גרור לכאן או לחץ לבחירה</span><input type="file" accept="audio/*,.wav,.mp3,.m4a,.ogg"></div>
-    </div>
+    <h2>1. קבצי קריינות</h2>
+    <div class="files" id="files"></div>
+    <label class="add" id="addVoice"><b>+</b> הוסף קובץ קריינות (אפשר כמה יחד, או לגרור לכאן)<input type="file" id="voiceInput" multiple accept="audio/*,.wav,.mp3,.m4a,.ogg"></label>
   </section>
 
   <section class="card">
-    <h2>2. הגדרות מוזיקה</h2>
+    <h2>2. מוזיקה</h2>
+    <div class="mrow">
+      <select id="musicSel" aria-label="בחירת מוזיקה"></select>
+      <button class="sm" id="musicPlay">▶ האזן</button>
+      <button class="sm" id="musicStop">■</button>
+      <button class="sm" type="button" id="musicUpBtn">⬆ העלה מוזיקה אחרת</button><input type="file" id="musicInput" accept="audio/*,.wav,.mp3,.m4a,.ogg" style="display:none">
+    </div>
+    <div class="h" id="musicInfo" style="margin-top:6px"></div>
+  </section>
+
+  <section class="card">
+    <h2>3. הגדרות מוזיקה</h2>
     <div class="row presets" style="margin-bottom:12px">
       <span style="color:var(--muted);font-size:.85rem">מוכנים:</span>
       <button data-p="3,7,0.5,3,1">3 שנ' פתיחה / 7 שנ' סיום</button>
@@ -81,7 +102,7 @@
   </section>
 
   <section class="card">
-    <h2>3. פורמט פלט</h2>
+    <h2>4. פורמט פלט</h2>
     <div class="grid">
       <label>קידוד
         <select id="enc">
@@ -115,24 +136,15 @@
     </div>
     <div class="row" style="margin-top:16px">
       <button class="primary" id="go" disabled>⚙️ צור קבצים</button>
-      <span class="status" id="status">העלה קובץ קריינות כדי להתחיל</span>
+      <span class="status" id="status">הוסף קובץ קריינות כדי להתחיל</span>
     </div>
   </section>
 
   <section class="card" id="result" hidden>
-    <h2>4. תוצאה</h2>
-    <canvas id="wave" width="1600" height="240"></canvas>
+    <h2>5. תוצאה</h2>
+    <div class="zipbar"><button class="primary" id="zipAll">⬇ הורד הכול כקובץ ZIP</button><button id="stop">■ עצור השמעה</button><span class="status" id="zipInfo"></span></div>
+    <div id="resList"></div>
     <div class="legend"><span><i style="background:var(--wave)"></i>קריינות</span><span><i style="background:var(--music)"></i>מוזיקה (עוצמה)</span></div>
-    <div class="row" style="margin:12px 0">
-      <button id="play">▶ נגן מיקס</button>
-      <button id="playVoice">▶ נגן קריינות בלבד</button>
-      <button id="stop">■ עצור</button>
-      <span class="status" id="info"></span>
-    </div>
-    <div class="dl">
-      <a id="dlVoice" class="off" download>⬇ קובץ 1 – קריינות בלבד<small></small></a>
-      <a id="dlMix" class="off" download>⬇ קובץ 2 – קריינות + מוזיקה<small></small></a>
-    </div>
   </section>
 </main>
 
@@ -449,38 +461,89 @@ a.length>D&&(D=a.length,p=0|1.25*D+7200,r=new Int8Array(p));a=u.lame_encode_buff
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-const state = { voice:null, music:null, voiceName:"", mixPrev:null, voicePrev:null, curve:null, introLen:0, narrLen:0 };
 const decCtx = new (window.AudioContext || window.webkitAudioContext)();
+const decode = async ab => decCtx.decodeAudioData(ab);
 
-// ---------- file inputs ----------
-function wireDrop(el, key){
-  const inp = el.querySelector("input"), fn = el.querySelector(".fn");
-  const load = async file => {
-    if(!file) return;
-    fn.textContent = "טוען… " + file.name;
-    try{
-      const buf = await decCtx.decodeAudioData(await file.arrayBuffer());
-      state[key] = buf;
-      if(key==="voice") state.voiceName = file.name.replace(/\.[^.]+$/,"");
-      el.classList.add("has");
-      fn.textContent = `✓ ${file.name} (${buf.duration.toFixed(1)} שנ')`;
-    }catch(e){
-      state[key]=null; el.classList.remove("has");
-      fn.textContent = "לא ניתן לקרוא את הקובץ: " + file.name;
-    }
-    refreshGo();
-  };
-  el.addEventListener("click", ()=>inp.click());
-  inp.addEventListener("change", ()=>load(inp.files[0]));
-  el.addEventListener("dragover", e=>{e.preventDefault(); el.classList.add("over");});
-  el.addEventListener("dragleave", ()=>el.classList.remove("over"));
-  el.addEventListener("drop", e=>{e.preventDefault(); el.classList.remove("over"); load(e.dataTransfer.files[0]);});
+// ---------- music library (files in ./music) ----------
+const LIBRARY = [
+  {file:"music/music-1.mp3",  label:"מוזיקה 1"},
+  {file:"music/music-2.mp3",  label:"מוזיקה 2 · הדרך אל החופש (קצרה)"},
+  {file:"music/music-3.mp3",  label:"מוזיקה 3 · הדרך אל החופש"},
+  {file:"music/music-10.mp3", label:"מוזיקה 10 · Warm Queue Waves"},
+];
+const state = { voices:[], music:null, results:[] };
+const musicCache = new Map();      // option value -> AudioBuffer
+const customMusic = new Map();     // option value -> File
+
+function fillMusicSelect(selectValue){
+  const sel=$("musicSel"); sel.innerHTML="";
+  LIBRARY.forEach((m,i)=>sel.add(new Option("🎵 "+m.label,"lib:"+i)));
+  customMusic.forEach((f,k)=>sel.add(new Option("📁 "+f.name,k)));
+  sel.add(new Option("ללא מוזיקה (קריינות בלבד)","none"));
+  sel.value = selectValue || sel.value;
 }
-wireDrop($("dropVoice"),"voice"); wireDrop($("dropMusic"),"music");
+async function loadSelectedMusic(){
+  const v=$("musicSel").value, info=$("musicInfo");
+  state.music=null; info.textContent="";
+  if(v==="none"){ refreshGo(); return; }
+  try{
+    if(!musicCache.has(v)){
+      info.textContent="טוען מוזיקה…";
+      let ab;
+      if(v.startsWith("lib:")){
+        const r=await fetch(LIBRARY[+v.slice(4)].file); if(!r.ok) throw new Error("HTTP "+r.status);
+        ab=await r.arrayBuffer();
+      } else ab=await customMusic.get(v).arrayBuffer();
+      musicCache.set(v, await decode(ab));
+    }
+    state.music=musicCache.get(v);
+    info.textContent=`אורך המוזיקה: ${state.music.duration.toFixed(0)} שניות (משתמשים בהתחלה שלה; אם קצרה מהנדרש היא חוזרת על עצמה)`;
+  }catch(e){
+    info.textContent="לא ניתן לטעון את המוזיקה"+(location.protocol==="file:"?" – פתח את האתר דרך הכתובת באינטרנט (לא כקובץ מקומי), או העלה מוזיקה ידנית":"")+".";
+  }
+  refreshGo();
+}
+$("musicSel").addEventListener("change",()=>{stopPlay();loadSelectedMusic();});
+$("musicUpBtn").addEventListener("click",()=>$("musicInput").click());
+$("musicInput").addEventListener("change",()=>{
+  const f=$("musicInput").files[0]; if(!f) return;
+  const key="custom:"+Date.now(); customMusic.set(key,f);
+  fillMusicSelect(key); loadSelectedMusic(); $("musicInput").value="";
+});
+$("musicPlay").addEventListener("click",()=>playBuf(state.music));
+$("musicStop").addEventListener("click",()=>stopPlay());
+
+// ---------- narration list ----------
+function renderFiles(){
+  const box=$("files"); box.innerHTML="";
+  state.voices.forEach((v,i)=>{
+    const d=document.createElement("div"); d.className="file";
+    d.innerHTML=`<span>🗣️</span><span class="nm"></span><span class="du">${v.buf.duration.toFixed(1)} שנ'</span><button class="rm" title="הסר">✕</button>`;
+    d.querySelector(".nm").textContent=v.name;
+    d.querySelector(".rm").onclick=()=>{state.voices.splice(i,1);renderFiles();refreshGo();};
+    box.appendChild(d);
+  });
+}
+async function addVoices(files){
+  const failed=[];
+  for(const f of files){
+    try{ state.voices.push({name:f.name.replace(/\.[^.]+$/,""), buf:await decode(await f.arrayBuffer())}); }
+    catch(e){ console.error(e); failed.push(f.name); }
+    renderFiles();
+  }
+  refreshGo();
+  if(failed.length) $("status").textContent="לא ניתן לקרוא: "+failed.join(", ");
+}
+$("voiceInput").addEventListener("change",async()=>{const fs=[...$("voiceInput").files];$("voiceInput").value="";await addVoices(fs);});
+const addEl=$("addVoice");
+addEl.addEventListener("dragover",e=>{e.preventDefault();addEl.classList.add("over");});
+addEl.addEventListener("dragleave",()=>addEl.classList.remove("over"));
+addEl.addEventListener("drop",e=>{e.preventDefault();addEl.classList.remove("over");addVoices([...e.dataTransfer.files]);});
+
 function refreshGo(){
-  $("go").disabled = !state.voice;
-  $("status").textContent = !state.voice ? "העלה קובץ קריינות כדי להתחיל"
-    : (!state.music ? "אין קובץ מוזיקה – ייווצר רק קובץ הקריינות" : "מוכן");
+  $("go").disabled = !state.voices.length;
+  $("status").textContent = !state.voices.length ? "הוסף קובץ קריינות כדי להתחיל"
+    : (!state.music ? "לא נבחרה מוזיקה – ייווצר רק קובץ הקריינות" : `מוכן – ${state.voices.length} קבצים`);
 }
 $("vol").addEventListener("input", ()=> $("volVal").textContent = $("vol").value+"%");
 document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{
@@ -490,7 +553,7 @@ document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("clic
 
 // ---------- audio rendering ----------
 const num = id => Math.max(0, parseFloat($(id).value) || 0);
-const smooth = x => 0.5 - 0.5*Math.cos(Math.PI*Math.min(1,Math.max(0,x))); // ease in/out 0..1
+const smooth = x => 0.5 - 0.5*Math.cos(Math.PI*Math.min(1,Math.max(0,x)));
 
 function settings(){
   const intro=num("intro"), outro=num("outro");
@@ -498,14 +561,12 @@ function settings(){
   return { intro, outro, overlap, fadeIn:num("fadeIn"), fadeOut:Math.min(num("fadeOut"),outro+overlap),
            vol:$("vol").value/100, norm:$("norm").value==="1" };
 }
-
-// gain envelope of the music segments, as piecewise function of absolute time
-function introGain(t, s){ // music #1: [0, intro+overlap]
+function introGain(t, s){
   let g = s.fadeIn>0 ? smooth(t/s.fadeIn) : 1;
   if(t > s.intro) g *= 1 - smooth((t-s.intro)/Math.max(s.overlap,1e-3));
   return g*s.vol;
 }
-function outroGain(t, s, start, total){ // music #2: [start,total]
+function outroGain(t, s, start, total){
   let g = s.overlap>0 ? smooth((t-start)/s.overlap) : 1;
   if(s.fadeOut>0) g *= 1 - smooth((t-(total-s.fadeOut))/s.fadeOut);
   return g*s.vol;
@@ -516,15 +577,15 @@ function curveOf(fn, dur){
   return c;
 }
 
-async function render(sr, ch, withMusic){
+async function render(voice, sr, ch, withMusic){
   const s = settings();
-  const voice = state.voice, music = withMusic ? state.music : null;
+  const music = withMusic ? state.music : null;
   const introLen = music && s.intro>0 ? s.intro : 0;
   const outroLen = music && s.outro>0 ? s.outro : 0;
   const total = introLen + voice.duration + outroLen;
   const tele = $("enc").value!=="mp3";
   const lp = tele && sr===8000 && $("lp").checked, hp = tele && $("hp").checked;
-  const rsr = sr>=44100 ? sr : 44100;           // render high, filter, then downsample
+  const rsr = sr>=44100 ? sr : 44100;
   const ctx = new OfflineAudioContext(ch, Math.ceil(total*rsr), rsr);
   const bus = ctx.createGain();
   if(hp){ let node=bus; for(let k=0;k<2;k++){ const f=ctx.createBiquadFilter(); f.type="highpass"; f.frequency.value=300; f.Q.value=0.707; node.connect(f); node=f; } node.connect(ctx.destination); }
@@ -532,12 +593,12 @@ async function render(sr, ch, withMusic){
 
   const vs = ctx.createBufferSource(); vs.buffer = voice; vs.connect(bus); vs.start(introLen);
 
-  const curves = {intro:null, outro:null, music:!!music};
+  const curves = {intro:null, outro:null};
   if(music){
     const addMusic = (start, dur, gainFn)=>{
       const src = ctx.createBufferSource(); src.buffer = music; src.loop = true;
-      const g = ctx.createGain(), c = curveOf(gainFn, dur);
-      g.gain.setValueCurveAtTime(c, start, dur);
+      const g = ctx.createGain();
+      g.gain.setValueCurveAtTime(curveOf(gainFn, dur), start, dur);
       src.connect(g).connect(bus); src.start(start); src.stop(start+dur);
       return {start, dur, fn:gainFn};
     };
@@ -548,7 +609,6 @@ async function render(sr, ch, withMusic){
     if(outroLen>0){
       const start = introLen+voice.duration-s.overlap, dur = total-start;
       curves.outro = addMusic(start, dur, t=>outroGain(t+start,s,start,total));
-      curves.outro.abs = true;
     }
   }
   let out = await ctx.startRendering();
@@ -558,7 +618,6 @@ async function render(sr, ch, withMusic){
   return {buffer:out, introLen, outroLen, total, curves, s};
 }
 
-// windowed-sinc (Blackman) 257-tap low-pass, zero phase (delay compensated)
 function firLowpass(buf, fc){
   const N=257, M=(N-1)/2, f=fc/buf.sampleRate, h=new Float32Array(N); let sum=0;
   for(let n=0;n<N;n++){
@@ -583,7 +642,6 @@ async function resample(buf, sr){
   const s=ctx.createBufferSource(); s.buffer=buf; s.connect(ctx.destination); s.start();
   return ctx.startRendering();
 }
-
 function normalize(buf, target, maxGain=Infinity){
   let peak=0;
   for(let c=0;c<buf.numberOfChannels;c++){const d=buf.getChannelData(c);for(let i=0;i<d.length;i++){const a=Math.abs(d[i]);if(a>peak)peak=a;}}
@@ -593,7 +651,7 @@ function normalize(buf, target, maxGain=Infinity){
   return buf;
 }
 
-// ---------- WAV encoding ----------
+// ---------- encoders ----------
 function lin2ulaw(s){
   const BIAS=0x84, CLIP=32635; let sign=(s>>8)&0x80; if(sign) s=-s; if(s>CLIP) s=CLIP; s+=BIAS;
   let exp=7; for(let m=0x4000; (s&m)===0 && exp>0; exp--, m>>=1);
@@ -622,14 +680,13 @@ function encodeWav(buf, enc){
   w4("data"); v.setUint32(p,dataLen,true); p+=4;
   const chans=[...Array(ch)].map((_,c)=>buf.getChannelData(c));
   for(let i=0;i<n;i++) for(let c=0;c<ch;c++){
-    let x=chans[c][i]; if(ext) x+=(Math.random()-Math.random())*2/32768; // TPDF dither before 8-bit companding
+    let x=chans[c][i]; if(ext) x+=(Math.random()-Math.random())*2/32768;
     x=Math.max(-1,Math.min(1,x)); const s16=Math.round(x<0?x*32768:x*32767);
     if(enc==="pcm16"){ v.setInt16(p,s16,true); p+=2; }
     else v.setUint8(p++, enc==="ulaw"?lin2ulaw(s16):lin2alaw(s16));
   }
   return new Blob([ab],{type:"audio/wav"});
 }
-
 function encodeMp3(buf, kbps){
   const ch=buf.numberOfChannels, enc=new lamejs.Mp3Encoder(ch, buf.sampleRate, kbps), parts=[];
   const toI16=a=>{const o=new Int16Array(a.length);for(let i=0;i<a.length;i++){const x=Math.max(-1,Math.min(1,a[i]));o[i]=x<0?x*32768:x*32767;}return o;};
@@ -641,68 +698,113 @@ function encodeMp3(buf, kbps){
   const end=enc.flush(); if(end.length) parts.push(end);
   return new Blob(parts,{type:"audio/mpeg"});
 }
-function encodeAudio(buf, enc){ return enc==="mp3" ? encodeMp3(buf,+$("br").value) : encodeWav(buf,enc); }
-const extOf = enc => enc==="mp3" ? ".mp3" : ".wav";
-$("enc").addEventListener("change",()=>{
+const encodeAudio=(buf,enc)=>enc==="mp3" ? encodeMp3(buf,+$("br").value) : encodeWav(buf,enc);
+const extOf=enc=>enc==="mp3"?".mp3":".wav";
+function syncEncUI(){
   const e=$("enc").value, m=e==="mp3"; $("brWrap").style.display=m?"":"none"; $("teleWrap").style.display=m?"none":"";
-  if(m) $("sr").value="44100"; else if(e!=="pcm16"){ $("sr").value="8000"; $("ch").value="1"; }
+}
+$("enc").addEventListener("change",()=>{
+  const e=$("enc").value; syncEncUI();
+  if(e==="mp3") $("sr").value="44100"; else if(e!=="pcm16"){ $("sr").value="8000"; $("ch").value="1"; }
 });
-$("brWrap").style.display=$("enc").value==="mp3"?"":"none"; $("teleWrap").style.display=$("enc").value==="mp3"?"none":"";
+syncEncUI();
 
-// ---------- UI: generate ----------
+// ---------- minimal ZIP (store) ----------
+const crcT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+const crc32=u=>{let c=~0;for(let i=0;i<u.length;i++)c=crcT[(c^u[i])&255]^(c>>>8);return ~c>>>0;};
+async function makeZip(files){ // [{name, blob}]
+  const enc=new TextEncoder(), chunks=[], central=[]; let off=0;
+  for(const f of files){
+    const data=new Uint8Array(await f.blob.arrayBuffer()), nm=enc.encode(f.name), crc=crc32(data);
+    const lh=new DataView(new ArrayBuffer(30)); lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint16(6,0x0800,true);
+    lh.setUint32(14,crc,true); lh.setUint32(18,data.length,true); lh.setUint32(22,data.length,true); lh.setUint16(26,nm.length,true);
+    chunks.push(lh.buffer,nm,data);
+    const ch=new DataView(new ArrayBuffer(46)); ch.setUint32(0,0x02014b50,true); ch.setUint16(4,20,true); ch.setUint16(6,20,true); ch.setUint16(8,0x0800,true);
+    ch.setUint32(16,crc,true); ch.setUint32(20,data.length,true); ch.setUint32(24,data.length,true); ch.setUint16(28,nm.length,true); ch.setUint32(42,off,true);
+    central.push(ch.buffer,nm); off+=30+nm.length+data.length;
+  }
+  const csz=central.reduce((a,b)=>a+b.byteLength,0), end=new DataView(new ArrayBuffer(22));
+  end.setUint32(0,0x06054b50,true); end.setUint16(8,files.length,true); end.setUint16(10,files.length,true); end.setUint32(12,csz,true); end.setUint32(16,off,true);
+  return new Blob([...chunks,...central,end.buffer],{type:"application/zip"});
+}
+
+// ---------- generate (batch) ----------
 let urls=[];
 $("go").addEventListener("click", async ()=>{
-  const btn=$("go"); btn.disabled=true; $("status").textContent="מעבד…";
-  stopPlay();
+  const btn=$("go"); btn.disabled=true; stopPlay();
   try{
-    const sr=+$("sr").value, ch=+$("ch").value, enc=$("enc").value;
-    const vo = await render(sr,ch,false);
-    const mx = state.music ? await render(sr,ch,true) : null;
-    urls.forEach(URL.revokeObjectURL); urls=[];
-    const base = state.voiceName || "voice";
-    const fill=(el,blob,name,dur)=>{
-      const u=URL.createObjectURL(blob); urls.push(u);
-      el.href=u; el.download=name; el.classList.remove("off");
-      el.querySelector("small").textContent=`${name} · ${dur.toFixed(1)} שנ' · ${(blob.size/1024).toFixed(0)}KB`;
-    };
-    fill($("dlVoice"), encodeAudio(vo.buffer,enc), base+"_קריינות"+extOf(enc), vo.total);
-    if(mx) fill($("dlMix"), encodeAudio(mx.buffer,enc), base+"_עם_מוזיקה"+extOf(enc), mx.total);
-    else { $("dlMix").classList.add("off"); $("dlMix").removeAttribute("href"); $("dlMix").querySelector("small").textContent="לא הועלתה מוזיקה"; }
-    // keep nicer-quality previews separate from the (possibly 8kHz) export
-    state.voicePrev = vo.buffer; state.mixPrev = mx ? mx.buffer : null; state.mixInfo = mx;
-    $("result").hidden=false; drawWave(mx||vo);
-    $("play").disabled=!mx;
-    $("info").textContent = mx ? `סה"כ ${mx.total.toFixed(1)} שנ' (פתיחה ${mx.introLen}, קריינות ${state.voice.duration.toFixed(1)}, סיום ${mx.outroLen})` : "";
+    const sr=+$("sr").value, ch=+$("ch").value, enc=$("enc").value, ext=extOf(enc);
+    urls.forEach(URL.revokeObjectURL); urls=[]; state.results=[]; $("resList").innerHTML="";
+    const used=new Map();
+    for(let i=0;i<state.voices.length;i++){
+      const v=state.voices[i]; $("status").textContent=`מעבד ${i+1} מתוך ${state.voices.length}: ${v.name}…`;
+      await new Promise(r=>setTimeout(r,20));
+      const vo=await render(v.buf,sr,ch,false);
+      const mx=state.music ? await render(v.buf,sr,ch,true) : null;
+      let base=v.name; const n=(used.get(base)||0)+1; used.set(base,n); if(n>1) base+=`_${n}`;
+      const res={name:v.name, vo, mx, files:[
+        {name:base+"_קריינות"+ext, blob:encodeAudio(vo.buffer,enc)},
+        ...(mx?[{name:base+"_עם_מוזיקה"+ext, blob:encodeAudio(mx.buffer,enc)}]:[])
+      ]};
+      state.results.push(res); addResult(res);
+      $("result").hidden=false;
+    }
+    $("zipInfo").textContent=`${state.results.reduce((a,r)=>a+r.files.length,0)} קבצים`;
     $("status").textContent="הקבצים מוכנים ✓";
   }catch(e){ console.error(e); $("status").textContent="שגיאה: "+e.message; }
-  btn.disabled=false;
+  btn.disabled=!state.voices.length;
+});
+
+function addResult(res){
+  const d=document.createElement("div"); d.className="res";
+  const tot=(res.mx||res.vo).total;
+  d.innerHTML=`<h3><span class="t"></span><small>${tot.toFixed(1)} שנ'${res.mx?` (פתיחה ${res.mx.introLen}, סיום ${res.mx.outroLen})`:""}</small></h3>
+    <canvas width="1600" height="180"></canvas>
+    <div class="row" style="margin-top:8px"><button class="sm pm"${res.mx?"":" disabled"}>▶ נגן מיקס</button><button class="sm pv">▶ נגן קריינות בלבד</button></div>
+    <div class="dl"></div>`;
+  d.querySelector(".t").textContent=res.name;
+  const dl=d.querySelector(".dl");
+  res.files.forEach((f,k)=>{
+    const u=URL.createObjectURL(f.blob); urls.push(u);
+    const a=document.createElement("a"); a.href=u; a.download=f.name;
+    a.innerHTML=`⬇ קובץ ${k+1} – ${k?"קריינות + מוזיקה":"קריינות בלבד"}<small></small>`;
+    a.querySelector("small").textContent=`${f.name} · ${(f.blob.size/1024).toFixed(0)}KB`;
+    dl.appendChild(a);
+  });
+  d.querySelector(".pm").onclick=()=>playBuf(res.mx&&res.mx.buffer);
+  d.querySelector(".pv").onclick=()=>playBuf(res.vo.buffer);
+  $("resList").appendChild(d);
+  drawWave(d.querySelector("canvas"), res);
+}
+$("zipAll").addEventListener("click", async ()=>{
+  const files=state.results.flatMap(r=>r.files); if(!files.length) return;
+  $("zipInfo").textContent="אורז…";
+  const blob=await makeZip(files), u=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=u; a.download="הקלטות_למרכזיה.zip"; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),10000); $("zipInfo").textContent=`${files.length} קבצים ב-ZIP`;
 });
 
 // ---------- waveform ----------
-function drawWave(r){
-  const cv=$("wave"), g=cv.getContext("2d"), W=cv.width, H=cv.height;
-  const css=getComputedStyle(document.documentElement);
-  g.clearRect(0,0,W,H);
+function drawWave(cv, r){
+  const g=cv.getContext("2d"), W=cv.width, H=cv.height, css=getComputedStyle(document.documentElement);
   const waveC=css.getPropertyValue("--wave").trim(), musicC=css.getPropertyValue("--music").trim();
-  // voice waveform (from the voice-only render, placed at its offset in the timeline)
-  const vb=state.voicePrev, d=vb.getChannelData(0), total=r.total, off=r.introLen;
+  const vb=r.vo.buffer, d=vb.getChannelData(0), m=r.mx||r.vo, total=m.total, off=m.introLen;
   g.fillStyle=waveC;
-  const per=Math.max(1,Math.floor(d.length/ (W*(vb.duration/total))));
+  const per=Math.max(1,Math.floor(d.length/(W*(vb.duration/total))));
   for(let x=0;x<W;x++){
     const t=x/W*total-off; if(t<0||t>vb.duration) continue;
     const i0=Math.floor(t/vb.duration*d.length); let mx=0;
     for(let i=i0;i<i0+per&&i<d.length;i++){const a=Math.abs(d[i]); if(a>mx)mx=a;}
     const h=mx*H*0.9; g.fillRect(x,(H-h)/2,1,Math.max(1,h));
   }
-  // music envelope
+  if(!r.mx) return;
   g.strokeStyle=musicC; g.lineWidth=3; g.beginPath();
-  const c=r.curves, s=r.s;
+  const c=m.curves, s=m.s;
   for(let x=0;x<=W;x++){
-    const t=x/W*total; let m=0;
-    if(c.intro && t<=c.intro.dur) m=Math.max(m,c.intro.fn(t));
-    if(c.outro && t>=c.outro.start){ m=Math.max(m,outroGain(t,s,c.outro.start,total)); }
-    const y=H-4-m*(H-8);
-    x?g.lineTo(x,y):g.moveTo(x,y);
+    const t=x/W*total; let v=0;
+    if(c.intro && t<=c.intro.dur) v=Math.max(v,c.intro.fn(t));
+    if(c.outro && t>=c.outro.start) v=Math.max(v,outroGain(t,s,c.outro.start,total));
+    const y=H-4-v*(H-8); x?g.lineTo(x,y):g.moveTo(x,y);
   }
   g.stroke();
 }
@@ -716,9 +818,10 @@ function playBuf(buf){
   playCtx.resume();
   playSrc=playCtx.createBufferSource(); playSrc.buffer=buf; playSrc.connect(playCtx.destination); playSrc.start();
 }
-$("play").addEventListener("click",()=>playBuf(state.mixPrev));
-$("playVoice").addEventListener("click",()=>playBuf(state.voicePrev));
 $("stop").addEventListener("click",stopPlay);
+
+// ---------- init ----------
+fillMusicSelect("lib:0"); loadSelectedMusic(); renderFiles(); refreshGo();
 </script>
 </body>
 </html>
