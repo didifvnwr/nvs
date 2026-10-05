@@ -154,12 +154,12 @@ svg{display:block}
     <div class="abs h1 gt" id="s9a" style="right:90px;top:105px;width:480px;text-align:right;font-size:62px">הצטרפו עכשיו</div>
     <div class="abs h1" id="s9b" style="right:90px;top:180px;width:480px;text-align:right;font-size:62px;color:#e0b877">ללא התחייבות!</div>
     <div class="abs" id="s9bar" style="right:90px;top:268px;width:200px;height:4px;border-radius:2px;background:linear-gradient(90deg,#4d7cff,#3de1ff);box-shadow:0 0 14px #3de1ff;transform-origin:right"></div>
-    <div class="abs" id="s9c" style="right:90px;top:295px;width:480px"><span class="chip">הקמה בסיסית בלי עלות</span><span class="chip">ניוד מספר</span></div>
-    <div class="abs glass" id="s9d" style="right:90px;top:360px;width:480px;padding:12px 28px">
+    <div class="abs sub" id="s9c" style="right:90px;top:292px;width:480px;color:#eaf6ff;font-size:22px;line-height:1.45">מתחברת לכל מרכזייה קיימת,<br>או עובדת כחלק מהמרכזייה שלכם.</div>
+    <div class="abs glass" id="s9d" style="right:90px;top:375px;width:480px;padding:12px 28px">
       <div class="row"><span style="font-size:19px">נסו את גבי</span><b class="o" style="font-size:24px">076-532-4380</b></div>
       <div class="row" style="border:0"><span style="font-size:19px">להזמנות</span><b class="o" style="font-size:24px">03-945-1111</b></div>
     </div>
-    <div class="abs" id="s9w" style="right:90px;top:520px;width:480px;height:60px"></div>
+    <div class="abs" id="s9w" style="right:90px;top:535px;width:480px;height:60px"></div>
   </div>
 
   <div id="hud">
@@ -323,6 +323,7 @@ function render(t){
     [...$('w8').querySelectorAll('i')].forEach((b,i)=>{b.style.height=(8+(sp?44:2)*(0.5+0.5*Math.sin(lt*7+i*.8))*(0.6+0.4*Math.sin(lt*2.3+i)))+'px'});
   }
   // closing call-to-action slide, held with music
+  if(t>=END_S)$('chap').textContent='07 / 07';
   const l9=t-END_S;
   const o9=t>=END_S?Math.min(clamp(l9/.5),clamp((REAL-t)/1.2)):0;
   $('s9').style.opacity=o9;

@@ -12,13 +12,13 @@ const fs = require('fs');
   fs.mkdirSync(out, { recursive: true });
   const fps = 24;
   if (mode === 'test') {
-    for (const t of [47, 49, 52, 60, 68]) {
+    for (const t of [49, 52, 60]) {
       await page.evaluate(t => render(t), t);
       await page.screenshot({ path: path.join(out, `t${String(t).replace('.', '_')}.png`) });
     }
   } else {
     const total = Math.round(69.2 * fps);
-    for (let i = 0; i < total; i++) {
+    for (let i = parseInt(process.argv[3] || "0"); i < total; i++) {
       await page.evaluate(t => render(t), i / fps);
       await page.screenshot({ path: path.join(out, `f${String(i).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 92 });
     }
