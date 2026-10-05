@@ -57,8 +57,8 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 function show(id,lt,d,dur=.55,dy=22){const el=typeof id==='string'?$(id):id;const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
-const TOTAL=134;
-const SEG=[[0,12.1,'a1'],[12.1,23.0,'a2'],[23.0,37.85,'a3'],[37.85,50.7,'a4'],[50.7,56.7,'a5'],[56.7,65.0,'a6'],[65.0,79.3,'a7'],[79.3,88.4,'a8'],[88.4,100.8,'a9'],[100.8,112.2,'a10'],[112.2,118.5,'a11'],[118.5,TOTAL,'a12']];
+const TOTAL=129;
+const SEG=[[0,7.1,'a1'],[7.1,18.0,'a2'],[18.0,32.85,'a3'],[32.85,45.7,'a4'],[45.7,51.7,'a5'],[51.7,60.0,'a6'],[60.0,74.3,'a7'],[74.3,83.4,'a8'],[83.4,95.8,'a9'],[95.8,107.2,'a10'],[107.2,113.5,'a11'],[113.5,TOTAL,'a12']];
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
 const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
 async function setImg(el,src){if(el.getAttribute('data-s')===src)return;el.setAttribute('data-s',src);el.src=src;try{await el.decode()}catch(e){}}
@@ -72,7 +72,7 @@ function panel(id,src,box,tag){const el=$(id);el.innerHTML=`<img src="${src}"><d
 const H={};
 H.a1=`<img class="vbg" id="a1v">${tint('linear-gradient(90deg,rgba(5,11,24,.15),rgba(5,11,24,.62) 50%,rgba(5,11,24,.92))')}
  <div class="abs h1 gt" id="a1h" style="right:90px;top:200px;width:620px;text-align:right;font-size:84px">מרכזייה<br>שעושה הכל.</div>
- <div class="abs sub" id="a1s" style="right:90px;top:420px;width:560px;text-align:right;font-size:28px">כל היכולות של המרכזייה שלכם, במקום אחד</div>
+ <div class="abs sub" id="a1s" style="right:90px;top:420px;width:560px;text-align:right;font-size:28px">כל היכולות של המרכזייה, במקום אחד</div>
  <div class="abs" id="a1c" style="right:90px;top:520px;width:640px;text-align:right"></div>`;
 H.a2=`<img class="vbg" id="a2v" src="img/callcenter.jpg">${tint('linear-gradient(90deg,rgba(5,11,24,.75),rgba(5,11,24,.55) 50%,rgba(5,11,24,.9))')}
  <div class="abs k o" id="a2k" style="right:90px;top:150px">REQUIREMENT</div>
@@ -159,12 +159,12 @@ async function render(t){
   $('grid').style.backgroundPosition=`${t*8}px ${t*14}px`;
   $('live').style.opacity=.5+.5*Math.sin(t*5);
   $('prog').style.width=(t/TOTAL*100)+'%';
-  $('nvs').style.opacity=clamp((14-t)/.6)*clamp((t-.4)/.4);
+  $('nvs').style.opacity=clamp((8-t)/.6)*clamp((t-.4)/.4);
   const L=i=>clamp(t-SEG[i][0],0,SEG[i][1]-SEG[i][0]);
   let lt;
   lt=L(0);jobs.push(setImg($('a1v'),pp('hands',lt*24,360)));
-  show('a1h',lt,.5);show('a1s',lt,4.3);
-  for(let i=0;i<5;i++)show('a1c'+i,lt,6.5+i*.9,.45,12);
+  show('a1h',lt,.4);show('a1s',lt,3.1);
+  for(let i=0;i<5;i++)show('a1c'+i,lt,3.9+i*.55,.45,12);
   lt=L(1);$('a2v').style.transform=`scale(${1+.06*lt/11})`;
   show('a2k',lt,.1);show('a2h',lt,.3);
   show('a2sig',lt,1.8);show('a2s',lt,2.2);
