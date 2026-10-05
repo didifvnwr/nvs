@@ -57,8 +57,8 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 function show(id,lt,d,dur=.55,dy=22){const el=typeof id==='string'?$(id):id;const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
-const TOTAL=129;
-const SEG=[[0,7.1,'a1'],[7.1,18.0,'a2'],[18.0,32.85,'a3'],[32.85,45.7,'a4'],[45.7,51.7,'a5'],[51.7,60.0,'a6'],[60.0,74.3,'a7'],[74.3,83.4,'a8'],[83.4,95.8,'a9'],[95.8,107.2,'a10'],[107.2,113.5,'a11'],[113.5,TOTAL,'a12']];
+const TOTAL=132;
+const SEG=[[0,10.33,'a1'],[10.33,21.23,'a2'],[21.23,36.08,'a3'],[36.08,48.93,'a4'],[48.93,54.93,'a5'],[54.93,63.23,'a6'],[63.23,77.53,'a7'],[77.53,86.63,'a8'],[86.63,99.03,'a9'],[99.03,110.43,'a10'],[110.43,116.73,'a11'],[116.73,TOTAL,'a12']];
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
 const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
 async function setImg(el,src){if(el.getAttribute('data-s')===src)return;el.setAttribute('data-s',src);el.src=src;try{await el.decode()}catch(e){}}
@@ -159,12 +159,12 @@ async function render(t){
   $('grid').style.backgroundPosition=`${t*8}px ${t*14}px`;
   $('live').style.opacity=.5+.5*Math.sin(t*5);
   $('prog').style.width=(t/TOTAL*100)+'%';
-  $('nvs').style.opacity=clamp((8-t)/.6)*clamp((t-.4)/.4);
+  $('nvs').style.opacity=clamp((10.5-t)/.6)*clamp((t-.4)/.4);
   const L=i=>clamp(t-SEG[i][0],0,SEG[i][1]-SEG[i][0]);
   let lt;
   lt=L(0);jobs.push(setImg($('a1v'),pp('hands',lt*24,360)));
   show('a1h',lt,.4);show('a1s',lt,3.1);
-  for(let i=0;i<5;i++)show('a1c'+i,lt,3.9+i*.55,.45,12);
+  for(let i=0;i<5;i++)show('a1c'+i,lt,5.4+i*.9,.45,12);
   lt=L(1);$('a2v').style.transform=`scale(${1+.06*lt/11})`;
   show('a2k',lt,.1);show('a2h',lt,.3);
   show('a2sig',lt,1.8);show('a2s',lt,2.2);
