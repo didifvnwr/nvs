@@ -105,8 +105,12 @@
         <select id="ch"><option value="1">מונו</option><option value="2">סטריאו</option></select>
       </label>
       <label>נרמול עוצמה
-        <select id="norm"><option value="1">כן – שיא ב-1dB-</option><option value="0">לא</option></select>
+        <select id="norm"><option value="1">כן – שיא ב-1dBFS- (הגברה עד 18dB)</option><option value="0">לא</option></select>
       </label>
+    </div>
+    <div id="teleWrap" class="grid" style="margin-top:14px">
+      <label style="flex-direction:row;align-items:flex-start;gap:8px"><input type="checkbox" id="lp" checked style="margin-top:5px"><span>מסנן Low-pass ב-3400Hz לפני הורדת הקצב<br><span class="h">מונע צליל מתכתי/"רדיו". פעיל רק ב-8000Hz</span></span></label>
+      <label style="flex-direction:row;align-items:flex-start;gap:8px"><input type="checkbox" id="hp" style="margin-top:5px"><span>מסנן High-pass ב-300Hz<br><span class="h">מנקה זמזום ורעשי רקע נמוכים</span></span></label>
     </div>
     <div class="row" style="margin-top:16px">
       <button class="primary" id="go" disabled>⚙️ צור קבצים</button>
@@ -517,9 +521,15 @@ async function render(sr, ch, withMusic){
   const introLen = music && s.intro>0 ? s.intro : 0;
   const outroLen = music && s.outro>0 ? s.outro : 0;
   const total = introLen + voice.duration + outroLen;
-  const ctx = new OfflineAudioContext(ch, Math.ceil(total*sr), sr);
+  const tele = $("enc").value!=="mp3";
+  const lp = tele && sr===8000 && $("lp").checked, hp = tele && $("hp").checked;
+  const rsr = sr>=44100 ? sr : 44100;           // render high, filter, then downsample
+  const ctx = new OfflineAudioContext(ch, Math.ceil(total*rsr), rsr);
+  const bus = ctx.createGain();
+  if(hp){ let node=bus; for(let k=0;k<2;k++){ const f=ctx.createBiquadFilter(); f.type="highpass"; f.frequency.value=300; f.Q.value=0.707; node.connect(f); node=f; } node.connect(ctx.destination); }
+  else bus.connect(ctx.destination);
 
-  const vs = ctx.createBufferSource(); vs.buffer = voice; vs.connect(ctx.destination); vs.start(introLen);
+  const vs = ctx.createBufferSource(); vs.buffer = voice; vs.connect(bus); vs.start(introLen);
 
   const curves = {intro:null, outro:null, music:!!music};
   if(music){
@@ -527,7 +537,7 @@ async function render(sr, ch, withMusic){
       const src = ctx.createBufferSource(); src.buffer = music; src.loop = true;
       const g = ctx.createGain(), c = curveOf(gainFn, dur);
       g.gain.setValueCurveAtTime(c, start, dur);
-      src.connect(g).connect(ctx.destination); src.start(start); src.stop(start+dur);
+      src.connect(g).connect(bus); src.start(start); src.stop(start+dur);
       return {start, dur, fn:gainFn};
     };
     if(introLen>0){
@@ -541,15 +551,43 @@ async function render(sr, ch, withMusic){
     }
   }
   let out = await ctx.startRendering();
-  if(s.norm) out = normalize(out, Math.pow(10,-1/20));
+  if(lp) out = firLowpass(out, 3400);
+  if(out.sampleRate!==sr) out = await resample(out, sr);
+  if(s.norm) out = normalize(out, Math.pow(10,-1/20), Math.pow(10,18/20));
   return {buffer:out, introLen, outroLen, total, curves, s};
 }
 
-function normalize(buf, target){
+// windowed-sinc (Blackman) 257-tap low-pass, zero phase (delay compensated)
+function firLowpass(buf, fc){
+  const N=257, M=(N-1)/2, f=fc/buf.sampleRate, h=new Float32Array(N); let sum=0;
+  for(let n=0;n<N;n++){
+    const x=n-M, sinc = x===0 ? 2*f : Math.sin(2*Math.PI*f*x)/(Math.PI*x);
+    const w = 0.42 - 0.5*Math.cos(2*Math.PI*n/(N-1)) + 0.08*Math.cos(4*Math.PI*n/(N-1));
+    h[n]=sinc*w; sum+=h[n];
+  }
+  for(let n=0;n<N;n++) h[n]/=sum;
+  const out=new AudioBuffer({numberOfChannels:buf.numberOfChannels,length:buf.length,sampleRate:buf.sampleRate});
+  for(let c=0;c<buf.numberOfChannels;c++){
+    const x=buf.getChannelData(c), y=out.getChannelData(c), L=x.length;
+    for(let i=0;i<L;i++){
+      let acc=0; const k0=Math.max(0,i+M-L+1), k1=Math.min(N-1,i+M);
+      for(let k=k0;k<=k1;k++) acc+=h[k]*x[i+M-k];
+      y[i]=acc;
+    }
+  }
+  return out;
+}
+async function resample(buf, sr){
+  const ctx=new OfflineAudioContext(buf.numberOfChannels, Math.ceil(buf.duration*sr), sr);
+  const s=ctx.createBufferSource(); s.buffer=buf; s.connect(ctx.destination); s.start();
+  return ctx.startRendering();
+}
+
+function normalize(buf, target, maxGain=Infinity){
   let peak=0;
   for(let c=0;c<buf.numberOfChannels;c++){const d=buf.getChannelData(c);for(let i=0;i<d.length;i++){const a=Math.abs(d[i]);if(a>peak)peak=a;}}
-  if(peak<1e-6 || Math.abs(peak-target)<1e-3) return buf;
-  const k=target/peak;
+  if(peak<1e-6) return buf;
+  const k=Math.min(target/peak, maxGain);
   for(let c=0;c<buf.numberOfChannels;c++){const d=buf.getChannelData(c);for(let i=0;i<d.length;i++)d[i]*=k;}
   return buf;
 }
@@ -583,7 +621,8 @@ function encodeWav(buf, enc){
   w4("data"); v.setUint32(p,dataLen,true); p+=4;
   const chans=[...Array(ch)].map((_,c)=>buf.getChannelData(c));
   for(let i=0;i<n;i++) for(let c=0;c<ch;c++){
-    let x=Math.max(-1,Math.min(1,chans[c][i])); const s16=Math.round(x<0?x*32768:x*32767);
+    let x=chans[c][i]; if(ext) x+=(Math.random()-Math.random())*2/32768; // TPDF dither before 8-bit companding
+    x=Math.max(-1,Math.min(1,x)); const s16=Math.round(x<0?x*32768:x*32767);
     if(enc==="pcm16"){ v.setInt16(p,s16,true); p+=2; }
     else v.setUint8(p++, enc==="ulaw"?lin2ulaw(s16):lin2alaw(s16));
   }
@@ -604,10 +643,10 @@ function encodeMp3(buf, kbps){
 function encodeAudio(buf, enc){ return enc==="mp3" ? encodeMp3(buf,+$("br").value) : encodeWav(buf,enc); }
 const extOf = enc => enc==="mp3" ? ".mp3" : ".wav";
 $("enc").addEventListener("change",()=>{
-  const m=$("enc").value==="mp3"; $("brWrap").style.display=m?"":"none";
-  $("sr").value = m ? "44100" : ($("enc").value==="pcm16" ? $("sr").value : "8000");
+  const e=$("enc").value, m=e==="mp3"; $("brWrap").style.display=m?"":"none"; $("teleWrap").style.display=m?"none":"";
+  if(m) $("sr").value="44100"; else if(e!=="pcm16"){ $("sr").value="8000"; $("ch").value="1"; }
 });
-$("brWrap").style.display=$("enc").value==="mp3"?"":"none";
+$("brWrap").style.display=$("enc").value==="mp3"?"":"none"; $("teleWrap").style.display=$("enc").value==="mp3"?"none":"";
 
 // ---------- UI: generate ----------
 let urls=[];
