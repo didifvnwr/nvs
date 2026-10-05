@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><title>גבי</title>
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-300.ttf);font-weight:300}
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+@font-face{font-family:O;src:url(fonts/orbitron-700.ttf);font-weight:700}
+:root{--cy:#3de1ff;--bl:#4d7cff;--gold:#e0b877;--ink:#eaf6ff;--dim:rgba(220,238,255,.62);--line:rgba(61,225,255,.28)}
+html,body{margin:0;background:#050b18}
+#stage{position:relative;width:1280px;height:720px;overflow:hidden;font-family:H,sans-serif;color:var(--ink);direction:rtl;background:#050b18}
+#bg{position:absolute;inset:0;background:
+  radial-gradient(700px 520px at 78% 12%,rgba(77,124,255,.38),transparent 70%),
+  radial-gradient(640px 480px at 8% 96%,rgba(61,225,255,.22),transparent 70%),#050b18}
+#grid{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(rgba(61,225,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(61,225,255,.09) 1px,transparent 1px);
+  background-size:64px 64px;-webkit-mask-image:radial-gradient(900px 600px at 50% 45%,#000 20%,transparent 85%);mask-image:radial-gradient(900px 600px at 50% 45%,#000 20%,transparent 85%)}
+#beam{position:absolute;left:0;right:0;height:140px;background:linear-gradient(180deg,transparent,rgba(61,225,255,.09),transparent)}
+.dot{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--cy)}
+.scene{position:absolute;inset:0;opacity:0}
+.abs{position:absolute}
+.o{font-family:O,H,sans-serif;font-weight:700;letter-spacing:2px;direction:ltr;unicode-bidi:isolate}
+.h1{font-size:60px;font-weight:800;line-height:1.08;letter-spacing:-1px}
+.h2{font-size:40px;font-weight:500;line-height:1.15;letter-spacing:-.5px}
+.sub{font-size:22px;font-weight:300;color:var(--dim);line-height:1.4}
+.gt{background:linear-gradient(90deg,#ffffff,#7fe9ff 70%,#4d9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gold{color:var(--gold)}
+.cy{color:var(--cy)}
+.glass{box-sizing:border-box;border:1.5px solid var(--line);border-radius:16px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));box-shadow:0 0 30px rgba(61,225,255,.08)}
+.chip{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:5px 16px;font-size:19px;margin-inline-start:8px;background:rgba(61,225,255,.06)}
+.pf{position:absolute;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1.5px rgba(61,225,255,.5),0 0 60px rgba(61,225,255,.25),0 30px 80px rgba(0,0,0,.65)}
+.pf .z{position:absolute;inset:0}
+.pf img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}
+.pf .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px)}
+.pf .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,24,0) 55%,rgba(5,11,24,.55))}
+.pf .patch{position:absolute;left:2.5%;top:3%;width:47%;height:43%;box-sizing:border-box;border:1.5px solid rgba(61,225,255,.7);border-radius:12px;
+  background:linear-gradient(160deg,#081a38,#0b2450);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.pf .patch b{font-size:28px;font-weight:800;color:#fff;line-height:1}
+.pf .patch .o{font-size:10px;color:var(--cy);letter-spacing:3px}
+.pf .tag{position:absolute;left:14px;bottom:12px;font-size:11px;color:var(--cy);display:flex;align-items:center;gap:7px}
+.pf .tag i{display:block;width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)}
+.brk{position:absolute;width:22px;height:22px;border:2.5px solid var(--cy);pointer-events:none}
+.brk.a{left:-9px;top:-9px;border-right:0;border-bottom:0}
+.brk.b{right:-9px;top:-9px;border-left:0;border-bottom:0}
+.brk.c{left:-9px;bottom:-9px;border-right:0;border-top:0}
+.brk.d{right:-9px;bottom:-9px;border-left:0;border-top:0}
+.row{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--line);font-size:20px}
+.row b{font-weight:500;color:var(--gold)}
+.bub{position:absolute;box-sizing:border-box;border-radius:14px;padding:8px 16px;font-size:20px;line-height:1.3;white-space:nowrap}
+.bub.c{background:rgba(255,255,255,.1);border:1px solid var(--line)}
+.bub.g{background:linear-gradient(90deg,#e0b877,#f3d9a8);color:#0a1830;font-weight:500}
+.logo{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 0 50px rgba(61,225,255,.3)}
+.logo img{display:block;width:100%}
+#hud{position:absolute;inset:0;pointer-events:none}
+.ic{color:var(--cy)}
+svg{display:block}
+</style></head><body>
+<div id="stage">
+  <div id="bg"></div><div id="grid"></div><div id="beam"></div><div id="dots"></div>
+
+  <!-- S1 -->
+  <div class="scene" id="s1">
+    <div class="abs" id="ringbox" style="left:110px;top:130px;width:420px;height:420px"></div>
+    <div class="abs h1 gt" id="s1a" style="right:90px;top:180px">הלקוחות שלכם<br>מתקשרים</div>
+    <div class="abs h1 gold" id="s1b" style="right:90px;top:360px;font-size:76px">בכל שעה.</div>
+    <div class="abs h2" id="s1c" style="right:90px;top:470px">מי עונה להם?</div>
+  </div>
+
+  <!-- S2 -->
+  <div class="scene" id="s2">
+    <div class="pf" id="p2" style="left:80px;top:150px;width:700px;height:382px"></div>
+    <div class="abs h1 gt" id="s2a" style="right:90px;top:190px;width:440px;font-size:56px;text-align:right">הכירו את גבי</div>
+    <div class="abs" id="s2b" style="right:90px;top:275px;width:440px;text-align:right"><div style="font-size:26px;font-weight:500;line-height:1.3;color:#e0b877;white-space:nowrap">סוכנת קולית מבוססת בינה מלאכותית</div><div class="sub" style="margin-top:10px">מדברת בקול אנושי.</div></div>
+    <div class="abs" id="wave2" style="right:90px;top:480px;width:400px;height:60px"></div>
+  </div>
+
+  <!-- S3 -->
+  <div class="scene" id="s3">
+    <div class="pf" id="p3" style="left:80px;top:110px;width:620px;height:338px"></div>
+    <div class="abs o gt" id="s3a" style="right:90px;top:150px;font-size:92px;line-height:1">24/7</div>
+    <div class="abs sub" id="s3b" style="right:90px;top:270px;width:420px">עונה בכל שעה.<br>בלי המתנה.</div>
+    <div class="abs" id="s3c" style="right:90px;top:360px"><span class="chip">שיחה חופשית</span><span class="chip">בלי הקשות</span></div>
+    <div class="bub c" id="b1" style="left:80px;top:490px">היי, אני רוצה לשנות את ההזמנה שלי</div>
+    <div class="bub g" id="b2" style="left:230px;top:546px">בטח. מה שם ההזמנה?</div>
+    <div class="bub c" id="b3" style="left:80px;top:602px">דנה לוי, הזמנה למחר בבוקר</div>
+    <div class="abs" id="wave3" style="right:90px;top:500px;width:420px;height:70px"></div>
+  </div>
+
+  <!-- S4 -->
+  <div class="scene" id="s4">
+    <div class="abs h2" id="s4h" style="right:90px;top:100px">גבי לא רק עונה. <span class="gold">היא עושה.</span></div>
+    <div class="pf" id="p4" style="left:80px;top:210px;width:600px;height:328px"></div>
+    <div id="s4rows"></div>
+  </div>
+
+  <!-- S5 -->
+  <div class="scene" id="s5">
+    <div class="abs h2" id="s5h" style="right:90px;top:90px">הכול נרשם. <span class="gold">הכול נמדד.</span></div>
+    <div class="pf" id="p5" style="left:80px;top:190px;width:700px;height:215px"></div>
+    <div class="abs glass" id="crm" style="right:90px;top:190px;width:380px;padding:18px 26px">
+      <div class="o" style="font-size:12px;color:var(--cy);margin-bottom:4px">CRM · כרטיס לקוח</div>
+      <div class="row" id="r1"><span style="color:var(--dim)">שם</span><b>דנה לוי</b></div>
+      <div class="row" id="r2"><span style="color:var(--dim)">סיבת פנייה</span><b>קביעת פגישה</b></div>
+      <div class="row" id="r3"><span style="color:var(--dim)">מקור</span><b>שיחה עם גבי</b></div>
+      <div class="row" id="r4" style="border:0"><span style="color:var(--dim)">סטטוס</span><b>נקבע</b></div>
+      <div style="font-size:14px;color:var(--dim);margin-top:4px">נתוני דוגמה</div>
+    </div>
+    <div class="abs glass" id="dash" style="left:80px;top:440px;width:700px;padding:20px 30px">
+      <div class="o" style="font-size:12px;color:var(--cy);margin-bottom:14px">DASHBOARD · סיכום נתונים ומעקב ביצועים</div>
+      <div id="bars" style="display:flex;gap:30px"></div>
+    </div>
+    <div class="abs sub" id="s5n" style="right:90px;top:490px;width:380px">סיכום נתונים ומעקב ביצועים בלוח אחד.<br><span style="font-size:15px">הגרף להמחשה בלבד</span></div>
+  </div>
+
+  <!-- S6 -->
+  <div class="scene" id="s6">
+    <div class="pf" id="p6" style="left:80px;top:170px;width:620px;height:338px"></div>
+    <div class="abs h2" id="s6h" style="right:90px;top:170px;width:430px">מתחברת למה שכבר <span class="gold">יש לכם</span></div>
+    <div class="abs glass" id="n1" style="right:90px;top:330px;width:128px;padding:16px 0;text-align:center;font-size:22px">טלפון</div>
+    <div class="abs" id="ln1" style="right:218px;top:356px;width:36px;height:3px;background:var(--cy);transform-origin:right"></div>
+    <div class="abs glass" id="n2" style="right:254px;top:330px;width:128px;padding:16px 0;text-align:center;font-size:26px;font-weight:800;color:var(--gold);border-color:var(--gold)">גבי</div>
+    <div class="abs" id="ln2" style="right:382px;top:356px;width:36px;height:3px;background:var(--cy);transform-origin:right"></div>
+    <div class="abs glass" id="n3" style="right:418px;top:330px;width:128px;padding:16px 0;text-align:center;font-size:22px">המרכזייה</div>
+    <div class="abs" id="s6chips" style="right:90px;top:420px;width:470px"><span class="chip o" style="font-size:13px;padding:7px 14px">CISCO</span><span class="chip o" style="font-size:13px;padding:7px 14px">AVAYA</span><span class="chip o" style="font-size:13px;padding:7px 14px">BEZEQ</span><span class="chip o" style="font-size:13px;padding:7px 14px">012</span><span class="chip o" style="font-size:13px;padding:7px 14px">YES</span></div>
+    <div class="abs sub" id="s6s" style="right:90px;top:490px">בלי להחליף תשתית.</div>
+  </div>
+
+  <!-- S7 -->
+  <div class="scene" id="s7">
+    <div class="pf" id="p7" style="left:80px;top:140px;width:680px;height:371px"></div>
+    <div class="abs h1 gt" id="s7a" style="right:90px;top:98px;width:430px;font-size:56px">גבי.<br><span class="gold" style="-webkit-text-fill-color:#e0b877">עונה כשאתם לא.</span></div>
+    <div class="abs logo" id="s7L" style="right:90px;top:240px;width:240px"><img src="img/mitsi-logo.png"></div>
+    <div class="abs glass" id="s7b" style="right:90px;top:352px;width:430px;padding:14px 28px">
+      <div class="row"><span style="font-size:19px">נסו את גבי</span><b class="o" style="font-size:24px">076-532-4380</b></div>
+      <div class="row" style="border:0"><span style="font-size:19px">להזמנות</span><b class="o" style="font-size:24px">03-945-1111</b></div>
+    </div>
+    <div class="abs o cy" id="s7c" style="right:90px;top:482px;font-size:20px">NVS.CO.IL</div>
+  </div>
+
+  <div class="scene" id="s8">
+    <div class="abs" style="inset:0;background:radial-gradient(700px 520px at 78% 12%,rgba(77,124,255,.4),transparent 70%),radial-gradient(640px 480px at 8% 96%,rgba(61,225,255,.25),transparent 70%),#050b18"></div>
+    <div class="abs" id="tm" style="right:40px;top:100px;width:540px;height:540px"></div>
+    <div class="pf" id="p8" style="left:70px;top:190px;width:560px;height:305px"></div>
+    <div class="abs h1 gt" id="t1" style="right:100px;top:250px;width:480px;text-align:right;font-size:54px">היי, בוקר טוב לכם.</div>
+    <div class="abs h2" id="t2" style="right:100px;top:345px;width:480px;text-align:right">מכונת הזמן כבר ממתינה.</div>
+    <div class="abs h2 gold" id="t3" style="right:100px;top:410px;width:480px;text-align:right">מיד יוצאים לדרך.</div>
+    <div class="abs" id="w8" style="right:100px;top:500px;width:480px;height:60px"></div>
+  </div>
+
+  <div class="scene" id="s9">
+    <div class="abs" id="s9glow" style="left:-120px;top:40px;width:900px;height:720px;border-radius:50%;background:radial-gradient(circle,rgba(61,225,255,.18),rgba(77,124,255,.08) 45%,transparent 68%)"></div>
+    <div class="pf" id="p9" style="left:70px;top:130px;width:620px;height:338px"></div>
+    <div class="abs logo" id="s9L" style="left:70px;top:512px;width:230px"><img src="img/mitsi-logo.png"></div>
+    <div class="abs" id="s9S" style="left:325px;top:512px"><div style="font-size:30px;font-weight:500;line-height:1.1">הקול <span class="gold">החדש</span></div><div class="o cy" style="font-size:15px;margin-top:8px;line-height:1.7">NVS.CO.IL<br>MITSI.CO.IL</div></div>
+    <div class="abs h1 gt" id="s9a" style="right:90px;top:105px;width:480px;text-align:right;font-size:62px">הצטרפו עכשיו</div>
+    <div class="abs h1" id="s9b" style="right:90px;top:180px;width:480px;text-align:right;font-size:62px;color:#e0b877">ללא התחייבות!</div>
+    <div class="abs" id="s9bar" style="right:90px;top:268px;width:200px;height:4px;border-radius:2px;background:linear-gradient(90deg,#4d7cff,#3de1ff);box-shadow:0 0 14px #3de1ff;transform-origin:right"></div>
+    <div class="abs sub" id="s9c" style="right:90px;top:292px;width:480px;color:#eaf6ff;font-size:22px;line-height:1.45">מתחברת לכל מרכזייה קיימת,<br>או עובדת כחלק מהמרכזייה שלכם.</div>
+    <div class="abs glass" id="s9d" style="right:90px;top:375px;width:480px;padding:12px 28px">
+      <div class="row"><span style="font-size:19px">נסו את גבי</span><b class="o" style="font-size:24px">076-532-4380</b></div>
+      <div class="row" style="border:0"><span style="font-size:19px">להזמנות</span><b class="o" style="font-size:24px">03-945-1111</b></div>
+    </div>
+    <div class="abs" id="s9w" style="right:90px;top:535px;width:480px;height:60px"></div>
+  </div>
+
+  <div id="hud">
+    <div class="abs logo" style="right:48px;top:18px;width:112px;border-radius:9px;box-shadow:0 0 24px rgba(61,225,255,.25)"><img src="img/mitsi-logo.png"></div>
+    <div class="abs" style="right:176px;top:26px;font-size:21px;font-weight:500;color:var(--dim)">הקול <span class="gold">החדש</span></div>
+    <div class="abs o" style="left:48px;top:32px;font-size:12px;color:var(--cy);display:flex;gap:10px;align-items:center"><i id="live" style="display:block;width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 12px var(--cy)"></i>GABI · AI VOICE AGENT</div>
+    <div class="abs o" id="chap" style="left:48px;bottom:30px;font-size:13px;color:var(--dim)">01 / 07</div>
+    <div class="abs" style="left:120px;right:48px;bottom:38px;height:2px;background:rgba(255,255,255,.12)"><div id="prog" style="height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--bl));box-shadow:0 0 12px var(--cy);float:right"></div></div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const seg=(lt,d,dur)=>ease((lt-d)/dur);
+function show(el,lt,d,dur=.55,dy=24){const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
+const SCENES=[[0,3.9,'s1'],[3.9,10.5,'s2'],[10.5,17.2,'s3'],[17.2,24.9,'s4'],[24.9,31.5,'s5'],[31.5,35.9,'s6'],[35.9,42,'s7']];
+const TOTAL=42, REAL=69.2, INS_A=10.5, INS_B=16.69, END_A=48.19, END_S=47.9;
+
+// background particles
+const DOTS=Array.from({length:46},(_,i)=>({x:(i*97.3)%1280,y:(i*61.7)%720,s:.2+((i*37)%10)/25,p:i*1.7}));
+$('dots').innerHTML=DOTS.map(()=>'<div class="dot"></div>').join('');
+
+// panel builder
+function panel(id,src,opts={}){
+  const el=$(id);
+  const bx=opts.box?`left:${opts.box[0]}%;top:${opts.box[1]}%;width:${opts.box[2]}%;height:${opts.box[3]}%`:'';
+  const patchHTML=opts.patch===false?'':`<div class="patch" style="${bx}"><b>גבי</b><span class="o">AI VOICE AGENT</span></div>`;
+  el.innerHTML=`<div class="z"><img src="${src}" style="${opts.img||''}"><div class="tint"></div>${patchHTML}</div><div class="scan"></div><div class="tag o"><i></i>${opts.tag||'LIVE'}</div>`;
+  const wrap=document.createElement('div');
+  return el;
+}
+function addBrackets(id){
+  const el=$(id);const b=document.createElement('div');
+  b.id=id+'b';b.style.cssText=`position:absolute;left:${el.style.left};top:${el.style.top};width:${el.style.width};height:${el.style.height}`;
+  b.innerHTML='<i class="brk a"></i><i class="brk b"></i><i class="brk c"></i><i class="brk d"></i>';
+  el.parentNode.appendChild(b);
+}
+panel('p2','img/b0.jpg',{tag:'GABI · ONLINE',box:[7,8,39,33]});
+panel('p3','img/a0.jpg',{tag:'LIVE CALL',box:[5,6,41,35]});
+panel('p4','img/a2.jpg',{tag:'AUTOMATION',box:[5,4.5,40,35]});
+panel('p5','img/a1.jpg',{patch:false,tag:'SYSTEM',img:'top:-72%;height:172%;'});
+panel('p6','img/b1.jpg',{tag:'INTEGRATION',box:[9,8,36,28]});
+panel('p7','img/a3.jpg',{tag:'GABI · READY',box:[6,6.5,32,31.5]});
+['p2','p3','p4','p5','p6','p7'].forEach(addBrackets);
+function showPanel(id,lt,d,dur){
+  const el=$(id),br=$(id+'b'),p=seg(lt,d,.9);
+  el.style.opacity=p;el.style.clipPath=`inset(0 0 ${(1-p)*100}% 0 round 14px)`;
+  br.style.opacity=p;
+  const z=el.querySelector('.z');z.style.transform=`scale(${1+.07*clamp(lt/dur)})`;
+}
+
+// S1 ring
+(function(){
+  let t='<svg width="420" height="420" viewBox="-210 -210 420 420">';
+  for(let i=0;i<24;i++){const a=i/24*Math.PI*2-Math.PI/2;const x1=Math.cos(a)*168,y1=Math.sin(a)*168,x2=Math.cos(a)*196,y2=Math.sin(a)*196;
+    t+=`<line class="tk" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#3de1ff" stroke-width="5" stroke-linecap="round" opacity=".15"/>`;}
+  t+='<circle class="pr" r="120" fill="none" stroke="#3de1ff" stroke-width="2"/><circle class="pr" r="120" fill="none" stroke="#3de1ff" stroke-width="2"/><circle r="120" fill="rgba(61,225,255,.06)" stroke="rgba(61,225,255,.4)" stroke-width="1.5"/>';
+  t+='<text y="-34" text-anchor="middle" fill="#3de1ff" font-family="O" font-size="13" letter-spacing="3">INCOMING CALL</text><text y="30" text-anchor="middle" fill="#eaf6ff" font-family="O" font-size="52">02:13</text><text y="68" text-anchor="middle" fill="rgba(220,238,255,.6)" font-family="O" font-size="12" letter-spacing="3">24H · LIVE</text></svg>';
+  $('ringbox').innerHTML=t;
+})();
+
+// waves
+function waveHTML(n,w){return `<div style="display:flex;gap:${w}px;align-items:center;height:100%;direction:ltr;justify-content:flex-end">${Array.from({length:n},()=>`<i style="display:block;width:${w}px;border-radius:3px;background:linear-gradient(180deg,#7fe9ff,#4d7cff);height:10px"></i>`).join('')}</div>`}
+$('wave2').innerHTML=waveHTML(36,6);$('wave3').innerHTML=waveHTML(40,5);
+function wave(el,t,amp,k){[...el.querySelectorAll('i')].forEach((b,i)=>{b.style.height=(8+amp*(0.5+0.5*Math.sin(t*7+i*k))*(0.55+0.45*Math.sin(t*2.3+i)))+'px'})}
+
+// S4 rows
+const ICON={
+ cal:'<svg width="42" height="42" viewBox="0 0 70 70" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><rect x="8" y="14" width="54" height="48" rx="8"/><path d="M8 28h54M22 6v14M48 6v14"/><rect x="36" y="38" width="14" height="12" rx="3" fill="currentColor"/></svg>',
+ route:'<svg width="42" height="42" viewBox="0 0 70 70" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="35" r="7"/><path d="M21 35h14l12-16M35 35h14M35 35l12 16"/><circle cx="56" cy="17" r="5"/><circle cx="56" cy="35" r="5"/><circle cx="56" cy="53" r="5"/></svg>',
+ chat:'<svg width="42" height="42" viewBox="0 0 70 70" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14h50v32H34L20 58V46H10z"/><path d="M22 28h26M22 36h16"/></svg>',
+ mail:'<svg width="42" height="42" viewBox="0 0 70 70" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="16" width="54" height="40" rx="7"/><path d="M10 20l25 20 25-20"/></svg>'};
+const ROWS=[['cal','קובעת פגישות','ומסתנכרנת עם היומן'],['route','מנתבת','לנציג או למחלקה הנכונים'],['chat','שולחת SMS','אישור מיידי ללקוח'],['mail','שולחת מייל','עם כל הפרטים']];
+$('s4rows').innerHTML=ROWS.map((r,i)=>`<div class="abs glass r4" style="right:90px;top:${210+i*90}px;width:500px;height:76px;display:flex;align-items:center;gap:18px;padding:0 22px"><span class="ic">${ICON[r[0]]}</span><div><div style="font-size:26px;font-weight:500;line-height:1.1">${r[1]}</div><div style="font-size:18px;color:var(--dim)">${r[2]}</div></div></div>`).join('');
+
+// S5 bars
+const KP=[['שיחות שנענו',.92],['פגישות שנקבעו',.64],['הועברו לנציג',.31]];
+$('bars').innerHTML=KP.map(k=>`<div style="flex:1"><div style="font-size:18px;margin-bottom:8px">${k[0]}</div><div style="height:12px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden"><div class="fill" data-v="${k[1]}" style="height:100%;width:0;background:linear-gradient(90deg,#4d7cff,#3de1ff);border-radius:6px;float:right"></div></div></div>`).join('');
+
+function coreRender(t,rt){
+  SCENES.forEach(([a,b,id],idx)=>{
+    const el=$(id);let o=0;
+    if(t>=a&&t<b){o=Math.min(clamp((t-a)/.4),clamp((b-t)/.4));}
+    if(id==='s1')o=Math.min(clamp((b-t)/.4),clamp(t/.3));
+    el.style.opacity=o;
+    if(t>=a&&t<b)$('chap').textContent=String(idx+1).padStart(2,'0')+' / 07';
+  });
+  // bg motion
+  $('grid').style.backgroundPosition=`${rt*8}px ${rt*14}px`;
+  $('beam').style.top=((rt*90)%900-140)+'px';
+  document.querySelectorAll('.dot').forEach((d,i)=>{const o=DOTS[i];d.style.transform=`translate(${o.x+Math.sin(rt*o.s+o.p)*24}px,${(o.y-rt*14*o.s*2+720*3)%720}px)`;d.style.opacity=.2+.5*(0.5+0.5*Math.sin(rt*1.3+o.p));});
+  $('live').style.opacity=.5+.5*Math.sin(rt*5);
+  $('prog').style.width=(rt/REAL*100)+'%';
+  // S1
+  if(t<3.9){const lt=t;
+    $('ringbox').style.opacity=seg(lt,0,.5);
+    const n=Math.floor(clamp(lt/3.6)*24);document.querySelectorAll('.tk').forEach((k,i)=>k.setAttribute('opacity',i<n?1:.15));
+    document.querySelectorAll('.pr').forEach((r,i)=>{const p=((lt*.8+i/2)%1);r.setAttribute('r',120+p*80);r.setAttribute('opacity',(1-p)*.6);});
+    show($('s1a'),lt,.3);show($('s1b'),lt,2.4);show($('s1c'),lt,3.0);
+  }
+  // S2
+  if(t>=3.9&&t<10.5){const lt=t-3.9;
+    showPanel('p2',lt,0,6);show($('s2a'),lt,.2);show($('s2b'),lt,1.5);
+    $('wave2').style.opacity=seg(lt,1.0,.5);wave($('wave2'),lt,54*Math.min(1,lt/1.6),.8);
+  }
+  // S3
+  if(t>=10.5&&t<17.2){const lt=t-10.5;
+    showPanel('p3',lt,0,6);show($('s3a'),lt,.3);show($('s3b'),lt,.7);show($('s3c'),lt,4.2);
+    show($('b1'),lt,1.0,.5,14);show($('b2'),lt,2.4,.5,14);show($('b3'),lt,3.6,.5,14);
+    $('wave3').style.opacity=seg(lt,2.4,.5)*.0;
+  }
+  // S4
+  if(t>=17.2&&t<24.9){const lt=t-17.2;
+    show($('s4h'),lt,.1);showPanel('p4',lt,.3,7);
+    document.querySelectorAll('.r4').forEach((c,i)=>show(c,lt,[.7,3.4,5.0,6.3][i],.5,18));
+  }
+  // S5
+  if(t>=24.9&&t<31.5){const lt=t-24.9;
+    show($('s5h'),lt,.1);showPanel('p5',lt,.2,6);
+    show($('crm'),lt,.5);['r1','r2','r3','r4'].forEach((id,i)=>show($(id),lt,1.0+i*.55,.4,8));
+    show($('dash'),lt,3.8);show($('s5n'),lt,4.5);
+    document.querySelectorAll('.fill').forEach((f,i)=>{f.style.width=(ease((lt-4.3-i*.4)/1.2)*parseFloat(f.dataset.v)*100)+'%';});
+  }
+  // S6
+  if(t>=31.5&&t<35.9){const lt=t-31.5;
+    showPanel('p6',lt,0,5);show($('s6h'),lt,.4);
+    show($('n1'),lt,1.0,.4,12);show($('n2'),lt,1.5,.4,12);show($('n3'),lt,2.0,.4,12);
+    $('ln1').style.transform=`scaleX(${seg(lt,1.3,.4)})`;$('ln2').style.transform=`scaleX(${seg(lt,1.8,.4)})`;
+    show($('s6chips'),lt,2.6);show($('s6s'),lt,3.3);
+  }
+  // S7
+  if(t>=35.9){const lt=t-35.9;
+    showPanel('p7',lt,0,7);show($('s7a'),lt,.4);show($('s7L'),lt,.9);show($('s7b'),lt,1.5);show($('s7c'),lt,2.3);
+  }
+}
+
+panel('p8','img/a2.jpg',{tag:'TIME MACHINE',box:[5,4.5,40,35]});addBrackets('p8');
+panel('p9','img/b1.jpg',{tag:'GABI · ONLINE',box:[9,8,36,28]});addBrackets('p9');
+$('s9w').innerHTML=`<div style="display:flex;gap:6px;align-items:center;height:100%;direction:ltr;justify-content:flex-end">${Array.from({length:34},()=>'<i style="display:block;width:6px;border-radius:3px;background:linear-gradient(180deg,#7fe9ff,#4d7cff);height:8px"></i>').join('')}</div>`;
+(function(){let t='<svg width="540" height="540" viewBox="-270 -270 540 540" fill="none">';
+ t+='<circle r="250" stroke="rgba(61,225,255,.35)" stroke-width="2"/><circle r="215" stroke="rgba(77,124,255,.4)" stroke-width="1.5" stroke-dasharray="4 10"/>';
+ for(let i=0;i<60;i++){const a=i/60*Math.PI*2,l=i%5?10:22;t+=`<line x1="${Math.cos(a)*(250-l)}" y1="${Math.sin(a)*(250-l)}" x2="${Math.cos(a)*250}" y2="${Math.sin(a)*250}" stroke="#3de1ff" stroke-width="${i%5?1.5:3}" opacity="${i%5?.5:.9}"/>`}
+ t+='<g id="h1g"><line x1="0" y1="0" x2="0" y2="-150" stroke="#e0b877" stroke-width="6" stroke-linecap="round"/></g><g id="h2g"><line x1="0" y1="0" x2="0" y2="-200" stroke="#3de1ff" stroke-width="4" stroke-linecap="round"/></g><circle r="9" fill="#e0b877"/></svg>';
+ $('tm').innerHTML=t;})();
+$('w8').innerHTML=`<div style="display:flex;gap:6px;align-items:center;height:100%;direction:ltr;justify-content:flex-end">${Array.from({length:34},()=>'<i style="display:block;width:6px;border-radius:3px;background:linear-gradient(180deg,#7fe9ff,#4d7cff);height:8px"></i>').join('')}</div>`;
+function render(t){
+  const nt=t<INS_A?t:(t<INS_B?INS_A:t-(INS_B-INS_A));
+  coreRender(nt,t);
+  const el=$('s8');const lt=t-INS_A;
+  const o=(t>=INS_A&&t<INS_B)?Math.min(clamp(lt/.35),clamp((INS_B-t)/.35)):0;
+  el.style.opacity=o;
+  if(o>0){
+    showPanel('p8',lt,.2,6);
+    $('tm').style.opacity=.55*ease(lt/.6);
+    const e=ease(lt/3.2);$('h2g').setAttribute('transform',`rotate(${e*1080})`);$('h1g').setAttribute('transform',`rotate(${e*90})`);
+    $('tm').style.transform=`scale(${1+.04*Math.sin(lt*1.6)})`;
+    show($('t1'),lt,.35);show($('t2'),lt,2.33);show($('t3'),lt,4.33);
+    $('w8').style.opacity=seg(lt,.4,.5);
+    const sp=lt>.35&&lt<5.9;
+    [...$('w8').querySelectorAll('i')].forEach((b,i)=>{b.style.height=(8+(sp?44:2)*(0.5+0.5*Math.sin(lt*7+i*.8))*(0.6+0.4*Math.sin(lt*2.3+i)))+'px'});
+  }
+  // closing call-to-action slide, held with music
+  if(t>=END_S)$('chap').textContent='07 / 07';
+  const l9=t-END_S;
+  const o9=t>=END_S?Math.min(clamp(l9/.5),clamp((REAL-t)/1.2)):0;
+  $('s9').style.opacity=o9;
+  if(o9>0){
+    showPanel('p9',l9,.2,21);
+    show($('s9a'),l9,.5);show($('s9b'),l9,1.0);
+    $('s9bar').style.transform=`scaleX(${seg(l9,1.6,.7)})`;$('s9bar').style.opacity=.7+.3*Math.sin(l9*3);
+    show($('s9c'),l9,2.0);show($('s9d'),l9,2.6);show($('s9L'),l9,3.2);show($('s9S'),l9,3.6);
+    $('s9w').style.opacity=seg(l9,3.0,.6);
+    [...$('s9w').querySelectorAll('i')].forEach((b,i)=>{b.style.height=(8+34*(0.5+0.5*Math.sin(l9*4+i*.7))*(0.6+0.4*Math.sin(l9*1.7+i*.4)))+'px'});
+    $('s9glow').style.transform=`scale(${1+.06*Math.sin(l9*1.3)})`;
+  }
+}
+window.render=render;render(0);
+</script></body></html>
