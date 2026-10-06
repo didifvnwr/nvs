@@ -45,7 +45,7 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL={"seg": [[0, 4.03, "f0"], [4.03, 13.45, "f1"], [13.45, 21.61, "f2"], [21.61, 31.31, "f3"], [31.31, 43.2, "f4"], [43.2, 49.63, "f5"], [49.63, 58.18, "f6"], [58.18, 65.11, "f7"], [65.11, 73.39, "f8"], [73.39, 86.8, "f9"]], "total": 86.8, "gstart": 31.36, "g2": 37.7};
+const TL={"seg": [[0, 4.03, "f0"], [4.03, 13.45, "f1"], [13.45, 23.33, "f2"], [23.33, 31.31, "f3"], [31.31, 44.04, "f4"], [44.04, 50.47, "f5"], [50.47, 59.02, "f6"], [59.02, 65.95, "f7"], [65.95, 74.23, "f8"], [74.23, 86.8, "f9"]], "total": 86.8, "gstart": 31.36, "g2": 38.71000000000001};
 const SEG=TL.seg;const TOTAL=TL.total;
 const DES=[3,7,7,6,8,7,8,6,7,11];
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
@@ -202,7 +202,7 @@ $('scenes').innerHTML=SEG.map(([a,b,id])=>`<div class="sc" id="${id}">${H[id]}</
 $('f3d').innerHTML=Array.from({length:6},(_,i)=>`<i id="f3d${i}" style="display:block;width:26px;height:26px;border-radius:50%;background:var(--cy);box-shadow:0 0 14px var(--cy)"></i>`).join('');
 const NODES=[[150,520,'משרד'],[560,430,'אפליקציה'],[330,700,'נייד'],[120,860,'בית'],[600,820,'חו״ל']];
 $('f1l').innerHTML=NODES.map(([x,y],i)=>`<path id="f1p${i}" d="M360 640 L${x} ${y}"/>`).join('');
-$('f1n').innerHTML=`<circle id="f1c0" cx="360" cy="640" r="46" fill="rgba(61,225,255,.2)" stroke="#3de1ff" stroke-width="3"/><path d="M335 655h50a15 15 0 0 0 2-30 22 22 0 0 0-42-5 17 17 0 0 0-10 35z" fill="#eaf6ff"/>`+NODES.map(([x,y,t],i)=>`<g id="f1g${i}"><circle cx="${x}" cy="${y}" r="30" fill="rgba(10,24,52,.9)" stroke="#e0b877" stroke-width="2.5"/><text x="${x}" y="${y+7}" text-anchor="middle" fill="#fff" font-size="17" font-weight="800">${t}</text></g>`).join('');
+$('f1n').innerHTML=`<circle id="f1c0" cx="360" cy="640" r="46" fill="rgba(61,225,255,.2)" stroke="#3de1ff" stroke-width="3"/><path d="M335 655h50a15 15 0 0 0 2-30 22 22 0 0 0-42-5 17 17 0 0 0-10 35z" fill="#eaf6ff"/>`+NODES.map(([x,y,t],i)=>`<g id="f1g${i}"><circle cx="${x}" cy="${y}" r="48" fill="rgba(10,24,52,.92)" stroke="#e0b877" stroke-width="2.5"/><text x="${x}" y="${y+7}" text-anchor="middle" fill="#fff" font-size="19" font-weight="800">${t}</text></g>`).join('');
 $('f1c').innerHTML=['טלפון במשרד','אפליקציה בנייד','מענה ישיר מהנייד'].map((t,i)=>`<span class="chip${i==2?' hi':''}" id="f1ch${i}" style="font-size:24px;margin:0 5px">${t}</span>`).join('');
 $('f4r').innerHTML=[260,340,420].map((r,i)=>`<circle id="f4c${i}" cx="360" cy="435" r="${r}"/>`).join('');
 const TR='שלום, כאן דנה. אשמח שתחזרו אליי לגבי הזמנה חדשה, תודה.';

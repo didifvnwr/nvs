@@ -2,9 +2,9 @@ import subprocess, json, glob
 U='/root/.claude/uploads/0f9540b5-d01e-533c-b68d-1d5a2bac763f/'
 F=glob.glob(U+'f0968782-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
 # order for the video; cut points are mid-gap positions in the recording
-CL=[('f0','P1',0.0,3.67),('f1','P2',3.67,12.93),('f2','P3',12.93,20.93),('f3','P4',20.93,30.47),
-    ('f4','G',66.72,78.45),
-    ('f5','P5',30.47,36.74),('f6','P6',36.74,45.13),('f7','P7',45.13,51.9),('f8','P8',51.9,60.02),('f9','P9',60.02,66.72)]
+CL=[('f0','P1',0.0,3.67),('f1','P2',3.67,12.93),('f2','P3',12.93,22.65),('f3','P4',22.65,30.47),
+    ('f4','G',65.88,78.45),
+    ('f5','P5',30.47,36.74),('f6','P6',36.74,45.13),('f7','P7',45.13,51.9),('f8','P8',51.9,60.02),('f9','P9',60.02,65.88)]
 GAP=0.16;t=0.25;tl=[]
 for sc,cid,a,b in CL:
     tl.append(dict(scene=sc,id=cid,a=a,b=b,start=round(t,3),dur=round(b-a,3)));t+=b-a+GAP
@@ -17,7 +17,7 @@ for i,s in enumerate(scs):
     en=round(starts[scs[i+1]]-0.05,3) if i+1<len(scs) else TOTAL
     seg.append([st,en,s])
 G=[c for c in tl if c['id']=='G'][0]
-json.dump(dict(seg=seg,total=TOTAL,gstart=G['start'],g2=G['start']+(73.23-66.89)),open('timeline.json','w'))
+json.dump(dict(seg=seg,total=TOTAL,gstart=G['start'],g2=G['start']+(73.23-65.88)),open('timeline.json','w'))
 print(seg,TOTAL)
 inputs=[];filt=[];lab=[]
 for i,c in enumerate(tl):
