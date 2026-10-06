@@ -104,6 +104,21 @@ text{font-family:H,sans-serif;direction:rtl}
  <text x="360" y="1160" text-anchor="middle" font-size="42" font-weight="800" fill="#fff">אתם בארוחת ערב, גבי עובדת</text>
 </svg></div>
 
+<!-- SD dialogue -->
+<div class="sc" id="sd"><svg viewBox="0 0 720 1280">
+ <rect width="720" height="1280" fill="url(#g1)"/><g id="stars8"></g>
+ <text id="clkd" class="o" x="360" y="268" text-anchor="middle" font-size="64" fill="#3de1ff" style="letter-spacing:4px">03:07</text>
+ <g id="phd" transform="translate(360 500) scale(.5)"><rect x="-190" y="-340" width="380" height="680" rx="44" fill="#0b1126" stroke="#3de1ff" stroke-width="6"/>
+  <clipPath id="pcd"><rect x="-176" y="-326" width="352" height="652" rx="34"/></clipPath>
+  <g clip-path="url(#pcd)"><rect x="-176" y="-326" width="352" height="652" fill="#0e1a3d"/>
+   <image href="img/b0.jpg" x="-176" y="-326" width="352" height="192" preserveAspectRatio="xMidYMid slice"/>
+   <rect x="-152" y="-310" width="138" height="64" rx="8" fill="#0b2450" stroke="#3de1ff" stroke-width="2"/><text x="-83" y="-274" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">גבי</text>
+   <text id="whod" x="0" y="-95" text-anchor="middle" font-size="34" font-weight="800" fill="#fff">גבי</text>
+   <g id="wd" transform="translate(0 20)"></g></g></g>
+ <g id="callerd" transform="translate(110 380)"><circle id="callring" r="44" fill="none" stroke="#3de1ff" stroke-width="4"/><circle r="34" fill="#27d17a"/><path d="M-12 8 q-6 -16 6 -22 l8 8 q-4 4 0 10 q6 6 10 2 l8 8 q-6 12 -22 -6z" fill="#fff"/><text y="70" text-anchor="middle" font-size="20" fill="#bcd0ff">לקוח</text></g>
+ <g id="bubd"></g>
+</svg></div>
+
 <!-- S5 money -->
 <div class="sc" id="s5"><svg viewBox="0 0 720 1280">
  <rect width="720" height="1280" fill="url(#g1)"/>
@@ -126,7 +141,7 @@ text{font-family:H,sans-serif;direction:rtl}
   <text x="0" y="-100" text-anchor="middle" font-size="22" font-weight="500" fill="#fff">מהלילה</text>
   <text x="0" y="-48" text-anchor="middle" font-size="46" font-weight="800" fill="#27d17a">9</text><text x="0" y="-22" text-anchor="middle" font-size="19" fill="#bcd0ff">פגישות חדשות</text>
   <text id="mny6" x="0" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#ffd54a">₪ 48,500</text><text x="0" y="78" text-anchor="middle" font-size="18" fill="#bcd0ff">מכירות</text></g>
- <text x="360" y="1160" text-anchor="middle" font-size="42" font-weight="800" fill="#5a1d10">סגרתם פגישות ועסקאות בלי לעשות כלום</text>
+ <text x="360" y="1160" text-anchor="middle" font-size="42" font-weight="800" fill="#5a1d10">סגרתם עסקים בלי לעשות כלום</text>
 </svg></div>
 
 <!-- S7 end -->
@@ -142,8 +157,10 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 const NS='http://www.w3.org/2000/svg';
-const TOTAL=40;
-const SEG=[[0,4.4,'s1'],[4.4,10.2,'s2'],[10.2,15.0,'s3'],[15.0,20.4,'s4'],[20.4,27.0,'s5'],[27.0,32.6,'s6'],[32.6,TOTAL,'s7']];
+const TIMELINE={"seg": [[0, 3.58, "s1"], [3.58, 8.85, "s2"], [8.85, 13.4, "s3"], [13.4, 19.75, "s4"], [19.75, 44.24, "sd"], [44.24, 48.92, "s5"], [48.92, 56.34, "s6"], [56.34, 65.39, "s7"]], "total": 65.39, "lines": [{"id": "P1", "start": 0.3, "dur": 3.18, "scene": "s1"}, {"id": "P2", "start": 3.73, "dur": 5.02, "scene": "s2"}, {"id": "P3", "start": 9.0, "dur": 4.3, "scene": "s3"}, {"id": "P4", "start": 13.55, "dur": 5.9, "scene": "s4"}, {"id": "C1", "start": 19.9, "dur": 3.6, "scene": "sd"}, {"id": "G1", "start": 23.62, "dur": 5.73, "scene": "sd"}, {"id": "C2", "start": 29.47, "dur": 2.65, "scene": "sd"}, {"id": "G2", "start": 32.24, "dur": 4.07, "scene": "sd"}, {"id": "C3", "start": 36.43, "dur": 1.72, "scene": "sd"}, {"id": "G3", "start": 38.27, "dur": 5.67, "scene": "sd"}, {"id": "P5", "start": 44.39, "dur": 4.43, "scene": "s5"}, {"id": "P6", "start": 49.07, "dur": 7.17, "scene": "s6"}, {"id": "P7", "start": 56.49, "dur": 3.4, "scene": "s7"}]};
+const TOTAL=TIMELINE.total;
+const SEG=TIMELINE.seg;
+const LN={};TIMELINE.lines.forEach(l=>LN[l.id]=l);
 // stars
 function stars(id,n){$(id).innerHTML=Array.from({length:n},(_,i)=>`<circle cx="${(i*131)%720}" cy="${(i*97)%700+20}" r="${1+(i%3)}" fill="#fff" class="st" opacity=".6"/>`).join('')}
 stars('stars',50);stars('stars2',50);stars('stars7',60);
@@ -151,6 +168,13 @@ $('rays3').innerHTML=Array.from({length:12},(_,i)=>`<rect x="-6" y="-120" width=
 $('rays6').innerHTML=Array.from({length:12},(_,i)=>`<rect x="-6" y="-112" width="12" height="38" rx="6" fill="#fff3b0" transform="rotate(${i*30})"/>`).join('');
 $('waves3').innerHTML=[0,1,2].map(r=>`<g class="wv"><path d="M-40 ${790+r*50} q30 -22 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/></g>`).join('');
 $('w2').innerHTML=Array.from({length:22},(_,i)=>`<rect x="${-110+i*10}" y="-4" width="6" height="8" rx="3" fill="#7fe9ff" class="wb"/>`).join('');
+
+const DLG=[['C1','c',['שלום, אפשר לתאם פגישה?']],['G1','g',['היי! מה שלומך? אני גבי,','ואני סוכנת קולית. בטח שאפשר.']],['C2','c',['סליחה על השעה... את לא הולכת לישון?']],['G2','g',['ברור שאני לא הולכת לישון... אף פעם.']],['C3','c',['אבל... העסק לא סגור עכשיו?']],['G3','g',['כן, אז העסק סגור עכשיו. אבל אני?','אני אף פעם לא ישנה.']]];
+(function(){let y=715;const out=[];DLG.forEach(([id,w,lines],i)=>{const h=lines.length>1?96:62;const x=w==='c'?150:40;const fill=w==='c'?'#ffffff':'#e0b877';
+ out.push(`<g id="bd_${id}" opacity="0" data-y="${y}"><rect x="${x}" y="${y}" width="530" height="${h}" rx="26" fill="${fill}"/>${lines.map((tx,k)=>`<text x="${x+265}" y="${y+(h===62?40:38)+k*34}" text-anchor="middle" font-size="26" font-weight="800" fill="#0a1830">${tx}</text>`).join('')}</g>`);y+=h+14});
+ $('bubd').innerHTML=out.join('');})();
+$('wd').innerHTML=Array.from({length:22},(_,i)=>`<rect x="${-110+i*10}" y="-4" width="6" height="8" rx="3" fill="#7fe9ff" class="wbd"/>`).join('');
+stars('stars8',50);
 // money cards
 const CARDS=[['שיחות שנענו',24,'#3de1ff',0],['פגישות שנקבעו',9,'#e0b877',1],['מכירות','₪',  '#27d17a',2]];
 $('cards5').innerHTML=CARDS.map((c,i)=>`<g id="c5${i}" transform="translate(0 ${360+i*150})"><rect x="60" y="0" width="600" height="120" rx="22" fill="#10224f" stroke="${c[2]}" stroke-width="3"/><text x="360" y="44" text-anchor="middle" font-size="28" font-weight="500" fill="#bcd0ff">${c[0]}</text><text id="c5n${i}" class="o" x="360" y="98" text-anchor="middle" font-size="54" fill="${c[2]}" style="direction:ltr">0</text></g>`).join('');
@@ -158,7 +182,7 @@ $('bars5').innerHTML=Array.from({length:10},(_,i)=>`<rect id="b5${i}" x="${90+i*
 $('coins5').innerHTML=Array.from({length:18},(_,i)=>`<g id="co${i}"><circle r="22" fill="#ffd54a" stroke="#c8941a" stroke-width="4"/><text y="8" text-anchor="middle" font-size="22" font-weight="800" fill="#8a5d00">₪</text></g>`).join('');
 function render(t){
   SEG.forEach(([a,b,id],i)=>{let o=Math.min(clamp((t-a)/.25),clamp((b-t)/.25));if(i===0)o=Math.min(clamp((b-t)/.25),1);if(i===SEG.length-1)o=Math.min(clamp((t-a)/.3),clamp((TOTAL-t)/.8));$(id).style.opacity=o});
-  $('logo').style.opacity=t<32.6?1:0;
+  $('logo').style.opacity=t<SEG[7][0]?1:0;
   document.querySelectorAll('.st').forEach((s,i)=>s.setAttribute('opacity',.35+.35*Math.sin(t*2+i)));
   const L=i=>clamp(t-SEG[i][0],0,SEG[i][1]-SEG[i][0]);let lt;
   // s1
@@ -183,18 +207,25 @@ function render(t){
   ['p4a','p4b','p4c'].forEach((id,i)=>{const e=$(id),b=e.getAttribute('data-b')||e.getAttribute('transform');e.setAttribute('data-b',b);const m=b.match(/translate\(([\d.]+) ([\d.]+)\)/);e.setAttribute('transform',`translate(${m[1]} ${(+m[2])+Math.sin(lt*2+i)*4})`)});
   $('n4a').setAttribute('opacity',ease((lt-1.0)/.4));$('n4a').setAttribute('transform',`translate(470 ${650-ease((lt-1.0)/.5)*18})`);
   $('n4b').setAttribute('opacity',ease((lt-3.2)/.4));$('n4b').setAttribute('transform',`translate(470 ${590-ease((lt-3.2)/.5)*18})`);
+  // sd
+  lt=L(4);let who='';
+  DLG.forEach(([id,w])=>{const l=LN[id];const rel=t-l.start;const el=$('bd_'+id);const p=ease(rel/.25);el.setAttribute('opacity',p);el.setAttribute('transform',`translate(0 ${(1-p)*18})`);if(rel>=0&&rel<l.dur)who=w});
+  [...$('wd').children].forEach((b,i)=>{const h=4+(who==='g'?36:3)*(.5+.5*Math.sin(t*7+i*.7))*(.6+.4*Math.sin(t*2.3+i));b.setAttribute('height',h);b.setAttribute('y',-h/2)});
+  $('whod').textContent=who==='c'?'לקוח מתקשר':'גבי';
+  $('callring').setAttribute('r',(who==='c')?44+((t*1.4)%1)*26:44);$('callring').setAttribute('opacity',who==='c'?1-((t*1.4)%1):.4);
+  $('phd').setAttribute('transform',`translate(360 500) scale(${.5+(who==='g'?.012*Math.sin(t*9):0)})`);
   // s5
-  lt=L(4);const vals=[24,9,48500];
+  lt=L(5);const vals=[24,9,48500];
   for(let i=0;i<3;i++){const p=ease((lt-.5-i*.5)/2.6);$('c5'+i).setAttribute('opacity',ease((lt-.3-i*.4)/.4));const v=Math.round(vals[i]*p);$('c5n'+i).textContent=(i===2?'₪ ':'')+v.toLocaleString('en-US')}
   for(let i=0;i<10;i++){const h=ease((lt-1.2-i*.18)/.6)*(80+i*38);const b=$('b5'+i);b.setAttribute('height',h);b.setAttribute('y',1200-h)}
   for(let i=0;i<18;i++){const c=$('co'+i);const p=((lt*.55+i*.137)%1);const x=100+((i*83)%520);c.setAttribute('transform',`translate(${x+Math.sin(p*6+i)*18} ${330+p*850}) scale(${lt>1?1:0})`);c.setAttribute('opacity',lt>1?Math.min(1,Math.sin(p*Math.PI)*1.6):0)}
   // s6
-  lt=L(5);$('rays6').setAttribute('transform',`rotate(${lt*12})`);
+  lt=L(6);$('rays6').setAttribute('transform',`rotate(${lt*12})`);
   const ar=ease((lt-.4)/.8);$('arm6l').setAttribute('d',`M-60 60 Q${-110} ${20-ar*40} ${-100+ar*10} ${-40-ar*50}`);$('arm6r').setAttribute('d',`M60 60 Q110 ${20-ar*40} ${100-ar*10} ${-40-ar*50}`);
   $('own6').setAttribute('transform',`translate(250 ${760-ease((lt-.2)/.6)*40+Math.sin(lt*3)*3})`);
-  $('ph6').setAttribute('opacity',ease((lt-1.4)/.5));$('ph6').setAttribute('transform',`translate(500 ${760+(1-ease((lt-1.4)/.5))*40})`);
+  $('ph6').setAttribute('opacity',ease((lt-2.8)/.5));$('ph6').setAttribute('transform',`translate(500 ${760+(1-ease((lt-2.8)/.5))*40})`);
   // s7
-  lt=L(6);const e=ease(lt/.7);$('e_l').style.opacity=e;$('e_l').style.transform=`scale(${.9+.1*e})`;$('e_h').style.opacity=ease((lt-.9)/.6);$('e_c').style.opacity=ease((lt-1.8)/.6);
+  lt=L(7);const e=ease(lt/.7);$('e_l').style.opacity=e;$('e_l').style.transform=`scale(${.9+.1*e})`;$('e_h').style.opacity=ease((lt-.9)/.6);$('e_c').style.opacity=ease((lt-1.8)/.6);
 }
 window.render=render;render(0);
 </script></body></html>
