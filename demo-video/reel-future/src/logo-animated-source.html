@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>מיצי תקשורת — לוגו מונפש</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --page: #e9eef4;
+    --ink: #10304f;
+    --btn: #ffffff;
+    --btn-ink: #10507f;
+    --btn-line: #c5d3e2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --page: #03070f; --ink: #b9d6ee; --btn: #0b1626; --btn-ink: #8fdcff; --btn-line: #1c3350;
+    }
+  }
+  :root[data-theme="dark"] {
+    --page: #03070f; --ink: #b9d6ee; --btn: #0b1626; --btn-ink: #8fdcff; --btn-line: #1c3350;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); height: 100%; }
+  *, *::before, *::after { box-sizing: inherit; }
+  body {
+    margin: 0; min-height: 100%;
+    background: var(--page); color: var(--ink);
+    font-family: "Heebo", "Arial Hebrew", Arial, sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 22px; padding: 24px 16px;
+  }
+
+  /* Stage: its own palette, independent of page theme */
+  .stage {
+    --bg-top: #061226; --bg-bot: #01050c;
+    --cat-a: #9cefff; --cat-b: #2a9be6; --cat-c: #11528a;
+    --txt-a: #c8f6ff; --txt-b: #45b4f2; --txt-c: #1a6cb4;
+    --sub: #8fc9ec; --accent: #3fd0ff;
+    position: relative; width: 100%; max-width: 1200px;
+    aspect-ratio: 16 / 6; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bot));
+    box-shadow: 0 30px 80px -30px rgba(10, 80, 140, .55);
+  }
+  .stage[data-stage="light"] {
+    --bg-top: #ffffff; --bg-bot: #e7f0f8;
+    --cat-a: #2f9fe8; --cat-b: #15609e; --cat-c: #0d3f6d;
+    --txt-a: #1b78c4; --txt-b: #10507f; --txt-c: #0b3a62;
+    --sub: #2b5f8a; --accent: #1b8fe0;
+    box-shadow: 0 30px 80px -40px rgba(16, 80, 127, .35);
+  }
+  .stage canvas, .stage svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  svg text { font-family: "Heebo", "Arial Hebrew", Arial, sans-serif; }
+
+  .controls { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  button {
+    font: 500 16px/1 "Heebo", Arial, sans-serif;
+    padding: 12px 22px; border-radius: 999px;
+    background: var(--btn); color: var(--btn-ink); border: 1px solid var(--btn-line);
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--btn-ink); }
+  button:focus-visible { outline: 3px solid #3fd0ff; outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage" data-stage="dark">
+  <canvas id="bg"></canvas>
+  <svg viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid meet" aria-label="מיצי תקשורת" role="img">
+    <defs>
+      <linearGradient id="catGrad" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="305">
+        <stop offset="0" style="stop-color:var(--cat-a)"/>
+        <stop offset=".5" style="stop-color:var(--cat-b)"/>
+        <stop offset="1" style="stop-color:var(--cat-c)"/>
+      </linearGradient>
+      <linearGradient id="txtGrad" gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="430">
+        <stop offset="0" style="stop-color:var(--txt-a)"/>
+        <stop offset=".45" style="stop-color:var(--txt-b)"/>
+        <stop offset="1" style="stop-color:var(--txt-c)"/>
+      </linearGradient>
+      <linearGradient id="sheen" gradientUnits="userSpaceOnUse" x1="-400" y1="0" x2="-200" y2="0">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity=".85"/>
+        <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="lineGrad" x1="0" x2="1">
+        <stop offset="0" style="stop-color:var(--accent)" stop-opacity="0"/>
+        <stop offset=".5" style="stop-color:var(--accent)" stop-opacity="1"/>
+        <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="floorGlow">
+        <stop offset="0" style="stop-color:var(--accent)" stop-opacity=".55"/>
+        <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="7" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <clipPath id="wipe"><rect id="wipeRect" x="950" y="100" width="0" height="260"/></clipPath>
+    </defs>
+
+    <!-- ground line -->
+    <line id="horizon" x1="800" y1="422" x2="800" y2="422" stroke="url(#lineGrad)" stroke-width="2" opacity=".9"/>
+
+    <!-- wordmark -->
+    <g id="word">
+      <g clip-path="url(#wipe)">
+        <text id="glitchA" x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="#ff3d7f" opacity="0">מיצי</text>
+        <text id="glitchB" x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="#29f0ff" opacity="0">מיצי</text>
+        <text x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="url(#txtGrad)" filter="url(#softGlow)">מיצי</text>
+        <text x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="url(#sheen)" style="mix-blend-mode:overlay">מיצי</text>
+      </g>
+      <rect id="scan" x="950" y="110" width="4" height="230" fill="var(--accent)" filter="url(#glow)" opacity="0"/>
+      <text id="sub" x="560" y="418" text-anchor="middle" font-size="88" font-weight="300" letter-spacing="40" style="fill:var(--sub)" opacity="0">תקשורת</text>
+    </g>
+
+    <!-- cat: drawn facing right in local space, flipped to face the wordmark -->
+    <g id="catPos" transform="translate(1950 117)">
+      <g transform="scale(-1 1)">
+        <ellipse id="shadow" cx="140" cy="306" rx="135" ry="12" fill="url(#floorGlow)"/>
+        <g id="catBody" fill="url(#catGrad)">
+          <!-- far legs -->
+          <path id="legB1" opacity=".62" d="M65,200 C71,192 99,192 95,206 L87,290 Q97,292 97,298 Q96,303 87,303 L74,303 Q71,303 72,296 Z"/>
+          <path id="legF1" opacity=".62" d="M193,200 C199,192 219,192 215,206 L211,290 Q221,292 221,298 Q220,303 211,303 L198,303 Q195,303 196,296 Z"/>
+          <!-- tail -->
+          <g transform="translate(-4 14)"><path id="tail" d="M58,175 C30,168 22,132 36,110 C46,95 44,80 36,70" fill="none" stroke="url(#catGrad)" stroke-width="13" stroke-linecap="round"/></g>
+          <!-- body -->
+          <path d="M50,186 C80,156 192,150 226,160 C252,168 258,206 242,228 C206,246 100,248 66,238 C36,228 30,204 50,186 Z"/>
+          <!-- near legs -->
+          <path id="legB2" d="M86,200 C92,192 120,192 116,206 L108,290 Q118,292 118,298 Q117,303 108,303 L95,303 Q92,303 93,296 Z"/>
+          <path id="legF2" d="M211,200 C217,192 237,192 233,206 L229,290 Q239,292 239,298 Q238,303 229,303 L216,303 Q213,303 214,296 Z"/>
+          <!-- head -->
+          <g id="head"><g transform="translate(4 16)">
+            <path d="M215,158 C222,132 236,108 252,98 L258,68 L272,88 L284,70 L288,100 C301,108 304,124 296,135 C287,146 268,146 258,150 C248,166 232,172 215,165 Z"/>
+            <ellipse id="eye" cx="283" cy="113" rx="4.5" ry="4.5" fill="#e8fdff" filter="url(#softGlow)"/>
+          </g></g>
+        </g>
+        <!-- signal waves -->
+        <g transform="translate(4 16)" fill="none" stroke="url(#catGrad)" stroke-width="12" stroke-linecap="round" filter="url(#softGlow)">
+          <path id="arc0" opacity="0" d="M302.4,61.4 A40,40 0 0 1 331.8,96.5"/>
+          <path id="arc1" opacity="0" d="M310.1,32.4 A70,70 0 0 1 361.7,93.9"/>
+          <path id="arc2" opacity="0" d="M317.9,3.4 A100,100 0 0 1 391.6,91.3"/>
+        </g>
+        <circle id="ping" cx="287" cy="129" r="0" fill="none" stroke="var(--accent)" stroke-width="3" opacity="0"/>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<div class="controls">
+  <button id="replay" type="button">הפעל שוב</button>
+  <button id="theme" type="button">רקע בהיר</button>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), cv = $('bg'), ctx = cv.getContext('2d');
+  const el = {
+    catPos: $('catPos'), head: $('head'), tail: $('tail'), eye: $('eye'), ping: $('ping'),
+    legs: [$('legB1'), $('legB2'), $('legF1'), $('legF2')],
+    arcs: [$('arc0'), $('arc1'), $('arc2')],
+    wipe: $('wipeRect'), scan: $('scan'), gA: $('glitchA'), gB: $('glitchB'),
+    sub: $('sub'), sheen: $('sheen'), horizon: $('horizon'), shadow: $('shadow')
+  };
+  const hips = [[80,200],[101,200],[204,200],[222,200]];
+  const legPhase = [0, Math.PI, Math.PI, 0]; // diagonal pairs move together
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const clamp = (v, a=0, b=1) => Math.min(b, Math.max(a, v));
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const easeInOut = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
+
+  const START_X = 1950, END_X = 1260, WALK_AT = 450, WALK_MS = 3100, STRIDE = 150;
+  const STOP = WALK_AT + WALK_MS;
+  let t0 = performance.now();
+
+  // particles
+  const parts = Array.from({length: 70}, () => ({
+    x: Math.random()*1600, y: Math.random()*420, s: Math.random()*1.6+.4,
+    v: Math.random()*.012+.004, ph: Math.random()*6.28
+  }));
+
+  let W = 0, H = 0, dpr = 1;
+  function resize() {
+    const r = stage.getBoundingClientRect();
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+  }
+  addEventListener('resize', resize); resize();
+
+  function drawBg(t) {
+    const light = stage.dataset.stage === 'light';
+    const k = W / 1600;
+    ctx.setTransform(dpr*k, 0, 0, dpr*k, 0, (H - 600*k)/2*dpr);
+    ctx.clearRect(0, -200, 1600, 1000);
+    const a = clamp(t / 700);
+    const rgb = light ? '27,120,200' : '63,208,255';
+
+    // halo behind the composition
+    const g = ctx.createRadialGradient(900, 300, 20, 900, 300, 620);
+    g.addColorStop(0, `rgba(${rgb},${(light?.10:.16)*a})`);
+    g.addColorStop(1, `rgba(${rgb},0)`);
+    ctx.fillStyle = g; ctx.fillRect(0, -200, 1600, 1000);
+
+    // perspective floor
+    const hor = 422, bot = 640, cx = 800;
+    ctx.lineWidth = 1;
+    const N = 12, s = reduce ? 0 : (t * 0.00035) % 1;
+    for (let i = 0; i < N; i++) {
+      const f = (i + s) / N, y = hor + (bot - hor) * f * f;
+      ctx.strokeStyle = `rgba(${rgb},${(light?.22:.35) * f * a})`;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1600, y); ctx.stroke();
+    }
+    for (let j = -22; j <= 22; j++) {
+      const alpha = (light?.16:.24) * (1 - Math.abs(j)/24) * a;
+      ctx.strokeStyle = `rgba(${rgb},${alpha})`;
+      ctx.beginPath(); ctx.moveTo(cx + j*22, hor); ctx.lineTo(cx + j*150, bot); ctx.stroke();
+    }
+    // fade floor into stage background at the horizon
+    const fade = ctx.createLinearGradient(0, hor, 0, hor + 40);
+    fade.addColorStop(0, light ? 'rgba(240,246,251,.9)' : 'rgba(3,9,20,.85)');
+    fade.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = fade; ctx.fillRect(0, hor, 1600, 40);
+
+    // particles
+    for (const p of parts) {
+      const y = reduce ? p.y : (p.y - t * p.v * 2 + 4200) % 420;
+      const tw = .35 + .65 * (0.5 + 0.5*Math.sin(t*0.002 + p.ph));
+      ctx.fillStyle = `rgba(${rgb},${(light?.35:.6) * tw * a})`;
+      ctx.beginPath(); ctx.arc(p.x, y, p.s, 0, 6.283); ctx.fill();
+    }
+  }
+
+  function frame(now) {
+    let t = now - t0;
+    if (reduce) t = Math.max(t, STOP + 2200);
+    drawBg(t);
+
+    // ground line draws out from the center
+    const h = easeOut(clamp(t / 900));
+    el.horizon.setAttribute('x1', 800 - 560*h);
+    el.horizon.setAttribute('x2', 800 + 560*h);
+
+    // walk: fast entrance, gentle deceleration, legs slow with the body
+    const u = clamp((t - WALK_AT) / WALK_MS);
+    const p = 1 - Math.pow(1 - u, 2.2);
+    const X = START_X + (END_X - START_X) * p;
+    const phase = (START_X - X) / STRIDE * Math.PI * 2;
+    const speed = u < 1 ? Math.pow(1 - u, 1.2) : 0;
+    const amp = Math.min(1, speed * 1.7);
+    const bob = -Math.abs(Math.sin(phase)) * 4 * amp;
+    el.catPos.setAttribute('transform', `translate(${X.toFixed(2)} ${(117 + bob).toFixed(2)})`);
+    el.legs.forEach((leg, i) => {
+      const ang = 26 * amp * Math.sin(phase + legPhase[i]);
+      leg.setAttribute('transform', `rotate(${ang.toFixed(2)} ${hips[i][0]} ${hips[i][1]})`);
+    });
+    el.shadow.setAttribute('rx', (135 - bob*2).toFixed(1));
+
+    const ts = t - STOP; // time since the cat stopped
+    // head: small bob while walking, a confident look-up when it arrives
+    let headA = 2 * amp * Math.sin(phase * 2);
+    if (ts > 0 && ts < 1100) headA += -9 * Math.sin(Math.PI * ts / 1100);
+    el.head.setAttribute('transform', `rotate(${headA.toFixed(2)} 236 168)`);
+
+    // tail
+    const tailA = Math.sin(t * 0.0045) * (4 + 9 * amp) + (ts > 0 ? Math.sin(t*0.0016) * 6 : 0);
+    el.tail.setAttribute('transform', `rotate(${tailA.toFixed(2)} 58 175)`);
+
+    // eye blink
+    let ry = 4.5;
+    if (ts > 1500) { const k = (ts - 1500) % 3900; if (k < 160) ry = 4.5 * Math.abs(1 - 2*k/160); }
+    el.eye.setAttribute('ry', ry.toFixed(2));
+
+    // arrival ping
+    if (ts > 0 && ts < 1000) {
+      const e = easeOut(ts / 1000);
+      el.ping.setAttribute('r', (10 + 190*e).toFixed(1));
+      el.ping.setAttribute('opacity', (1 - e).toFixed(3));
+    } else el.ping.setAttribute('opacity', 0);
+
+    // signal waves: appear in sequence, then pulse outward forever
+    el.arcs.forEach((arc, i) => {
+      const appear = clamp((ts - 150 - i*170) / 260);
+      const pulse = .4 + .6 * (0.5 + 0.5 * Math.sin(t * 0.0055 - i * 1.15));
+      arc.setAttribute('opacity', (appear * (ts > 900 ? pulse : 1)).toFixed(3));
+    });
+
+    // wordmark reveal, right to left, with a scan beam
+    const m = clamp((ts - 250) / 750), em = easeInOut(m), WW = 680;
+    el.wipe.setAttribute('x', 960 - WW*em);
+    el.wipe.setAttribute('width', WW*em);
+    el.scan.setAttribute('x', 958 - WW*em);
+    el.scan.setAttribute('opacity', m > 0 && m < 1 ? .95 : 0);
+
+    // brief chromatic glitch during the reveal
+    const glitching = ts > 250 && ts < 1350;
+    if (glitching && Math.random() < .5) {
+      const dx = (Math.random() - .5) * 14;
+      el.gA.setAttribute('transform', `translate(${dx} 0)`); el.gA.setAttribute('opacity', .55);
+      el.gB.setAttribute('transform', `translate(${-dx} 0)`); el.gB.setAttribute('opacity', .55);
+    } else if (!glitching || Math.random() < .5) {
+      el.gA.setAttribute('opacity', 0); el.gB.setAttribute('opacity', 0);
+    }
+
+    // subtitle: tracking tightens as it fades in
+    const q = easeOut(clamp((ts - 850) / 900));
+    el.sub.setAttribute('opacity', q.toFixed(3));
+    el.sub.setAttribute('letter-spacing', (40 * (1 - q) + 6).toFixed(2));
+
+    // light sweep across the wordmark every few seconds (right to left)
+    const sweep = ((ts - 1900) % 4600) / 1500;
+    if (ts > 1900 && sweep < 1) {
+      const x = 1000 - 820 * easeInOut(sweep);
+      el.sheen.setAttribute('x1', x - 90); el.sheen.setAttribute('x2', x + 90);
+    } else { el.sheen.setAttribute('x1', -400); el.sheen.setAttribute('x2', -200); }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  $('replay').addEventListener('click', () => { t0 = performance.now(); });
+  $('theme').addEventListener('click', e => {
+    const light = stage.dataset.stage !== 'light';
+    stage.dataset.stage = light ? 'light' : 'dark';
+    e.currentTarget.textContent = light ? 'רקע כהה' : 'רקע בהיר';
+  });
+})();
+</script>
+</body>
+</html>
