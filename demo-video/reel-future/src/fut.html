@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><title>future</title>
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-300.ttf);font-weight:300}
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+@font-face{font-family:O;src:url(fonts/orbitron-700.ttf);font-weight:700}
+:root{--cy:#3de1ff;--bl:#4d7cff;--gold:#e0b877;--ink:#eaf6ff;--dim:rgba(220,238,255,.7);--line:rgba(61,225,255,.35)}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;font-family:H,sans-serif;direction:rtl;color:var(--ink);background:#030812}
+.sc{position:absolute;inset:0;opacity:0;overflow:hidden}
+.bg{position:absolute;left:0;top:0;width:720px;height:1280px;object-fit:cover}
+.tint{position:absolute;inset:0}
+.abs{position:absolute}
+.o{font-family:O,H,sans-serif;font-weight:700;direction:ltr;unicode-bidi:isolate;letter-spacing:2px}
+.num{direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.k{font-size:15px;color:var(--cy)}
+.big{font-weight:800;line-height:1.02;letter-spacing:-1px}
+.gt{background:linear-gradient(90deg,#fff,#7fe9ff 60%,#4d9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gold{color:var(--gold)}
+.glass{box-sizing:border-box;border:1.5px solid var(--line);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.03));box-shadow:0 0 34px rgba(61,225,255,.14);backdrop-filter:blur(7px)}
+.chip{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:6px 18px;font-size:22px;margin-inline-start:8px;background:rgba(6,18,44,.75);font-weight:500}
+.chip.hi{border-color:var(--gold);color:var(--gold)}
+.bub{position:absolute;box-sizing:border-box;border-radius:20px;padding:10px 20px;font-size:25px;line-height:1.3;font-weight:800}
+.bub.c{background:rgba(255,255,255,.95);color:#0a1830}
+.bub.g{background:linear-gradient(90deg,#e0b877,#f3d9a8);color:#0a1830}
+#logo{position:absolute;right:36px;top:78px;width:106px;border-radius:9px;background:#fff;overflow:hidden;box-shadow:0 0 24px rgba(0,0,0,.4);z-index:6}
+#logo img{display:block;width:100%}
+#scan{position:absolute;inset:0;pointer-events:none;z-index:7;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px)}
+#flash{position:absolute;inset:0;background:#7fe9ff;opacity:0;z-index:8;pointer-events:none;mix-blend-mode:screen}
+#hud{position:absolute;inset:0;pointer-events:none;z-index:6}
+.br{position:absolute;width:34px;height:34px;border:3px solid var(--cy);opacity:.8}
+svg{position:absolute;left:0;top:0;width:720px;height:1280px}
+text{font-family:H,sans-serif;direction:rtl}
+</style></head><body><div id="stage">
+<div id="scenes"></div>
+<div id="hud"><div class="br" style="left:30px;top:150px;border-right:0;border-bottom:0"></div><div class="br" style="right:30px;top:150px;border-left:0;border-bottom:0"></div><div class="br" style="left:30px;bottom:310px;border-right:0;border-top:0"></div><div class="br" style="right:30px;bottom:310px;border-left:0;border-top:0"></div>
+ <div class="abs o" style="left:38px;top:92px;font-size:13px;color:var(--cy);display:flex;gap:8px;align-items:center"><i id="live" style="display:block;width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)"></i>CLOUD PBX · 2030</div>
+ <div class="abs o" id="tc" style="left:38px;bottom:326px;font-size:12px;color:var(--dim)">00:00</div></div>
+<div id="logo"><img src="img/mitsi-logo.png"></div><div id="scan"></div><div id="flash"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const seg=(lt,d,dur)=>ease((lt-d)/dur);
+const SEG=[[0,3.0,'f0'],[3.0,10.0,'f1'],[10.0,17.0,'f2'],[17.0,23.0,'f3'],[23.0,31.0,'f4'],[31.0,38.0,'f5'],[38.0,46.0,'f6'],[46.0,52.0,'f7'],[52.0,59.0,'f8'],[59.0,70.0,'f9']];
+const TOTAL=70;
+function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
+const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
+const fr=(dir,n,max)=>`clips/${dir}/${String(clamp(Math.floor(n)+1,1,max)).padStart(4,'0')}.jpg`;
+async function setImg(el,src){if(el.getAttribute('data-s')===src)return;el.setAttribute('data-s',src);el.src=src;try{await el.decode()}catch(e){}}
+function show(id,lt,d,dur=.45,dy=26,sc=0){const el=typeof id==='string'?$(id):id;const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px) scale(${1-(1-p)*sc})`}
+const wave=(id,n=36)=>`<div id="${id}" style="display:flex;gap:5px;align-items:center;height:100%;direction:ltr;justify-content:center">${Array.from({length:n},()=>'<i style="display:block;width:5px;border-radius:3px;background:linear-gradient(180deg,#7fe9ff,#4d7cff);height:6px"></i>').join('')}</div>`;
+function animWave(id,lt,on,amp=44){[...$(id).querySelectorAll('i')].forEach((b,i)=>{b.style.height=(6+(on?amp:2)*(.5+.5*Math.sin(lt*8+i*.8))*(.6+.4*Math.sin(lt*2.3+i)))+'px'})}
+const vt=(a,b)=>`linear-gradient(180deg,rgba(3,8,18,${a}),rgba(3,8,18,${b}))`;
+const H={};
+H.f0=`<img class="bg" id="f0v"><div class="tint" style="background:radial-gradient(500px 600px at 50% 45%,rgba(3,8,18,0),rgba(3,8,18,.7))"></div>
+ <div class="abs o k" id="f0k" style="right:60px;top:480px">NEXT-GEN PBX</div>
+ <div class="abs big gt" id="f0h" style="left:0;right:0;top:520px;text-align:center;font-size:120px">המרכזייה<br>מהעתיד</div>
+ <div class="abs" id="f0s" style="left:0;right:0;top:830px;text-align:center"><span class="chip hi" style="font-size:30px;padding:8px 26px">כבר היום</span></div>`;
+H.f1=`<img class="bg" id="f1v"><div class="tint" style="background:${vt(.25,.75)}"></div>
+ <svg id="f1s" viewBox="0 0 720 1280"><g id="f1l" stroke="#3de1ff" stroke-width="2.5" fill="none" stroke-dasharray="7 7"></g><g id="f1n"></g></svg>
+ <div class="abs big gt" id="f1h" style="left:0;right:0;top:200px;text-align:center;font-size:84px">בכל מקום<br>בעולם</div>
+ <div class="abs" id="f1c" style="left:0;right:0;top:960px;text-align:center"></div>`;
+H.f2=`<img class="bg" id="f2v"><div class="tint" style="background:${vt(.6,.85)}"></div>
+ <div class="abs o k" style="right:50px;top:200px">SMART ROUTING</div>
+ <div class="abs big gt" id="f2h" style="right:50px;top:225px;width:620px;text-align:right;font-size:70px">כל שיחה<br>למקום הנכון</div>
+ <div class="abs glass" id="f2a" style="right:50px;top:470px;width:300px;height:150px;padding:20px 24px"><div class="k o">OPTION A</div><div style="font-size:42px;font-weight:800">נתב חכם</div><div style="font-size:21px;color:var(--dim)">לפי כללים</div></div>
+ <div class="abs glass" id="f2b" style="right:370px;top:470px;width:300px;height:150px;padding:20px 24px;border-color:var(--gold)"><div class="k o gold">OPTION B</div><div style="font-size:42px;font-weight:800">בוט קולי</div><div style="height:26px;margin-top:6px">${wave('f2w',22)}</div></div>
+ <div class="abs glass" id="f2d" style="right:50px;top:660px;width:300px;height:110px;padding:16px 24px"><div class="k o">DAY</div><div style="font-size:34px;font-weight:800">☀ מענה יום</div></div>
+ <div class="abs glass" id="f2n" style="right:370px;top:660px;width:300px;height:110px;padding:16px 24px"><div class="k o">NIGHT</div><div style="font-size:34px;font-weight:800">☾ מענה לילה</div></div>`;
+H.f3=`<img class="bg" id="f3v"><div class="tint" style="background:${vt(.6,.88)}"></div>
+ <div class="abs o k" style="right:50px;top:200px">WAITING QUEUE</div>
+ <div class="abs big gt" id="f3h" style="right:50px;top:225px;width:620px;text-align:right;font-size:76px">תור ממתינים<br>חכם</div>
+ <div class="abs glass" id="f3q" style="right:50px;top:470px;width:620px;height:90px;padding:0 24px;display:flex;align-items:center;gap:12px"><div id="f3d" style="display:flex;gap:10px"></div><span class="o" id="f3n" style="margin-inline-start:auto;font-size:30px;color:var(--gold)">05</span></div>
+ <div class="abs glass" id="f3s" style="right:50px;top:600px;width:240px;height:100px;padding:14px 20px"><div class="k o">EXIT</div><div class="o" style="font-size:30px">SMS</div></div>
+ <div class="abs glass" id="f3w" style="right:310px;top:600px;width:360px;height:100px;padding:14px 20px"><div class="k o">EXIT</div><div style="font-size:30px;font-weight:800">בוט וואטסאפ</div></div>
+ <div class="bub g" id="f3g" style="right:50px;top:760px;width:620px">ובזמן ההמתנה, אפשר לדבר עם גבי ✨</div>`;
+H.f4=`<div class="tint" style="background:radial-gradient(600px 700px at 50% 38%,#0b2a5a,#030812 75%)"></div>
+ <svg id="f4s" viewBox="0 0 720 1280"><g id="f4r" fill="none" stroke="#3de1ff" stroke-width="2"></g></svg>
+ <div class="abs glass" id="f4p" style="left:150px;top:200px;width:420px;height:470px;padding:0;overflow:hidden;border-color:var(--cy)"><img src="img/b0.jpg" style="position:absolute;left:0;top:0;width:100%;height:250px;object-fit:cover;object-position:left top">
+  <div class="abs" style="left:18px;top:18px;width:150px;height:78px;border-radius:10px;background:#0b2450;border:2px solid var(--cy);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#fff">גבי</div>
+  <div class="abs o" id="f4t" style="left:0;right:0;top:270px;text-align:center;font-size:15px;color:var(--cy)">GABI · AI VOICE</div>
+  <div class="abs" style="left:30px;right:30px;top:310px;height:70px">${wave('f4w',34)}</div>
+  <div class="abs" style="left:0;right:0;top:400px;text-align:center;font-size:26px;font-weight:800">בוט קולי · קול נשי או גברי</div></div>
+ <div class="bub g" id="f4a" style="right:50px;top:730px;width:620px">היי, אני גבי. אני עונה בכל שעה, מבינה מה צריך, ומעבירה לאדם הנכון.</div>
+ <div class="bub g" id="f4b" style="right:50px;top:870px;width:620px">ואם אין מי שיענה? אני לוקחת הודעה, והכל מגיע למייל.</div>`;
+H.f5=`<img class="bg" id="f5v"><div class="tint" style="background:${vt(.55,.9)}"></div>
+ <div class="abs o k" style="right:50px;top:200px">NO ANSWER?</div>
+ <div class="abs big gt" id="f5h" style="right:50px;top:225px;width:620px;text-align:right;font-size:80px">אין מענה?<br>הבוט עונה</div>
+ <div class="abs glass" id="f5a" style="right:50px;top:490px;width:620px;height:110px;padding:0 24px;display:flex;align-items:center;gap:18px"><span style="font-size:36px">🎙</span><div style="flex:1;height:60px">${wave('f5w',30)}</div><span class="o gold" style="font-size:20px">0:14</span></div>
+ <div class="abs glass" id="f5t" style="right:50px;top:620px;width:620px;padding:16px 26px"><div class="k o" style="margin-bottom:6px">TRANSCRIPT</div><div id="f5x" style="font-size:25px;line-height:1.35;min-height:70px"></div></div>
+ <div class="abs glass" id="f5m" style="right:50px;top:800px;width:620px;height:100px;padding:0 26px;display:flex;align-items:center;gap:18px"><span style="font-size:44px">✉</span><span style="font-size:28px;font-weight:800">נשלח למייל</span><span class="o gold" style="margin-inline-start:auto;font-size:30px">✓</span></div>`;
+H.f6=`<img class="bg" id="f6v" src="img/dashboard.jpg"><div class="tint" style="background:${vt(.7,.92)}"></div>
+ <div class="abs o k" style="right:50px;top:200px">EVERY CALL, CAPTURED</div>
+ <div class="abs big gt" id="f6h" style="right:50px;top:225px;width:620px;text-align:right;font-size:70px">הקלטה · תמלול<br>סיכום</div>
+ <div class="abs glass" id="f6a" style="right:50px;top:440px;width:300px;height:120px;padding:16px 22px"><div class="k o">REC</div><div style="font-size:32px;font-weight:800">הקלטה</div><div style="height:22px;margin-top:2px">${wave('f6w',18)}</div></div>
+ <div class="abs glass" id="f6b" style="right:370px;top:440px;width:300px;height:120px;padding:16px 22px"><div class="k o">TEXT</div><div style="font-size:32px;font-weight:800">תמלול</div></div>
+ <div class="abs glass" id="f6c" style="right:50px;top:590px;width:300px;height:130px;padding:16px 22px;border-color:var(--gold)"><div class="k o gold">SUMMARY</div><div style="font-size:30px;font-weight:800">סיכום לעובד<br>או למנהל</div></div>
+ <div class="abs glass" id="f6d" style="right:370px;top:590px;width:300px;height:130px;padding:16px 22px;border-color:var(--gold)"><div class="k o gold">SUMMARY</div><div style="font-size:30px;font-weight:800">סיכום ללקוח<br>מסרון או מייל</div></div>`;
+H.f7=`<img class="bg" id="f7v"><div class="tint" style="background:${vt(.6,.9)}"></div>
+ <div class="abs o k" style="right:50px;top:200px">INTEGRATIONS</div>
+ <div class="abs big gt" id="f7h" style="right:50px;top:225px;width:620px;text-align:right;font-size:72px">מתחבר<br>לכל CRM</div>
+ <div class="abs glass" id="f7c" style="right:50px;top:470px;width:620px;padding:16px 26px"><div class="row" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:24px"><b class="gold" style="font-weight:500">כרטיס לקוח · CRM</b><span class="k o">API</span></div><div id="f7r" style="font-size:25px;line-height:2"></div></div>
+ <div class="abs" id="f7p" style="right:50px;top:760px;width:640px;text-align:right"><span class="chip">דוחות בזמן אמת</span><span class="chip">SMS</span><span class="chip hi">בוט וואטסאפ</span></div>`;
+H.f8=`<img class="bg" id="f8v" style="top:150px;height:405px;width:720px;object-fit:contain"><div class="tint" style="background:radial-gradient(480px 380px at 50% 28%,rgba(3,8,18,0),rgba(3,8,18,.6))"></div>
+ <div class="abs o k" style="right:50px;top:620px">YOUR AI · YOUR RULES</div>
+ <div class="abs big gt" id="f8h" style="right:50px;top:645px;width:620px;text-align:right;font-size:58px">הוראה ל-AI שלכם,<br>והכל מסתדר</div>
+ <div class="abs glass" id="f8c" style="right:50px;top:830px;width:620px;height:210px"><div class="bub c" id="f8u" style="right:16px;top:14px;width:430px;font-size:22px">עדכן את שעות הפעילות</div><div class="bub g" id="f8a" style="left:16px;top:96px;width:430px;font-size:22px">מתחבר למרכזייה... ✓ עודכן</div><div class="abs" id="f8w" style="right:16px;bottom:12px;font-size:20px;color:var(--dim)">או הודעה בוואטסאפ ← <b class="gold">הצוות מטפל בהכל, במהירות</b></div></div>`;
+H.f9=`<img class="bg" id="f9v"><div class="tint" style="background:${vt(.72,.93)}"></div>
+ <div class="abs" id="f9l" style="left:50%;margin-left:-230px;top:300px;width:460px;border-radius:22px;background:#fff;overflow:hidden;box-shadow:0 0 70px rgba(61,225,255,.4)"><img src="img/mitsi-logo.png" style="display:block;width:100%"></div>
+ <div class="abs big gt" id="f9h" style="left:0;right:0;top:540px;text-align:center;font-size:62px">מרכזייה שעושה הכל.</div>
+ <div class="abs" id="f9b" style="left:50px;right:50px;top:690px;text-align:center;background:linear-gradient(90deg,#e0b877,#f3d9a8);border-radius:28px;padding:22px 20px;color:#0a1830;font-size:40px;font-weight:800;line-height:1.2;box-shadow:0 0 50px rgba(224,184,119,.5)">רוצים לראות את זה חי?<br><span style="font-size:32px;font-weight:500">הגיבו "מרכזייה" או צרו קשר</span></div>
+ <div class="abs" id="f9c" style="left:0;right:0;top:890px;text-align:center;font-size:30px;font-weight:500;direction:ltr;font-family:O,H"><span class="gold">03-3826600</span> &nbsp;·&nbsp; mitsi.co.il</div>`;
+$('scenes').innerHTML=SEG.map(([a,b,id])=>`<div class="sc" id="${id}">${H[id]}</div>`).join('');
+// builders
+$('f3d').innerHTML=Array.from({length:6},(_,i)=>`<i id="f3d${i}" style="display:block;width:26px;height:26px;border-radius:50%;background:var(--cy);box-shadow:0 0 14px var(--cy)"></i>`).join('');
+const NODES=[[150,520,'משרד'],[560,430,'אפליקציה'],[330,700,'נייד'],[120,860,'בית'],[600,820,'חו״ל']];
+$('f1l').innerHTML=NODES.map(([x,y],i)=>`<path id="f1p${i}" d="M360 640 L${x} ${y}"/>`).join('');
+$('f1n').innerHTML=`<circle id="f1c0" cx="360" cy="640" r="46" fill="rgba(61,225,255,.2)" stroke="#3de1ff" stroke-width="3"/><path d="M335 655h50a15 15 0 0 0 2-30 22 22 0 0 0-42-5 17 17 0 0 0-10 35z" fill="#eaf6ff"/>`+NODES.map(([x,y,t],i)=>`<g id="f1g${i}"><circle cx="${x}" cy="${y}" r="30" fill="rgba(10,24,52,.9)" stroke="#e0b877" stroke-width="2.5"/><text x="${x}" y="${y+7}" text-anchor="middle" fill="#fff" font-size="17" font-weight="800">${t}</text></g>`).join('');
+$('f1c').innerHTML=['טלפון במשרד','אפליקציה בנייד','מענה ישיר מהנייד'].map((t,i)=>`<span class="chip${i==2?' hi':''}" id="f1ch${i}" style="font-size:24px;margin:0 5px">${t}</span>`).join('');
+$('f4r').innerHTML=[260,340,420].map((r,i)=>`<circle id="f4c${i}" cx="360" cy="435" r="${r}"/>`).join('');
+const TR='שלום, כאן דנה. אשמח שתחזרו אליי לגבי הזמנה חדשה, תודה.';
+$('f7r').innerHTML=['<div id="f7r1">שם <b class="gold" style="float:left;font-weight:500">דנה לוי</b></div>','<div id="f7r2">שיחה אחרונה <b class="gold" style="float:left;font-weight:500">היום 10:42</b></div>','<div id="f7r3">הקלטה · תמלול · סיכום <b class="gold" style="float:left;font-weight:500">✓ סונכרן</b></div>'].join('');
+function render(t){return renderAsync(t)}
+async function renderAsync(t){
+  const jobs=[];
+  let cutT=null;
+  SEG.forEach(([a,b,id],i)=>{let o=Math.min(clamp((t-a)/.12),clamp((b-t)/.12));if(i===0)o=Math.min(clamp((b-t)/.12),1);if(i===SEG.length-1)o=Math.min(clamp((t-a)/.12),clamp((TOTAL-t)/.8));$(id).style.opacity=o;
+    const sc=$(id);const lt0=t-a;if(lt0>=0&&lt0<b-a){sc.style.transform=`translateX(${lt0<.14?(Math.sin(lt0*90)*10*(1-lt0/.14)):0}px)`}});
+  // cut flash
+  let fl=0;SEG.forEach(([a],i)=>{if(i>0){const d=t-a;if(d>=0&&d<.16)fl=Math.max(fl,.45*(1-d/.16))}});$('flash').style.opacity=fl;
+  $('live').style.opacity=.5+.5*Math.sin(t*6);
+  $('tc').textContent='00:'+String(Math.floor(t)).padStart(2,'0')+'.'+String(Math.floor((t%1)*100)).padStart(2,'0');
+  const L=i=>clamp(t-SEG[i][0],0,SEG[i][1]-SEG[i][0]);let lt;
+  lt=L(0);jobs.push(setImg($('f0v'),fr('corr',lt*24*.9,144)));$('f0v').style.transform=`scale(${1.05+.05*lt})`;
+  show('f0k',lt,.15);show('f0h',lt,.3,.5,40,.1);show('f0s',lt,1.5);
+  lt=L(1);jobs.push(setImg($('f1v'),pp('city',lt*24,199)));$('f1v').style.transform=`scale(${1+.04*lt/7})`;
+  show('f1h',lt,.1,.5,30,.1);const cp=seg(lt,1.0,.5);$('f1s').style.opacity=cp;
+  NODES.forEach((_,i)=>{const s=seg(lt,1.4+i*.55,.5);$('f1p'+i).style.opacity=s;$('f1p'+i).style.strokeDashoffset=(1-s)*60;const g=$('f1g'+i);g.style.opacity=s;g.style.transformOrigin='center';});
+  $('f1c0').setAttribute('r',46+4*Math.sin(lt*5));
+  for(let i=0;i<3;i++)show('f1ch'+i,lt,3.2+i*.8,.4,16);
+  lt=L(2);jobs.push(setImg($('f2v'),pp('robot',lt*24,289)));show('f2h',lt,.1,.5,30);show('f2a',lt,1.6,.45,26);show('f2b',lt,2.6,.45,26);animWave('f2w',lt,lt>2.8,20);show('f2d',lt,4.6);show('f2n',lt,5.6);
+  lt=L(3);jobs.push(setImg($('f3v'),pp('chatbot',lt*24,293)));show('f3h',lt,.1,.5,30);show('f3q',lt,.7);
+  {const nq=Math.round(clamp((lt-.7)/1.2)*6);for(let i=0;i<6;i++){const on=lt<2.4?i<nq:i<Math.max(0,6-Math.floor((lt-2.4)*1.5));$('f3d'+i).style.opacity=on?1:.15}
+   $('f3n').textContent=String([...$('f3d').children].filter(e=>e.style.opacity==1).length).padStart(2,'0')}
+  show('f3s',lt,2.4);show('f3w',lt,3.0);show('f3g',lt,4.2,.5,20);
+  lt=L(4);[0,1,2].forEach(i=>{const p=((lt*.7+i*.33)%1);const c=$('f4c'+i);c.setAttribute('r',120+p*260);c.setAttribute('opacity',(1-p)*.7)});
+  show('f4p',lt,.1,.6,40,.08);animWave('f4w',lt,lt>.5,40);show('f4a',lt,.8,.45,24);show('f4b',lt,4.2,.45,24);
+  lt=L(5);jobs.push(setImg($('f5v'),pp('chatbot',lt*24+120,293)));show('f5h',lt,.1,.5,30);show('f5a',lt,.9);animWave('f5w',lt,lt<2.8,34);
+  show('f5t',lt,2.4);$('f5x').textContent=TR.slice(0,Math.floor(clamp((lt-2.7)/2.8)*TR.length));show('f5m',lt,5.4);
+  lt=L(6);show('f6h',lt,.1,.5,30);show('f6a',lt,.9);animWave('f6w',lt,true,16);show('f6b',lt,1.9);show('f6c',lt,3.4);show('f6d',lt,5.0);
+  {const v=$('f6v');v.style.transform=`scale(${1.35+.1*lt/8}) translateY(${-lt*4}px)`;v.style.filter='brightness(1.3) saturate(1.2)'}
+  lt=L(7);jobs.push(setImg($('f7v'),pp('phone',lt*24,192)));show('f7h',lt,.1,.5,30);show('f7c',lt,.8);['f7r1','f7r2','f7r3'].forEach((id,i)=>show(id,lt,1.8+i*.8,.35,10));show('f7p',lt,4.4);
+  lt=L(8);jobs.push(setImg($('f8v'),fr('skull',lt*24*.7,384)));show('f8h',lt,.2,.5,30);show('f8c',lt,1.0);show('f8u',lt,1.8,.4,14);show('f8a',lt,3.4,.4,14);show('f8w',lt,4.8,.4,10);
+  lt=L(9);jobs.push(setImg($('f9v'),pp('robot',lt*24+60,289)));show('f9l',lt,.2,.6,0,.1);show('f9h',lt,.9);show('f9b',lt,1.7,.5,26,.05);show('f9c',lt,2.6);
+  $('f9b').style.boxShadow=`0 0 ${40+20*Math.sin(lt*5)}px rgba(224,184,119,.55)`;
+  $('logo').style.opacity=t<SEG[9][0]?1:0;
+  await Promise.all(jobs);
+}
+window.render=renderAsync;renderAsync(0);
+</script></body></html>
