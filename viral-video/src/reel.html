@@ -158,7 +158,7 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 const NS='http://www.w3.org/2000/svg';
-const TIMELINE={"seg": [[0, 3.58, "s1"], [3.58, 8.85, "s2"], [8.85, 13.4, "s3"], [13.4, 19.7, "s4"], [19.7, 44.6, "sd"], [44.6, 49.28, "s5"], [49.28, 56.7, "s6"], [56.7, 67.75, "s7"]], "total": 67.75, "lines": [{"id": "P1", "start": 0.3, "dur": 3.18, "scene": "s1"}, {"id": "P2", "start": 3.73, "dur": 5.02, "scene": "s2"}, {"id": "P3", "start": 9.0, "dur": 4.3, "scene": "s3"}, {"id": "P4", "start": 13.55, "dur": 5.9, "scene": "s4"}, {"id": "D", "start": 19.85, "dur": 24.5, "scene": "sd"}, {"id": "P5", "start": 44.75, "dur": 4.43, "scene": "s5"}, {"id": "P6", "start": 49.43, "dur": 7.17, "scene": "s6"}, {"id": "P7", "start": 56.85, "dur": 3.4, "scene": "s7"}]};
+const TIMELINE={"seg": [[0, 3.58, "s1"], [3.58, 8.85, "s2"], [8.85, 13.4, "s3"], [13.4, 19.7, "s4"], [19.7, 43.09, "sd"], [43.09, 47.77, "s5"], [47.77, 55.19, "s6"], [55.19, 66.24, "s7"]], "total": 66.24, "lines": [{"id": "P1", "start": 0.3, "dur": 3.18, "scene": "s1"}, {"id": "P2", "start": 3.73, "dur": 5.02, "scene": "s2"}, {"id": "P3", "start": 9.0, "dur": 4.3, "scene": "s3"}, {"id": "P4", "start": 13.55, "dur": 5.9, "scene": "s4"}, {"id": "D", "start": 19.85, "dur": 22.99, "scene": "sd"}, {"id": "P5", "start": 43.24, "dur": 4.43, "scene": "s5"}, {"id": "P6", "start": 47.92, "dur": 7.17, "scene": "s6"}, {"id": "P7", "start": 55.34, "dur": 3.4, "scene": "s7"}]};
 const TOTAL=TIMELINE.total;
 const SEG=TIMELINE.seg;
 const LN={};TIMELINE.lines.forEach(l=>LN[l.id]=l);
@@ -170,10 +170,10 @@ $('rays6').innerHTML=Array.from({length:12},(_,i)=>`<rect x="-6" y="-112" width=
 $('waves3').innerHTML=[0,1,2].map(r=>`<g class="wv"><path d="M-40 ${790+r*50} q30 -22 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/></g>`).join('');
 $('w2').innerHTML=Array.from({length:22},(_,i)=>`<rect x="${-110+i*10}" y="-4" width="6" height="8" rx="3" fill="#7fe9ff" class="wb"/>`).join('');
 
-const DLG=[['b1','g',0.14,['היי! מה שלומך? אני גבי,','ואני סוכנת קולית.']],['b2','c',4.39,['שלום, אפשר לתאם פגישה?']],['b3','g',6.67,['בטח שאפשר.']],['b4','c',8.0,['סליחה על השעה... את לא הולכת לישון?']],['b5','g',11.27,['ברור שאני לא הולכת לישון... אף פעם.']],['b6','c',15.81,['אבל... העסק לא סגור עכשיו?']],['b7','g',19.12,['כן, אז העסק סגור עכשיו. אבל אני?','אני אף פעם לא ישנה.']]];
-const SPK=[[0.14,4.16,'g'],[4.39,6.05,'c'],[6.67,7.85,'g'],[8.0,10.99,'c'],[11.27,14.4,'g'],[15.81,18.9,'c'],[19.12,24.4,'g']];
-(function(){let y=690;const out=[];DLG.forEach(([id,w,off,lines])=>{const h=lines.length>1?84:54;const x=w==='c'?150:40;const fill=w==='c'?'#ffffff':'#e0b877';
- out.push(`<g id="bd_${id}" opacity="0"><rect x="${x}" y="${y}" width="530" height="${h}" rx="24" fill="${fill}"/>${lines.map((tx,k)=>`<text x="${x+265}" y="${y+(h===54?36:34)+k*32}" text-anchor="middle" font-size="25" font-weight="800" fill="#0a1830">${tx}</text>`).join('')}</g>`);y+=h+10});
+const DLG=[['b1','c',0.0,['שלום, אפשר לתאם פגישה?']],['b2','g',2.76,['היי! מה שלומך? בטח שאפשר.']],['b3','c',5.89,['סליחה על השעה... את לא הולכת לישון?']],['b4','g',9.41,['ברור שאני לא הולכת לישון... אף פעם.']],['b5','c',12.43,['אבל... העסק לא סגור עכשיו?']],['b6','g',14.52,['כן, אז העסק סגור עכשיו.','אבל אני פה ואני אשמח לעזור לך ככל שאוכל.']]];
+const SPK=[[0,2.4,'c'],[2.72,5.6,'g'],[5.85,9.1,'c'],[9.38,12.05,'g'],[12.4,14.2,'c'],[14.5,23,'g']];
+(function(){let y=720;const out=[];DLG.forEach(([id,w,off,lines])=>{const h=lines.length>1?84:54;const x=w==='c'?150:40;const fill=w==='c'?'#ffffff':'#e0b877';
+ out.push(`<g id="bd_${id}" opacity="0"><rect x="${x}" y="${y}" width="530" height="${h}" rx="24" fill="${fill}"/>${lines.map((tx,k)=>`<text x="${x+265}" y="${y+(h===54?36:34)+k*32}" text-anchor="middle" font-size="24" font-weight="800" fill="#0a1830">${tx}</text>`).join('')}</g>`);y+=h+10});
  $('bubd').innerHTML=out.join('');})();
 $('wd').innerHTML=Array.from({length:22},(_,i)=>`<rect x="${-110+i*10}" y="-4" width="6" height="8" rx="3" fill="#7fe9ff" class="wbd"/>`).join('');
 stars('stars8',50);

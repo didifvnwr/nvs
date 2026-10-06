@@ -1,9 +1,9 @@
 import subprocess, json, glob
 U='/root/.claude/uploads/0f9540b5-d01e-533c-b68d-1d5a2bac763f/'
-A=glob.glob(U+'4a79796a-*')[0];G=glob.glob(U+'9bfbe179-*')[0];C=glob.glob(U+'47fe2901-*')[0]
-D=glob.glob(U+'0b6959b9-*')[0];M=glob.glob(U+'18c0341a-*')[0]
+A=glob.glob(U+'ed02fdce-*')[0];G=glob.glob(U+'9bfbe179-*')[0];C=glob.glob(U+'47fe2901-*')[0]
+D=glob.glob(U+'2fb80d95-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
 clips=[('P1',A,0.0,3.18,'s1',0.3),('P2',A,3.18,8.2,'s2',0.25),('P3',A,8.2,12.5,'s3',0.25),('P4',A,12.5,18.4,'s4',0.25),
- ('D',D,0.0,24.5,'sd',0.4),('P5',A,18.4,22.83,'s5',0.4),('P6',A,22.83,30.0,'s6',0.25),('P7',A,30.25,33.65,'s7',0.25)]
+ ('D',D,0.0,22.99,'sd',0.4),('P5',A,18.4,22.83,'s5',0.4),('P6',A,22.83,30.0,'s6',0.25),('P7',A,30.25,33.65,'s7',0.25)]
 t=0.0;tl=[]
 for cid,f,a,b,sc,gap in clips:
     t+=gap;d=b-a;tl.append(dict(id=cid,file=f,a=a,b=b,scene=sc,start=round(t,3),dur=round(d,3)));t+=d
