@@ -1,10 +1,10 @@
 import json,subprocess,glob
 U='/root/.claude/uploads/0f9540b5-d01e-533c-b68d-1d5a2bac763f/'
-V=glob.glob(U+'57670dd1-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
+V=glob.glob(U+'882443cb-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
 # scene starts in the edited recording (found from the pauses and by matching with earlier recordings)
-S=[('a1',0.0),('a2',5.04),('a3',13.05),('a4',17.37),('a5',21.9),('a6',24.94),('a7',30.7),
-   ('f1',34.64),('f2',43.88),('f3',53.63),('f4',61.5),('f5',73.6),('f6',80.11),('f7',88.51),('f8',95.2),('f9',103.36)]
-END=109.17;TOTAL=round(END+6.5,2)
+S=[('a1',0.0),('a2',5.8),('a3',13.81),('a4',18.13),('a5',22.66),('a6',25.7),('a7',30.43),
+   ('f1',34.37),('f2',43.61),('f3',53.36),('f4',61.23),('f5',73.33),('f6',79.84),('f7',88.24),('f8',94.93),('f9',103.09)]
+END=108.88;TOTAL=round(END+6.5,2)
 seg=[]
 for i,(sc,st) in enumerate(S):
     a=0 if i==0 else round(st-0.05,3)
