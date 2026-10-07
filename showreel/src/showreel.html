@@ -45,7 +45,7 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL={"seg": [[0, 4.99, "a1"], [4.99, 13.0, "a2"], [13.0, 17.32, "a3"], [17.32, 20.93, "a4"], [20.93, 26.1, "a5"], [26.1, 30.65, "a6"], [30.65, 34.59, "a7"], [34.59, 43.83, "f1"], [43.83, 53.58, "f2"], [53.58, 61.45, "f3"], [61.45, 73.55, "f4"], [73.55, 80.06, "f5"], [80.06, 88.46, "f6"], [88.46, 95.15, "f7"], [95.15, 103.31, "f8"], [103.31, 115.67, "f9"]], "total": 115.67, "des": {"a1": 5, "a2": 8, "a3": 4.5, "a4": 5, "a5": 6, "a6": 5, "a7": 5, "f1": 7, "f2": 7, "f3": 6, "f4": 8, "f5": 7, "f6": 8, "f7": 6, "f8": 7, "f9": 11}};
+const TL={"seg": [[0, 4.99, "a1"], [4.99, 13.0, "a2"], [13.0, 17.32, "a3"], [17.32, 21.85, "a4"], [21.85, 24.89, "a5"], [24.89, 30.65, "a6"], [30.65, 34.59, "a7"], [34.59, 43.83, "f1"], [43.83, 53.58, "f2"], [53.58, 61.45, "f3"], [61.45, 73.55, "f4"], [73.55, 80.06, "f5"], [80.06, 88.46, "f6"], [88.46, 95.15, "f7"], [95.15, 103.31, "f8"], [103.31, 115.67, "f9"]], "total": 115.67, "des": {"a1": 5, "a2": 8, "a3": 4.5, "a4": 5, "a5": 4, "a6": 6, "a7": 5, "f1": 7, "f2": 7, "f3": 6, "f4": 8, "f5": 7, "f6": 8, "f7": 6, "f8": 7, "f9": 11}};
 const SEG=TL.seg;const TOTAL=TL.total;const DESM=TL.des;const SIDX=id=>SEG.findIndex(s=>s[2]===id);
 const DES=[];
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
@@ -227,71 +227,122 @@ H.a5=`<div class="tint" style="background:radial-gradient(800px 600px at 30% 50%
  <div class="abs" id="a5eq" style="left:70px;top:210px;width:620px;height:300px;display:flex;gap:9px;align-items:flex-end;direction:ltr"></div>
  <div class="abs" id="a5nt" style="left:70px;top:130px;width:620px;height:80px;font-size:54px;color:#e0b877"></div>
  <div class="abs o k" id="a5k" style="right:70px;top:210px;left:auto">JINGLES · RADIO</div>
- <div class="abs big gt" id="a5h" style="right:70px;top:240px;width:540px;text-align:right;font-size:84px">ג׳ינגלים<br>ופרסומות רדיו</div>
- <div class="abs" id="a5c" style="right:70px;top:480px;width:540px;text-align:right"><span class="chip hi" style="font-size:28px">שנשארים בראש</span></div>`;
+ <div class="abs big gt" id="a5h" style="right:70px;top:240px;width:560px;text-align:right;font-size:84px">ג׳ינגלים<br>שנשארים בראש</div>
+ <div class="abs" id="a5c" style="right:70px;top:480px;width:540px;text-align:right"><span class="chip hi" style="font-size:28px">פרסומות רדיו</span></div>`;
 H.a6=`<div class="tint" style="background:radial-gradient(800px 600px at 30% 50%,#0b2a5a,#030812 80%)"></div>
  <div class="abs" id="a6g" style="left:60px;top:150px;width:640px;height:430px"></div>
  <div class="abs o k" id="a6k" style="right:70px;top:210px;left:auto">VOICE TALENT</div>
  <div class="abs big gt" id="a6h" style="right:70px;top:240px;width:520px;text-align:right;font-size:70px">מגוון רחב של<br>קריינים וקרייניות</div>
  <div class="abs" id="a6c" style="right:70px;top:430px;width:520px;text-align:right"><span class="chip">לכל סגנון</span><span class="chip hi">לכל קהל</span></div>`;
 H.a7=`<img class="bg" id="a7v"><div class="tint" style="background:linear-gradient(270deg,rgba(3,8,18,.92),rgba(3,8,18,.6) 55%,rgba(3,8,18,.3))"></div>
- <div id="a7a" style="--cat-a:#9cefff;--cat-b:#2a9be6;--cat-c:#11528a;--accent:#3fd0ff;position:absolute;left:50px;top:60px;width:600px;height:600px;overflow:hidden;border-radius:20px"><canvas id="a7bg" width="900" height="900" style="position:absolute;left:0;top:0;width:600px;height:600px"></canvas><svg viewBox="0 0 600 600" preserveAspectRatio="none" style="position:absolute;left:0;top:0;width:600px;height:600px" >
+ <div id="a7a" style="--cat-a:#9cefff;--cat-b:#2a9be6;--cat-c:#11528a;--txt-a:#c8f6ff;--txt-b:#45b4f2;--txt-c:#1a6cb4;--sub:#8fc9ec;--accent:#3fd0ff;position:absolute;left:40px;top:60px;width:600px;height:600px;overflow:hidden;border-radius:20px;background:linear-gradient(180deg,#061226,#01050c)"><canvas id="a7bg" width="900" height="900" style="position:absolute;left:0;top:0;width:600px;height:600px"></canvas><svg viewBox="0 0 600 600" preserveAspectRatio="none" style="position:absolute;left:0;top:0;width:600px;height:600px" >
     <defs>
-      <linearGradient id="ct_catGrad" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="305">
+      <linearGradient id="cm_catGrad" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="305">
         <stop offset="0" style="stop-color:var(--cat-a)"/>
         <stop offset=".5" style="stop-color:var(--cat-b)"/>
         <stop offset="1" style="stop-color:var(--cat-c)"/>
       </linearGradient>
-      <linearGradient id="ct_lineGrad" x1="0" x2="1">
+      <linearGradient id="cm_lineGrad" x1="0" x2="1">
         <stop offset="0" style="stop-color:var(--accent)" stop-opacity="0"/>
         <stop offset=".5" style="stop-color:var(--accent)" stop-opacity="1"/>
         <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
       </linearGradient>
-      <radialGradient id="ct_floorGlow">
+      <radialGradient id="cm_floorGlow">
         <stop offset="0" style="stop-color:var(--accent)" stop-opacity=".55"/>
         <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
       </radialGradient>
-      <filter id="ct_glow" x="-30%" y="-30%" width="160%" height="160%">
+      <filter id="cm_glow" x="-30%" y="-30%" width="160%" height="160%">
         <feGaussianBlur stdDeviation="7" result="b"/>
         <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
-      <filter id="ct_softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <filter id="cm_softGlow" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur stdDeviation="4" result="b"/>
         <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
+      <linearGradient id="cm_txtGrad" gradientUnits="userSpaceOnUse" x1="0" y1="50" x2="0" y2="125">
+        <stop offset="0" style="stop-color:var(--txt-a)"/>
+        <stop offset=".5" style="stop-color:var(--txt-b)"/>
+        <stop offset="1" style="stop-color:var(--txt-c)"/>
+      </linearGradient>
+      <linearGradient id="cm_sheen" gradientUnits="userSpaceOnUse" x1="-400" y1="0" x2="-200" y2="0">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity=".85"/>
+        <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <clipPath id="cm_wipe"><rect id="cm_wipeRect" x="570" y="25" width="0" height="125"/></clipPath>
     </defs>
 
     <!-- ground line -->
-    <line id="ct_horizon" x1="300" y1="480" x2="300" y2="480" stroke="url(#ct_lineGrad)" stroke-width="2" opacity=".9"/>
+    <line id="cm_horizon" x1="300" y1="480" x2="300" y2="480" stroke="url(#cm_lineGrad)" stroke-width="2" opacity=".9"/>
 
     <!-- cat: drawn facing right in local space, flipped to face the wordmark -->
-    <g id="ct_catPos" transform="translate(1000 99) scale(1.25)">
+
+    <!-- wordmark -->
+    <g id="cm_word">
+      <g id="cm_wordInner" clip-path="url(#cm_wipe)">
+        <text x="300" y="118" text-anchor="middle" direction="rtl" font-size="70" fill="#ff3d7f" id="cm_glitchA" opacity="0"><tspan font-weight="900">מיצי</tspan> <tspan font-weight="300">תקשורת</tspan></text>
+        <text x="300" y="118" text-anchor="middle" direction="rtl" font-size="70" fill="#29f0ff" id="cm_glitchB" opacity="0"><tspan font-weight="900">מיצי</tspan> <tspan font-weight="300">תקשורת</tspan></text>
+        <text x="300" y="118" text-anchor="middle" direction="rtl" font-size="70" fill="url(#cm_txtGrad)" filter="url(#cm_softGlow)"><tspan font-weight="900">מיצי</tspan> <tspan font-weight="300" style="fill:var(--sub)">תקשורת</tspan></text>
+        <text x="300" y="118" text-anchor="middle" direction="rtl" font-size="70" fill="url(#cm_sheen)" style="mix-blend-mode:overlay"><tspan font-weight="900">מיצי</tspan> <tspan font-weight="300">תקשורת</tspan></text>
+      </g>
+      <rect id="cm_scan" x="570" y="35" width="4" height="105" fill="var(--accent)" filter="url(#cm_glow)" opacity="0"/>
+    </g>
+    <g id="cm_sideWrap">
+    <g id="cm_catPos" transform="translate(760 177) scale(1)">
       <g transform="scale(-1 1)">
-        <ellipse id="ct_shadow" cx="140" cy="306" rx="135" ry="12" fill="url(#ct_floorGlow)"/>
-        <g id="ct_catBody" fill="url(#ct_catGrad)">
+        <ellipse id="cm_shadow" cx="140" cy="306" rx="135" ry="12" fill="url(#cm_floorGlow)"/>
+        <g id="cm_catBody" fill="url(#cm_catGrad)">
           <!-- far legs -->
-          <path id="ct_legB1" opacity=".62" d="M65,200 C71,192 99,192 95,206 L87,290 Q97,292 97,298 Q96,303 87,303 L74,303 Q71,303 72,296 Z"/>
-          <path id="ct_legF1" opacity=".62" d="M193,200 C199,192 219,192 215,206 L211,290 Q221,292 221,298 Q220,303 211,303 L198,303 Q195,303 196,296 Z"/>
+          <path id="cm_legB1" opacity=".62" d="M65,200 C71,192 99,192 95,206 L87,290 Q97,292 97,298 Q96,303 87,303 L74,303 Q71,303 72,296 Z"/>
+          <path id="cm_legF1" opacity=".62" d="M193,200 C199,192 219,192 215,206 L211,290 Q221,292 221,298 Q220,303 211,303 L198,303 Q195,303 196,296 Z"/>
           <!-- tail -->
-          <g transform="translate(-4 14)"><path id="ct_tail" d="M58,175 C30,168 22,132 36,110 C46,95 44,80 36,70" fill="none" stroke="url(#ct_catGrad)" stroke-width="13" stroke-linecap="round"/></g>
+          <g transform="translate(-4 14)"><path id="cm_tail" d="M58,175 C30,168 22,132 36,110 C46,95 44,80 36,70" fill="none" stroke="url(#cm_catGrad)" stroke-width="13" stroke-linecap="round"/></g>
           <!-- body -->
           <path d="M50,186 C80,156 192,150 226,160 C252,168 258,206 242,228 C206,246 100,248 66,238 C36,228 30,204 50,186 Z"/>
           <!-- near legs -->
-          <path id="ct_legB2" d="M86,200 C92,192 120,192 116,206 L108,290 Q118,292 118,298 Q117,303 108,303 L95,303 Q92,303 93,296 Z"/>
-          <path id="ct_legF2" d="M211,200 C217,192 237,192 233,206 L229,290 Q239,292 239,298 Q238,303 229,303 L216,303 Q213,303 214,296 Z"/>
+          <path id="cm_legB2" d="M86,200 C92,192 120,192 116,206 L108,290 Q118,292 118,298 Q117,303 108,303 L95,303 Q92,303 93,296 Z"/>
+          <path id="cm_legF2" d="M211,200 C217,192 237,192 233,206 L229,290 Q239,292 239,298 Q238,303 229,303 L216,303 Q213,303 214,296 Z"/>
           <!-- head -->
-          <g id="ct_head"><g transform="translate(4 16)">
+          <g id="cm_head"><g transform="translate(4 16)">
             <path d="M215,158 C222,132 236,108 252,98 L258,68 L272,88 L284,70 L288,100 C301,108 304,124 296,135 C287,146 268,146 258,150 C248,166 232,172 215,165 Z"/>
-            <ellipse id="ct_eye" cx="283" cy="113" rx="4.5" ry="4.5" fill="#e8fdff" filter="url(#ct_softGlow)"/>
+            <ellipse id="cm_eye" cx="283" cy="113" rx="4.5" ry="4.5" fill="#e8fdff" filter="url(#cm_softGlow)"/>
           </g></g>
         </g>
         <!-- signal waves -->
-        <g transform="translate(4 16)" fill="none" stroke="url(#ct_catGrad)" stroke-width="12" stroke-linecap="round" filter="url(#ct_softGlow)">
-          <path id="ct_arc0" opacity="0" d="M302.4,61.4 A40,40 0 0 1 331.8,96.5"/>
-          <path id="ct_arc1" opacity="0" d="M310.1,32.4 A70,70 0 0 1 361.7,93.9"/>
-          <path id="ct_arc2" opacity="0" d="M317.9,3.4 A100,100 0 0 1 391.6,91.3"/>
+        <g transform="translate(4 16)" fill="none" stroke="url(#cm_catGrad)" stroke-width="12" stroke-linecap="round" filter="url(#cm_softGlow)">
+          <path id="cm_arc0" opacity="0" d="M302.4,61.4 A40,40 0 0 1 331.8,96.5"/>
+          <path id="cm_arc1" opacity="0" d="M310.1,32.4 A70,70 0 0 1 361.7,93.9"/>
+          <path id="cm_arc2" opacity="0" d="M317.9,3.4 A100,100 0 0 1 391.6,91.3"/>
         </g>
-        <circle id="ct_ping" cx="287" cy="129" r="0" fill="none" stroke="var(--accent)" stroke-width="3" opacity="0"/>
+        <circle id="cm_ping" cx="287" cy="129" r="0" fill="none" stroke="var(--accent)" stroke-width="3" opacity="0"/>
+      </g>
+    </g>
+    </g>
+
+    <!-- front-facing cat -->
+    <g id="cm_frontWrap" transform="translate(300 0) scale(0 1) translate(-300 0)">
+      <g transform="translate(300 177)">
+        <ellipse cx="0" cy="306" rx="100" ry="11" fill="url(#cm_floorGlow)"/>
+        <path id="cm_fTail" d="M50,292 C92,292 108,250 94,222 C86,206 92,192 102,186" fill="none" stroke="url(#cm_catGrad)" stroke-width="13" stroke-linecap="round"/>
+        <g fill="url(#cm_catGrad)">
+          <path d="M-30,152 C-60,172 -76,240 -66,296 Q-64,304 -54,304 L54,304 Q64,304 66,296 C76,240 60,172 30,152 Z"/>
+          <ellipse cx="0" cy="196" rx="20" ry="32" fill="#ffffff" opacity=".12"/>
+          <path d="M0,222 L0,301 M-31,256 L-31,301 M31,256 L31,301" fill="none" stroke="var(--cat-c)" stroke-width="3" opacity=".55" stroke-linecap="round"/>
+          <g id="cm_fHead">
+            <path d="M-47,110 L-40,52 L-6,82 Z M47,110 L40,52 L6,82 Z"/>
+            <ellipse cx="0" cy="118" rx="54" ry="46"/>
+            <path d="M-38,92 L-35,64 L-18,80 Z M38,92 L35,64 L18,80 Z" fill="var(--cat-c)" opacity=".45"/>
+            <ellipse id="cm_eyeL" cx="-19" cy="114" rx="7" ry="8" fill="#e8fdff" filter="url(#cm_softGlow)"/>
+            <ellipse id="cm_eyeR" cx="19" cy="114" rx="7" ry="8" fill="#e8fdff" filter="url(#cm_softGlow)"/>
+            <path d="M-6,133 L6,133 L0,140 Z" fill="var(--cat-c)" opacity=".75"/>
+            <g stroke="#bff4ff" stroke-width="1.6" opacity=".55" stroke-linecap="round">
+              <line x1="-14" y1="139" x2="-64" y2="130"/><line x1="-14" y1="143" x2="-66" y2="146"/>
+              <line x1="14" y1="139" x2="64" y2="130"/><line x1="14" y1="143" x2="66" y2="146"/>
+            </g>
+          </g>
+        </g>
+        <g id="cm_fArcs" fill="none" stroke="url(#cm_catGrad)" stroke-width="11" stroke-linecap="round" filter="url(#cm_softGlow)"></g>
+        <circle id="cm_fPing" cx="0" cy="114" r="0" fill="none" stroke="var(--accent)" stroke-width="3" opacity="0"/>
       </g>
     </g>
   </svg></div>
@@ -404,35 +455,52 @@ if(LAND){
  $('f4s').setAttribute('viewBox','0 0 1280 720');[0,1,2].forEach(i=>{$('f4c'+i).setAttribute('cx',360);$('f4c'+i).setAttribute('cy',355)});
 }
 
-// ---- animated cat (a7) ----
-const CT={};['catPos','head','tail','eye','ping','horizon','shadow','legB1','legB2','legF1','legF2','arc0','arc1','arc2'].forEach(n=>CT[n]=document.getElementById('ct_'+n));
-const CLEGS=[CT.legB1,CT.legB2,CT.legF1,CT.legF2],CARCS=[CT.arc0,CT.arc1,CT.arc2];
-const CHIPS=[[80,200],[101,200],[204,200],[222,200]],CLEGP=[0,Math.PI,Math.PI,0];
-const CPARTS=Array.from({length:45},(_,i)=>{const q=k=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)};return{x:q(1)*600,y:q(2)*480,s:q(3)*1.6+.4,v:q(4)*.012+.004,ph:q(5)*6.28}});
-const CCTX=$('a7bg').getContext('2d');
-const eo=x=>1-Math.pow(1-clamp(x),3);
-function catFrame(t){
-  const ctx=CCTX;ctx.setTransform(1.5,0,0,1.5,0,0);ctx.clearRect(0,0,600,600);
-  ctx.fillStyle='rgba(3,9,20,.55)';ctx.fillRect(0,0,600,600);
+// ---- animated brand slide (a7): cat turns to the camera, wordmark reveals ----
+const MK={};['catPos','head','tail','eye','ping','legB1','legB2','legF1','legF2','arc0','arc1','arc2','horizon','shadow','sideWrap','frontWrap','fHead','fTail','wipeRect','scan','glitchA','glitchB','sheen','eyeL','eyeR','fPing','fArcs','wordInner'].forEach(n=>MK[n]=document.getElementById('cm_'+n));
+document.querySelectorAll('#a7a svg text').forEach(tx=>tx.style.fontFamily='H,sans-serif');
+const MLEGS=[MK.legB1,MK.legB2,MK.legF1,MK.legF2],MARCS=[MK.arc0,MK.arc1,MK.arc2],MFARCS=[];
+{const NS='http://www.w3.org/2000/svg',cy=118,a0=-50*Math.PI/180,a1=-5*Math.PI/180;[80,108,136].forEach(rr=>{const pair=[1,-1].map(side=>{const p=document.createElementNS(NS,'path');const x0=side*rr*Math.cos(a0),y0=cy+rr*Math.sin(a0),x1=side*rr*Math.cos(a1),y1=cy+rr*Math.sin(a1);p.setAttribute('d',`M${x0.toFixed(1)},${y0.toFixed(1)} A${rr},${rr} 0 0 ${side>0?1:0} ${x1.toFixed(1)},${y1.toFixed(1)}`);p.setAttribute('opacity',0);MK.fArcs.appendChild(p);return p});MFARCS.push(pair)})}
+let mkCentered=false;
+const MHIPS=[[80,200],[101,200],[204,200],[222,200]],MLEGP=[0,Math.PI,Math.PI,0];
+const MPARTS=Array.from({length:45},(_,i)=>{const q=k=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)};return{x:q(1)*600,y:q(2)*480,s:q(3)*1.6+.4,v:q(4)*.012+.004,ph:q(5)*6.28}});
+const MCTX=$('a7bg').getContext('2d');
+const meo=x=>1-Math.pow(1-clamp(x),3),mein=x=>x*x*x,meb=x=>{const c=1.6;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)},meio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const mrnd=(t,k)=>{const x=Math.sin(Math.floor(t/45)*91.7+k*17.3)*43758.5453;return x-Math.floor(x)};
+function markFrame(t){
+  if(!mkCentered){try{const g=MK.wordInner;g.removeAttribute('transform');const b=g.querySelector('text[filter]').getBBox();g.setAttribute('transform',`translate(${(300-(b.x+b.width/2)).toFixed(1)} 0)`);mkCentered=true}catch(e){}}
+  const ctx=MCTX;ctx.setTransform(1.5,0,0,1.5,0,0);ctx.clearRect(0,0,600,600);
   const a=clamp(t/700),rgb='63,208,255';
-  let g=ctx.createRadialGradient(300,290,10,300,290,340);g.addColorStop(0,`rgba(${rgb},${.2*a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.fillRect(0,0,600,600);
+  let g=ctx.createRadialGradient(300,290,10,300,290,340);g.addColorStop(0,`rgba(${rgb},${.16*a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.fillRect(0,0,600,600);
   const hor=480,bot=640,cx=300,N=7,s=(t*.00035)%1;ctx.lineWidth=1;
   for(let i=0;i<N;i++){const f=(i+s)/N,y=hor+(bot-hor)*f*f;ctx.strokeStyle=`rgba(${rgb},${.35*f*a})`;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(600,y);ctx.stroke()}
   for(let j=-14;j<=14;j++){ctx.strokeStyle=`rgba(${rgb},${.24*(1-Math.abs(j)/16)*a})`;ctx.beginPath();ctx.moveTo(cx+j*22,hor);ctx.lineTo(cx+j*110,bot);ctx.stroke()}
-  for(const p of CPARTS){const y=(p.y-t*p.v*2+4800)%480;const tw=.35+.65*(.5+.5*Math.sin(t*.002+p.ph));ctx.fillStyle=`rgba(${rgb},${.6*tw*a})`;ctx.beginPath();ctx.arc(p.x,y,p.s,0,6.283);ctx.fill()}
-  const START_X=1000,END_X=564,WALK_AT=450,WALK_MS=3000,STRIDE=188,SC=1.25,STOP=WALK_AT+WALK_MS;
-  const hh=eo(t/900);CT.horizon.setAttribute('x1',300-280*hh);CT.horizon.setAttribute('x2',300+280*hh);
+  for(const p of MPARTS){const y=(p.y-t*p.v*2+4800)%480;const tw=.35+.65*(.5+.5*Math.sin(t*.002+p.ph));ctx.fillStyle=`rgba(${rgb},${.6*tw*a})`;ctx.beginPath();ctx.arc(p.x,y,p.s,0,6.283);ctx.fill()}
+  // faster timing than the standalone version so the whole move fits the narration
+  const START_X=760,END_X=445,WALK_AT=150,WALK_MS=1350,STRIDE=150,SC=1,STOP=WALK_AT+WALK_MS;
+  const hh=meo(t/600);MK.horizon.setAttribute('x1',300-280*hh);MK.horizon.setAttribute('x2',300+280*hh);
   const u=clamp((t-WALK_AT)/WALK_MS),p=1-Math.pow(1-u,2.2),X=START_X+(END_X-START_X)*p,phase=(START_X-X)/STRIDE*Math.PI*2;
   const speed=u<1?Math.pow(1-u,1.2):0,amp=Math.min(1,speed*1.7),bob=-Math.abs(Math.sin(phase))*4*amp;
-  CT.catPos.setAttribute('transform',`translate(${X.toFixed(2)} ${(99+bob*SC).toFixed(2)}) scale(${SC})`);
-  CLEGS.forEach((leg,i)=>leg.setAttribute('transform',`rotate(${(26*amp*Math.sin(phase+CLEGP[i])).toFixed(2)} ${CHIPS[i][0]} ${CHIPS[i][1]})`));
-  CT.shadow.setAttribute('rx',(135-bob*2).toFixed(1));
-  const ts=t-STOP;let headA=2*amp*Math.sin(phase*2);if(ts>0&&ts<1100)headA+=-9*Math.sin(Math.PI*ts/1100);
-  CT.head.setAttribute('transform',`rotate(${headA.toFixed(2)} 236 168)`);
-  CT.tail.setAttribute('transform',`rotate(${(Math.sin(t*.0045)*(4+9*amp)+(ts>0?Math.sin(t*.0016)*6:0)).toFixed(2)} 58 175)`);
-  let ry=4.5;if(ts>1500){const k=(ts-1500)%3900;if(k<160)ry=4.5*Math.abs(1-2*k/160)}CT.eye.setAttribute('ry',ry.toFixed(2));
-  if(ts>0&&ts<1000){const e=eo(ts/1000);CT.ping.setAttribute('r',(10+190*e).toFixed(1));CT.ping.setAttribute('opacity',(1-e).toFixed(3))}else CT.ping.setAttribute('opacity',0);
-  CARCS.forEach((arc,i)=>{const ap=clamp((ts-150-i*170)/260),pulse=.4+.6*(.5+.5*Math.sin(t*.0055-i*1.15));arc.setAttribute('opacity',(ap*(ts>900?pulse:1)).toFixed(3))});
+  MK.catPos.setAttribute('transform',`translate(${X.toFixed(2)} ${(177+bob*SC).toFixed(2)}) scale(${SC})`);
+  MLEGS.forEach((leg,i)=>leg.setAttribute('transform',`rotate(${(26*amp*Math.sin(phase+MLEGP[i])).toFixed(2)} ${MHIPS[i][0]} ${MHIPS[i][1]})`));
+  MK.shadow.setAttribute('rx',(135-bob*2).toFixed(1));
+  const ts=t-STOP;
+  MK.head.setAttribute('transform',`rotate(${(2*amp*Math.sin(phase*2)).toFixed(2)} 236 168)`);
+  MK.tail.setAttribute('transform',`rotate(${(Math.sin(t*.0045)*(4+9*amp)).toFixed(2)} 58 175)`);
+  MARCS.forEach(x=>x.setAttribute('opacity',0));MK.ping.setAttribute('opacity',0);
+  const tt=ts-100;
+  const sx=tt<0?1:1-mein(clamp(tt/200)),fx=tt<200?0:meb(clamp((tt-200)/280));
+  MK.sideWrap.setAttribute('transform',`translate(300 0) scale(${Math.max(sx,.0001).toFixed(4)} 1) translate(-300 0)`);
+  MK.frontWrap.setAttribute('transform',`translate(300 0) scale(${Math.max(fx,.0001).toFixed(4)} 1) translate(-300 0)`);
+  const tf=tt-480;
+  MK.fHead.setAttribute('transform',`rotate(${(tf>0?Math.sin(tf*.0014)*3.5:0).toFixed(2)} 0 150)`);
+  MK.fTail.setAttribute('transform',`rotate(${(Math.sin(t*.0018)*8).toFixed(2)} 50 292)`);
+  let ery=8;if(tf>0&&tf<300)ery=8+3*Math.sin(Math.PI*tf/300);if(tf>1600){const k=(tf-1600)%3900;if(k<160)ery=8*Math.abs(1-2*k/160)}
+  MK.eyeL.setAttribute('ry',ery.toFixed(2));MK.eyeR.setAttribute('ry',ery.toFixed(2));
+  if(tf>0&&tf<900){const e=meo(tf/900);MK.fPing.setAttribute('r',(10+220*e).toFixed(1));MK.fPing.setAttribute('opacity',(1-e).toFixed(3))}else MK.fPing.setAttribute('opacity',0);
+  MFARCS.forEach((pair,i)=>{const ap=clamp((tf-100-i*120)/220),pulse=.4+.6*(.5+.5*Math.sin(t*.0055-i*1.15));const o=(ap*(tf>700?pulse:1)).toFixed(3);pair.forEach(q=>q.setAttribute('opacity',o))});
+  const m=clamp((tf-100)/550),em=meio(m),WW=540;MK.wipeRect.setAttribute('x',570-WW*em);MK.wipeRect.setAttribute('width',WW*em);MK.scan.setAttribute('x',568-WW*em);MK.scan.setAttribute('opacity',m>0&&m<1?.95:0);
+  const gl=tf>100&&tf<800;if(gl&&mrnd(t,1)<.5){const dx=(mrnd(t,2)-.5)*10;MK.glitchA.setAttribute('transform',`translate(${dx} 0)`);MK.glitchA.setAttribute('opacity',.55);MK.glitchB.setAttribute('transform',`translate(${-dx} 0)`);MK.glitchB.setAttribute('opacity',.55)}else{MK.glitchA.setAttribute('opacity',0);MK.glitchB.setAttribute('opacity',0)}
+  const sw=((tf-1200)%4600)/1400;if(tf>1200&&sw<1){const x=600-620*meio(sw);MK.sheen.setAttribute('x1',x-70);MK.sheen.setAttribute('x2',x+70)}else{MK.sheen.setAttribute('x1',-400);MK.sheen.setAttribute('x2',-200)}
 }
 function render(t){return renderAsync(t)}
 async function renderAsync(t){
@@ -451,7 +519,7 @@ async function renderAsync(t){
   lt=L('a4');show('a4k',lt,.1);show('a4h',lt,.3,.5,30,.05);show('a4t',lt,2.4);show('a4g0',lt,.8,.4,0);[0,1,2].forEach(i=>{const s=seg(lt,1.4+i*.5,.5);$('a4p'+i).style.opacity=s;$('a4p'+i).style.strokeDashoffset=(1-s)*80;$('a4g'+(i+1)).style.opacity=s});
   lt=L('a5');show('a5k',lt,.1);show('a5h',lt,.3,.5,30,.05);show('a5c',lt,2.2);[...$('a5eq').children].forEach((b,i)=>{const v=.5+.5*Math.sin(t*9+i*.7);const w=.5+.5*Math.sin(t*3.1+i*.31);b.style.height=(30+250*v*w*ease(lt/.6))+'px'});for(let i=0;i<5;i++){const n=$('a5n'+i);const p=((lt*.5+i*.2)%1);n.style.top=(60-p*60)+'px';n.style.opacity=Math.sin(p*Math.PI)}
   lt=L('a6');show('a6k',lt,.1);show('a6h',lt,.3,.5,30,.05);show('a6c',lt,2.6);for(let i=0;i<6;i++){show('a6c'+i,lt,.4+i*.45,.4,18);[...$('a6w'+i).children].forEach((b,j)=>{const on=lt>.6+i*.45;b.style.height=(8+(on?80:2)*(.5+.5*Math.sin(t*8+j*.9+i))*(.6+.4*Math.sin(t*2+i+j)))+'px'})}
-  lt=L('a7');jobs.push(setImg($('a7v'),pp('city',lt*24+40,199)));catFrame(lt*1000);show('a7a',lt,.1,.4,0);show('a7k',lt,.2);show('a7h',lt,.7,.5,30,.05);show('a7t',lt,2.4);
+  lt=L('a7');jobs.push(setImg($('a7v'),pp('city',lt*24+40,199)));markFrame(lt*1000);show('a7a',lt,.05,.3,0);show('a7k',lt,.2);show('a7h',lt,.7,.5,30,.05);show('a7t',lt,2.4);
   lt=L('f1');jobs.push(setImg($('f1v'),pp('city',lt*24,199)));$('f1v').style.transform=`scale(${1+.04*lt/7})`;
   show('f1h',lt,.1,.5,30,.1);const cp=seg(lt,1.0,.5);$('f1s').style.opacity=cp;
   NODES.forEach((_,i)=>{const s=seg(lt,1.4+i*.55,.5);$('f1p'+i).style.opacity=s;$('f1p'+i).style.strokeDashoffset=(1-s)*60;const g=$('f1g'+i);g.style.opacity=s;g.style.transformOrigin='center';});

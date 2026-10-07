@@ -1,8 +1,8 @@
 import json,subprocess,glob
 U='/root/.claude/uploads/0f9540b5-d01e-533c-b68d-1d5a2bac763f/'
-V=glob.glob(U+'2d4e6fb6-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
+V=glob.glob(U+'57670dd1-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
 # scene starts in the edited recording (found from the pauses and by matching with earlier recordings)
-S=[('a1',0.0),('a2',5.04),('a3',13.05),('a4',17.37),('a5',20.98),('a6',26.15),('a7',30.7),
+S=[('a1',0.0),('a2',5.04),('a3',13.05),('a4',17.37),('a5',21.9),('a6',24.94),('a7',30.7),
    ('f1',34.64),('f2',43.88),('f3',53.63),('f4',61.5),('f5',73.6),('f6',80.11),('f7',88.51),('f8',95.2),('f9',103.36)]
 END=109.17;TOTAL=round(END+6.5,2)
 seg=[]
@@ -10,7 +10,7 @@ for i,(sc,st) in enumerate(S):
     a=0 if i==0 else round(st-0.05,3)
     b=round(S[i+1][1]-0.05,3) if i+1<len(S) else TOTAL
     seg.append([a,b,sc])
-des={'a1':5,'a2':8,'a3':4.5,'a4':5,'a5':6,'a6':5,'a7':5,'f1':7,'f2':7,'f3':6,'f4':8,'f5':7,'f6':8,'f7':6,'f8':7,'f9':11}
+des={'a1':5,'a2':8,'a3':4.5,'a4':5,'a5':4,'a6':6,'a7':5,'f1':7,'f2':7,'f3':6,'f4':8,'f5':7,'f6':8,'f7':6,'f8':7,'f9':11}
 json.dump(dict(seg=seg,total=TOTAL,des=des),open('show_timeline.json','w'))
 print(seg,TOTAL)
 cuts=[s[0] for s in seg[1:]]
