@@ -2,7 +2,7 @@ import json,subprocess,glob
 U='/root/.claude/uploads/0f9540b5-d01e-533c-b68d-1d5a2bac763f/'
 V=glob.glob(U+'58a21525-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
 # scene starts in the edited recording (found from the pauses and by matching with earlier recordings)
-S=[('a1',0.0),('a2',3.9),('a3',9.0),('a4',13.1),('a5',17.3),('a6',20.6),('a7',30.51),
+S=[('a1',0.0),('a2',3.6),('a3',9.0),('a4',13.1),('a5',17.3),('a6',20.6),('a7',30.51),
    ('f1',34.45),('f2',43.69),('f3',53.44),('f4',61.31),('f5',73.41),('f6',79.92),('f7',88.32),('f8',95.01),('f9',103.17)]
 END=108.98;TOTAL=round(END+6.5,2)
 seg=[]
