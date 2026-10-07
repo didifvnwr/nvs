@@ -45,7 +45,7 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL={"seg": [[0, 3.55, "a1"], [3.55, 8.95, "a2"], [8.95, 13.05, "a3"], [13.05, 17.25, "a4"], [17.25, 20.55, "a5"], [20.55, 30.46, "a6"], [30.46, 34.4, "a7"], [34.4, 43.64, "f1"], [43.64, 53.39, "f2"], [53.39, 61.26, "f3"], [61.26, 73.36, "f4"], [73.36, 79.87, "f5"], [79.87, 88.27, "f6"], [88.27, 94.96, "f7"], [94.96, 103.12, "f8"], [103.12, 115.48, "f9"]], "total": 115.48, "des": {"a1": 5, "a2": 5, "a3": 4, "a4": 4.2, "a5": 3.5, "a6": 7, "a7": 5, "f1": 7, "f2": 7, "f3": 6, "f4": 8, "f5": 7, "f6": 8, "f7": 6, "f8": 7, "f9": 11}};
+const TL={"seg": [[0, 3.55, "a1"], [3.55, 8.95, "a2"], [8.95, 13.05, "a3"], [13.05, 17.25, "a4"], [17.25, 20.55, "a5"], [20.55, 26.33, "a6"], [26.33, 34.4, "a7"], [34.4, 43.64, "f1"], [43.64, 53.39, "f2"], [53.39, 61.26, "f3"], [61.26, 73.36, "f4"], [73.36, 79.87, "f5"], [79.87, 88.27, "f6"], [88.27, 94.96, "f7"], [94.96, 103.12, "f8"], [103.12, 115.48, "f9"]], "total": 115.48, "des": {"a1": 5, "a2": 5, "a3": 4, "a4": 4.2, "a5": 3.5, "a6": 5, "a7": 5.5, "f1": 7, "f2": 7, "f3": 6, "f4": 8, "f5": 7, "f6": 8, "f7": 6, "f8": 7, "f9": 11}};
 const SEG=TL.seg;const TOTAL=TL.total;const DESM=TL.des;const SIDX=id=>SEG.findIndex(s=>s[2]===id);
 const DES=[];
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
@@ -519,7 +519,7 @@ async function renderAsync(t){
   lt=L('a4');show('a4k',lt,.1);show('a4h',lt,.3,.5,30,.05);show('a4t',lt,2.4);show('a4g0',lt,.8,.4,0);[0,1,2].forEach(i=>{const s=seg(lt,1.4+i*.5,.5);$('a4p'+i).style.opacity=s;$('a4p'+i).style.strokeDashoffset=(1-s)*80;$('a4g'+(i+1)).style.opacity=s});
   lt=L('a5');show('a5k',lt,.1);show('a5h',lt,.3,.5,30,.05);show('a5c',lt,2.2);[...$('a5eq').children].forEach((b,i)=>{const v=.5+.5*Math.sin(t*9+i*.7);const w=.5+.5*Math.sin(t*3.1+i*.31);b.style.height=(30+250*v*w*ease(lt/.6))+'px'});for(let i=0;i<5;i++){const n=$('a5n'+i);const p=((lt*.5+i*.2)%1);n.style.top=(60-p*60)+'px';n.style.opacity=Math.sin(p*Math.PI)}
   lt=L('a6');show('a6k',lt,.1);show('a6h',lt,.3,.5,30,.05);show('a6c',lt,2.6);for(let i=0;i<6;i++){show('a6c'+i,lt,.4+i*.45,.4,18);[...$('a6w'+i).children].forEach((b,j)=>{const on=lt>.6+i*.45;b.style.height=(8+(on?80:2)*(.5+.5*Math.sin(t*8+j*.9+i))*(.6+.4*Math.sin(t*2+i+j)))+'px'})}
-  lt=L('a7');jobs.push(setImg($('a7v'),pp('city',lt*24+40,199)));markFrame(lt*1000);show('a7a',lt,.05,.3,0);show('a7k',lt,.2);show('a7h',lt,.7,.5,30,.05);show('a7t',lt,2.4);
+  lt=L('a7');jobs.push(setImg($('a7v'),pp('city',lt*24+40,199)));markFrame(lt*1000);show('a7a',lt,.05,.3,0);show('a7k',lt,.2);show('a7h',lt,.7,.5,30,.05);show('a7t',lt,1.1);
   lt=L('f1');jobs.push(setImg($('f1v'),pp('city',lt*24,199)));$('f1v').style.transform=`scale(${1+.04*lt/7})`;
   show('f1h',lt,.1,.5,30,.1);const cp=seg(lt,1.0,.5);$('f1s').style.opacity=cp;
   NODES.forEach((_,i)=>{const s=seg(lt,1.4+i*.55,.5);$('f1p'+i).style.opacity=s;$('f1p'+i).style.strokeDashoffset=(1-s)*60;const g=$('f1g'+i);g.style.opacity=s;g.style.transformOrigin='center';});
