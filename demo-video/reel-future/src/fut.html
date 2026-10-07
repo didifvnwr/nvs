@@ -266,6 +266,7 @@ if(LAND){
  P('f1h',{left:'auto',right:70,top:110,width:480,fontSize:72,textAlign:'right'});P('f1c',{left:'auto',right:70,top:380,width:480,textAlign:'right'});
  // f2
  C('f2k',70,500,0,70);C('f2h',112,520,0,70,{fontSize:58});C('f2a',280,240,150,70);C('f2b',280,240,150,330);C('f2d',450,240,100,70);C('f2n',450,240,100,330);
+ ['f2d','f2n'].forEach(id=>{const d=$(id).querySelector('div:last-child');d.style.fontSize='27px';d.style.whiteSpace='nowrap'});
  // f3
  C('f3k',70,500,0,70);C('f3h',112,520,0,70,{fontSize:60});C('f3q',290,500,80,70);C('f3s',390,200,90,70);C('f3w',390,280,90,290);C('f3g',510,500,0,70,{fontSize:23});
  // f4
