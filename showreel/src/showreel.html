@@ -45,7 +45,7 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL={"seg": [[0, 5.25, "a1"], [5.25, 13.25, "a2"], [13.25, 19.25, "a3"], [19.25, 27.25, "a4"], [27.25, 34.25, "a5"], [34.25, 41.25, "a6"], [41.25, 50.25, "a7"], [50.25, 59.67, "f1"], [59.67, 69.55, "f2"], [69.55, 77.53, "f3"], [77.53, 90.26, "f4"], [90.26, 96.69, "f5"], [96.69, 105.24, "f6"], [105.24, 112.17, "f7"], [112.17, 120.45, "f8"], [120.45, 133.02, "f9"]], "total": 133.02, "des": {"a1": 5, "a2": 8, "a3": 6, "a4": 8, "a5": 7, "a6": 7, "a7": 9, "f1": 7, "f2": 7, "f3": 6, "f4": 8, "f5": 7, "f6": 8, "f7": 6, "f8": 7, "f9": 11}};
+const TL={"seg": [[0, 5.25, "a1"], [5.25, 13.25, "a2"], [13.25, 19.25, "a3"], [19.25, 27.25, "a4"], [27.25, 34.25, "a5"], [34.25, 41.25, "a6"], [41.25, 48.25, "a7"], [48.25, 57.67, "f1"], [57.67, 67.55, "f2"], [67.55, 75.53, "f3"], [75.53, 88.26, "f4"], [88.26, 94.69, "f5"], [94.69, 103.24, "f6"], [103.24, 110.17, "f7"], [110.17, 118.45, "f8"], [118.45, 131.02, "f9"]], "total": 131.02, "des": {"a1": 5, "a2": 8, "a3": 6, "a4": 8, "a5": 7, "a6": 7, "a7": 7, "f1": 7, "f2": 7, "f3": 6, "f4": 8, "f5": 7, "f6": 8, "f7": 6, "f8": 7, "f9": 11}};
 const SEG=TL.seg;const TOTAL=TL.total;const DESM=TL.des;const SIDX=id=>SEG.findIndex(s=>s[2]===id);
 const DES=[];
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
@@ -232,13 +232,72 @@ H.a5=`<div class="tint" style="background:radial-gradient(800px 600px at 30% 50%
 H.a6=`<div class="tint" style="background:radial-gradient(800px 600px at 30% 50%,#0b2a5a,#030812 80%)"></div>
  <div class="abs" id="a6g" style="left:60px;top:150px;width:640px;height:430px"></div>
  <div class="abs o k" id="a6k" style="right:70px;top:210px;left:auto">VOICE TALENT</div>
- <div class="abs big gt" id="a6h" style="right:70px;top:240px;width:520px;text-align:right;font-size:70px">מגוון רחב של<br>קריינים וקריינות</div>
+ <div class="abs big gt" id="a6h" style="right:70px;top:240px;width:520px;text-align:right;font-size:70px">מגוון רחב של<br>קריינים וקרייניות</div>
  <div class="abs" id="a6c" style="right:70px;top:430px;width:520px;text-align:right"><span class="chip">לכל סגנון</span><span class="chip hi">לכל קהל</span></div>`;
-H.a7=`<img class="bg" id="a7v"><div class="tint" style="background:linear-gradient(270deg,rgba(3,8,18,.9),rgba(3,8,18,.55) 55%,rgba(3,8,18,.2))"></div>
- <div class="abs" id="a7l" style="left:110px;top:210px;width:470px;border-radius:22px;background:#fff;overflow:hidden;box-shadow:0 0 70px rgba(61,225,255,.4)"><img src="img/mitsi-logo.png" style="display:block;width:100%"></div>
+H.a7=`<img class="bg" id="a7v"><div class="tint" style="background:linear-gradient(270deg,rgba(3,8,18,.92),rgba(3,8,18,.6) 55%,rgba(3,8,18,.3))"></div>
+ <div id="a7a" style="--cat-a:#9cefff;--cat-b:#2a9be6;--cat-c:#11528a;--accent:#3fd0ff;position:absolute;left:50px;top:60px;width:600px;height:600px;overflow:hidden;border-radius:20px"><canvas id="a7bg" width="900" height="900" style="position:absolute;left:0;top:0;width:600px;height:600px"></canvas><svg viewBox="0 0 600 600" preserveAspectRatio="none" style="position:absolute;left:0;top:0;width:600px;height:600px" >
+    <defs>
+      <linearGradient id="ct_catGrad" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="305">
+        <stop offset="0" style="stop-color:var(--cat-a)"/>
+        <stop offset=".5" style="stop-color:var(--cat-b)"/>
+        <stop offset="1" style="stop-color:var(--cat-c)"/>
+      </linearGradient>
+      <linearGradient id="ct_lineGrad" x1="0" x2="1">
+        <stop offset="0" style="stop-color:var(--accent)" stop-opacity="0"/>
+        <stop offset=".5" style="stop-color:var(--accent)" stop-opacity="1"/>
+        <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="ct_floorGlow">
+        <stop offset="0" style="stop-color:var(--accent)" stop-opacity=".55"/>
+        <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="ct_glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="7" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="ct_softGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- ground line -->
+    <line id="ct_horizon" x1="300" y1="480" x2="300" y2="480" stroke="url(#ct_lineGrad)" stroke-width="2" opacity=".9"/>
+
+    <!-- cat: drawn facing right in local space, flipped to face the wordmark -->
+    <g id="ct_catPos" transform="translate(1000 99) scale(1.25)">
+      <g transform="scale(-1 1)">
+        <ellipse id="ct_shadow" cx="140" cy="306" rx="135" ry="12" fill="url(#ct_floorGlow)"/>
+        <g id="ct_catBody" fill="url(#ct_catGrad)">
+          <!-- far legs -->
+          <path id="ct_legB1" opacity=".62" d="M65,200 C71,192 99,192 95,206 L87,290 Q97,292 97,298 Q96,303 87,303 L74,303 Q71,303 72,296 Z"/>
+          <path id="ct_legF1" opacity=".62" d="M193,200 C199,192 219,192 215,206 L211,290 Q221,292 221,298 Q220,303 211,303 L198,303 Q195,303 196,296 Z"/>
+          <!-- tail -->
+          <g transform="translate(-4 14)"><path id="ct_tail" d="M58,175 C30,168 22,132 36,110 C46,95 44,80 36,70" fill="none" stroke="url(#ct_catGrad)" stroke-width="13" stroke-linecap="round"/></g>
+          <!-- body -->
+          <path d="M50,186 C80,156 192,150 226,160 C252,168 258,206 242,228 C206,246 100,248 66,238 C36,228 30,204 50,186 Z"/>
+          <!-- near legs -->
+          <path id="ct_legB2" d="M86,200 C92,192 120,192 116,206 L108,290 Q118,292 118,298 Q117,303 108,303 L95,303 Q92,303 93,296 Z"/>
+          <path id="ct_legF2" d="M211,200 C217,192 237,192 233,206 L229,290 Q239,292 239,298 Q238,303 229,303 L216,303 Q213,303 214,296 Z"/>
+          <!-- head -->
+          <g id="ct_head"><g transform="translate(4 16)">
+            <path d="M215,158 C222,132 236,108 252,98 L258,68 L272,88 L284,70 L288,100 C301,108 304,124 296,135 C287,146 268,146 258,150 C248,166 232,172 215,165 Z"/>
+            <ellipse id="ct_eye" cx="283" cy="113" rx="4.5" ry="4.5" fill="#e8fdff" filter="url(#ct_softGlow)"/>
+          </g></g>
+        </g>
+        <!-- signal waves -->
+        <g transform="translate(4 16)" fill="none" stroke="url(#ct_catGrad)" stroke-width="12" stroke-linecap="round" filter="url(#ct_softGlow)">
+          <path id="ct_arc0" opacity="0" d="M302.4,61.4 A40,40 0 0 1 331.8,96.5"/>
+          <path id="ct_arc1" opacity="0" d="M310.1,32.4 A70,70 0 0 1 361.7,93.9"/>
+          <path id="ct_arc2" opacity="0" d="M317.9,3.4 A100,100 0 0 1 391.6,91.3"/>
+        </g>
+        <circle id="ct_ping" cx="287" cy="129" r="0" fill="none" stroke="var(--accent)" stroke-width="3" opacity="0"/>
+      </g>
+    </g>
+  </svg></div>
  <div class="abs o k" id="a7k" style="right:70px;top:190px;left:auto">NEXT-GEN PBX</div>
- <div class="abs big gt" id="a7h" style="right:70px;top:220px;width:540px;text-align:right;font-size:70px">מרכזיות<br>מתקדמות</div>
- <div class="abs" id="a7t" style="right:70px;top:420px;width:540px;text-align:right;font-size:44px;font-weight:800"><span class="gold">דור העתיד של המרכזיות</span></div>`;
+ <div class="abs big gt" id="a7h" style="right:70px;top:220px;width:520px;text-align:right;font-size:74px">מרכזיות<br>מתקדמות</div>
+ <div class="abs" id="a7t" style="right:70px;top:420px;width:520px;text-align:right;font-size:44px;font-weight:800"><span class="gold">דור העתיד של המרכזיות</span></div>`;
 
 $('scenes').innerHTML=SEG.map(([a,b,id])=>`<div class="sc" id="${id}">${H[id]}</div>`).join('');
 
@@ -344,6 +403,37 @@ if(LAND){
   $('f1n').innerHTML=`<circle id="f1c0" cx="${CX}" cy="${CY}" r="46" fill="rgba(61,225,255,.2)" stroke="#3de1ff" stroke-width="3"/><path transform="translate(${CX-360} ${CY-640})" d="M335 655h50a15 15 0 0 0 2-30 22 22 0 0 0-42-5 17 17 0 0 0-10 35z" fill="#eaf6ff"/>`+ND.map(([x,y,t],i)=>`<g id="f1g${i}"><circle cx="${x}" cy="${y}" r="48" fill="rgba(10,24,52,.92)" stroke="#e0b877" stroke-width="2.5"/><text x="${x}" y="${y+7}" text-anchor="middle" fill="#fff" font-size="19" font-weight="800">${t}</text></g>`).join('');}
  $('f4s').setAttribute('viewBox','0 0 1280 720');[0,1,2].forEach(i=>{$('f4c'+i).setAttribute('cx',360);$('f4c'+i).setAttribute('cy',355)});
 }
+
+// ---- animated cat (a7) ----
+const CT={};['catPos','head','tail','eye','ping','horizon','shadow','legB1','legB2','legF1','legF2','arc0','arc1','arc2'].forEach(n=>CT[n]=document.getElementById('ct_'+n));
+const CLEGS=[CT.legB1,CT.legB2,CT.legF1,CT.legF2],CARCS=[CT.arc0,CT.arc1,CT.arc2];
+const CHIPS=[[80,200],[101,200],[204,200],[222,200]],CLEGP=[0,Math.PI,Math.PI,0];
+const CPARTS=Array.from({length:45},(_,i)=>{const q=k=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)};return{x:q(1)*600,y:q(2)*480,s:q(3)*1.6+.4,v:q(4)*.012+.004,ph:q(5)*6.28}});
+const CCTX=$('a7bg').getContext('2d');
+const eo=x=>1-Math.pow(1-clamp(x),3);
+function catFrame(t){
+  const ctx=CCTX;ctx.setTransform(1.5,0,0,1.5,0,0);ctx.clearRect(0,0,600,600);
+  ctx.fillStyle='rgba(3,9,20,.55)';ctx.fillRect(0,0,600,600);
+  const a=clamp(t/700),rgb='63,208,255';
+  let g=ctx.createRadialGradient(300,290,10,300,290,340);g.addColorStop(0,`rgba(${rgb},${.2*a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.fillRect(0,0,600,600);
+  const hor=480,bot=640,cx=300,N=7,s=(t*.00035)%1;ctx.lineWidth=1;
+  for(let i=0;i<N;i++){const f=(i+s)/N,y=hor+(bot-hor)*f*f;ctx.strokeStyle=`rgba(${rgb},${.35*f*a})`;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(600,y);ctx.stroke()}
+  for(let j=-14;j<=14;j++){ctx.strokeStyle=`rgba(${rgb},${.24*(1-Math.abs(j)/16)*a})`;ctx.beginPath();ctx.moveTo(cx+j*22,hor);ctx.lineTo(cx+j*110,bot);ctx.stroke()}
+  for(const p of CPARTS){const y=(p.y-t*p.v*2+4800)%480;const tw=.35+.65*(.5+.5*Math.sin(t*.002+p.ph));ctx.fillStyle=`rgba(${rgb},${.6*tw*a})`;ctx.beginPath();ctx.arc(p.x,y,p.s,0,6.283);ctx.fill()}
+  const START_X=1000,END_X=564,WALK_AT=450,WALK_MS=3000,STRIDE=188,SC=1.25,STOP=WALK_AT+WALK_MS;
+  const hh=eo(t/900);CT.horizon.setAttribute('x1',300-280*hh);CT.horizon.setAttribute('x2',300+280*hh);
+  const u=clamp((t-WALK_AT)/WALK_MS),p=1-Math.pow(1-u,2.2),X=START_X+(END_X-START_X)*p,phase=(START_X-X)/STRIDE*Math.PI*2;
+  const speed=u<1?Math.pow(1-u,1.2):0,amp=Math.min(1,speed*1.7),bob=-Math.abs(Math.sin(phase))*4*amp;
+  CT.catPos.setAttribute('transform',`translate(${X.toFixed(2)} ${(99+bob*SC).toFixed(2)}) scale(${SC})`);
+  CLEGS.forEach((leg,i)=>leg.setAttribute('transform',`rotate(${(26*amp*Math.sin(phase+CLEGP[i])).toFixed(2)} ${CHIPS[i][0]} ${CHIPS[i][1]})`));
+  CT.shadow.setAttribute('rx',(135-bob*2).toFixed(1));
+  const ts=t-STOP;let headA=2*amp*Math.sin(phase*2);if(ts>0&&ts<1100)headA+=-9*Math.sin(Math.PI*ts/1100);
+  CT.head.setAttribute('transform',`rotate(${headA.toFixed(2)} 236 168)`);
+  CT.tail.setAttribute('transform',`rotate(${(Math.sin(t*.0045)*(4+9*amp)+(ts>0?Math.sin(t*.0016)*6:0)).toFixed(2)} 58 175)`);
+  let ry=4.5;if(ts>1500){const k=(ts-1500)%3900;if(k<160)ry=4.5*Math.abs(1-2*k/160)}CT.eye.setAttribute('ry',ry.toFixed(2));
+  if(ts>0&&ts<1000){const e=eo(ts/1000);CT.ping.setAttribute('r',(10+190*e).toFixed(1));CT.ping.setAttribute('opacity',(1-e).toFixed(3))}else CT.ping.setAttribute('opacity',0);
+  CARCS.forEach((arc,i)=>{const ap=clamp((ts-150-i*170)/260),pulse=.4+.6*(.5+.5*Math.sin(t*.0055-i*1.15));arc.setAttribute('opacity',(ap*(ts>900?pulse:1)).toFixed(3))});
+}
 function render(t){return renderAsync(t)}
 async function renderAsync(t){
   const jobs=[];
@@ -361,7 +451,7 @@ async function renderAsync(t){
   lt=L('a4');show('a4k',lt,.1);show('a4h',lt,.3,.5,30,.05);show('a4t',lt,2.4);show('a4g0',lt,.8,.4,0);[0,1,2].forEach(i=>{const s=seg(lt,1.4+i*.5,.5);$('a4p'+i).style.opacity=s;$('a4p'+i).style.strokeDashoffset=(1-s)*80;$('a4g'+(i+1)).style.opacity=s});
   lt=L('a5');show('a5k',lt,.1);show('a5h',lt,.3,.5,30,.05);show('a5c',lt,2.2);[...$('a5eq').children].forEach((b,i)=>{const v=.5+.5*Math.sin(t*9+i*.7);const w=.5+.5*Math.sin(t*3.1+i*.31);b.style.height=(30+250*v*w*ease(lt/.6))+'px'});for(let i=0;i<5;i++){const n=$('a5n'+i);const p=((lt*.5+i*.2)%1);n.style.top=(60-p*60)+'px';n.style.opacity=Math.sin(p*Math.PI)}
   lt=L('a6');show('a6k',lt,.1);show('a6h',lt,.3,.5,30,.05);show('a6c',lt,2.6);for(let i=0;i<6;i++){show('a6c'+i,lt,.4+i*.45,.4,18);[...$('a6w'+i).children].forEach((b,j)=>{const on=lt>.6+i*.45;b.style.height=(8+(on?80:2)*(.5+.5*Math.sin(t*8+j*.9+i))*(.6+.4*Math.sin(t*2+i+j)))+'px'})}
-  lt=L('a7');jobs.push(setImg($('a7v'),pp('city',lt*24+40,199)));show('a7l',lt,.3,.6,0,.1);show('a7k',lt,.2);show('a7h',lt,.7,.5,30,.05);show('a7t',lt,2.4);
+  lt=L('a7');jobs.push(setImg($('a7v'),pp('city',lt*24+40,199)));catFrame(lt*1000);show('a7a',lt,.1,.4,0);show('a7k',lt,.2);show('a7h',lt,.7,.5,30,.05);show('a7t',lt,2.4);
   lt=L('f1');jobs.push(setImg($('f1v'),pp('city',lt*24,199)));$('f1v').style.transform=`scale(${1+.04*lt/7})`;
   show('f1h',lt,.1,.5,30,.1);const cp=seg(lt,1.0,.5);$('f1s').style.opacity=cp;
   NODES.forEach((_,i)=>{const s=seg(lt,1.4+i*.55,.5);$('f1p'+i).style.opacity=s;$('f1p'+i).style.strokeDashoffset=(1-s)*60;const g=$('f1g'+i);g.style.opacity=s;g.style.transformOrigin='center';});

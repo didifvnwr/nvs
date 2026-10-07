@@ -1,7 +1,7 @@
 import json,subprocess,glob
 U='/root/.claude/uploads/0f9540b5-d01e-533c-b68d-1d5a2bac763f/'
 F=glob.glob(U+'f0968782-*')[0];M=glob.glob(U+'48a25b0e-*')[0]
-A=[('a1',5.0),('a2',8.0),('a3',6.0),('a4',8.0),('a5',7.0),('a6',7.0),('a7',9.0)]   # estimated until part A is recorded
+A=[('a1',5.0),('a2',8.0),('a3',6.0),('a4',8.0),('a5',7.0),('a6',7.0),('a7',7.0)]   # estimated until part A is recorded
 B=[('f1','P2',3.67,12.93),('f2','P3',12.93,22.65),('f3','P4',22.65,30.47),('f4','G',65.88,78.45),('f5','P5',30.47,36.74),('f6','P6',36.74,45.13),('f7','P7',45.13,51.9),('f8','P8',51.9,60.02),('f9','P9',60.02,65.88)]
 GAP=0.16;t=0.3;seg=[];clips=[]
 for sc,d in A:
@@ -11,7 +11,7 @@ for sc,cid,a,b in B:
 TOTAL=round(t+6.5,2)
 for i in range(len(seg)-1):seg[i][1]=seg[i+1][0]
 seg[-1][1]=TOTAL
-des={'a1':5,'a2':8,'a3':6,'a4':8,'a5':7,'a6':7,'a7':9,'f1':7,'f2':7,'f3':6,'f4':8,'f5':7,'f6':8,'f7':6,'f8':7,'f9':11}
+des={'a1':5,'a2':8,'a3':6,'a4':8,'a5':7,'a6':7,'a7':7,'f1':7,'f2':7,'f3':6,'f4':8,'f5':7,'f6':8,'f7':6,'f8':7,'f9':11}
 json.dump(dict(seg=seg,total=TOTAL,des=des),open('show_timeline.json','w'))
 print(seg,TOTAL)
 inputs=[];filt=[];lab=[]
