@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><title>reel</title>
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-300.ttf);font-weight:300}
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+@font-face{font-family:O;src:url(fonts/orbitron-700.ttf);font-weight:700}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;font-family:H,sans-serif;direction:rtl}
+.sc{position:absolute;inset:0;opacity:0}
+svg{position:absolute;left:0;top:0;width:720px;height:1280px}
+text{font-family:H,sans-serif;direction:rtl}
+.o{font-family:O,H,sans-serif;font-weight:700;direction:ltr}
+#logo{position:absolute;right:36px;top:78px;width:110px;border-radius:9px;background:#fff;overflow:hidden;box-shadow:0 0 24px rgba(0,0,0,.35);z-index:5}
+#logo img{display:block;width:100%}
+</style></head><body><div id="stage">
+<div id="logo"><img src="img/mitsi-logo.png"></div>
+
+<!-- S1 night bedroom -->
+<div class="sc" id="s1"><svg viewBox="0 0 720 1280">
+ <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070d24"/><stop offset="1" stop-color="#14204a"/></linearGradient>
+ <radialGradient id="moonG"><stop offset="0" stop-color="#fff6d6"/><stop offset="1" stop-color="#fff6d600"/></radialGradient></defs>
+ <rect width="720" height="1280" fill="url(#g1)"/>
+ <g id="stars"></g>
+ <circle cx="560" cy="420" r="120" fill="url(#moonG)" opacity=".55"/><circle cx="560" cy="420" r="52" fill="#fff3c4"/><circle cx="578" cy="410" r="52" fill="#14204a" opacity=".0"/>
+ <rect x="0" y="880" width="720" height="400" fill="#0c1636"/>
+ <!-- bed -->
+ <rect x="60" y="760" width="420" height="190" rx="22" fill="#2b3f86"/>
+ <rect x="60" y="720" width="40" height="260" rx="14" fill="#1d2c63"/>
+ <rect x="86" y="730" width="150" height="70" rx="34" fill="#dfe8ff"/>
+ <g transform="translate(150 760)"><circle r="40" fill="#f1c27d"/><path d="M-40 -6 Q-36 -44 4 -42 Q40 -40 40 -4 Q20 -30 -10 -24 Q-30 -22 -40 -6Z" fill="#3b2a20"/>
+  <path d="M-18 4 q8 6 16 0" stroke="#3b2a20" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M8 4 q8 6 16 0" stroke="#3b2a20" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M-6 22 q8 6 16 0" stroke="#a5503a" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+ <path d="M200 790 Q330 760 470 790 L470 950 L200 950Z" fill="#4a63c9"/><path d="M200 790 Q330 760 470 790" stroke="#7d93ee" stroke-width="6" fill="none"/>
+ <g id="zz"><text id="z1" x="230" y="700" font-size="46" font-weight="800" fill="#bcd0ff">Z</text><text id="z2" x="270" y="650" font-size="60" font-weight="800" fill="#bcd0ff">Z</text><text id="z3" x="320" y="590" font-size="76" font-weight="800" fill="#bcd0ff">Z</text></g>
+ <!-- nightstand + phone -->
+ <rect x="520" y="860" width="150" height="130" rx="10" fill="#1b2a5e"/><rect x="530" y="990" width="12" height="60" fill="#1b2a5e"/><rect x="648" y="990" width="12" height="60" fill="#1b2a5e"/>
+ <g id="ph1" transform="translate(595 760)"><rect x="-44" y="-96" width="88" height="170" rx="14" fill="#0b1126" stroke="#3de1ff" stroke-width="3"/>
+  <circle cx="0" cy="-20" r="22" fill="#27d17a"/><path d="M-9 -26 q4 -8 9 -2 t9 -2" stroke="#fff" stroke-width="3" fill="none"/><text x="0" y="40" text-anchor="middle" font-size="15" fill="#fff" font-weight="500">שיחה נכנסת</text></g>
+ <g id="rings" fill="none" stroke="#3de1ff" stroke-width="4"><circle id="r1" cx="595" cy="740" r="60"/><circle id="r2" cx="595" cy="740" r="60"/><circle id="r3" cx="595" cy="740" r="60"/></g>
+ <text id="clk1" class="o" x="360" y="300" text-anchor="middle" font-size="96" fill="#3de1ff" style="letter-spacing:4px">03:00</text>
+ <text id="cap1" x="360" y="1120" text-anchor="middle" font-size="42" font-weight="800" fill="#fff">לקוח חדש מתקשר</text>
+ <text x="360" y="1176" text-anchor="middle" font-size="30" font-weight="300" fill="#bcd0ff">והבעלים ישן</text>
+</svg></div>
+
+<!-- S2 gabi answers -->
+<div class="sc" id="s2"><svg viewBox="0 0 720 1280">
+ <rect width="720" height="1280" fill="url(#g1)"/><g id="stars2"></g>
+ <text class="o" x="360" y="300" text-anchor="middle" font-size="70" fill="#3de1ff" style="letter-spacing:4px">03:01</text>
+ <g id="ph2" transform="translate(360 700)"><rect x="-190" y="-340" width="380" height="680" rx="44" fill="#0b1126" stroke="#3de1ff" stroke-width="4"/>
+  <clipPath id="pc"><rect x="-176" y="-326" width="352" height="652" rx="34"/></clipPath>
+  <g clip-path="url(#pc)"><rect x="-176" y="-326" width="352" height="652" fill="#0e1a3d"/>
+   <image href="img/b0.jpg" x="-176" y="-326" width="352" height="192" preserveAspectRatio="xMidYMid slice"/>
+   <rect x="-152" y="-310" width="138" height="64" rx="8" fill="#0b2450" stroke="#3de1ff" stroke-width="2"/><text x="-83" y="-274" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">גבי</text>
+   <text x="0" y="-95" text-anchor="middle" font-size="30" font-weight="800" fill="#fff">גבי עונה</text>
+   <g id="w2" transform="translate(0 -40)"></g>
+   <g id="card2" transform="translate(0 70)"><rect x="-150" y="-36" width="300" height="130" rx="16" fill="#e0b877"/><text x="0" y="8" text-anchor="middle" font-size="30" font-weight="800" fill="#0a1830">פגישה נקבעה ✓</text><text x="0" y="52" text-anchor="middle" font-size="24" fill="#0a1830" font-weight="500">יום שלישי · 10:00</text></g>
+   <g id="mail2" transform="translate(0 235)"><rect x="-70" y="-34" width="140" height="92" rx="10" fill="#eaf6ff"/><path d="M-70 -34 L0 22 L70 -34" stroke="#4d7cff" stroke-width="5" fill="none"/></g>
+  </g></g>
+ <text id="cap2" x="360" y="1160" text-anchor="middle" font-size="40" font-weight="800" fill="#fff">סיכום נשלח למייל</text>
+</svg></div>
+
+<!-- S3 beach -->
+<div class="sc" id="s3"><svg viewBox="0 0 720 1280">
+ <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#58c4ff"/><stop offset="1" stop-color="#bfeaff"/></linearGradient></defs>
+ <rect width="720" height="1280" fill="url(#g3)"/>
+ <g id="sun3" transform="translate(560 400)"><g id="rays3"></g><circle r="70" fill="#ffd54a"/></g>
+ <rect y="760" width="720" height="200" fill="#1f9bd6"/><g id="waves3" fill="none" stroke="#bff0ff" stroke-width="5" stroke-linecap="round"></g>
+ <rect y="940" width="720" height="340" fill="#f2d49b"/>
+ <!-- umbrella -->
+ <rect x="150" y="640" width="8" height="330" fill="#6b4a2b"/><path d="M20 660 Q154 520 288 660Z" fill="#ff5e6c"/><path d="M20 660 Q154 520 288 660" fill="none" stroke="#fff" stroke-width="0"/><path d="M154 540 L108 660 M154 540 L200 660" stroke="#fff" stroke-width="6" opacity=".6"/>
+ <!-- lounger + owner -->
+ <path d="M70 960 L330 960 L360 880 L110 880Z" fill="#fff"/><rect x="80" y="960" width="10" height="60" fill="#ddd"/><rect x="310" y="960" width="10" height="60" fill="#ddd"/>
+ <g transform="translate(220 840)"><ellipse cx="0" cy="40" rx="100" ry="26" fill="#ff8a5c" transform="rotate(-8)"/><circle cx="-80" cy="-4" r="38" fill="#f1c27d"/><path d="M-118 -12 Q-110 -52 -78 -50 Q-44 -48 -42 -16 Q-62 -38 -96 -30 Z" fill="#3b2a20"/>
+  <rect x="-108" y="-14" width="56" height="18" rx="8" fill="#111"/><path d="M-62 40 q-10 -64 -18 -40" stroke="#f1c27d" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <g transform="translate(40 -60)"><path d="M-22 0 L22 0 L6 46 L-6 46Z" fill="#ff6b9d"/><rect x="-3" y="46" width="6" height="22" fill="#fff"/><circle cx="14" cy="-4" r="9" fill="#ffd54a"/></g>
+  <path d="M-30 40 Q10 60 60 20" stroke="#f1c27d" stroke-width="14" fill="none" stroke-linecap="round"/></g>
+ <!-- towel + phone -->
+ <rect x="410" y="1000" width="260" height="120" rx="8" fill="#ff5e6c" transform="rotate(-6 540 1060)"/>
+ <g id="ph3" transform="translate(540 1040) rotate(-6)"><rect x="-38" y="-62" width="76" height="120" rx="10" fill="#0b1126" stroke="#3de1ff" stroke-width="3"/><rect x="-30" y="-52" width="60" height="30" rx="6" fill="#27d17a"/><rect x="-30" y="-16" width="60" height="22" rx="6" fill="#e0b877"/></g>
+ <g id="n3a" transform="translate(540 960)"><rect x="-150" y="-34" width="300" height="56" rx="28" fill="#fff" stroke="#27d17a" stroke-width="4"/><text x="0" y="6" text-anchor="middle" font-size="26" font-weight="800" fill="#0a1830">שיחה נענתה ✓</text></g>
+ <g id="n3b" transform="translate(540 900)"><rect x="-150" y="-34" width="300" height="56" rx="28" fill="#fff" stroke="#e0b877" stroke-width="4"/><text x="0" y="6" text-anchor="middle" font-size="26" font-weight="800" fill="#0a1830">פגישה נקבעה ✓</text></g>
+ <text class="o" x="360" y="300" text-anchor="middle" font-size="86" fill="#0a3a66" style="letter-spacing:4px">11:00</text>
+ <text x="360" y="1190" text-anchor="middle" font-size="42" font-weight="800" fill="#0a3a66">אתם בים, העסק ממשיך לעבוד</text>
+</svg></div>
+
+<!-- S4 dinner -->
+<div class="sc" id="s4"><svg viewBox="0 0 720 1280">
+ <defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a0f24"/><stop offset="1" stop-color="#4a1d2a"/></linearGradient><radialGradient id="cg"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ffd27a00"/></radialGradient></defs>
+ <rect width="720" height="1280" fill="url(#g4)"/>
+ <circle id="cglow" cx="360" cy="800" r="260" fill="url(#cg)" opacity=".35"/>
+ <text class="o" x="360" y="300" text-anchor="middle" font-size="86" fill="#ffd27a" style="letter-spacing:4px">20:00</text>
+ <!-- people -->
+ <g id="p4a" transform="translate(190 690)"><circle r="46" fill="#f1c27d"/><path d="M-46 -8 Q-42 -56 2 -54 Q46 -52 46 -6 Q22 -34 -14 -28 Q-36 -24 -46 -8Z" fill="#3b2a20"/><circle cx="-16" cy="2" r="4" fill="#3b2a20"/><circle cx="16" cy="2" r="4" fill="#3b2a20"/><path d="M-14 22 q14 14 28 0" stroke="#a5503a" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="-60" y="52" width="120" height="90" rx="30" fill="#ff7a5c"/></g>
+ <g id="p4b" transform="translate(360 670)"><circle r="40" fill="#e9b27a"/><path d="M-44 6 Q-48 -52 0 -50 Q48 -52 44 6 Q40 40 30 48 L-30 48 Q-40 40 -44 6Z" fill="#7a3b1e"/><circle cx="-14" cy="2" r="4" fill="#3b2a20"/><circle cx="14" cy="2" r="4" fill="#3b2a20"/><path d="M-12 20 q12 12 24 0" stroke="#a5503a" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="-54" y="50" width="108" height="90" rx="28" fill="#6c7bff"/></g>
+ <g id="p4c" transform="translate(520 720)"><circle r="34" fill="#f1c27d"/><path d="M-34 -4 Q-30 -42 2 -40 Q34 -38 34 -4 Q16 -26 -8 -22 Q-26 -18 -34 -4Z" fill="#3b2a20"/><circle cx="-11" cy="2" r="3.5" fill="#3b2a20"/><circle cx="11" cy="2" r="3.5" fill="#3b2a20"/><path d="M-10 16 q10 10 20 0" stroke="#a5503a" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="-44" y="40" width="88" height="80" rx="24" fill="#3de1ff"/></g>
+ <!-- table -->
+ <rect x="40" y="810" width="640" height="26" rx="10" fill="#8a5a3a"/><rect x="60" y="836" width="16" height="190" fill="#6b4328"/><rect x="644" y="836" width="16" height="190" fill="#6b4328"/>
+ <ellipse cx="170" cy="804" rx="62" ry="14" fill="#fff"/><ellipse cx="360" cy="804" rx="62" ry="14" fill="#fff"/><ellipse cx="520" cy="804" rx="52" ry="12" fill="#fff"/>
+ <circle cx="170" cy="796" r="20" fill="#ff8a5c"/><circle cx="360" cy="796" r="20" fill="#7cd67c"/><circle cx="520" cy="796" r="16" fill="#ffd27a"/>
+ <rect x="340" y="740" width="14" height="60" rx="4" fill="#fff4d6"/><g id="flame" transform="translate(347 735)"><path d="M0 -26 Q12 -8 0 0 Q-12 -8 0 -26Z" fill="#ffb347"/></g>
+ <g id="ph4" transform="translate(600 780) rotate(8)"><rect x="-34" y="-56" width="68" height="104" rx="9" fill="#0b1126" stroke="#3de1ff" stroke-width="3"/><rect x="-26" y="-46" width="52" height="24" rx="5" fill="#27d17a"/><rect x="-26" y="-14" width="52" height="18" rx="5" fill="#e0b877"/></g>
+ <g id="n4a" transform="translate(470 650)"><rect x="-130" y="-30" width="260" height="50" rx="25" fill="#fff" stroke="#27d17a" stroke-width="4"/><text x="0" y="5" text-anchor="middle" font-size="24" font-weight="800" fill="#0a1830">שיחה חדשה ✓</text></g>
+ <g id="n4b" transform="translate(470 590)"><rect x="-130" y="-30" width="260" height="50" rx="25" fill="#fff" stroke="#e0b877" stroke-width="4"/><text x="0" y="5" text-anchor="middle" font-size="24" font-weight="800" fill="#0a1830">עוד פגישה ✓</text></g>
+ <text x="360" y="1160" text-anchor="middle" font-size="42" font-weight="800" fill="#fff">אתם בארוחת ערב, גבי עובדת</text>
+</svg></div>
+
+<!-- SD dialogue -->
+<div class="sc" id="sd"><svg viewBox="0 0 720 1280">
+ <rect width="720" height="1280" fill="url(#g1)"/><g id="stars8"></g>
+ <text id="clkd" class="o" x="360" y="248" text-anchor="middle" font-size="64" fill="#3de1ff" style="letter-spacing:4px">03:07</text>
+ <g id="phd" transform="translate(360 470) scale(.45)"><rect x="-190" y="-340" width="380" height="680" rx="44" fill="#0b1126" stroke="#3de1ff" stroke-width="6"/>
+  <clipPath id="pcd"><rect x="-176" y="-326" width="352" height="652" rx="34"/></clipPath>
+  <g clip-path="url(#pcd)"><rect x="-176" y="-326" width="352" height="652" fill="#0e1a3d"/>
+   <image href="img/b0.jpg" x="-176" y="-326" width="352" height="192" preserveAspectRatio="xMidYMid slice"/>
+   <rect x="-152" y="-310" width="138" height="64" rx="8" fill="#0b2450" stroke="#3de1ff" stroke-width="2"/><text x="-83" y="-274" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">גבי</text>
+   <text id="whod" x="0" y="-95" text-anchor="middle" font-size="34" font-weight="800" fill="#fff">גבי</text>
+   <g id="wd" transform="translate(0 20)"></g></g></g>
+ <g id="callerd" transform="translate(110 400)"><circle id="callring" r="44" fill="none" stroke="#3de1ff" stroke-width="4"/><circle r="34" fill="#27d17a"/><path d="M-12 8 q-6 -16 6 -22 l8 8 q-4 4 0 10 q6 6 10 2 l8 8 q-6 12 -22 -6z" fill="#fff"/><text y="70" text-anchor="middle" font-size="20" fill="#bcd0ff">לקוח</text></g>
+ <g id="bubd"></g>
+</svg></div>
+
+<!-- S5 money -->
+<div class="sc" id="s5"><svg viewBox="0 0 720 1280">
+ <rect width="720" height="1280" fill="url(#g1)"/>
+ <text x="360" y="290" text-anchor="middle" font-size="54" font-weight="800" fill="#fff">והמכירות נכנסות</text>
+ <g id="cards5"></g><g id="bars5"></g><g id="coins5"></g>
+</svg></div>
+
+<!-- S6 morning -->
+<div class="sc" id="s6"><svg viewBox="0 0 720 1280">
+ <defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd9a0"/><stop offset="1" stop-color="#ffb08a"/></linearGradient></defs>
+ <rect width="720" height="1280" fill="url(#g6)"/>
+ <g transform="translate(110 420)"><g id="rays6"></g><circle r="62" fill="#fff3b0"/></g>
+ <text class="o" x="360" y="300" text-anchor="middle" font-size="86" fill="#7a2f1a" style="letter-spacing:4px">08:00</text>
+ <rect x="60" y="880" width="600" height="120" rx="22" fill="#e2735a"/>
+ <rect x="80" y="800" width="170" height="80" rx="38" fill="#fff"/>
+ <g id="own6" transform="translate(250 760)"><rect x="-70" y="30" width="140" height="130" rx="40" fill="#fff"/><circle r="48" fill="#f1c27d"/><path d="M-48 -6 Q-44 -58 2 -56 Q48 -54 48 -4 Q24 -34 -14 -28 Q-38 -24 -48 -6Z" fill="#3b2a20"/>
+  <circle cx="-16" cy="2" r="5" fill="#3b2a20"/><circle cx="16" cy="2" r="5" fill="#3b2a20"/><path d="M-20 22 q20 22 40 0" stroke="#a5503a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path id="arm6l" d="M-60 60 Q-110 20 -100 -40" stroke="#fff" stroke-width="30" fill="none" stroke-linecap="round"/><path id="arm6r" d="M60 60 Q110 20 100 -40" stroke="#fff" stroke-width="30" fill="none" stroke-linecap="round"/></g>
+ <g id="ph6" transform="translate(500 760)"><rect x="-96" y="-150" width="192" height="300" rx="22" fill="#0b1126" stroke="#3de1ff" stroke-width="4"/>
+  <text x="0" y="-100" text-anchor="middle" font-size="22" font-weight="500" fill="#fff">מהלילה</text>
+  <text x="0" y="-48" text-anchor="middle" font-size="46" font-weight="800" fill="#27d17a">9</text><text x="0" y="-22" text-anchor="middle" font-size="19" fill="#bcd0ff">פגישות חדשות</text>
+  <text id="mny6" x="0" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#ffd54a">₪ 48,500</text><text x="0" y="78" text-anchor="middle" font-size="18" fill="#bcd0ff">מכירות</text></g>
+ <text x="360" y="1160" text-anchor="middle" font-size="42" font-weight="800" fill="#5a1d10">סגרתם עסקים בלי לעשות כלום</text>
+</svg></div>
+
+<!-- S7 end -->
+<div class="sc" id="s7"><svg viewBox="0 0 720 1280"><rect width="720" height="1280" fill="url(#g1)"/><g id="stars7"></g></svg>
+ <div id="e_l" style="position:absolute;left:50%;margin-left:-250px;top:350px;width:500px;border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 0 70px rgba(61,225,255,.35)"><img src="img/mitsi-logo.png" style="display:block;width:100%"></div>
+ <div id="e_h" style="position:absolute;left:0;right:0;top:620px;text-align:center;color:#fff;font-size:50px;font-weight:800;line-height:1.1">גבי.<br><span style="background:linear-gradient(90deg,#fff,#7fe9ff 70%,#4d9bff);-webkit-background-clip:text;color:transparent">הסוכנת הקולית שלא ישנה.</span></div>
+ <div id="e_cta" style="position:absolute;left:50px;right:50px;top:860px;text-align:center;color:#0a1830;background:linear-gradient(90deg,#e0b877,#f3d9a8);border-radius:26px;padding:20px 24px;font-size:34px;font-weight:800;line-height:1.25">הגיבו לפוסט<br><span style="font-weight:500;font-size:28px">ונשלח לכם מספר להדגמה לייב</span></div>
+ <div id="e_c" style="position:absolute;left:0;right:0;top:1040px;text-align:center;color:#fff;font-size:28px;font-weight:500;direction:ltr;font-family:O,H"><span style="color:#e0b877">03-3826600</span> &nbsp;·&nbsp; mitsi.co.il</div>
+</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const seg=(lt,d,dur)=>ease((lt-d)/dur);
+const NS='http://www.w3.org/2000/svg';
+const TIMELINE={"seg": [[0, 3.58, "s1"], [3.58, 8.85, "s2"], [8.85, 13.4, "s3"], [13.4, 19.7, "s4"], [19.7, 43.09, "sd"], [43.09, 47.77, "s5"], [47.77, 55.19, "s6"], [55.19, 66.24, "s7"]], "total": 66.24, "lines": [{"id": "P1", "start": 0.3, "dur": 3.18, "scene": "s1"}, {"id": "P2", "start": 3.73, "dur": 5.02, "scene": "s2"}, {"id": "P3", "start": 9.0, "dur": 4.3, "scene": "s3"}, {"id": "P4", "start": 13.55, "dur": 5.9, "scene": "s4"}, {"id": "D", "start": 19.85, "dur": 22.99, "scene": "sd"}, {"id": "P5", "start": 43.24, "dur": 4.43, "scene": "s5"}, {"id": "P6", "start": 47.92, "dur": 7.17, "scene": "s6"}, {"id": "P7", "start": 55.34, "dur": 3.4, "scene": "s7"}]};
+const TOTAL=TIMELINE.total;
+const SEG=TIMELINE.seg;
+const LN={};TIMELINE.lines.forEach(l=>LN[l.id]=l);
+// stars
+function stars(id,n){$(id).innerHTML=Array.from({length:n},(_,i)=>`<circle cx="${(i*131)%720}" cy="${(i*97)%700+20}" r="${1+(i%3)}" fill="#fff" class="st" opacity=".6"/>`).join('')}
+stars('stars',50);stars('stars2',50);stars('stars7',60);
+$('rays3').innerHTML=Array.from({length:12},(_,i)=>`<rect x="-6" y="-120" width="12" height="40" rx="6" fill="#ffd54a" transform="rotate(${i*30})"/>`).join('');
+$('rays6').innerHTML=Array.from({length:12},(_,i)=>`<rect x="-6" y="-112" width="12" height="38" rx="6" fill="#fff3b0" transform="rotate(${i*30})"/>`).join('');
+$('waves3').innerHTML=[0,1,2].map(r=>`<g class="wv"><path d="M-40 ${790+r*50} q30 -22 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/></g>`).join('');
+$('w2').innerHTML=Array.from({length:22},(_,i)=>`<rect x="${-110+i*10}" y="-4" width="6" height="8" rx="3" fill="#7fe9ff" class="wb"/>`).join('');
+
+const DLG=[['b1','c',0.0,['שלום, אפשר לתאם פגישה?']],['b2','g',2.76,['היי! מה שלומך? בטח שאפשר.']],['b3','c',5.89,['סליחה על השעה... את לא הולכת לישון?']],['b4','g',9.41,['ברור שאני לא הולכת לישון... אף פעם.']],['b5','c',12.43,['אבל... העסק לא סגור עכשיו?']],['b6','g',14.52,['כן, אז העסק סגור עכשיו.','אבל אני פה ואני אשמח לעזור לך ככל שאוכל.']]];
+const SPK=[[0,2.4,'c'],[2.72,5.6,'g'],[5.85,9.1,'c'],[9.38,12.05,'g'],[12.4,14.2,'c'],[14.5,23,'g']];
+(function(){let y=720;const out=[];DLG.forEach(([id,w,off,lines])=>{const h=lines.length>1?84:54;const x=w==='c'?150:40;const fill=w==='c'?'#ffffff':'#e0b877';
+ out.push(`<g id="bd_${id}" opacity="0"><rect x="${x}" y="${y}" width="530" height="${h}" rx="24" fill="${fill}"/>${lines.map((tx,k)=>`<text x="${x+265}" y="${y+(h===54?36:34)+k*32}" text-anchor="middle" font-size="24" font-weight="800" fill="#0a1830">${tx}</text>`).join('')}</g>`);y+=h+10});
+ $('bubd').innerHTML=out.join('');})();
+$('wd').innerHTML=Array.from({length:22},(_,i)=>`<rect x="${-110+i*10}" y="-4" width="6" height="8" rx="3" fill="#7fe9ff" class="wbd"/>`).join('');
+stars('stars8',50);
+// money cards
+const CARDS=[['שיחות שנענו',24,'#3de1ff',0],['פגישות שנקבעו',9,'#e0b877',1],['מכירות','₪',  '#27d17a',2]];
+$('cards5').innerHTML=CARDS.map((c,i)=>`<g id="c5${i}" transform="translate(0 ${360+i*150})"><rect x="60" y="0" width="600" height="120" rx="22" fill="#10224f" stroke="${c[2]}" stroke-width="3"/><text x="360" y="44" text-anchor="middle" font-size="28" font-weight="500" fill="#bcd0ff">${c[0]}</text><text id="c5n${i}" class="o" x="360" y="98" text-anchor="middle" font-size="54" fill="${c[2]}" style="direction:ltr">0</text></g>`).join('');
+$('bars5').innerHTML=Array.from({length:10},(_,i)=>`<rect id="b5${i}" x="${90+i*55}" y="1100" width="40" height="0" rx="8" fill="#27d17a"/>`).join('');
+$('coins5').innerHTML=Array.from({length:18},(_,i)=>`<g id="co${i}"><circle r="22" fill="#ffd54a" stroke="#c8941a" stroke-width="4"/><text y="8" text-anchor="middle" font-size="22" font-weight="800" fill="#8a5d00">₪</text></g>`).join('');
+function render(t){
+  SEG.forEach(([a,b,id],i)=>{let o=Math.min(clamp((t-a)/.25),clamp((b-t)/.25));if(i===0)o=Math.min(clamp((b-t)/.25),1);if(i===SEG.length-1)o=Math.min(clamp((t-a)/.3),clamp((TOTAL-t)/.8));$(id).style.opacity=o});
+  $('logo').style.opacity=t<SEG[7][0]?1:0;
+  document.querySelectorAll('.st').forEach((s,i)=>s.setAttribute('opacity',.35+.35*Math.sin(t*2+i)));
+  const L=i=>clamp(t-SEG[i][0],0,SEG[i][1]-SEG[i][0]);let lt;
+  // s1
+  lt=L(0);[1,2,3].forEach(k=>{const p=((lt*.6+k*.33)%1);$('z'+k).setAttribute('opacity',Math.sin(p*Math.PI));$('z'+k).setAttribute('transform',`translate(0 ${-p*40})`)});
+  [1,2,3].forEach(k=>{const p=((lt*1.1+k*.33)%1);const c=$('r'+k);c.setAttribute('r',40+p*150);c.setAttribute('opacity',(1-p)*.8)});
+  $('ph1').setAttribute('transform',`translate(595 760) rotate(${Math.sin(lt*30)*3})`);
+  $('clk1').setAttribute('opacity',ease(lt/.4));$('cap1').setAttribute('opacity',ease((lt-1.2)/.5));
+  // s2
+  lt=L(1);$('ph2').setAttribute('transform',`translate(360 ${700+(1-ease(lt/.6))*60}) scale(${.96+.04*ease(lt/.6)})`);
+  [...$('w2').children].forEach((b,i)=>{const h=4+(lt>.7?34:2)*(.5+.5*Math.sin(lt*7+i*.7))*(.6+.4*Math.sin(lt*2.3+i));b.setAttribute('height',h);b.setAttribute('y',-h/2)});
+  const cp=ease((lt-2.2)/.5);$('card2').setAttribute('opacity',cp);$('card2').setAttribute('transform',`translate(0 ${70+(1-cp)*40}) scale(${.9+.1*cp})`);
+  const mp=clamp((lt-3.8)/1.0);$('mail2').setAttribute('opacity',ease((lt-3.6)/.4)*(1-clamp((lt-5.1)/.5)));$('mail2').setAttribute('transform',`translate(${mp*260} ${235-mp*500}) scale(${1-mp*.5})`);
+  $('cap2').setAttribute('opacity',ease((lt-4.6)/.5));
+  // s3
+  lt=L(2);$('rays3').setAttribute('transform',`rotate(${lt*20})`);
+  document.querySelectorAll('#waves3 .wv').forEach((g,i)=>g.setAttribute('transform',`translate(${((lt*40+i*20)%60)-0} 0)`));
+  $('n3a').setAttribute('opacity',ease((lt-1.6)/.4));$('n3a').setAttribute('transform',`translate(540 ${960-ease((lt-1.6)/.5)*20})`);
+  $('n3b').setAttribute('opacity',ease((lt-2.6)/.4));$('n3b').setAttribute('transform',`translate(540 ${900-ease((lt-2.6)/.5)*20})`);
+  $('ph3').setAttribute('transform',`translate(540 1040) rotate(${-6+Math.sin(lt*18)*(lt<3?2:0)})`);
+  // s4
+  lt=L(3);$('flame').setAttribute('transform',`translate(347 735) scale(${1+.08*Math.sin(lt*14)},${1+.15*Math.sin(lt*11)})`);$('cglow').setAttribute('opacity',.3+.06*Math.sin(lt*6));
+  ['p4a','p4b','p4c'].forEach((id,i)=>{const e=$(id),b=e.getAttribute('data-b')||e.getAttribute('transform');e.setAttribute('data-b',b);const m=b.match(/translate\(([\d.]+) ([\d.]+)\)/);e.setAttribute('transform',`translate(${m[1]} ${(+m[2])+Math.sin(lt*2+i)*4})`)});
+  $('n4a').setAttribute('opacity',ease((lt-1.0)/.4));$('n4a').setAttribute('transform',`translate(470 ${650-ease((lt-1.0)/.5)*18})`);
+  $('n4b').setAttribute('opacity',ease((lt-3.2)/.4));$('n4b').setAttribute('transform',`translate(470 ${590-ease((lt-3.2)/.5)*18})`);
+  // sd
+  lt=L(4);let who='';const D0=LN['D'].start;
+  DLG.forEach(([id,w,off])=>{const rel=t-(D0+off);const el=$('bd_'+id);const p=ease(rel/.25);el.setAttribute('opacity',p);el.setAttribute('transform',`translate(0 ${(1-p)*16})`)});
+  SPK.forEach(([a,b,w])=>{if(t>=D0+a&&t<D0+b)who=w});
+  [...$('wd').children].forEach((b,i)=>{const h=4+(who==='g'?36:3)*(.5+.5*Math.sin(t*7+i*.7))*(.6+.4*Math.sin(t*2.3+i));b.setAttribute('height',h);b.setAttribute('y',-h/2)});
+  $('whod').textContent=who==='c'?'לקוח מתקשר':'גבי';
+  $('callring').setAttribute('r',(who==='c')?44+((t*1.4)%1)*26:44);$('callring').setAttribute('opacity',who==='c'?1-((t*1.4)%1):.4);
+  $('phd').setAttribute('transform',`translate(360 470) scale(${.45+(who==='g'?.01*Math.sin(t*9):0)})`);
+  // s5
+  lt=L(5);const vals=[24,9,48500];
+  for(let i=0;i<3;i++){const p=ease((lt-.5-i*.5)/2.6);$('c5'+i).setAttribute('opacity',ease((lt-.3-i*.4)/.4));const v=Math.round(vals[i]*p);$('c5n'+i).textContent=(i===2?'₪ ':'')+v.toLocaleString('en-US')}
+  for(let i=0;i<10;i++){const h=ease((lt-1.2-i*.18)/.6)*(80+i*38);const b=$('b5'+i);b.setAttribute('height',h);b.setAttribute('y',1200-h)}
+  for(let i=0;i<18;i++){const c=$('co'+i);const p=((lt*.55+i*.137)%1);const x=100+((i*83)%520);c.setAttribute('transform',`translate(${x+Math.sin(p*6+i)*18} ${330+p*850}) scale(${lt>1?1:0})`);c.setAttribute('opacity',lt>1?Math.min(1,Math.sin(p*Math.PI)*1.6):0)}
+  // s6
+  lt=L(6);$('rays6').setAttribute('transform',`rotate(${lt*12})`);
+  const ar=ease((lt-.4)/.8);$('arm6l').setAttribute('d',`M-60 60 Q${-110} ${20-ar*40} ${-100+ar*10} ${-40-ar*50}`);$('arm6r').setAttribute('d',`M60 60 Q110 ${20-ar*40} ${100-ar*10} ${-40-ar*50}`);
+  $('own6').setAttribute('transform',`translate(250 ${760-ease((lt-.2)/.6)*40+Math.sin(lt*3)*3})`);
+  $('ph6').setAttribute('opacity',ease((lt-2.8)/.5));$('ph6').setAttribute('transform',`translate(500 ${760+(1-ease((lt-2.8)/.5))*40})`);
+  // s7
+  lt=L(7);const e=ease(lt/.7);$('e_l').style.opacity=e;$('e_l').style.transform=`scale(${.9+.1*e})`;$('e_h').style.opacity=ease((lt-.9)/.6);$('e_c').style.opacity=ease((lt-1.8)/.6);$('e_cta').style.opacity=ease((lt-2.8)/.5);$('e_cta').style.transform=`translateY(${(1-ease((lt-2.8)/.5))*20}px) scale(${1+.02*Math.sin(lt*4)*ease((lt-3.3)/.3)})`;
+}
+window.render=render;render(0);
+</script></body></html>

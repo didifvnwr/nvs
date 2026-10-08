@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><title>גבי · הבוט</title>
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-300.ttf);font-weight:300}
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+@font-face{font-family:O;src:url(fonts/orbitron-700.ttf);font-weight:700}
+:root{--cy:#3de1ff;--bl:#4d7cff;--gold:#e0b877;--ink:#eaf6ff;--dim:rgba(220,238,255,.7);--line:rgba(61,225,255,.3)}
+html,body{margin:0;background:#050b18}
+#stage{position:relative;width:1280px;height:720px;overflow:hidden;font-family:H,sans-serif;color:var(--ink);direction:rtl;background:#050b18}
+#bg{position:absolute;inset:0;background:radial-gradient(700px 520px at 78% 12%,rgba(77,124,255,.38),transparent 70%),radial-gradient(640px 480px at 8% 96%,rgba(61,225,255,.22),transparent 70%),#050b18}
+#grid{position:absolute;inset:0;opacity:.5;background-image:linear-gradient(rgba(61,225,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(61,225,255,.09) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(900px 600px at 50% 45%,#000 20%,transparent 85%);mask-image:radial-gradient(900px 600px at 50% 45%,#000 20%,transparent 85%)}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.vbg{position:absolute;left:0;top:0;width:1280px;height:720px;object-fit:cover;filter:saturate(.85) contrast(1.05)}
+.vtint{position:absolute;inset:0}
+.abs{position:absolute}
+.o{font-family:O,H,sans-serif;font-weight:700;letter-spacing:2px;direction:ltr;unicode-bidi:isolate}
+.h1{font-size:60px;font-weight:800;line-height:1.08;letter-spacing:-1px}
+.h2{font-size:40px;font-weight:500;line-height:1.15;letter-spacing:-.5px}
+.sub{font-size:22px;font-weight:300;color:var(--dim);line-height:1.4}
+.gt{background:linear-gradient(90deg,#ffffff,#7fe9ff 70%,#4d9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gold{color:var(--gold)}.cy{color:var(--cy)}
+.glass{box-sizing:border-box;border:1.5px solid var(--line);border-radius:16px;background:linear-gradient(160deg,rgba(10,24,52,.78),rgba(10,24,52,.55));box-shadow:0 0 30px rgba(61,225,255,.1)}
+.chip{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:5px 16px;font-size:19px;margin-inline-start:8px;background:rgba(10,24,52,.6)}
+.pf{position:absolute;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1.5px rgba(61,225,255,.5),0 0 60px rgba(61,225,255,.25),0 30px 80px rgba(0,0,0,.65)}
+.pf .z{position:absolute;inset:0}
+.pf img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}
+.pf .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px)}
+.pf .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,24,0) 55%,rgba(5,11,24,.55))}
+.pf .patch{position:absolute;left:2.5%;top:3%;width:47%;height:43%;box-sizing:border-box;border:1.5px solid rgba(61,225,255,.7);border-radius:12px;background:linear-gradient(160deg,#081a38,#0b2450);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.pf .patch b{font-size:26px;font-weight:800;color:#fff;line-height:1}
+.pf .patch .o{font-size:9px;color:var(--cy);letter-spacing:3px}
+.pf .tag{position:absolute;left:14px;bottom:12px;font-size:11px;color:var(--cy);display:flex;align-items:center;gap:7px}
+.pf .tag i{display:block;width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)}
+.brk{position:absolute;width:22px;height:22px;border:2.5px solid var(--cy);pointer-events:none}
+.brk.a{left:-9px;top:-9px;border-right:0;border-bottom:0}.brk.b{right:-9px;top:-9px;border-left:0;border-bottom:0}
+.brk.c{left:-9px;bottom:-9px;border-right:0;border-top:0}.brk.d{right:-9px;bottom:-9px;border-left:0;border-top:0}
+.bub{position:absolute;box-sizing:border-box;border-radius:14px;padding:9px 18px;font-size:21px;line-height:1.3;white-space:nowrap}
+.bub.c{background:rgba(255,255,255,.14);border:1px solid var(--line);backdrop-filter:blur(3px)}
+.bub.g{background:linear-gradient(90deg,#e0b877,#f3d9a8);color:#0a1830;font-weight:500}
+.row{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--line);font-size:20px}
+.row b{font-weight:500;color:var(--gold)}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.grid5 span{border:1px solid var(--line);border-radius:6px;padding:4px 0;text-align:center;font-size:13px;color:var(--dim)}
+.grid5 span.d{border:0;color:var(--ink);font-weight:500}
+.grid5 span.on{background:var(--gold);color:#0a1830;font-weight:800;border-color:var(--gold)}
+#hud{position:absolute;inset:0;pointer-events:none}
+.brk2{}
+</style></head><body>
+<div id="stage">
+  <div id="bg"></div><div id="grid"></div>
+
+  <!-- S1 hook -->
+  <div class="scene" id="s1">
+    <img class="vbg" id="v1" src="img/headset.jpg" style="transform-origin:62% 38%">
+    <div class="vtint" style="background:linear-gradient(90deg,rgba(5,11,24,.88) 0%,rgba(5,11,24,.55) 48%,rgba(5,11,24,.15) 100%),linear-gradient(180deg,rgba(40,90,200,.25),rgba(5,11,24,.5))"></div>
+    <div class="abs h1 gt" id="s1a" style="right:620px;top:190px;width:560px;text-align:right">טלפון מצלצל.</div>
+    <div class="abs h1 gold" id="s1b" style="right:620px;top:290px;width:560px;text-align:right">אף אחד לא עונה.</div>
+    <div class="abs h2" id="s1c" style="right:620px;top:400px;width:560px;text-align:right">והלקוח כבר אצל המתחרה.</div>
+    <div class="abs glass" id="s1d" style="left:70px;top:520px;width:300px;padding:14px 22px">
+      <div class="o" style="font-size:11px;color:var(--cy)">MISSED CALLS</div>
+      <div class="o" id="s1n" style="font-size:44px;line-height:1.1">00</div>
+    </div>
+  </div>
+
+  <!-- S2 Gabi -->
+  <div class="scene" id="s2">
+    <img class="vbg" id="v2">
+    <div class="vtint" style="background:linear-gradient(180deg,rgba(5,11,24,.55),rgba(5,11,24,.25) 40%,rgba(5,11,24,.7))"></div>
+    <div class="abs h1 gt" id="s2a" style="right:90px;top:110px;width:380px;text-align:right">הכירו<br>את גבי</div>
+    <div class="abs sub" id="s2b" style="right:90px;top:280px;width:380px;color:#eaf6ff">סוכנת קולית מבוססת בינה מלאכותית. מדברת בקול אנושי.</div>
+    <div class="pf" id="p2" style="left:60px;top:380px;width:440px;height:240px"></div>
+  </div>
+
+  <!-- S3 conversation -->
+  <div class="scene" id="s3">
+    <img class="vbg" id="v3">
+    <div class="vtint" style="background:linear-gradient(90deg,rgba(5,11,24,.1),rgba(5,11,24,.6) 55%,rgba(5,11,24,.86))"></div>
+    <div class="abs h2" id="s3h" style="right:90px;top:90px">שיחה אמיתית. <span class="gold">פגישה ביומן.</span></div>
+    <div class="bub c" id="b1" style="right:90px;top:190px">היי, אני רוצה לקבוע פגישה</div>
+    <div class="bub g" id="b2" style="right:200px;top:255px">בטח. שלישי בעשר מתאים?</div>
+    <div class="bub c" id="b3" style="right:90px;top:320px">מתאים</div>
+    <div class="bub g" id="b4" style="right:200px;top:385px">סגור. הפגישה נקבעה.</div>
+    <div class="abs glass" id="cal" style="left:70px;top:330px;width:380px;padding:16px 20px">
+      <div class="o" style="font-size:11px;color:var(--cy);margin-bottom:10px">CALENDAR · SYNCED</div>
+      <div class="grid5"><span class="d">א׳</span><span class="d">ב׳</span><span class="d">ג׳</span><span class="d">ד׳</span><span class="d">ה׳</span>
+        <span>09:00</span><span>09:00</span><span>09:00</span><span>09:00</span><span>09:00</span>
+        <span>10:00</span><span>10:00</span><span id="slot">10:00</span><span>10:00</span><span>10:00</span></div>
+    </div>
+    <div class="abs" id="s3c" style="right:90px;top:480px"><span class="chip">בכל שעה</span><span class="chip">בלי תפריטים</span><span class="chip">מסתנכרנת עם היומן</span></div>
+  </div>
+
+  <!-- S4 whatsapp -->
+  <div class="scene" id="s4">
+    <img class="vbg" id="v4">
+    <div class="vtint" style="background:linear-gradient(90deg,rgba(5,11,24,.2),rgba(5,11,24,.72) 55%,rgba(5,11,24,.9))"></div>
+    <div class="abs o cy" id="s4k" style="right:90px;top:100px;font-size:14px">WHATSAPP BOT</div>
+    <div class="abs h2" id="s4h" style="right:90px;top:128px">גם בווטסאפ. <span class="gold">כל היום.</span></div>
+    <div class="bub c" id="w1" style="right:90px;top:240px">מה שעות הפעילות?</div>
+    <div class="bub g" id="w2" style="right:170px;top:305px">פתוחים עד 18:00. רוצים לקבוע פגישה?</div>
+    <div class="abs" id="s4c" style="right:90px;top:420px"><span class="chip">עונה</span><span class="chip">מנתב פניות</span><span class="chip">תשובות חכמות</span></div>
+  </div>
+
+  <!-- S5 CTA -->
+  <div class="scene" id="s5">
+    <div class="pf" id="p5" style="left:70px;top:130px;width:640px;height:349px"></div>
+    <div class="abs h2" id="s5a" style="right:90px;top:110px;width:440px;text-align:right">הקול החדש<br><span class="gold">מיצי תקשורת</span></div>
+    <div class="abs h1 gt" id="s5b" style="right:90px;top:240px;width:470px;font-size:44px;text-align:right;white-space:nowrap">מרכזייה שעושה הכל.</div>
+    <div class="abs" id="s5c" style="right:90px;top:325px;width:470px"><span class="chip">ניוד מספר</span><span class="chip">הקמה בסיסית בלי עלות</span></div>
+    <div class="abs glass" id="s5d" style="right:90px;top:395px;width:470px;padding:14px 26px">
+      <div class="sub" style="font-size:18px">התקשרו עכשיו</div>
+      <div class="o gold" style="font-size:40px;line-height:1.2">03-945-1111</div>
+    </div>
+    <div class="abs o cy" id="s5e" style="right:90px;top:520px;font-size:18px">NVS.CO.IL</div>
+  </div>
+
+  <div id="hud">
+    <div class="abs" style="right:48px;top:30px;font-size:21px;font-weight:500;color:var(--dim)">הקול <span class="gold">החדש</span> · מיצי תקשורת</div>
+    <div class="abs o" style="left:48px;top:32px;font-size:12px;color:var(--cy);display:flex;gap:10px;align-items:center"><i id="live" style="display:block;width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 12px var(--cy)"></i>GABI · AI VOICE AGENT</div>
+    <div class="abs o" id="chap" style="left:48px;bottom:30px;font-size:13px;color:var(--dim)">01 / 05</div>
+    <div class="abs" style="left:120px;right:48px;bottom:38px;height:2px;background:rgba(255,255,255,.14)"><div id="prog" style="height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--bl));box-shadow:0 0 12px var(--cy);float:right"></div></div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const seg=(lt,d,dur)=>ease((lt-d)/dur);
+function show(el,lt,d,dur=.55,dy=22){const p=seg(lt,d,dur);el.style.opacity=p;el.style.transform=`translateY(${(1-p)*dy}px)`;}
+const SC=[[0,6],[6,15],[15,25],[25,32],[32,41]];
+const TOTAL=41, FPS=24;
+
+function panel(id,src,opts={}){
+  const el=$(id);
+  const bx=opts.box?`left:${opts.box[0]}%;top:${opts.box[1]}%;width:${opts.box[2]}%;height:${opts.box[3]}%`:'';
+  const patchHTML=opts.patch===false?'':`<div class="patch" style="${bx}"><b>גבי</b><span class="o">AI VOICE AGENT</span></div>`;
+  el.innerHTML=`<div class="z"><img src="${src}"><div class="tint"></div>${patchHTML}</div><div class="scan"></div><div class="tag o"><i></i>${opts.tag||'LIVE'}</div>`;
+  const b=document.createElement('div');b.id=id+'b';
+  b.style.cssText=`position:absolute;left:${el.style.left};top:${el.style.top};width:${el.style.width};height:${el.style.height}`;
+  b.innerHTML='<i class="brk a"></i><i class="brk b"></i><i class="brk c"></i><i class="brk d"></i>';
+  el.parentNode.appendChild(b);
+}
+panel('p2','img/b0.jpg',{tag:'GABI · ONLINE',box:[7,8,39,33]});
+panel('p5','img/a3.jpg',{tag:'GABI · READY',box:[6,6.5,32,31.5]});
+function showPanel(id,lt,d,dur){const el=$(id),br=$(id+'b'),p=seg(lt,d,.9);el.style.opacity=p;el.style.clipPath=`inset(0 0 ${(1-p)*100}% 0 round 14px)`;br.style.opacity=p;el.querySelector('.z').style.transform=`scale(${1+.06*clamp(lt/dur)})`;}
+
+function frameSrc(dir,n,max){const i=clamp(Math.floor(n)+1,1,max);return `clips/${dir}/${String(i).padStart(4,'0')}.jpg`}
+async function setImg(el,src){if(el.getAttribute('data-s')===src)return;el.setAttribute('data-s',src);el.src=src;try{await el.decode()}catch(e){}}
+
+async function render(t){
+  const jobs=[];
+  SC.forEach(([a,b],i)=>{
+    const el=$('s'+(i+1));let o=Math.min(clamp((t-a)/.4),clamp((b-t)/.4));
+    if(i===0)o=Math.min(clamp((b-t)/.4),clamp(t/.3));
+    if(i===SC.length-1)o=Math.min(clamp((t-a)/.4),clamp((TOTAL-t)/.5));
+    el.style.opacity=o;
+    if(t>=a&&t<b)$('chap').textContent=String(i+1).padStart(2,'0')+' / 05';
+  });
+  $('grid').style.backgroundPosition=`${t*8}px ${t*14}px`;
+  $('live').style.opacity=.5+.5*Math.sin(t*5);
+  $('prog').style.width=(t/TOTAL*100)+'%';
+  const L=i=>clamp(t-SC[i][0],0,SC[i][1]-SC[i][0]);
+  // S1
+  {const lt=L(0);$('v1').style.transform=`scale(${1+.08*lt/6})`;
+   show($('s1a'),lt,.3);show($('s1b'),lt,1.5);show($('s1c'),lt,2.8);show($('s1d'),lt,1.0);
+   $('s1n').textContent=String(Math.min(9,Math.floor(clamp((lt-1.2)/3.6)*9))).padStart(2,'0');}
+  // S2
+  {const lt=L(1);jobs.push(setImg($('v2'),frameSrc('robot',lt*FPS,228)));
+   show($('s2a'),lt,.4);show($('s2b'),lt,1.4);showPanel('p2',lt,1.8,7);}
+  // S3
+  {const lt=L(2);jobs.push(setImg($('v3'),frameSrc('chatbot',lt*FPS,252)));
+   show($('s3h'),lt,.2);show($('b1'),lt,1.0,.5,14);show($('b2'),lt,2.8,.5,14);show($('b3'),lt,5.0,.5,14);show($('b4'),lt,6.2,.5,14);
+   show($('cal'),lt,1.4);const on=lt>6.4;const s=$('slot');s.className=on?'on':'';
+   show($('s3c'),lt,7.6);}
+  // S4
+  {const lt=L(3);jobs.push(setImg($('v4'),frameSrc('phone',lt*FPS,180)));
+   show($('s4k'),lt,.2);show($('s4h'),lt,.4);show($('w1'),lt,1.2,.5,14);show($('w2'),lt,2.6,.5,14);show($('s4c'),lt,4.2);}
+  // S5
+  {const lt=L(4);showPanel('p5',lt,0,9);show($('s5a'),lt,.4);show($('s5b'),lt,1.6);show($('s5c'),lt,3.0);show($('s5d'),lt,4.2);show($('s5e'),lt,5.2);}
+  await Promise.all(jobs);
+}
+window.render=render;render(0);
+</script></body></html>
