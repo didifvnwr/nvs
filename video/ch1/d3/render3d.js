@@ -13,6 +13,7 @@ const exe = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/c
     const page = await (await browser.newContext({ viewport: { width: 720, height: 1280 }, deviceScaleFactor: scale })).newPage();
     page.on('console', m => console.log('C', m.text())); page.on('pageerror', e => console.log('PAGE ERROR', e.message));
     await page.goto(url);
+    if (process.argv.includes('--clean')) await page.addStyleTag({ content: '#cap,#tag,#dip{display:none!important}' });
     await page.waitForFunction('window.ready===true', null, { timeout: 15000 });
     return page;
   };
