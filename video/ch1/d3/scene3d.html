@@ -145,15 +145,29 @@ dust.geometry.setAttribute('position',new THREE.BufferAttribute(dustPos,3));dust
 /* ---------- people ---------- */
 function person({skin,shirt,pants,hair,long}){
   const root=new THREE.Group(),torso=new THREE.Group();root.add(torso);
-  const body=new THREE.Mesh(new THREE.CapsuleGeometry(.15,.26,8,16),M(shirt));body.position.y=.27;body.castShadow=true;torso.add(body);
-  const neck=new THREE.Mesh(new THREE.CylinderGeometry(.05,.055,.1,10),M(skin));neck.position.y=.6;torso.add(neck);
-  const head=new THREE.Group();head.position.y=.76;torso.add(head);
+  const belly=new THREE.Mesh(new THREE.CapsuleGeometry(.145,.1,8,16),M(shirt));belly.position.y=.13;belly.castShadow=true;torso.add(belly);
+  const chest=new THREE.Group();chest.position.y=.27;torso.add(chest);
+  const ch=new THREE.Mesh(new THREE.CapsuleGeometry(.158,.12,8,16),M(shirt));ch.position.y=.13;ch.castShadow=true;chest.add(ch);
+  const glowS=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex(),blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0,fog:false}));glowS.position.set(0,.13,.2);glowS.scale.set(.5,.5,1);chest.add(glowS);
+  const neck=new THREE.Group();neck.position.y=.33;chest.add(neck);
+  const nk=new THREE.Mesh(new THREE.CylinderGeometry(.05,.056,.1,10),M(skin));nk.position.y=.03;neck.add(nk);
+  const head=new THREE.Group();head.position.y=.14;neck.add(head);
   const hd=new THREE.Mesh(new THREE.SphereGeometry(.15,24,18),M(skin));hd.castShadow=true;head.add(hd);
-  const cap=new THREE.Mesh(new THREE.SphereGeometry(.158,24,14,0,Math.PI*2,0,long?1.9:1.55),M(hair));cap.rotation.x=-.25;cap.castShadow=true;head.add(cap);
+  const cap=new THREE.Mesh(new THREE.SphereGeometry(.158,24,14,0,Math.PI*2,0,long?1.9:1.45),M(hair));cap.rotation.x=-.45;cap.castShadow=true;head.add(cap);
   if(long){const back=new THREE.Mesh(new THREE.SphereGeometry(.17,16,12),M(hair));back.scale.set(1,1.5,.8);back.position.set(0,-.12,-.07);head.add(back);}
-  const eyes=[-1,1].map(s=>{const e=new THREE.Mesh(new THREE.SphereGeometry(.027,12,10),M('#20242a',.4));e.position.set(s*.055,.02,.14);head.add(e);return e;});
-  const smile=new THREE.Mesh(new THREE.TorusGeometry(.04,.008,6,14,Math.PI),M('#7a3d3d'));smile.rotation.z=Math.PI;smile.position.set(0,-.05,.145);smile.scale.set(1,.01,1);head.add(smile);
-  const arms=[-1,1].map(s=>{const sh=new THREE.Group();sh.position.set(s*.2,.5,0);torso.add(sh);
+  const nose=new THREE.Mesh(new THREE.SphereGeometry(.024,10,8),M(skin));nose.position.set(0,-.012,.15);head.add(nose);
+  for(const s of [-1,1]){const ear=new THREE.Mesh(new THREE.SphereGeometry(.03,8,6),M(skin));ear.position.set(s*.148,-.005,0);ear.scale.set(.5,1,.8);head.add(ear);}
+  const eyes=[-1,1].map(s=>{const g=new THREE.Group();g.position.set(s*.058,.022,.125);g.scale.setScalar(1.28);head.add(g);
+    const w=new THREE.Mesh(new THREE.SphereGeometry(.031,14,10),M('#fbfbfb',.3));g.add(w);
+    const pu=new THREE.Mesh(new THREE.SphereGeometry(.016,10,8),M('#1e2228',.3));pu.position.z=.022;g.add(pu);
+    const lg=new THREE.Group();lg.position.set(0,.034,.006);g.add(lg);
+    const lg2=new THREE.BoxGeometry(.078,.07,.014);lg2.translate(0,-.035,0);const lid=new THREE.Mesh(lg2,M(skin,.9));lg.add(lid);
+    const br=new THREE.Mesh(new THREE.BoxGeometry(.078,.017,.014),M(hair));br.position.set(0,.07,.012);g.add(br);
+    return {g,pu,lg,br,s};});
+  const mouth=new THREE.Group();mouth.position.set(0,-.062,.139);head.add(mouth);
+  const lip=new THREE.Mesh(new THREE.TorusGeometry(.036,.0075,6,16,Math.PI),M('#8a4a4a'));mouth.add(lip);
+  const mop=new THREE.Mesh(new THREE.SphereGeometry(.03,12,8),M('#4a1f22',.6));mop.scale.set(1,.01,.4);mouth.add(mop);
+  const arms=[-1,1].map(s=>{const sh=new THREE.Group();sh.position.set(s*.205,.3,0);chest.add(sh);
     const up=new THREE.Mesh(new THREE.CapsuleGeometry(.05,.2,6,10),M(shirt));up.position.y=-.16;up.castShadow=true;sh.add(up);
     const el=new THREE.Group();el.position.y=-.31;sh.add(el);
     const lo=new THREE.Mesh(new THREE.CapsuleGeometry(.045,.2,6,10),M(skin));lo.position.y=-.15;lo.castShadow=true;el.add(lo);
@@ -164,46 +178,77 @@ function person({skin,shirt,pants,hair,long}){
     const sn=new THREE.Mesh(new THREE.CapsuleGeometry(.065,.26,6,10),M(pants));sn.position.y=-.2;sn.castShadow=true;kn.add(sn);
     const ft=new THREE.Mesh(new THREE.BoxGeometry(.1,.07,.22),M('#3a3f4a'));ft.position.set(0,-.42,.05);ft.castShadow=true;kn.add(ft);return {hp,kn};});
   const yaw=new THREE.Group();yaw.add(root);S.add(yaw);
-  return {yaw,root,torso,head,eyes,smile,arms,legs,body};
+  return {yaw,root,torso,chest,neck,head,eyes,mouth,lip,mop,arms,legs,glowS};
 }
 const him=person({skin:'#e9b48f',shirt:'#e8e1d2',pants:'#4a5a78',hair:'#3a2a22'});
 const her=person({skin:'#f1c4a2',shirt:'#f0b9a4',pants:'#6c5a86',hair:'#5a3a2a',long:true});
 function pose(p,o){
   p.yaw.rotation.y=o.yaw||0;p.yaw.position.set(o.x,o.y,o.z);
-  p.torso.rotation.x=o.torso||0;p.head.rotation.x=o.headX||0;p.head.rotation.z=o.headZ||0;
-  const e=o.eyes===undefined?1:o.eyes;p.eyes.forEach(m=>m.scale.set(1,Math.max(.12,e),1));
-  p.smile.scale.y=o.smile||.01;
-  for(let i=0;i<2;i++){p.legs[i].hp.rotation.x=(o.thigh??-Math.PI/2)+(i?(o.thighD||0):-(o.thighD||0));p.legs[i].kn.rotation.x=(o.knee||0)+(i?(o.kneeD||0):0)+(!i?(o.kneeD2||0):0);
-    p.arms[i].sh.rotation.x=(o.arm||0)+(i?(o.armD||0):-(o.armD||0));p.arms[i].sh.rotation.z=(i?-1:1)*(o.armOut||0);p.arms[i].el.rotation.x=o.elbow||0;}
+  p.torso.rotation.x=o.torso||0;p.chest.rotation.x=o.chest||0;p.neck.rotation.x=o.neck||0;
+  p.head.rotation.x=o.headX||0;p.head.rotation.y=o.headY||0;p.head.rotation.z=o.headZ||0;
+  p.eyes.forEach(e=>{e.lg.scale.y=clamp(o.lid??0,.001,1);e.pu.position.x=(o.gx||0)*.009;e.pu.position.y=(o.gy||0)*.009;
+    e.br.position.y=.07+(o.brow||0)*.02;e.br.rotation.z=-e.s*(o.tilt||0);});
+  const m=o.mouth??0;p.lip.rotation.z=m>=0?Math.PI:0;p.lip.scale.y=Math.max(.08,Math.abs(m));p.mouth.position.y=-.062+(m>=0?.012*Math.abs(m):-.012*Math.abs(m));
+  p.mop.scale.y=Math.max(.01,o.open||0);p.lip.visible=(o.open||0)<.3;
+  p.glowS.material.opacity=o.glow||0;
+  const A=[o.aL||[0,0,0],o.aR||[0,0,0]];
+  for(let i=0;i<2;i++){p.legs[i].hp.rotation.x=(o.thigh??-Math.PI/2)+(i?(o.thighD||0):-(o.thighD||0));p.legs[i].kn.rotation.x=(o.knee||0)+(i?(o.kneeD||0):(o.kneeD2||0));
+    p.arms[i].sh.rotation.x=A[i][0];p.arms[i].sh.rotation.z=A[i][1];p.arms[i].el.rotation.x=A[i][2];}
 }
 
 /* ---------- him over time ---------- */
 const L1=.38, KNEE_Y=.49, KX=-1.62, HZ0=-.48;
 function himPose(t){
-  const o={x:-.7,y:.5,z:HZ0,yaw:0,torso:-Math.PI/2,thigh:-Math.PI/2,knee:0,eyes:.15,arm:0,smile:.01};
-  const breath=Math.sin(t*1.6)*.012;o.y+=breath;
-  const alarm=prog(t,8.4,9.0);
-  if(t>=8.4&&t<9.0){o.torso+= .06*Math.sin((t-8.4)*40);}                 // startled twitch
-  const sit=rob(prog(t,9.0,9.9),5);o.torso=lerp(-Math.PI/2,0,sit)+(t<9.0?o.torso+Math.PI/2:0);
-  if(t>=9.0)o.eyes=lerp(.15,1,prog(t,9.0,9.3));
-  const sw=rob(prog(t,9.9,10.9),4);
+  const o={x:-.7,y:.5,z:HZ0,yaw:0,torso:-Math.PI/2,chest:0,neck:0,headX:0,headY:0,headZ:0,thigh:-Math.PI/2,knee:0,lid:1,brow:0,tilt:0,mouth:-.05,open:0,glow:0,gx:0,gy:0,aL:[0,0,0],aR:[0,0,0]};
+  o.y+=Math.sin(t*1.6)*.012;
+  // asleep + restless
+  o.mouth=.05;o.open=.18*(0.5+.5*Math.sin(t*1.6));
+  if(t>7.6)o.headZ=.12*Math.sin((t-7.6)*3)*prog(t,7.6,8.4);
+  // alarm: groan, rubs face
+  const al=sm(prog(t,8.4,8.8))*(1-sm(prog(t,9.2,9.6)));
+  o.tilt=-.55*al;o.brow=-.6*al;o.mouth=lerp(o.mouth,-.7,al);o.open=lerp(o.open,.35,al);
+  o.aL=[lerp(0,2.5,al),0,lerp(0,-2.0,al)];
+  // sit up (slow, heavy)
+  const sit=rob(prog(t,9.2,10.0),5);o.torso=lerp(-Math.PI/2,0,sit);
+  o.chest=.5*sit;o.neck=.35*sit;o.lid=lerp(1,.62,prog(t,9.6,10.1));
+  // yawn with hand to mouth
+  const yw=sm(prog(t,10.4,10.9))*(1-sm(prog(t,11.3,11.7)));
+  const gl=sm(prog(t,9.8,10.0))*(1-sm(prog(t,10.3,10.5)));o.headY=-.9*gl;o.tilt=lerp(o.tilt,-.8,gl);o.brow=lerp(o.brow,-.7,gl);o.mouth=lerp(o.mouth,-.8,gl);o.lid=lerp(o.lid,.45,gl);o.gx=-1.4*gl;
+  o.open=lerp(o.open*(1-sit),.95,yw);o.mouth=lerp(o.mouth,-.1,yw);o.lid=lerp(o.lid,1,yw);o.brow=lerp(o.brow,.8,yw);
+  o.aR=[lerp(0,-1.9,yw),0,lerp(0,-2.1,yw)];
+  o.aL=[lerp(o.aL[0],.15,sit),lerp(o.aL[1],0,sit),lerp(o.aL[2],.1,sit)];
+  // legs swing off the bed
+  const sw=rob(prog(t,11.2,12.0),4);
   o.yaw=lerp(0,-Math.PI/2,sw);o.x=lerp(-.7,KX+L1,sw);
-  o.knee=lerp(0,Math.PI/2,rob(prog(t,10.3,11.0),3));
-  const st=rob(prog(t,11.4,12.6),4),ph=(1-st)*Math.PI/2;
-  if(t>=11.4){o.thigh=-ph;o.knee=ph;o.x=KX+L1*Math.sin(ph);o.y=KNEE_Y+L1*Math.cos(ph);o.torso=.28*Math.sin(Math.PI*st);}
-  const stretch=sm(prog(t,12.6,13.1))*(1-sm(prog(t,13.3,13.7)));
-  o.arm=-Math.PI*.92*stretch;o.armOut=.25*stretch;o.headX=-.3*stretch;
-  o.smile=lerp(.01,1.0,sm(prog(t,12.9,13.5)));
-  if(t>=13.5){
-    const w=(t-13.5)*8.5,k=prog(t,13.5,15);
-    o.x=lerp(KX,-2.75,sm(clamp(k*1.05)));o.thigh=0;o.thighD=Math.sin(w)*.5*Math.min(1,k*5);
-    o.knee=0;o.kneeD=Math.max(0,Math.sin(w+Math.PI/2))*.7*Math.min(1,k*5);o.kneeD2=Math.max(0,Math.sin(w-Math.PI/2))*.7*Math.min(1,k*5);
-    o.armD=-Math.sin(w)*.4*Math.min(1,k*5);o.torso=.05;o.y=.87+Math.abs(Math.sin(w))*.025;
+  o.knee=lerp(0,Math.PI/2,rob(prog(t,11.5,12.1),3));
+  o.headX=.1*sw;o.gy=-.6*sw;
+  // heavy sigh on landing
+  const sg=Math.sin(Math.PI*prog(t,12.1,12.9));o.chest+=-.15*sg;o.neck+=-.15*sg;
+  // stand
+  const st=rob(prog(t,12.6,13.5),4),ph=(1-st)*Math.PI/2;
+  if(t>=12.6){o.thigh=-ph;o.knee=ph;o.x=KX+L1*Math.sin(ph);o.y=KNEE_Y+L1*Math.cos(ph);o.torso=.2*Math.sin(Math.PI*st);}
+  // half-hearted stretch + scratch
+  const sr=sm(prog(t,13.5,13.9))*(1-sm(prog(t,14.1,14.4)));
+  o.aL=[lerp(o.aL[0],-2.6,sr),lerp(o.aL[1],-.3,sr),lerp(o.aL[2],0,sr)];o.aR=[lerp(o.aR[0],.2,sr),0,.1];
+  o.lid=lerp(o.lid,.9,sr);o.open=lerp(o.open,.4,sr);o.neck=lerp(o.neck,-.1,sr);
+  o.chest=lerp(o.chest,.05,sr);
+  // shuffle toward the bright doorway
+  if(t>=14.3){
+    const k=prog(t,14.3,15),w=(t-14.3)*7;
+    o.x=lerp(KX,-2.35,sm(clamp(k)));o.thigh=0;o.thighD=Math.sin(w)*.4*Math.min(1,k*4);
+    o.knee=0;o.kneeD=Math.max(0,Math.sin(w+Math.PI/2))*.6*Math.min(1,k*4);o.kneeD2=Math.max(0,Math.sin(w-Math.PI/2))*.6*Math.min(1,k*4);
+    o.aL=[Math.sin(w)*.3,0,.1];o.aR=[-Math.sin(w)*.3,0,.1];o.torso=.04;o.chest=lerp(.45,.1,sm(prog(t,14.5,15)));o.neck=lerp(.25,-.05,sm(prog(t,14.5,15)));o.y=.87+Math.abs(Math.sin(w))*.02;
+    o.lid=.6;o.open=0;o.mouth=-.1;o.gy=0;o.gx=-.4;
   }
+  // flicker of hope: the spark in the chest
+  const sp=sm(prog(t,12.6,14.8));o.glow=.9*sp*(.85+.15*Math.sin(t*5));
+  if(t>=14.3){o.mouth=lerp(-.1,.9,sm(prog(t,14.5,15)));o.brow=.8*sm(prog(t,14.5,15));o.lid=lerp(.6,.25,sm(prog(t,14.5,15)));o.gy=.5*sm(prog(t,14.5,15));}
   return o;
 }
 function herPose(t){
-  return {x:.7,y:.5+Math.sin(t*1.5+1)*.01,z:HZ0,yaw:0,torso:-Math.PI/2,thigh:-Math.PI/2,knee:0,eyes:.12,arm:0,smile:.4};
+  const o={x:.7,y:.5+Math.sin(t*1.5+1)*.01,z:HZ0,yaw:0,torso:-Math.PI/2,thigh:-Math.PI/2,knee:0,lid:1,mouth:.1,open:.1,brow:0,tilt:0,headZ:0,aL:[0,0,0],aR:[0,0,0]};
+  const g=sm(prog(t,8.5,8.9))*(1-sm(prog(t,9.6,10.0)));o.tilt=-.4*g;o.headZ=.25*g;o.mouth=lerp(.1,-.4,g);
+  return o;
 }
 
 /* ---------- camera ---------- */
@@ -216,11 +261,12 @@ const KF=[
  [5.7,[1.8,1.55,1.5],[-.1,.7,-.3],44],
  [6.6,[1.2,2.0,3.1],[-.1,.6,-.5],43],
  [7.4,[.4,2.5,3.9],[-.1,.55,-.6],42],
- [8.8,[-.3,2.3,3.5],[-.6,.55,-.6],42],
- [10.2,[.3,1.35,3.0],[-1.0,.62,-.5],42],
- [11.8,[.9,1.5,2.9],[-1.4,.75,-.5],44],
- [13.2,[1.2,1.6,3.0],[-1.8,.95,-.5],46],
- [15.0,[.2,1.5,2.3],[-2.5,.95,-.5],48]];
+ [8.6,[-.5,1.8,1.6],[-.7,.62,-1.0],36],
+ [9.9,[.1,1.4,2.2],[-.75,1.0,-.55],36],
+ [11.4,[-.3,1.3,2.0],[-1.2,.85,-.5],40],
+ [12.8,[-2.6,1.45,1.0],[-1.55,.95,-.5],44],
+ [14.2,[-2.5,1.5,1.3],[-1.8,1.0,-.5],44],
+ [15.0,[-1.8,1.5,2.0],[-2.4,1.0,-.5],46]];
 const pCur=new THREE.CatmullRomCurve3(KF.map(k=>new THREE.Vector3(...k[1])),false,'centripetal');
 const lCur=new THREE.CatmullRomCurve3(KF.map(k=>new THREE.Vector3(...k[2])),false,'centripetal');
 function camAt(t){
@@ -237,8 +283,8 @@ function render(t){
   pose(him,himPose(t));pose(her,herPose(t));frontWall.visible=t<5.5;
   const e=sm(prog(t,9.0,10.0));blkHim.scale.z=lerp(1,.45,e);blkHim.position.z=lerp(.4,1.2,e);blkHim.position.y=lerp(.6,.52,e);
   // alarm
-  const ring=t>=8.4&&t<10.2;clock.position.x=-2.35+(ring?Math.sin(t*90)*.006:0);clock.rotation.z=ring?Math.sin(t*70)*.05:0;
-  rings.forEach((m,i)=>{const a=((t-8.4-i*.28)%.85+.85)%.85/.85;const on=t>=8.4&&t<10.0;m.material.opacity=on?.6*(1-a):0;m.scale.setScalar(.4+a*2.4);m.lookAt(cam.position);});
+  const ring=t>=8.4&&t<10.3;clock.position.x=-2.35+(ring?Math.sin(t*90)*.006:0);clock.rotation.z=ring?Math.sin(t*70)*.05:0;
+  rings.forEach((m,i)=>{const a=((t-8.4-i*.28)%.85+.85)%.85/.85;const on=t>=8.4&&t<10.2;m.material.opacity=on?.6*(1-a):0;m.scale.setScalar(.4+a*2.4);m.lookAt(cam.position);});
   // landing ripple
   const rp=prog(t,10.9,11.9);ripple.material.opacity=rp>0&&rp<1?.55*(1-rp):0;ripple.scale.set(1+rp*3.2,1+rp*3.2,1);
   // dust
