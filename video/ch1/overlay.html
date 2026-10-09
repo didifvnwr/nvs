@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:Heebo;font-weight:400;src:url(heebo-hebrew-400-normal.woff2)}
+@font-face{font-family:Heebo;font-weight:800;src:url(heebo-hebrew-800-normal.woff2)}
+html,body{margin:0;background:transparent}
+#stage{position:relative;width:720px;height:1280px;overflow:hidden;font-family:Heebo,sans-serif}
+svg{position:absolute;left:0;top:0}
+#cap{position:absolute;left:46px;right:46px;top:1090px;text-align:center;direction:rtl;color:#fff;
+  font-weight:800;font-size:50px;line-height:1.25;text-wrap:balance;
+  text-shadow:0 2px 14px rgba(0,0,0,.75),0 0 3px rgba(0,0,0,.6)}
+text{font-family:Heebo,sans-serif}
+</style>
+</head>
+<body>
+<div id="stage">
+<svg id="svg" width="720" height="1280" viewBox="0 0 720 1280">
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+    <radialGradient id="ember" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff1c4" stop-opacity="1"/><stop offset=".25" stop-color="#ffb347" stop-opacity=".85"/><stop offset=".7" stop-color="#ff7a1a" stop-opacity=".25"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="flood" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffbe8" stop-opacity="1"/><stop offset=".6" stop-color="#ffd27a" stop-opacity=".95"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+    <radialGradient id="hopeglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe6a8" stop-opacity=".55"/><stop offset="1" stop-color="#ffe6a8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="shaft" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2c9" stop-opacity=".55"/><stop offset="1" stop-color="#fff2c9" stop-opacity="0"/></linearGradient>
+  </defs>
+  <g id="g"></g>
+  <rect id="dip" width="720" height="1280" fill="#050607" opacity="0"/>
+</svg>
+<div id="cap"></div>
+</div>
+<script>
+const DUR = 58.5;
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,p)=>a+(b-a)*p;
+const sm=p=>p*p*(3-2*p);
+const prog=(t,a,b)=>clamp((t-a)/(b-a));
+const vis=(t,a,b,fi=.35,fo=.35)=>Math.min(prog(t,a,a+fi),1-prog(t,b-fo,b));
+const hash=i=>{const s=Math.sin(i*127.1+311.7)*43758.5453; return s-Math.floor(s);};
+const f1=n=>(+n).toFixed(1);
+const f2=n=>(+n).toFixed(2);
+const comma=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const EMB=[330,930];
+
+/* ---- 1. alarm clock ---- */
+function alarm(t){
+  const v=vis(t,.3,4.0,.4,.7); if(v<=0) return '';
+  let o='';
+  if(t<3.4) for(let k=0;k<2;k++){const age=((t-.4-k*.3)%.6+.6)%.6/.6;
+    o+=`<circle cx="360" cy="740" r="${f1(150+260*age)}" fill="none" stroke="#9fd0ff" stroke-width="3" opacity="${f2(.35*(1-age)*v)}"/>`;}
+  const colon=(Math.floor(t*2)%2===0)?1:.25, sc=1+.025*Math.exp(-(((t-.4)%.6)*9));
+  const txt=`06<tspan opacity="${colon}">:</tspan>30`;
+  o+=`<g opacity="${f2(v)}" transform="translate(360 780) scale(${f2(sc)}) translate(-360 -780)">
+    <text x="360" y="780" text-anchor="middle" font-size="210" font-weight="800" fill="#7fc0ff" filter="url(#glow)" direction="ltr">${txt}</text>
+    <text x="360" y="780" text-anchor="middle" font-size="210" font-weight="800" fill="#f4faff" direction="ltr">${txt}</text></g>`;
+  return o;
+}
+function chip(t){
+  const v=vis(t,.5,2.6,.5,.6); if(v<=0) return '';
+  return `<g opacity="${f2(v)}"><text x="360" y="150" text-anchor="middle" font-size="26" letter-spacing="7" fill="#fff" opacity=".85">פרק 1</text>
+    <text x="360" y="214" text-anchor="middle" font-size="60" font-weight="800" fill="#fff">הלולאה השקופה</text></g>`;
+}
+
+/* ---- 2. routine checklist ---- */
+const ITEMS=['מצחצח שיניים','מסתכל במראה','בודק הודעות','שותה קפה'];
+const ITIME=[4.6,5.7,6.8,8.8];
+function checklist(t){
+  const spinA=10.3, spinB=12.2;
+  let v=Math.max(vis(t,4.3,12.5,.4,.4), vis(t,51.8,55.2,.5,.6)); if(v<=0) return '';
+  const second=t>50;
+  const cyc=.38, inSpin=t>=spinA&&t<spinB;
+  const ph=inSpin?((t-spinA)%cyc)/cyc:1;
+  const day=second?2962+Math.round(2*Math.sin(t*3)):2847+(t>=spinA?Math.min(115,Math.floor((t-spinA)*62)):0);
+  const jx=inSpin?(hash(Math.floor(t*30))-.5)*5:0;
+  let o=`<g opacity="${f2(v)}" transform="translate(${f1(jx)} 0)">
+    <rect x="110" y="680" width="500" height="340" rx="26" fill="#0a0d12" fill-opacity=".55" stroke="#fff" stroke-opacity=".18" stroke-width="2"/>
+    <text x="580" y="742" text-anchor="start" direction="rtl" font-size="38" font-weight="800" fill="#ffcf7a">יום ${comma(day)}</text>
+    <line x1="140" y1="764" x2="580" y2="764" stroke="#fff" stroke-opacity=".18" stroke-width="2"/>`;
+  ITEMS.forEach((lab,k)=>{
+    const y=812+k*54, t0=second?0:ITIME[k];
+    const show=second?1:prog(t,t0,t0+.25);
+    let tick=second?1:prog(t,t0+.45,t0+.75);
+    if(inSpin) tick=ph>.35+k*.1?1:0;
+    if(t>=spinB&&!second) tick=1;
+    if(show<=0) return;
+    o+=`<g opacity="${f2(show)}" transform="translate(${f1((1-show)*14)} 0)">
+      <rect x="544" y="${y-17}" width="34" height="34" rx="9" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3"/>
+      <path d="M551 ${y} L558 ${y+8} L572 ${y-9}" fill="none" stroke="#7fe0a0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="34" stroke-dashoffset="${f1(34*(1-tick))}"/>
+      <text x="526" y="${y+10}" text-anchor="start" direction="rtl" font-size="31" fill="#fff" fill-opacity="${tick>.5?.55:.95}">${lab}</text>
+      ${tick>.5?`<line x1="${526-lab.length*15.5}" y1="${y+1}" x2="526" y2="${y+1}" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>`:''}</g>`;
+  });
+  return o+'</g>';
+}
+
+/* ---- 3. ember -> flood ---- */
+function ember(t){
+  const a=12.8,b=19.4; if(t<a||t>b) return '';
+  const vi=vis(t,a,b,1.0,.9);
+  const ph=(t*1.1)%1, beat=Math.exp(-Math.pow((ph-.1)*12,2))+.7*Math.exp(-Math.pow((ph-.38)*12,2));
+  const grow=lerp(.55,1.2,sm(prog(t,13.5,17.0)));
+  const r=(46+34*beat)*grow, flood=sm(prog(t,16.8,18.3));
+  let o=`<g opacity="${f2(vi)}">
+    <circle cx="${EMB[0]}" cy="${EMB[1]}" r="${f1(r*3.2)}" fill="url(#ember)" opacity="${f2(.55+.3*beat)}"/>
+    <circle cx="${EMB[0]}" cy="${EMB[1]}" r="${f1(r*.55)}" fill="#fff4cf" opacity="${f2(.75+.25*beat)}"/>`;
+  for(let i=0;i<9;i++){const age=((t-a)*.38+hash(i))%1, lift=prog(t,14.0,17.0)*1.3+.35;
+    const x=EMB[0]+Math.sin(age*6+i*2)*34+(hash(i+9)-.5)*60, y=EMB[1]-300*age*lift;
+    o+=`<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(2.2+hash(i+3)*2)}" fill="#ffd27a" opacity="${f2(Math.sin(Math.PI*age)*.8)}"/>`;}
+  o+='</g>';
+  if(flood>0) o+=`<circle cx="${EMB[0]}" cy="${EMB[1]}" r="${f1(lerp(80,1500,flood))}" fill="url(#flood)" opacity="${f2(vis(t,16.8,19.4,1.5,1.0)*.95)}"/>`;
+  return o;
+}
+
+/* ---- 4. kinetic words + light ---- */
+const WORDS=[['להרגיש חי',18.5,20.3,96,430],['להתרגש',19.7,21.5,110,540],['לטוס',21.0,22.9,150,660],
+             ['לקום בבוקר בשיא שלך',23.1,25.4,58,430],['ולחייך באמת',25.2,27.9,100,540]];
+function light(t){
+  const v=vis(t,18.6,28.5,1.4,1.5); if(v<=0) return '';
+  let o=`<g opacity="${f2(v)}" style="mix-blend-mode:screen">`;
+  for(let i=0;i<9;i++){const ang=(-80+i*24+t*2.2)*Math.PI/180, w=3.2*Math.PI/180;
+    const L=[610,140], len=1700;
+    o+=`<polygon points="${f1(L[0])},${f1(L[1])} ${f1(L[0]+Math.cos(ang-w)*len)},${f1(L[1]+Math.sin(ang-w)*len)} ${f1(L[0]+Math.cos(ang+w)*len)},${f1(L[1]+Math.sin(ang+w)*len)}" fill="#fff2c9" opacity=".075"/>`;}
+  for(let i=0;i<40;i++){const sp=.35+hash(i+1)*.8, y=1300-((t*46*sp+hash(i)*1400)%1400), x=hash(i+50)*720+Math.sin(t*.8+i)*14;
+    o+=`<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(1.4+hash(i+7)*2.4)}" fill="#ffe9a8" opacity="${f2(.25+.5*hash(i+9))}"/>`;}
+  return o+'</g>';
+}
+function words(t){
+  let o='';
+  for(const [tx,a,b,sz,y] of WORDS){const v=vis(t,a,b,.35,.45); if(v<=0) continue;
+    const s=lerp(.92,1,sm(prog(t,a,a+.5))), dy=lerp(14,-8,prog(t,a,b));
+    o+=`<g opacity="${f2(v)}" transform="translate(360 ${f1(y+dy)}) scale(${f2(s)}) translate(-360 ${-y})">
+      <text x="360" y="${y}" text-anchor="middle" font-size="${sz}" font-weight="800" fill="#ffd98a" filter="url(#glow)" opacity=".7">${tx}</text>
+      <text x="360" y="${y}" text-anchor="middle" font-size="${sz}" font-weight="800" fill="#fff" stroke="#000" stroke-opacity=".25" stroke-width="3" paint-order="stroke">${tx}</text></g>`;}
+  return o;
+}
+
+/* ---- 5. memory + "what changed?" ---- */
+function memory(t){
+  let o='';
+  let v=vis(t,29.4,32.9,.8,.9);
+  if(v>0){const fl=.85+.15*hash(Math.floor(t*18));
+    o+=`<text x="360" y="600" text-anchor="middle" font-size="120" font-weight="400" letter-spacing="10" fill="#ffe3a8" opacity="${f2(v*fl)}" filter="url(#soft)">פעם...</text>
+        <text x="360" y="600" text-anchor="middle" font-size="120" font-weight="400" letter-spacing="10" fill="#fff3d6" stroke="#000" stroke-opacity=".35" stroke-width="4" paint-order="stroke" opacity="${f2(v*fl)}">פעם...</text>`;}
+  v=vis(t,33.5,37.0,.15,.9);
+  if(v>0){const j=hash(Math.floor(t*20)), dx=(j-.5)*5*(1-prog(t,33.5,35.5)), s=lerp(1.08,1,sm(prog(t,33.5,34.3)));
+    o+=`<g opacity="${f2(v)}" transform="translate(${f1(360+dx)} 600) scale(${f2(s)}) translate(-360 -600)">
+      <text x="354" y="600" text-anchor="middle" font-size="124" font-weight="800" fill="#ff4d5a" opacity=".5">מה השתנה?</text>
+      <text x="366" y="600" text-anchor="middle" font-size="124" font-weight="800" fill="#4de1ff" opacity=".5">מה השתנה?</text>
+      <text x="360" y="600" text-anchor="middle" font-size="124" font-weight="800" fill="#fff">מה השתנה?</text></g>`;}
+  return o;
+}
+
+/* ---- 6. things that might come from outside ---- */
+function icons(t){
+  if(t<39.5||t>53) return '';
+  let o='';
+  const shaft=vis(t,40.0,52.0,3.0,1.8);
+  o+=`<polygon points="720,0 720,520 300,0" fill="url(#shaft)" opacity="${f2(shaft*.55)}" style="mix-blend-mode:screen"/>`;
+  const defs=[
+    {a:44.2,x:190,y:520,draw:clover},{a:45.5,x:535,y:700,draw:ticket},{a:46.8,x:360,y:350,draw:heart}];
+  const leave=sm(prog(t,49.2,52.5));
+  defs.forEach((d,k)=>{
+    const e=sm(prog(t,d.a,d.a+.8)); if(e<=0) return;
+    const bob=Math.sin(t*1.9+k*2)*10, y=d.y+bob+(1-e)*-90-leave*180, al=e*(1-leave);
+    o+=`<g opacity="${f2(al)}" transform="translate(${d.x} ${f1(y)})">
+       <circle r="170" fill="url(#hopeglow)"/>${d.draw(t,k)}</g>`;
+  });
+  if(leave>0) for(let i=0;i<45;i++){const k=Math.floor(i/15), d=defs[k], a=hash(i)*6.283, dist=leave*(60+hash(i+4)*160);
+    o+=`<circle cx="${f1(d.x+Math.cos(a)*dist)}" cy="${f1(d.y-leave*180+Math.sin(a)*dist-leave*60)}" r="${f1(1.5+hash(i+8)*2.5)}" fill="#ffe3a8" opacity="${f2((1-leave)*.8)}"/>`;}
+  return o;
+}
+function clover(){
+  let o='';
+  for(const [dx,dy] of [[-27,-27],[27,-27],[-27,27],[27,27]]) o+=`<circle cx="${dx}" cy="${dy}" r="30" fill="#3fbf6a" stroke="#1f8a46" stroke-width="3"/><circle cx="${dx*.8}" cy="${dy*.8}" r="10" fill="#7be39b" opacity=".6"/>`;
+  return o+`<path d="M0 0 C6 40 24 70 52 92" fill="none" stroke="#1f8a46" stroke-width="7" stroke-linecap="round"/>`;
+}
+function ticket(){
+  return `<g transform="rotate(-8)"><rect x="-105" y="-62" width="210" height="124" rx="14" fill="#f4e7bb" stroke="#c9a94a" stroke-width="3"/>
+    <rect x="-105" y="-62" width="210" height="34" rx="14" fill="#d94f4f"/><rect x="-105" y="-40" width="210" height="12" fill="#d94f4f"/>
+    <text x="0" y="-36" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">טוטו</text>
+    ${[-66,-22,22,66].map((x,i)=>`<circle cx="${x}" cy="16" r="20" fill="#fff" stroke="#c9a94a" stroke-width="3"/><text x="${x}" y="25" text-anchor="middle" font-size="22" font-weight="800" fill="#7a2a2a">${[7,14,23,31][i]}</text>`).join('')}</g>`;
+}
+function heart(t){
+  const s=1+.05*Math.exp(-Math.pow(((t*1.1)%1-.1)*12,2));
+  return `<g transform="scale(${f2(s)})"><path d="M0 62 C-110 -10 -62 -92 0 -42 C62 -92 110 -10 0 62 Z" fill="#ee5b78" stroke="#c63a58" stroke-width="3"/><path d="M-38 -36 C-56 -26 -62 -8 -54 6" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="7" stroke-linecap="round"/></g>`;
+}
+
+/* ---- 7. closing line ---- */
+function ending(t){
+  let o='';
+  let v=vis(t,55.3,58.5,.8,.0);
+  if(v>0) o+=`<text x="360" y="540" text-anchor="middle" font-size="62" font-weight="400" fill="#fff" opacity="${f2(v)}">אם לא תשנה כלום —</text>`;
+  v=vis(t,56.4,58.5,.8,.0);
+  if(v>0) o+=`<text x="360" y="650" text-anchor="middle" font-size="86" font-weight="800" fill="#ffd98a" opacity="${f2(v)}">כלום לא ישתנה.</text>`;
+  return o;
+}
+
+const CAPS=[
+ [.8,3.6,'אתה קם בבוקר. כמו בכל יום.'],
+ [4.4,8.2,'מצחצח שיניים. מסתכל במראה. בודק הודעות.'],
+ [8.6,12.3,'שותה קפה. והכול... בדיוק אותו דבר.'],
+ [13.0,16.6,'אבל עמוק בפנים, משהו בך רוצה אחרת.'],
+ [28.4,32.6,'ואתה אפילו זוכר... שפעם זה היה ככה.'],
+ [38.0,43.6,'ואז אתה חושב: אולי יום אחד יגיע משהו מבחוץ וישנה הכול.'],
+ [44.2,48.4,'יבוא המזל. יבוא הטוטו. תבוא הזוגיות.'],
+ [49.0,54.8,'אבל אם אתה לא משנה כלום... למה שמשהו ישתנה?']
+];
+function render(t){
+  document.getElementById('g').innerHTML = light(t)+ember(t)+words(t)+memory(t)+alarm(t)+chip(t)+checklist(t)+icons(t)+ending(t);
+  let cap='',ca=0;
+  for(const [a,b,tx] of CAPS) if(t>=a&&t<=b){cap=tx;ca=Math.min(prog(t,a,a+.25),1-prog(t,b-.25,b));}
+  const c=document.getElementById('cap'); c.textContent=cap; c.style.opacity=ca.toFixed(3); c.style.transform=`translateY(${((1-ca)*12).toFixed(1)}px)`;
+  const dip=Math.max(1-prog(t,0,.6), prog(t,DUR-.6,DUR));
+  document.getElementById('dip').setAttribute('opacity',dip.toFixed(3));
+}
+window.DUR=DUR; window.render=render;
+</script>
+</body>
+</html>
