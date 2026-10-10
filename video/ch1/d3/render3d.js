@@ -10,7 +10,7 @@ const exe = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/c
   fs.mkdirSync(out, { recursive: true });
   const browser = await chromium.launch({ executablePath: exe, args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const open = async () => {
-    const page = await (await browser.newContext({ viewport: { width: 720, height: 1280 }, deviceScaleFactor: scale })).newPage();
+    const page = await (await browser.newContext({ viewport: { width: +arg('w', 720), height: +arg('h', 1280) }, deviceScaleFactor: scale })).newPage();
     page.on('console', m => console.log('C', m.text())); page.on('pageerror', e => console.log('PAGE ERROR', e.message));
     await page.goto(url);
     if (process.argv.includes('--clean')) await page.addStyleTag({ content: '#cap,#tag,#dip{display:none!important}' });
