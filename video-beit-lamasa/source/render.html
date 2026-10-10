@@ -1,0 +1,95 @@
+<!doctype html><meta charset=utf-8><style>
+@font-face{font-family:Heebo;font-weight:300;src:url(fonts/heebo-300.ttf)}
+@font-face{font-family:Heebo;font-weight:500;src:url(fonts/heebo-500.ttf)}
+@font-face{font-family:Heebo;font-weight:800;src:url(fonts/heebo-800.ttf)}
+html,body{margin:0;background:transparent}canvas{display:block}</style>
+<canvas id=c width=1080 height=1920></canvas><script src=narr.js></script><script>
+const W=1080,H=1920,c=document.getElementById('c'),g=c.getContext('2d');
+const GOLD='#d4aa72',GOLD2='#b8955a',CREAM='#faf8f4';
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),P=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3),eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{const a=1.70158,b=a+1;return 1+b*Math.pow(x-1,3)+a*Math.pow(x-1,2)};
+const vis=(t,a,b,fi=.4,fo=.4)=>eo(P(t,a,a+fi))*(1-P(t,b-fo,b));
+function rnd(s){return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
+function T(str,x,y,o={}){g.save();g.globalAlpha*=o.a??1;g.font=`${o.w||500} ${o.s||48}px Heebo`;g.fillStyle=o.c||CREAM;g.textAlign=o.al||'center';g.textBaseline='middle';g.direction='rtl';g.shadowColor='rgba(0,0,0,.55)';g.shadowBlur=o.sh??14;g.fillText(str,x,y);g.restore()}
+function A(al,fn){if(al<=0.003)return;g.save();g.globalAlpha*=al;fn();g.restore()}
+function rr(x,y,w,h,r){g.beginPath();g.roundRect(x,y,w,h,r)}
+function wrap(str,maxW,font){g.save();g.font=font;const ws=str.split(' '),L=[];let cur='';for(const w of ws){const t=cur?cur+' '+w:w;if(g.measureText(t).width>maxW&&cur){L.push(cur);cur=w}else cur=t}L.push(cur);g.restore();return L}
+function grad(y0,y1,a0,a1){const q=g.createLinearGradient(0,y0,0,y1);q.addColorStop(0,`rgba(0,0,0,${a0})`);q.addColorStop(1,`rgba(0,0,0,${a1})`);g.fillStyle=q;g.fillRect(0,Math.min(y0,y1),W,Math.abs(y1-y0))}
+const LAWS=[[6,23,'חוק ראשון','איפה המחשבות שלכם?'],[23,41,'חוק שני','איפה הרגשות שלנו?'],[41,59,'חוק שלישי','איפה הכוונות שלנו?']];
+function lawHeader(t,L,big){const[a,b,lab,q]=L;const k=eio(P(t,a+(a==23?1.4:2.6),a+(a==23?2.2:3.4))),al=vis(t,a,b,.5,.4);
+ A(al,()=>{const y1=big?860:250,y2=250;T(lab,W/2,y1+(y2-y1)*k,{s:54-14*k,c:GOLD,w:500});T(q,W/2,(big?990:345)+(345-(big?990:345))*k,{s:84-22*k,w:800})})}
+const NOUNS=['מה יהיה?','לא הספקתי','צריך לזכור','אני לא מספיק','מה חשבו עליי?','למה אמרתי את זה','עוד מייל','מחר','הוא התכוון ל…','אין לי כוח','אולי יצא לי','שוב אותו דבר'];
+const BUB=(()=>{const r=rnd(7);return Array.from({length:22},(_,i)=>({x:150+r()*780,sp:50+r()*70,off:r()*1100,w:NOUNS[Math.floor(r()*NOUNS.length)],ph:r()*6,s:34+r()*14}))})();
+function frame(t){g.clearRect(0,0,W,H);
+ // scrims
+ grad(0,620,.55,0);grad(1250,H,0,.78);
+ if(t<6)A(1,()=>{g.fillStyle='rgba(0,0,0,.28)';g.fillRect(0,0,W,H)});
+ if(t>=73.3)A(P(t,73.3,74),()=>{g.fillStyle='rgba(8,6,4,.62)';g.fillRect(0,0,W,H)});
+ if(t>=44&&t<59)A(vis(t,44,59,.6,.4)*.35,()=>{g.fillStyle='#000';g.fillRect(0,0,W,H)});
+ if(t>=9&&t<23)A(vis(t,9,23,.8,.5)*.3,()=>{g.fillStyle='#000';g.fillRect(0,0,W,H)});
+ // persistent top
+ if(t>=0.2&&t<73.3)A(P(t,.2,1)*(1-P(t,72.8,73.3)),()=>T('בית למסע',W/2,110,{s:34,c:GOLD,w:500}));
+ if(t>=6&&t<59)A(vis(t,6,59,.5,.5),()=>{LAWS.forEach((L,i)=>{const x=W/2-290+i*300,p=P(t,L[0],L[1]);g.fillStyle='rgba(255,255,255,.25)';rr(x-130,168,260,8,4);g.fill();g.fillStyle=GOLD;rr(x-130,168,260*(i==0?p:p),8,4);g.fill()})});
+ // ---- hook
+ if(t<6){A(1-P(t,5.5,6),()=>{
+  [1,2,3].forEach((n,i)=>{const p=eb(P(t,.6+i*.3,1.1+i*.3)),x=W/2+130-i*130;A(p,()=>{g.strokeStyle=GOLD;g.lineWidth=4;g.beginPath();g.arc(x,520,46*p,0,7);g.stroke();T(String(n),x,523,{s:50,c:GOLD,w:800,sh:0})})});
+  A(eo(P(t,.3,1)),()=>T('שלושה חוקים',W/2,720+30*(1-eo(P(t,.3,1))),{s:140,w:800}));
+  A(eo(P(t,1.6,2.3)),()=>T('שאם תשימו לב אליהם',W/2,880,{s:62}));
+  A(eo(P(t,2.6,3.3)),()=>T('תוכלו לשנות בחייכם',W/2,965,{s:62}));
+  A(eo(P(t,3.6,4.4)),()=>T('כל מה שתרצו',W/2,1120,{s:118,w:800,c:GOLD}))})}
+ // ---- law 1
+ if(t>=6&&t<23){lawHeader(t,LAWS[0],true);
+  A(vis(t,9.4,23,.8,.5),()=>{
+   BUB.forEach(b=>{const u=((t*b.sp+b.off)%1100)/1100,y=1450-u*1000,x=b.x+Math.sin(t*1.2+b.ph)*22,a=Math.pow(Math.sin(Math.PI*u),.6)*.9;
+    g.save();g.globalAlpha*=a;g.font=`500 ${b.s}px Heebo`;const w=g.measureText(b.w).width+50,h=b.s+34;g.fillStyle='rgba(255,255,255,.13)';g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=2;rr(x-w/2,y-h/2,w,h,h/2);g.fill();g.stroke();g.restore();T(b.w,x,y,{s:b.s,a:a*.85,sh:0})});
+   A(vis(t,15.2,19.5,.6,.6),()=>{const gy=1150-P(t,15.2,19.5)*500,gx=540;g.save();g.shadowColor=GOLD;g.shadowBlur=50;g.fillStyle=GOLD;rr(gx-150,gy-46,300,92,46);g.fill();g.restore();T('בחירה מודעת',gx,gy,{s:46,c:'#1a1a1a',w:800,sh:0})});
+   A(vis(t,11.5,15.8,.5,.5),()=>{T('הרוב המוחלט — על אוטומט',W/2,1400,{s:58,w:800,c:GOLD})});
+   A(vis(t,17.2,23,.5,.4),()=>{const k1=eb(P(t,17.4,18)),k2=eb(P(t,18.3,19));
+    [['מחשבות',800,k1],['מציאות',280,k2]].forEach(([s,x,k])=>A(k,()=>{g.fillStyle='rgba(212,170,114,.18)';g.strokeStyle=GOLD;g.lineWidth=3;rr(x-130,1315,260,100,50);g.fill();g.stroke();T(s,x,1365,{s:48,w:800,sh:0})}));
+    A(P(t,18,18.6),()=>{g.strokeStyle=GOLD;g.lineWidth=6;g.beginPath();g.moveTo(655,1365);g.lineTo(445,1365);g.stroke();g.beginPath();g.moveTo(465,1345);g.lineTo(440,1365);g.lineTo(465,1385);g.stroke()});
+    A(eo(P(t,20,20.8))*(.75+.25*Math.sin(t*6)),()=>T('בלי שליטה?',W/2,1440,{s:46,c:CREAM,w:500}))})})}
+ // ---- law 2
+ if(t>=23&&t<41){lawHeader(t,LAWS[1],true);
+  const EX=[['מישהו חתך אותנו בכביש','איזו חוצפה!','כעס'],['שמענו חדשות','מה יקרה עכשיו?','חרדה'],['הילדים לא מקשיבים','אף אחד לא רואה אותי','כעס — ותחושה שלא רואים אותנו']];
+  EX.forEach((e,k)=>{const s=23+k*6+(k==0?1.9:0),end=29+k*6;if(t<s||t>end)return;
+   A(1-P(t,end-.5,end)*(k<2?1:0),()=>{
+    const card=(y,h,tag,txt,t0,fill,al)=>{const p=eb(P(t,t0,t0+.6));A(Math.min(1,p*2),()=>{g.save();g.translate((1-p)*140,0);g.fillStyle=fill||'rgba(10,10,10,.55)';g.strokeStyle='rgba(212,170,114,.7)';g.lineWidth=3;rr(90,y-h/2,900,h,28);g.fill();g.stroke();T(tag,W/2,y-h/2+34,{s:28,c:fill?'#3a2c14':GOLD,w:500,sh:0});T(txt,W/2,y+16,{s:txt.length>20?42:50,w:800,c:fill?'#1a1a1a':CREAM,sh:0});g.restore()})};
+    const arrow=(y,t0,lab)=>A(P(t,t0,t0+.5),()=>{g.strokeStyle=GOLD;g.lineWidth=6;const h=P(t,t0,t0+.5)*50;g.beginPath();g.moveTo(W/2,y-25);g.lineTo(W/2,y-25+h);g.stroke();if(h>40){g.beginPath();g.moveTo(W/2-18,y+7);g.lineTo(W/2,y+25);g.lineTo(W/2+18,y+7);g.stroke()}T(lab,W/2-200,y,{s:30,c:'rgba(250,248,244,.75)',w:300,sh:0})});
+    card(640,140,'אירוע',e[0],s);arrow(765,s+.9,'עולה לבד');card(890,140,'מחשבה אוטומטית',e[1],s+1.3);arrow(1015,s+2.2,'בלי בחירה');
+    card(1160,190,'רגש',e[2],s+2.6,GOLD);
+    A(P(t,s+2.9,s+3.4),()=>{const f=eo(P(t,s+3,s+4.2))*.92,pl=1+.04*Math.sin(t*9);g.fillStyle='rgba(26,26,26,.25)';rr(190,1213,700,16,8);g.fill();g.fillStyle='#1a1a1a';rr(190,1213,700*f,16,8);g.fill()});
+   })});
+  A(vis(t,37.6,41,.6,.4),()=>T('ועדיין — לרגש משקל מכריע',W/2,1370,{s:56,w:800,c:GOLD}))}
+ // ---- law 3
+ if(t>=41&&t<59){lawHeader(t,LAWS[2],true);
+  A(vis(t,44.2,47,.5,.4),()=>{T('מה אנחנו באמת רוצים?',W/2,900,{s:84,w:800});A(eo(P(t,45.4,46.1)),()=>T('אבל באמת.',W/2,1030,{s:120,w:800,c:GOLD}))});
+  A(vis(t,47,53,.5,.5),()=>{const WL=900;g.fillStyle='rgba(12,30,52,.5)';g.fillRect(0,WL,W,600);
+   A(eo(P(t,47.5,48.2)),()=>{g.strokeStyle=GOLD;g.setLineDash([16,12]);g.lineWidth=3;g.beginPath();g.moveTo(60,WL);g.lineTo(60+960*P(t,47.5,48.3),WL);g.stroke();g.setLineDash([])});
+   A(eo(P(t,47.1,47.9)),()=>{g.fillStyle=CREAM;g.beginPath();g.moveTo(540,650);g.lineTo(450,WL);g.lineTo(630,WL);g.closePath();g.fill()});
+   const rv=eo(P(t,48.2,49.6));g.save();g.beginPath();g.rect(0,WL,W,(1480-WL)*rv);g.clip();const q=g.createLinearGradient(0,WL,0,1480);q.addColorStop(0,'rgba(220,235,250,.75)');q.addColorStop(1,'rgba(90,120,170,.25)');g.fillStyle=q;g.beginPath();g.moveTo(450,WL);g.lineTo(630,WL);g.lineTo(790,1090);g.lineTo(700,1340);g.lineTo(540,1430);g.lineTo(380,1330);g.lineTo(290,1080);g.closePath();g.fill();g.restore();
+   A(P(t,48,48.8),()=>{T('מודע · 5%',1030,740,{s:40,al:'right',w:800});T('תת-מודע · 95%',1030,1000,{s:40,al:'right',w:800,c:GOLD})});
+   A(eo(P(t,48.5,49.3)),()=>{T('רוצה זוגיות',200,740,{s:40,w:500});T('בכל ליבה',200,790,{s:40,w:500})});
+   A(eo(P(t,50,50.8)),()=>{T('רועדת מפחד',540,1100,{s:44,w:800,c:'#1a1a1a',sh:0});T('מאינטימיות',540,1160,{s:44,w:800,c:'#1a1a1a',sh:0})});
+   A(eo(P(t,51.2,52)),()=>{const sx=Math.sin(t*40)*(t<52?3:0);T('…ומחבלת בניסיונות',540+sx,1560,{s:54,w:800,c:GOLD})})});
+  A(vis(t,53,59,.5,.4),()=>{const f=P(t,53.3,56.3),n=Math.floor(f*95);
+   for(let i=0;i<100;i++){const r=Math.floor(i/10),cc=i%10,x=225+(9-cc)*70+22+4,y=1215-r*70-22;const on=i<n,low=i>=95;g.save();if(on){g.fillStyle=GOLD;g.shadowColor=GOLD;g.shadowBlur=i==n-1?30:8;}else if(low&&t>56.3){g.fillStyle=CREAM;g.shadowColor=CREAM;g.shadowBlur=16+8*Math.sin(t*8)}else{g.fillStyle='rgba(255,255,255,.13)'}g.beginPath();g.arc(x+4,y,22,0,7);g.fill();g.restore()}
+   T(Math.round(f*95)+'%',W/2,1330,{s:150,w:800,c:GOLD});
+   T('תת-המודע מנהל את ההחלטות והפעולות',W/2,1430,{s:42});
+   A(eo(P(t,56.4,57.2)),()=>T('המודע — 5% בלבד',360,505,{s:44,w:800}))})}
+ // ---- closing
+ if(t>=59&&t<73.3){
+  A(vis(t,59.2,63.9,.5,.4),()=>{T('כדי לשנות את החיים',W/2,520,{s:66});A(eo(P(t,60,60.8)),()=>T('מתחילים במודעות',W/2,650,{s:104,w:800,c:GOLD}));
+   ['למחשבות','לרגשות','לכוונות העמוקות'].forEach((s,i)=>A(eo(P(t,60.9+i*.8,61.6+i*.8)),()=>{const y=900+i*150,r=34+6*Math.sin(t*4+i);g.strokeStyle=GOLD;g.lineWidth=4;for(let k=1;k<=3;k++){g.beginPath();g.arc(880,y,r*k/2.2,0,7);g.globalAlpha*=.8;g.stroke()}T(s,800,y,{s:72,al:'right',w:800})}))});
+  A(vis(t,64.1,69.9,.5,.4),()=>{T('מדיטציה',W/2,540,{s:110,w:800,c:GOLD});T('הכלי המדויק ביותר להתבוננות',W/2,650,{s:46});
+   [['10','דקות ביום',800,64.8],['30','חצי שעה',540,66.1],['60','שעה שלמה',280,67.4]].forEach(([n,l,x,t0])=>{const p=eo(P(t,t0,t0+1.1));g.lineWidth=14;g.strokeStyle='rgba(255,255,255,.2)';g.beginPath();g.arc(x,900,100,0,7);g.stroke();g.strokeStyle=GOLD;g.lineCap='round';g.beginPath();g.arc(x,900,100,-Math.PI/2,-Math.PI/2+p*Math.PI*2);g.stroke();g.lineCap='butt';A(P(t,t0,t0+.4),()=>{T(n,x,892,{s:76,w:800});T(l,x,1050,{s:36,c:GOLD})})});
+   const br=60+22*Math.sin(2*Math.PI*(t-64)/4);g.save();g.shadowColor=GOLD;g.shadowBlur=60;const q=g.createRadialGradient(540,1300,5,540,1300,br);q.addColorStop(0,'rgba(250,230,190,.9)');q.addColorStop(1,'rgba(212,170,114,.25)');g.fillStyle=q;g.beginPath();g.arc(540,1300,br,0,7);g.fill();g.restore();T(Math.sin(2*Math.PI*(t-64)/4+.0)>Math.sin(2*Math.PI*(t-64+.05)/4)?'נשפו':'נשמו',540,1300,{s:34,c:'#1a1a1a',sh:0,w:800}) });
+  A(vis(t,70,73.3,.5,.4),()=>{T('כל רגע של התבוננות',W/2,720,{s:72});T('מחזיר את המושכות',W/2,820,{s:72});A(eo(P(t,71.2,72)),()=>T('לידיים שלכם',W/2,960,{s:124,w:800,c:GOLD}));inf(1180,P(t,71,72.8))});
+ }
+ if(t>=73.3){const a=1-P(t,77.5,78),k=eo(P(t,73.3,74.2));A(a,()=>{inf(640,1);A(k,()=>{T('בית למסע',W/2,930+20*(1-k),{s:160,w:800,c:GOLD});T('המרכז להתפתחות ואימון',W/2,1050,{s:56,w:300});g.fillStyle=GOLD;g.fillRect(W/2-60,1120,120,4)});A(eo(P(t,74.6,75.4)),()=>T('nvs.co.il',W/2,1200,{s:50,w:500,c:CREAM}))})}
+ if(t>=6&&t<73)A(.55*P(t,6,7)*(1-P(t,72.5,73)),()=>T('nvs.co.il',W/2,1840,{s:28,w:500,sh:0}));
+ // subtitles
+ const sb=NARR.find(n=>t>=n[0]&&t<n[1]);if(sb&&t<77.6){const al=eo(P(t,sb[0],sb[0]+.25))*(1-P(t,sb[1]-.25,sb[1]));const L=wrap(sb[2],880,'800 44px Heebo');A(al,()=>{const h=L.length*66+28,y0=1585-h/2;g.fillStyle='rgba(0,0,0,.6)';rr(60,y0,960,h,28);g.fill();L.forEach((s,i)=>T(s,W/2,y0+14+33+i*66,{s:44,w:800,sh:0}))})}
+}
+function inf(cy,p){const a=170;g.save();g.strokeStyle=GOLD;g.lineWidth=12;g.lineCap='round';g.shadowColor=GOLD;g.shadowBlur=24;g.beginPath();const N=Math.floor(200*p);for(let i=0;i<=N;i++){const u=i/200*Math.PI*2,d=1+Math.sin(u)**2,x=W/2+a*1.2*Math.cos(u)/d*1.6,y=cy+a*Math.sin(u)*Math.cos(u)/d*1.6;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke();g.restore()}
+</script>
