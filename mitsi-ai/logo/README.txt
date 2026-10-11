@@ -1,20 +1,27 @@
-mitsi.ai – לוגו מונפש
+mitsi.ai – לוגו מונפש (חתול הולך)
 
-לאתר (SVG מונפש, בלי JavaScript ובלי פונטים חיצוניים; הטקסט הומר לצורות):
-  <img src="mitsi-ai-logo-animated.svg" alt="mitsi.ai" width="480">
-  רקע כהה: mitsi-ai-logo-animated.svg · רקע בהיר: mitsi-ai-logo-animated-light.svg
-  מוערם (מובייל / ריבוע): mitsi-ai-logo-stacked-animated(-light).svg
-  אייקון בלבד (פאביקון/אפליקציה): mitsi-ai-icon-animated.svg
-  ההנפשה רצה פעם אחת (כ-2.5 שניות) ואז נשארת "חיה": עיניים ממצמצות, גל הקול מדבר, האותות פועמים והניצוץ מנצנץ.
-  למשתמשים שביקשו "הפחתת תנועה" מוצג הלוגו הסטטי.
+ההנפשה: השם עולה, החתול נכנס בהליכה ומתחכך מתחת לאותיות, מרים את הראש ומתחכך,
+ונשכב מתחת לשם. אחר כך נדלק הניצוץ ב-".ai" ומופיעה השורה TELEPHONY FOR AGENTS.
+אחרי הכניסה החתול "חי": נושם, ממצמץ, מזיז אוזן והזנב זז.
 
-סטטי: mitsi-ai-logo.svg / -light.svg / -stacked / mitsi-ai-icon.svg + PNG שקוף בתיקיית png/
+לאתר (web/):
+  <div id="mitsi-logo" style="width:600px"></div>
+  <script src="mitsi-ai-logo.js"></script>
+  <script>MitsiLogo.mount(document.getElementById('mitsi-logo'),{theme:'dark'})</script>
+  theme: 'dark' לרקע כהה, 'light' לרקע בהיר. קובץ אחד, בלי ספריות ובלי פונטים חיצוניים.
+  למשתמשים שביקשו "הפחתת תנועה" מוצג ישר המצב הסופי.
+  web/index.html – דף הדגמה.
+  אפשרות נוספת: video/mitsi-ai-logo-transparent.webm בתג <video autoplay muted playsinline>.
 
-לסרטונים (video/):
-  mitsi-ai-logo-intro-1920x1080.mp4 / 1080x1920.mp4 – על רקע כהה, 6 שניות
-  mitsi-ai-logo-intro-transparent-prores4444.mov – רקע שקוף (Premiere / Final Cut / DaVinci / After Effects)
-  mitsi-ai-logo-intro-transparent.webm – רקע שקוף לדפדפן / CapCut
+לסרטונים (video/), 7.5 שניות, 30fps:
+  mitsi-ai-logo-1920x1080.mp4, mitsi-ai-logo-1080x1920.mp4 – על רקע כהה
+  mitsi-ai-logo-transparent-prores4444.mov – רקע שקוף (Premiere / Final Cut / DaVinci / After Effects)
+  mitsi-ai-logo-transparent.webm – רקע שקוף (דפדפן / CapCut)
+  גרסאות -light-: טקסט כהה לרקע בהיר
+
+סטטי: mitsi-ai-logo.svg / mitsi-ai-logo-light.svg, ו-PNG שקוף בתיקיית png/
 
 צבעים: טורקיז #6FF3FF · כחול #3D8BFF · סגול #8A5CFF · נייבי #0B1E3F
 פונטים: Heebo ExtraBold (mitsi.ai), Orbitron (TELEPHONY FOR AGENTS)
-עריכה ובנייה מחדש: src/build_logo.py
+קוד המקור: src-v2/logo.src.js (תזמונים בשורה const T=...)
+archive-v1/ – הגרסה הקודמת (ראש חתול), לא בשימוש

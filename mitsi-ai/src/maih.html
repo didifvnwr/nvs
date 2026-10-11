@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="he" dir="rtl"><head><meta charset="utf-8"><title>mitsi.ai 16x9</title>
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-300.ttf);font-weight:300}
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+@font-face{font-family:O;src:url(fonts/orbitron-700.ttf);font-weight:700}
+:root{--cy:#6ff3ff;--bl:#3d8bff;--vi:#8a5cff;--ink:#eaf6ff;--dim:rgba(220,238,255,.72);--line:rgba(111,243,255,.33)}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1280px;height:720px;overflow:hidden;font-family:H,sans-serif;direction:rtl;color:var(--ink);background:radial-gradient(ellipse at 50% 40%,#0c1a3f,#03060f 72%)}
+.sc{position:absolute;inset:0;opacity:0;overflow:hidden}
+.bgv{position:absolute;inset:0;width:1280px;height:720px;object-fit:cover}
+.tint{position:absolute;inset:0}
+.abs{position:absolute}
+.o{font-family:O,H,sans-serif;font-weight:700;direction:ltr;unicode-bidi:isolate;letter-spacing:2px}
+.mono{font-family:"DejaVu Sans Mono",monospace;direction:ltr;unicode-bidi:isolate}
+.k{font-size:14px;color:var(--cy)}
+.big{font-weight:800;line-height:1.04;letter-spacing:-1px}
+.gt{background:linear-gradient(90deg,#ffffff,#9ff6ff 45%,#6aa8ff 75%,#a98bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.vi{color:#b9a2ff}
+.glass{box-sizing:border-box;border:1.5px solid var(--line);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.03));box-shadow:0 0 40px rgba(61,139,255,.18),inset 0 0 0 1px rgba(255,255,255,.03);backdrop-filter:blur(8px)}
+.chip{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:6px 18px;font-size:21px;background:rgba(6,14,40,.78);font-weight:500;margin:5px}
+.chip.hi{border-color:#a98bff;color:#d6c8ff}
+.bub{position:absolute;box-sizing:border-box;border-radius:18px;padding:12px 22px;font-size:23px;line-height:1.3;font-weight:800;background:rgba(255,255,255,.95);color:#0a1830}
+.node{position:absolute;box-sizing:border-box;width:170px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;border:1.5px solid var(--line);background:rgba(8,18,48,.92);box-shadow:0 0 22px rgba(111,243,255,.18)}
+.node.hi{border-color:#a98bff;color:#d6c8ff;box-shadow:0 0 26px rgba(138,92,255,.35)}
+.check{position:absolute;box-sizing:border-box;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:26px;font-weight:800}
+.check b{color:var(--cy);font-size:24px}
+#hud{position:absolute;inset:0;pointer-events:none;z-index:6}
+.br{position:absolute;width:30px;height:30px;border:3px solid var(--cy);opacity:.75}
+#scan{position:absolute;inset:0;pointer-events:none;z-index:7;background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px)}
+#flash{position:absolute;inset:0;background:#9ff6ff;opacity:0;z-index:8;pointer-events:none;mix-blend-mode:screen}
+#grid{position:absolute;left:-200px;right:-200px;bottom:-40px;height:300px;z-index:0;opacity:.35;transform:perspective(500px) rotateX(62deg);background-image:linear-gradient(rgba(111,243,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(111,243,255,.35) 1px,transparent 1px);background-size:60px 60px;-webkit-mask-image:linear-gradient(180deg,transparent,#000 60%)}
+svg.full{position:absolute;left:0;top:0;width:1280px;height:720px}
+</style></head><body><div id="stage">
+<div id="grid"></div>
+<div id="scenes"></div>
+<div id="hud"><div class="br" style="left:28px;top:28px;border-right:0;border-bottom:0"></div><div class="br" style="right:28px;top:28px;border-left:0;border-bottom:0"></div><div class="br" style="left:28px;bottom:28px;border-right:0;border-top:0"></div><div class="br" style="right:28px;bottom:28px;border-left:0;border-top:0"></div>
+<div class="abs o" style="left:72px;top:36px;font-size:12px;color:var(--cy);display:flex;gap:8px;align-items:center"><i id="live" style="display:block;width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)"></i>MITSI.AI · TELEPHONY FOR AGENTS</div>
+<div class="abs o" id="tc" style="left:72px;bottom:38px;font-size:11px;color:var(--dim)">00:00</div></div>
+<div id="scan"></div><div id="flash"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const seg=(lt,d,dur)=>ease((lt-d)/dur);
+const TL=/*TL*/{seg:[[0,5,'s1'],[5,14,'s2'],[14,22,'s3'],[22,31,'s4'],[31,39,'s5'],[39,47,'s6'],[47,56,'s7'],[56,63,'s8'],[63,69,'s9'],[69,78,'s10']],total:78}/*/TL*/;
+const SEG=TL.seg;
+function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
+const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
+async function setImg(el,src){if(el.getAttribute('data-s')===src)return;el.setAttribute('data-s',src);el.src=src;try{await el.decode()}catch(e){}}
+const sc={};
+function S(id,html){const d=document.createElement('div');d.className='sc';d.id=id;d.innerHTML=html;$('scenes').appendChild(d);sc[id]=d}
+function sh(id,lt,d,dur=.45,dx=0,dy=24){const e=$(id);const p=seg(lt,d,dur);e.style.opacity=p;e.style.transform=`translate(${(1-p)*dx}px,${(1-p)*dy}px)`;e.style.filter=p<1?`blur(${(1-p)*8}px)`:'none'}
+function typ(id,txt,lt,d,cps=22){const n=Math.floor(clamp((lt-d)*cps,0,txt.length));$(id).textContent=txt.slice(0,n)}
+const waveHTML=(id,n=44,h=70)=>`<div id="${id}" style="display:flex;gap:5px;align-items:center;height:${h}px;direction:ltr;justify-content:center">${'<i style="display:block;width:5px;border-radius:3px;background:linear-gradient(180deg,#9ff6ff,#3d8bff 60%,#8a5cff)"></i>'.repeat(n)}</div>`;
+function animWave(id,t,amp=1,on=1){[...$(id).querySelectorAll('i')].forEach((b,i)=>{b.style.height=(5+on*amp*52*(.5+.5*Math.sin(t*8+i*.7))*(.55+.45*Math.sin(t*2.7+i*1.3)))+'px'})}
+const tint=(a,b,dir='90deg')=>`<div class="tint" style="background:linear-gradient(${dir},rgba(3,6,15,${a}),rgba(3,6,15,${b}))"></div>`;
+
+// S1 hook
+S('s1',`<img class="bgv" id="v1">${tint(.55,.85,'270deg')}<div class="tint" style="background:radial-gradient(ellipse at 70% 50%,transparent,rgba(3,6,15,.6))"></div>
+<div class="abs o k" id="s1k" style="right:96px;top:220px;font-size:15px">AGENT-NATIVE TELEPHONY</div>
+<div class="abs big gt" id="s1h" style="right:92px;top:252px;font-size:76px;width:760px">טלפוניה לעסק,<br>שסוכן ה-AI בונה לבד</div>
+<div class="abs" id="s1l" style="right:96px;top:450px;height:3px;width:420px;background:linear-gradient(270deg,var(--cy),transparent);transform-origin:right"></div>`);
+// S2 signup
+S('s2',`<div class="abs big gt" id="s2h" style="right:96px;top:120px;font-size:68px">נרשמים בחינם</div>
+<div class="abs" id="s2cr" style="right:90px;top:208px"><span class="chip hi">✦ קרדיט להתחלה, במתנה</span></div>
+<div class="glass check" id="c1" style="right:96px;top:300px;width:470px"><span>מספר לעסק</span><b>✓</b></div>
+<div class="glass check" id="c2" style="right:96px;top:384px;width:470px"><span>נתב חכם</span><b>✓</b></div>
+<div class="glass check" id="c3" style="right:96px;top:468px;width:470px"><span>הקלטה מקצועית</span><b>✓</b></div>
+<div class="glass abs" id="s2f" style="left:110px;top:200px;width:460px;height:300px;padding:30px">
+ <div class="o k" style="font-size:12px">MITSI.AI · SIGN UP</div>
+ <div style="margin-top:18px;font-size:18px;color:var(--dim)">אימייל</div>
+ <div style="margin-top:8px;height:56px;border-radius:12px;background:rgba(255,255,255,.95);color:#0a1830;font-size:24px;font-weight:500;display:flex;align-items:center;padding:0 18px;direction:ltr"><span id="s2e"></span><span id="s2c" style="width:2px;height:28px;background:#0a1830;margin-left:2px"></span></div>
+ <div id="s2b" style="margin-top:26px;height:60px;border-radius:12px;background:linear-gradient(90deg,#6ff3ff,#3d8bff 55%,#8a5cff);color:#03122b;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center">הרשמה חינם</div></div>`);
+// S3 API key -> agent
+S('s3',`<img class="bgv" id="v3">${tint(.8,.6,'270deg')}
+<div class="abs big gt" id="s3h" style="right:96px;top:150px;font-size:62px;width:520px">מפתח API<br>לסוכן ה-AI</div>
+<div class="abs" id="s3s" style="right:96px;top:310px;font-size:30px;font-weight:500;color:var(--dim);width:480px">והוא מתחיל לעבוד. מיד.</div>
+<div class="glass abs" id="s3k" style="left:100px;top:110px;width:540px;height:84px;display:flex;align-items:center;justify-content:space-between;padding:0 26px"><span class="o" style="font-size:12px;color:var(--cy)">API KEY</span><span class="mono" style="font-size:24px;color:#d6c8ff">mk_live_8f2a••••••••••</span></div>
+<svg class="full" id="s3ar" style="opacity:0"><path d="M370 206 L370 262" stroke="#6ff3ff" stroke-width="4" stroke-dasharray="9 7"/><path d="M354 250 L370 272 L386 250" fill="none" stroke="#6ff3ff" stroke-width="4"/></svg>
+<div class="glass abs" id="s3w" style="left:100px;top:288px;width:540px;height:300px;padding:22px 26px;background:rgba(4,9,24,.9)">
+ <div style="display:flex;justify-content:space-between;align-items:center"><span class="o" style="font-size:12px;color:var(--cy)">AI AGENT</span><span style="display:flex;gap:7px"><i style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:block"></i><i style="width:11px;height:11px;border-radius:50%;background:#febc2e;display:block"></i><i style="width:11px;height:11px;border-radius:50%;background:#28c840;display:block"></i></span></div>
+ <div class="mono" style="margin-top:16px;font-size:21px;line-height:1.95;color:#bfe9ff">
+ <div id="l1" style="opacity:0">› connecting to mitsi.ai …</div><div id="l2" style="opacity:0">› provisioning number …</div><div id="l3" style="opacity:0">› building call flow …</div><div id="l4" style="opacity:0">› uploading announcements …</div><div id="l5" style="opacity:0;color:#9ff6ff">✓ live</div></div></div>`);
+// S4 router
+S('s4',`<div class="bub" id="s4m" style="right:96px;top:84px;max-width:640px">"מכירות לשלוש, שירות לארבע, ומחוץ לשעות הודעה"</div>
+<div class="abs o k" id="s4k" style="right:100px;top:150px;font-size:12px">AI AGENT · BUILDING ROUTER</div>
+<svg class="full" id="s4s"></svg>
+<div class="node hi" id="n0" style="left:555px;top:186px">שיחה נכנסת</div>
+<div class="node" id="n1" style="left:325px;top:300px">שעות פעילות</div>
+<div class="node" id="n2" style="left:555px;top:300px">תפריט קולי</div>
+<div class="node" id="n3" style="left:785px;top:300px">תור ממתינים</div>
+<div class="node" id="n4" style="left:325px;top:414px">מחוץ לשעות</div>
+<div class="node" id="n5" style="left:555px;top:414px">3 · מכירות</div>
+<div class="node" id="n6" style="left:785px;top:414px">4 · שירות</div>
+<div class="abs" id="s4c" style="left:80px;right:80px;top:510px;text-align:center"><span class="chip">תפריט קולי</span><span class="chip">שעות פעילות</span><span class="chip">תור ממתינים</span><span class="chip">העברה לנייד</span><span class="chip">צלצול לקבוצה</span><span class="chip">תא קולי</span><span class="chip">בוט</span></div>
+<div class="abs big gt" id="s4t" style="left:0;right:0;top:600px;text-align:center;font-size:46px">כל סוגי הניתוב האפשריים</div>`);
+// S5 announcements ElevenLabs
+S('s5',`<div class="abs big gt" id="s5h" style="right:96px;top:150px;font-size:62px;width:520px">הכרזות,<br>ישירות מהמערכת</div>
+<div class="abs" id="s5s" style="right:96px;top:316px"><span class="chip hi" style="margin:0">ElevenLabs · מובנה</span></div>
+<div class="glass abs" id="s5c" style="left:100px;top:130px;width:560px;height:440px;padding:26px">
+ <div class="o k" style="font-size:12px">ANNOUNCEMENT STUDIO</div>
+ <div style="margin-top:14px;min-height:92px;border-radius:12px;background:rgba(255,255,255,.95);color:#0a1830;font-size:23px;font-weight:500;padding:12px 16px;line-height:1.4"><span id="s5t"></span></div>
+ <div style="margin-top:14px;display:flex;gap:10px;justify-content:flex-start" id="s5v"><span class="chip" style="margin:0">קול גברי</span><span class="chip hi" style="margin:0">קול נשי ✓</span></div>
+ <div id="s5b" style="margin-top:16px;height:54px;border-radius:12px;background:linear-gradient(90deg,#6ff3ff,#3d8bff 55%,#8a5cff);color:#03122b;font-size:23px;font-weight:800;display:flex;align-items:center;justify-content:center">▶ צור הקלטה</div>
+ <div id="s5w" style="margin-top:12px;opacity:0">${waveHTML('w5',46,60)}</div>
+ <div id="s5ok" style="margin-top:4px;font-size:21px;font-weight:800;color:var(--cy);opacity:0;text-align:center">✓ נשמר בנתב · תפריט ראשי</div></div>`);
+// S6 bot connect
+S('s6',`<div class="abs big gt" id="s6h" style="right:96px;top:140px;font-size:62px;width:520px">יש בוט?<br>מחברים בקלות</div>
+<div class="abs" id="s6s" style="right:90px;top:306px"><span class="chip">🎙 בוט קולי</span><span class="chip">💬 בוט וואטסאפ</span></div>
+<div class="glass abs" id="s6c" style="left:90px;top:140px;width:470px;height:250px;padding:22px 24px;background:rgba(4,9,24,.9)">
+ <div class="o k" style="font-size:12px">YOUR BOT · CODE</div>
+ <div class="mono" style="margin-top:14px;font-size:19px;line-height:1.7;color:#bfe9ff" id="s6code"></div></div>
+<svg class="full" id="s6l"><path id="s6p" d="M560 265 C 620 265, 600 470, 680 470" fill="none" stroke="#a98bff" stroke-width="4" stroke-dasharray="10 8" pathLength="1"/></svg>
+<div class="node hi" id="s6n" style="left:680px;top:442px;width:200px">הנתב · מחובר ✓</div>
+<div class="abs" id="s6g" style="left:676px;top:428px;width:208px;height:84px;border-radius:18px;box-shadow:0 0 50px rgba(138,92,255,.7);opacity:0"></div>`);
+// S7 recording/transcript/summary -> CRM
+S('s7',`<img class="bgv" id="v7">${tint(.25,.95,'270deg')}
+<div class="abs big gt" id="s7h" style="right:96px;top:110px;font-size:52px;width:560px">הקלטה · תמלול<br>סיכום והמלצות AI</div>
+<div class="abs" id="s7s" style="right:90px;top:250px"><span class="chip hi">ישירות ל-CRM · כל CRM עם API</span></div>
+<div class="abs" id="s7w" style="right:96px;top:322px;width:560px">${waveHTML('w7',56,64)}</div>
+<div class="glass abs" id="s7t" style="right:96px;top:400px;width:560px;height:108px;padding:14px 20px;font-size:20px;line-height:1.5;background:rgba(4,9,24,.85)"><div class="o k" style="font-size:11px">TRANSCRIPT</div><div id="t1" style="opacity:0">לקוח: אני מעוניין בהצעה לעשרה קווים</div><div id="t2" style="opacity:0;color:#d6c8ff">נציג: אשלח לך עוד היום</div></div>
+<div class="glass abs" id="s7r" style="right:96px;top:522px;width:560px;height:104px;padding:14px 20px;font-size:20px;line-height:1.45;font-weight:800;border-color:#a98bff;background:rgba(10,8,30,.85)"><div class="o" style="font-size:11px;color:#b9a2ff">AI SUMMARY → CRM ✓</div>ליד חם · 10 קווים<br><span style="font-weight:500;color:var(--dim)">המלצה: לשלוח הצעה היום ולחזור מחר ב-10:00</span></div>`);
+// S8 manager email reports
+S('s8',`<img class="bgv" id="v8" style="width:640px;left:0">${'<div class="tint" style="left:0;width:640px;background:linear-gradient(90deg,rgba(3,6,15,.15),rgba(3,6,15,1))"></div>'}
+<div class="abs big gt" id="s8h" style="right:96px;top:110px;font-size:58px;width:560px">המנהל תמיד מעודכן</div>
+<div class="glass abs" id="s8m" style="right:96px;top:210px;width:560px;height:390px;padding:22px 26px;background:rgba(4,9,24,.9)">
+ <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:24px;font-weight:800">📧 דוח AI שבועי</span><span class="o" style="font-size:11px;color:var(--cy)">MITSI.AI REPORTS</span></div>
+ <div style="height:1px;background:var(--line);margin:12px 0"></div>
+ <div style="display:flex;gap:14px;align-items:flex-end;height:120px;direction:ltr;justify-content:center" id="s8bars"></div>
+ <div style="display:flex;justify-content:space-between;font-size:20px;margin-top:14px"><span id="s8a">שיחות: <b class="vi">412</b></span><span id="s8b">נענו: <b class="vi">96%</b></span><span id="s8c">לידים: <b class="vi">38</b></span></div>
+ <div id="s8r" style="margin-top:16px;border-radius:12px;border:1.5px solid #a98bff;padding:10px 16px;font-size:20px;font-weight:800;color:#d6c8ff">✦ המלצת AI: להוסיף נציג בשעות 10:00 עד 12:00</div></div>`);
+// S9 everything via agent
+S('s9',`<div class="abs big gt" id="s9h" style="left:0;right:0;top:130px;text-align:center;font-size:74px">הכל דרך סוכן ה-AI</div>
+<div class="abs" id="s9c" style="left:120px;right:120px;top:290px;text-align:center"></div>
+<div class="abs big" id="s9p" style="left:0;right:0;top:520px;text-align:center;font-size:52px;color:#d6c8ff">פשוט.</div>`);
+// S10 CTA with logo
+S('s10',`<img class="bgv" id="v10">${tint(.82,.82)}<div class="tint" style="background:radial-gradient(ellipse at 50% 45%,rgba(12,26,63,.3),rgba(3,6,15,.9) 70%)"></div>
+<div class="abs" id="lg" style="left:240px;top:160px;width:800px"><svg style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="-20 -40 978 300" role="img" aria-label="mitsi.ai"><defs>
+<linearGradient id="gStroke" x1="40" y1="40" x2="200" y2="215" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6ff3ff"/><stop offset=".55" stop-color="#3d8bff"/><stop offset="1" stop-color="#8a5cff"/></linearGradient>
+<linearGradient id="gFill" x1="0" y1="40" x2="0" y2="215" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6ff3ff" stop-opacity=".16"/><stop offset="1" stop-color="#8a5cff" stop-opacity=".16"/></linearGradient>
+<linearGradient id="gEye" x1="0" y1="124" x2="0" y2="158" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d9fbff"/><stop offset="1" stop-color="#3de1ff"/></linearGradient>
+<linearGradient id="gAi" x1="430" y1="0" x2="660" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6ff3ff"/><stop offset=".5" stop-color="#3d8bff"/><stop offset="1" stop-color="#8a5cff"/></linearGradient>
+</defs><style>
+.eye,.bar,.arc,.ch,.spark{transform-box:fill-box}
+.head{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.1s cubic-bezier(.6,0,.2,1) .1s forwards}
+.head-fill{opacity:0;animation:fade .6s ease-out .9s forwards}
+.eye{transform-origin:center;transform:scaleY(0);animation:open .3s cubic-bezier(.3,1.6,.5,1) 1.15s forwards,blink 4.2s ease-in-out 4.2s infinite}
+.bar{transform-origin:center;transform:scaleY(0);animation:grow .35s cubic-bezier(.3,1.5,.5,1) calc(1.35s + var(--i)*.06s) forwards,talk 1.1s ease-in-out calc(2.4s + var(--i)*.13s) infinite alternate}
+.arc{opacity:0;animation:ping .45s ease-out calc(1.55s + var(--i)*.13s) forwards,pulse 2.6s ease-in-out calc(3.2s + var(--i)*.2s) infinite}
+.ch{opacity:0;transform:translateY(34px);animation:rise .55s cubic-bezier(.2,.9,.3,1) calc(1.45s + var(--i)*.06s) forwards}
+.spark{transform-origin:center;transform:scale(0) rotate(-90deg);animation:pop .6s cubic-bezier(.3,1.7,.5,1) 2.0s forwards,twinkle 3s ease-in-out 3.2s infinite}
+.tag{opacity:0;animation:fade .7s ease-out 2.3s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{to{opacity:1}}
+@keyframes open{to{transform:scaleY(1)}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+@keyframes grow{to{transform:scaleY(1)}}
+@keyframes talk{0%{transform:scaleY(1)}50%{transform:scaleY(.45)}100%{transform:scaleY(1.25)}}
+@keyframes ping{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+@keyframes pop{to{transform:scale(1) rotate(0)}}
+@keyframes twinkle{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.18) rotate(45deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;transform:none!important;stroke-dashoffset:0!important}}
+</style><g class="icon">
+ <path class="head-fill" d="M120,214 C70,214 42,186 42,146 C42,122 50,104 58,94 L62,40 L102,70 C108,68 114,67 120,67 C126,67 132,68 138,70 L178,40 L182,94 C190,104 198,122 198,146 C198,186 170,214 120,214 Z" fill="url(#gFill)"/>
+ <path class="head" d="M120,214 C70,214 42,186 42,146 C42,122 50,104 58,94 L62,40 L102,70 C108,68 114,67 120,67 C126,67 132,68 138,70 L178,40 L182,94 C190,104 198,122 198,146 C198,186 170,214 120,214 Z" pathLength="1" fill="none" stroke="url(#gStroke)" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"/>
+ <g class="eyes"><rect class="eye" x="84" y="124" width="16" height="34" rx="8" fill="url(#gEye)"/><rect class="eye" x="140" y="124" width="16" height="34" rx="8" fill="url(#gEye)"/></g>
+ <g class="mouth"><rect class="bar" style="--i:0" x="92.5" y="182.0" width="7" height="8" rx="3.5" fill="url(#gStroke)"/><rect class="bar" style="--i:1" x="104.5" y="178.0" width="7" height="16" rx="3.5" fill="url(#gStroke)"/><rect class="bar" style="--i:2" x="116.5" y="174.0" width="7" height="24" rx="3.5" fill="url(#gStroke)"/><rect class="bar" style="--i:3" x="128.5" y="178.0" width="7" height="16" rx="3.5" fill="url(#gStroke)"/><rect class="bar" style="--i:4" x="140.5" y="182.0" width="7" height="8" rx="3.5" fill="url(#gStroke)"/></g>
+ <g class="arcs" fill="none" stroke="url(#gStroke)" stroke-width="10" stroke-linecap="round"><path class="arc" style="--i:0" d="M196.5,32.4 A26,26 0 0 1 217.6,53.5"/><path class="arc" style="--i:1" d="M200.0,12.7 A46,46 0 0 1 237.3,50.0"/><path class="arc" style="--i:2" d="M203.5,-7.0 A66,66 0 0 1 257.0,46.5"/></g>
+</g><g transform="translate(292.0 176)"><g class="word"><path class="ch" style="--i:0" d="M41.796875 0.0H9.86328125V-105.6640625H39.74609375L41.796875 -83.3984375ZM29.58984375 -55.76171875Q29.4921875 -70.80078125 34.130859375 -82.51953125Q38.76953125 -94.23828125 47.998046875 -100.927734375Q57.2265625 -107.6171875 70.703125 -107.6171875Q84.66796875 -107.6171875 93.359375 -98.974609375Q102.05078125 -90.33203125 102.05078125 -70.5078125V0.0H70.21484375V-66.30859375Q70.21484375 -72.8515625 68.603515625 -76.171875Q66.9921875 -79.4921875 63.96484375 -80.712890625Q60.9375 -81.93359375 56.54296875 -81.93359375Q51.85546875 -81.93359375 48.291015625 -80.078125Q44.7265625 -78.22265625 42.333984375 -74.755859375Q39.94140625 -71.2890625 38.76953125 -66.6015625Q37.59765625 -61.9140625 37.59765625 -56.25ZM88.671875 -55.95703125Q88.57421875 -70.80078125 93.06640625 -82.470703125Q97.55859375 -94.140625 106.591796875 -100.87890625Q115.625 -107.6171875 129.00390625 -107.6171875Q139.0625 -107.6171875 146.58203125 -103.7109375Q154.1015625 -99.8046875 158.30078125 -90.8203125Q162.5 -81.8359375 162.5 -66.6015625V0.0H130.56640625V-66.69921875Q130.56640625 -73.046875 128.90625 -76.318359375Q127.24609375 -79.58984375 124.267578125 -80.76171875Q121.2890625 -81.93359375 116.9921875 -81.93359375Q112.40234375 -81.93359375 108.984375 -80.078125Q105.56640625 -78.22265625 103.3203125 -74.8046875Q101.07421875 -71.38671875 99.90234375 -66.748046875Q98.73046875 -62.109375 98.73046875 -56.54296875Z" fill="#ffffff"/><path class="ch" style="--i:1" d="M195.609375 -148.828125Q203.6171875 -148.828125 208.451171875 -144.287109375Q213.28515625 -139.74609375 213.28515625 -132.71484375Q213.28515625 -125.68359375 208.451171875 -121.142578125Q203.6171875 -116.6015625 195.609375 -116.6015625Q187.69921875 -116.6015625 182.865234375 -121.142578125Q178.03125 -125.68359375 178.03125 -132.71484375Q178.03125 -139.74609375 182.865234375 -144.287109375Q187.69921875 -148.828125 195.609375 -148.828125ZM211.625 0.0H179.69140625V-105.6640625H211.625Z" fill="#ffffff"/><path class="ch" style="--i:2" d="M283.30859375 -82.6171875H219.9296875V-105.6640625H283.30859375ZM265.828125 -131.8359375V-34.375Q265.828125 -30.2734375 266.853515625 -28.076171875Q267.87890625 -25.87890625 270.271484375 -25.0Q272.6640625 -24.12109375 276.47265625 -24.12109375Q279.109375 -24.12109375 281.0625 -24.267578125Q283.015625 -24.4140625 284.48046875 -24.70703125V-0.87890625Q280.4765625 0.48828125 276.08203125 1.220703125Q271.6875 1.953125 266.31640625 1.953125Q256.2578125 1.953125 249.03125 -1.3671875Q241.8046875 -4.6875 237.947265625 -11.81640625Q234.08984375 -18.9453125 234.08984375 -30.37109375V-131.8359375Z" fill="#ffffff"/><path class="ch" style="--i:3" d="M333.8984375 1.953125Q318.76171875 1.953125 308.361328125 -3.515625Q297.9609375 -8.984375 292.638671875 -17.28515625Q287.31640625 -25.5859375 287.31640625 -34.1796875H317.19921875Q317.4921875 -29.296875 319.787109375 -26.220703125Q322.08203125 -23.14453125 325.939453125 -21.630859375Q329.796875 -20.1171875 334.6796875 -20.1171875Q339.3671875 -20.1171875 342.4921875 -21.2890625Q345.6171875 -22.4609375 347.228515625 -24.658203125Q348.83984375 -26.85546875 348.83984375 -29.78515625Q348.83984375 -32.51953125 347.130859375 -34.423828125Q345.421875 -36.328125 340.9296875 -38.037109375Q336.4375 -39.74609375 328.13671875 -41.50390625Q317.58984375 -43.75 309.09375 -47.802734375Q300.59765625 -51.85546875 295.666015625 -58.349609375Q290.734375 -64.84375 290.734375 -74.12109375Q290.734375 -83.0078125 295.8125 -90.673828125Q300.890625 -98.33984375 310.55859375 -102.978515625Q320.2265625 -107.6171875 333.8984375 -107.6171875Q347.9609375 -107.6171875 358.21484375 -103.22265625Q368.46875 -98.828125 373.986328125 -91.064453125Q379.50390625 -83.30078125 379.50390625 -73.14453125H347.765625Q347.765625 -79.1015625 344.494140625 -82.373046875Q341.22265625 -85.64453125 333.80078125 -85.64453125Q330.08984375 -85.64453125 327.16015625 -84.375Q324.23046875 -83.10546875 322.619140625 -80.908203125Q321.0078125 -78.7109375 321.0078125 -75.68359375Q321.0078125 -72.94921875 322.86328125 -70.849609375Q324.71875 -68.75 328.625 -67.236328125Q332.53125 -65.72265625 338.9765625 -64.55078125Q349.9140625 -62.5 359.142578125 -58.88671875Q368.37109375 -55.2734375 373.986328125 -48.6328125Q379.6015625 -41.9921875 379.6015625 -30.76171875Q379.6015625 -21.484375 373.986328125 -14.013671875Q368.37109375 -6.54296875 358.1171875 -2.294921875Q347.86328125 1.953125 333.8984375 1.953125Z" fill="#ffffff"/><path class="ch" style="--i:4" d="M409.29296875 -148.828125Q417.30078125 -148.828125 422.134765625 -144.287109375Q426.96875 -139.74609375 426.96875 -132.71484375Q426.96875 -125.68359375 422.134765625 -121.142578125Q417.30078125 -116.6015625 409.29296875 -116.6015625Q401.3828125 -116.6015625 396.548828125 -121.142578125Q391.71484375 -125.68359375 391.71484375 -132.71484375Q391.71484375 -139.74609375 396.548828125 -144.287109375Q401.3828125 -148.828125 409.29296875 -148.828125ZM425.30859375 0.0H393.375V-105.6640625H425.30859375Z" fill="#ffffff"/><path class="spark" d="M462.6,-51 C466.92,-28.32 466.92,-28.32 489.6,-24 C466.92,-19.68 466.92,-19.68 462.6,3 C458.28000000000003,-19.68 458.28000000000003,-19.68 435.6,-24 C458.28000000000003,-28.32 458.28000000000003,-28.32 462.6,-51 Z" fill="url(#gAi)"/><path class="ch" style="--i:6" d="M553.83203125 -70.01953125Q553.83203125 -76.66015625 550.755859375 -80.517578125Q547.6796875 -84.375 540.6484375 -84.375Q536.64453125 -84.375 533.861328125 -83.154296875Q531.078125 -81.93359375 529.61328125 -79.443359375Q528.1484375 -76.953125 528.1484375 -73.14453125H496.41015625Q496.41015625 -83.0078125 502.07421875 -90.771484375Q507.73828125 -98.53515625 518.041015625 -103.076171875Q528.34375 -107.6171875 542.30859375 -107.6171875Q554.80859375 -107.6171875 564.623046875 -103.41796875Q574.4375 -99.21875 580.1015625 -90.8203125Q585.765625 -82.421875 585.765625 -69.82421875V-26.66015625Q585.765625 -16.40625 586.9375 -11.083984375Q588.109375 -5.76171875 590.2578125 -1.7578125V0.0H558.32421875Q556.078125 -4.78515625 554.955078125 -11.81640625Q553.83203125 -18.84765625 553.83203125 -26.3671875ZM557.8359375 -46.875H543.578125Q533.8125 -46.875 529.80859375 -42.333984375Q525.8046875 -37.79296875 525.8046875 -31.8359375Q525.8046875 -27.44140625 528.978515625 -24.609375Q532.15234375 -21.77734375 537.328125 -21.77734375Q542.9921875 -21.77734375 546.99609375 -23.92578125Q551.0 -26.07421875 553.1484375 -29.052734375Q555.296875 -32.03125 555.19921875 -34.47265625L562.71875 -20.99609375Q561.05859375 -17.08984375 558.51953125 -13.0859375Q555.98046875 -9.08203125 552.171875 -5.6640625Q548.36328125 -2.24609375 542.943359375 -0.146484375Q537.5234375 1.953125 530.00390625 1.953125Q520.140625 1.953125 511.888671875 -2.099609375Q503.63671875 -6.15234375 498.802734375 -13.330078125Q493.96875 -20.5078125 493.96875 -29.8828125Q493.96875 -46.38671875 506.126953125 -55.56640625Q518.28515625 -64.74609375 543.1875 -64.74609375H557.8359375Z" fill="url(#gAi)"/><path class="ch" style="--i:7" d="M618.58203125 -148.828125Q626.58984375 -148.828125 631.423828125 -144.287109375Q636.2578125 -139.74609375 636.2578125 -132.71484375Q636.2578125 -125.68359375 631.423828125 -121.142578125Q626.58984375 -116.6015625 618.58203125 -116.6015625Q610.671875 -116.6015625 605.837890625 -121.142578125Q601.00390625 -125.68359375 601.00390625 -132.71484375Q601.00390625 -139.74609375 605.837890625 -144.287109375Q610.671875 -148.828125 618.58203125 -148.828125ZM634.59765625 0.0H602.6640625V-105.6640625H634.59765625Z" fill="url(#gAi)"/></g></g><g transform="translate(296.0 232)"><g class="tag" fill="#8fdcff"><path d="M8.478 0.0V-15.849H0.54V-19.44H19.98V-15.849H12.068999999999999V0.0Z"/><path d="M29.058999999999997 0.0V-19.44H46.959999999999994V-15.849H32.65V-11.529H44.152V-7.911H32.65V-3.5909999999999997H46.959999999999994V0.0Z"/><path d="M56.714 0.0V-19.467H60.278V-3.5909999999999997H76.154V0.0Z"/><path d="M84.774 0.0V-19.44H102.675V-15.849H88.365V-11.529H99.86699999999999V-7.911H88.365V-3.5909999999999997H102.675V0.0Z"/><path d="M112.402 0.0V-19.413H128.062Q129.088 -19.413 129.952 -18.9Q130.816 -18.387 131.329 -17.5365Q131.84199999999998 -16.686 131.84199999999998 -15.66V-10.422Q131.84199999999998 -9.395999999999999 131.329 -8.532Q130.816 -7.668 129.952 -7.1685Q129.088 -6.669 128.062 -6.669L115.966 -6.642V0.0ZM116.29 -10.26H127.9Q128.035 -10.26 128.143 -10.341000000000001Q128.251 -10.422 128.251 -10.557V-15.525Q128.251 -15.66 128.143 -15.7545Q128.035 -15.849 127.9 -15.849H116.29Q116.155 -15.849 116.06049999999999 -15.7545Q115.966 -15.66 115.966 -15.525V-10.557Q115.966 -10.422 116.06049999999999 -10.341000000000001Q116.155 -10.26 116.29 -10.26Z"/><path d="M140.786 0.0V-19.44H144.35000000000002V-11.529H157.09400000000002V-19.44H160.65800000000002V0.0H157.09400000000002V-7.911H144.35000000000002V0.0Z"/><path d="M174.43500000000003 0.0Q173.40900000000002 0.0 172.55850000000004 -0.513Q171.70800000000003 -1.026 171.19500000000002 -1.8765Q170.68200000000002 -2.727 170.68200000000002 -3.753V-15.687Q170.68200000000002 -16.713 171.19500000000002 -17.5635Q171.70800000000003 -18.414 172.55850000000004 -18.927Q173.40900000000002 -19.44 174.43500000000003 -19.44H186.36900000000003Q187.395 -19.44 188.2455 -18.927Q189.096 -18.414 189.609 -17.5635Q190.122 -16.713 190.122 -15.687V-3.753Q190.122 -2.727 189.609 -1.8765Q189.096 -1.026 188.2455 -0.513Q187.395 0.0 186.36900000000003 0.0ZM174.57000000000002 -3.5909999999999997H186.18Q186.31500000000003 -3.5909999999999997 186.423 -3.6854999999999998Q186.531 -3.78 186.531 -3.915V-15.525Q186.531 -15.66 186.423 -15.7545Q186.31500000000003 -15.849 186.18 -15.849H174.57000000000002Q174.43500000000003 -15.849 174.34050000000002 -15.7545Q174.246 -15.66 174.246 -15.525V-3.915Q174.246 -3.78 174.34050000000002 -3.6854999999999998Q174.43500000000003 -3.5909999999999997 174.57000000000002 -3.5909999999999997Z"/><path d="M200.092 0.0V-19.44H204.007L215.941 -5.2379999999999995V-19.44H219.532V0.0H215.61700000000002L203.656 -14.229V0.0Z"/><path d="M237.116 0.0V-7.29L228.15200000000002 -19.44H232.364L238.925 -11.205L245.405 -19.44H249.698L240.70700000000002 -7.263V0.0Z"/><path d="M273.634 0.0V-19.44H291.535V-15.849H277.225V-11.529H288.72700000000003V-7.911H277.225V0.0Z"/><path d="M303.80000000000007 0.0Q302.77400000000006 0.0 301.92350000000005 -0.513Q301.07300000000004 -1.026 300.56000000000006 -1.8765Q300.0470000000001 -2.727 300.0470000000001 -3.753V-15.687Q300.0470000000001 -16.713 300.56000000000006 -17.5635Q301.07300000000004 -18.414 301.92350000000005 -18.927Q302.77400000000006 -19.44 303.80000000000007 -19.44H315.73400000000004Q316.76000000000005 -19.44 317.61050000000006 -18.927Q318.46100000000007 -18.414 318.97400000000005 -17.5635Q319.4870000000001 -16.713 319.4870000000001 -15.687V-3.753Q319.4870000000001 -2.727 318.97400000000005 -1.8765Q318.46100000000007 -1.026 317.61050000000006 -0.513Q316.76000000000005 0.0 315.73400000000004 0.0ZM303.93500000000006 -3.5909999999999997H315.5450000000001Q315.68000000000006 -3.5909999999999997 315.78800000000007 -3.6854999999999998Q315.8960000000001 -3.78 315.8960000000001 -3.915V-15.525Q315.8960000000001 -15.66 315.78800000000007 -15.7545Q315.68000000000006 -15.849 315.5450000000001 -15.849H303.93500000000006Q303.80000000000007 -15.849 303.70550000000003 -15.7545Q303.61100000000005 -15.66 303.61100000000005 -15.525V-3.915Q303.61100000000005 -3.78 303.70550000000003 -3.6854999999999998Q303.80000000000007 -3.5909999999999997 303.93500000000006 -3.5909999999999997Z"/><path d="M344.95500000000004 0.0 339.09600000000006 -6.993H343.76700000000005L348.8430000000001 -0.999V0.0ZM329.45700000000005 0.0V-19.413H345.1170000000001Q346.14300000000003 -19.413 347.00700000000006 -18.9Q347.87100000000004 -18.387 348.384 -17.5365Q348.89700000000005 -16.686 348.89700000000005 -15.66V-10.422Q348.89700000000005 -9.395999999999999 348.384 -8.532Q347.87100000000004 -7.668 347.00700000000006 -7.1685Q346.14300000000003 -6.669 345.1170000000001 -6.669L333.0210000000001 -6.642V0.0ZM333.345 -10.26H344.95500000000004Q345.09000000000003 -10.26 345.19800000000004 -10.341000000000001Q345.30600000000004 -10.422 345.30600000000004 -10.557V-15.525Q345.30600000000004 -15.66 345.19800000000004 -15.7545Q345.09000000000003 -15.849 344.95500000000004 -15.849H333.345Q333.21000000000004 -15.849 333.11550000000005 -15.7545Q333.0210000000001 -15.66 333.0210000000001 -15.525V-10.557Q333.0210000000001 -10.422 333.11550000000005 -10.341000000000001Q333.21000000000004 -10.26 333.345 -10.26Z"/><path d="M374.048 0.0V-15.687Q374.048 -16.713 374.56100000000004 -17.5635Q375.074 -18.414 375.9245 -18.927Q376.77500000000003 -19.44 377.80100000000004 -19.44H389.708Q390.73400000000004 -19.44 391.59800000000007 -18.927Q392.46200000000005 -18.414 392.975 -17.5635Q393.48800000000006 -16.713 393.48800000000006 -15.687V0.0H389.89700000000005V-6.534H377.612V0.0H374.048ZM377.612 -10.098H389.89700000000005V-15.525Q389.89700000000005 -15.66 389.78900000000004 -15.7545Q389.68100000000004 -15.849 389.54600000000005 -15.849H377.93600000000004Q377.80100000000004 -15.849 377.7065 -15.7545Q377.612 -15.66 377.612 -15.525V-10.098Z"/><path d="M407.319 0.0Q406.293 0.0 405.4425 -0.513Q404.59200000000004 -1.026 404.07900000000006 -1.8765Q403.56600000000003 -2.727 403.56600000000003 -3.753V-15.687Q403.56600000000003 -16.713 404.07900000000006 -17.5635Q404.59200000000004 -18.414 405.4425 -18.927Q406.293 -19.44 407.319 -19.44H419.22600000000006Q420.252 -19.44 421.116 -18.927Q421.98 -18.414 422.49300000000005 -17.5635Q423.00600000000003 -16.713 423.00600000000003 -15.687V-14.175H419.415V-15.525Q419.415 -15.66 419.307 -15.7545Q419.199 -15.849 419.064 -15.849H407.454Q407.319 -15.849 407.22450000000003 -15.7545Q407.13000000000005 -15.66 407.13000000000005 -15.525V-3.915Q407.13000000000005 -3.78 407.22450000000003 -3.6854999999999998Q407.319 -3.5909999999999997 407.454 -3.5909999999999997H419.064Q419.199 -3.5909999999999997 419.307 -3.6854999999999998Q419.415 -3.78 419.415 -3.915V-7.425H415.014V-11.016H423.00600000000003V-3.753Q423.00600000000003 -2.727 422.49300000000005 -1.8765Q421.98 -1.026 421.116 -0.513Q420.252 0.0 419.22600000000006 0.0Z"/><path d="M433.03000000000003 0.0V-19.44H450.93100000000004V-15.849H436.62100000000004V-11.529H448.12300000000005V-7.911H436.62100000000004V-3.5909999999999997H450.93100000000004V0.0Z"/><path d="M460.6580000000001 0.0V-19.44H464.5730000000001L476.50700000000006 -5.2379999999999995V-19.44H480.09800000000007V0.0H476.18300000000005L464.2220000000001 -14.229V0.0Z"/><path d="M497.0880000000001 0.0V-15.849H489.1500000000001V-19.44H508.5900000000001V-15.849H500.6790000000001V0.0Z"/><path d="M521.287 0.0Q520.2610000000001 0.0 519.4105000000001 -0.513Q518.5600000000001 -1.026 518.047 -1.8765Q517.5340000000001 -2.727 517.5340000000001 -3.753V-5.2379999999999995H521.0980000000001V-3.915Q521.0980000000001 -3.78 521.1925000000001 -3.6854999999999998Q521.287 -3.5909999999999997 521.422 -3.5909999999999997H533.0590000000001Q533.1940000000001 -3.5909999999999997 533.2885000000001 -3.6854999999999998Q533.383 -3.78 533.383 -3.915V-7.614Q533.383 -7.749 533.2885000000001 -7.83Q533.1940000000001 -7.911 533.0590000000001 -7.911H521.287Q520.2610000000001 -7.911 519.4105000000001 -8.424Q518.5600000000001 -8.937 518.047 -9.7875Q517.5340000000001 -10.638 517.5340000000001 -11.691V-15.687Q517.5340000000001 -16.713 518.047 -17.5635Q518.5600000000001 -18.414 519.4105000000001 -18.927Q520.2610000000001 -19.44 521.287 -19.44H533.2210000000001Q534.2470000000001 -19.44 535.0975000000001 -18.927Q535.9480000000001 -18.414 536.461 -17.5635Q536.974 -16.713 536.974 -15.687V-14.202H533.383V-15.525Q533.383 -15.66 533.2885000000001 -15.7545Q533.1940000000001 -15.849 533.0590000000001 -15.849H521.422Q521.287 -15.849 521.1925000000001 -15.7545Q521.0980000000001 -15.66 521.0980000000001 -15.525V-11.826Q521.0980000000001 -11.691 521.1925000000001 -11.61Q521.287 -11.529 521.422 -11.529H533.2210000000001Q534.2470000000001 -11.529 535.0975000000001 -11.016Q535.9480000000001 -10.503 536.461 -9.6525Q536.974 -8.802 536.974 -7.749V-3.753Q536.974 -2.727 536.461 -1.8765Q535.9480000000001 -1.026 535.0975000000001 -0.513Q534.2470000000001 0.0 533.2210000000001 0.0Z"/></g></g></svg></div>
+<div class="abs big gt" id="s10n" style="left:0;right:0;top:438px;text-align:center;font-size:58px">הדבר הבא</div>
+<div class="abs" id="s10c" style="left:0;right:0;top:530px;text-align:center"><span class="chip hi" style="font-size:26px;padding:10px 28px">הרשמה חינם · <span class="o" style="font-size:22px">mitsi.ai</span></span></div>`);
+
+// builders
+const LINES=[['n0','n1'],['n0','n2'],['n0','n3'],['n1','n4'],['n2','n5'],['n2','n6']];
+const NC=id=>{const e=$(id);return[parseFloat(e.style.left)+(parseFloat(e.style.width)||170)/2,parseFloat(e.style.top)]};
+$('s4s').innerHTML=LINES.map((l,i)=>{const a=NC(l[0]),b=NC(l[1]);return `<path id="ln${i}" d="M${a[0]} ${a[1]+56} C ${a[0]} ${a[1]+86}, ${b[0]} ${b[1]-30}, ${b[0]} ${b[1]}" fill="none" stroke="#6ff3ff" stroke-width="2.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`}).join('');
+const CHIPS9=['הקלטת שיחות','תמלול','סיכום והמלצות AI','כל CRM עם API','דוחות AI למנהל','הכרזות ElevenLabs','בוט קולי','בוט וואטסאפ','כל סוגי הניתוב','מספר לעסק','הרשמה חינם'];
+$('s9c').innerHTML=CHIPS9.map((c,i)=>`<span class="chip${i%3==2?' hi':''}" style="font-size:24px">${c}</span>`).join('');
+$('s8bars').innerHTML=[52,70,64,88,96,40,30].map((h,i)=>`<div style="width:46px;display:flex;flex-direction:column;align-items:center;gap:6px"><i data-h="${h}" style="display:block;width:46px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#9ff6ff,#3d8bff 60%,#8a5cff)"></i><span style="font-size:13px;color:var(--dim)">${['א','ב','ג','ד','ה','ו','ש'][i]}</span></div>`).join('');
+const CODE=['import { mitsi } from "mitsi-ai";','','mitsi.bots.connect({','  router: "main",','  type: "voice",','  endpoint: MY_BOT_URL','});'];
+$('s6code').innerHTML=CODE.map((l,i)=>`<div id="cd${i}" style="opacity:0;white-space:pre">${l.replace(/"([^"]*)"/g,'<span style="color:#d6c8ff">"$1"</span>')||'&nbsp;'}</div>`).join('');
+const lgAnims=()=>$('lg').getAnimations({subtree:true});
+lgAnims().forEach(a=>a.pause());
+
+function sceneOf(t){for(const s of SEG)if(t>=s[0]&&t<s[1])return s;return SEG[SEG.length-1]}
+async function render(t){
+ const cur=sceneOf(t);const lt=t-cur[0];const id=cur[2];const dur=cur[1]-cur[0];const jobs=[];
+ for(const s of SEG){const e=sc[s[2]];let o=0;if(s[2]===id){o=clamp(lt/.22);if(id!=='s10'&&lt>dur-.18)o=clamp((dur-lt)/.18);if(id==='s10')o*=clamp((TL.total-t)/.8)}e.style.opacity=o;e.style.transform=s[2]===id?`scale(${1.035-.035*ease(lt/.6)})`:''}
+ $('flash').style.opacity=t>.1?Math.max(0,.32-lt*1.4):0;
+ $('grid').style.backgroundPosition=`0 ${(t*40)%60}px`;$('grid').style.opacity=['s1','s3','s7','s8','s10'].includes(id)?.12:.35;
+ const m=Math.floor(t/60),ss=Math.floor(t%60),ff=Math.floor((t%1)*24);$('tc').textContent=`${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}:${String(ff).padStart(2,'0')}`;
+ $('live').style.opacity=.4+.6*Math.abs(Math.sin(t*3));
+ if(id==='s1'){jobs.push(setImg($('v1'),pp('hands',lt*24+20,360)));sh('s1k',lt,.15,.4,0,0);sh('s1h',lt,.35,.6,0,30);const p=seg(lt,1.1,.6);$('s1l').style.transform=`scaleX(${p})`;$('s1l').style.opacity=p}
+ if(id==='s2'){sh('s2h',lt,.1);sh('s2cr',lt,.6);sh('s2f',lt,.4,.5,-40,0);typ('s2e','you@business.co.il',lt,1,15);$('s2c').style.opacity=Math.floor(lt*3)%2;
+  $('s2b').style.transform=`scale(${1-.05*Math.sin(clamp((lt-2.5)/.3)*Math.PI)})`;$('s2b').style.boxShadow=`0 0 ${40*seg(lt,2.6,.4)}px rgba(111,243,255,.6)`;
+  sh('c1',lt,3.4,.4,30,0);sh('c2',lt,4.6,.4,30,0);sh('c3',lt,5.8,.4,30,0)}
+ if(id==='s3'){jobs.push(setImg($('v3'),pp('hands',lt*24+140,360)));sh('s3h',lt,.1);sh('s3s',lt,4.6);sh('s3k',lt,.6,.45,-40,0);$('s3ar').style.opacity=seg(lt,1.6,.4);sh('s3w',lt,2,.5,0,30);
+  ['l1','l2','l3','l4','l5'].forEach((l,i)=>$(l).style.opacity=seg(lt,2.7+i*.8,.25))}
+ if(id==='s4'){sh('s4m',lt,.15);sh('s4k',lt,.7,.4,0,0);
+  ['n0','n1','n2','n3','n4','n5','n6'].forEach((n,i)=>{const d=1.1+i*.45;const p=seg(lt,d,.4);$(n).style.opacity=p;$(n).style.transform=`scale(${.8+.2*p})`});
+  LINES.forEach((l,i)=>$('ln'+i).setAttribute('stroke-dashoffset',1-seg(lt,1.4+i*.45,.5)));
+  [...$('s4c').querySelectorAll('.chip')].forEach((c,i)=>{const p=seg(lt,4.3+i*.18,.3);c.style.opacity=p;c.style.transform=`translateY(${(1-p)*14}px)`});sh('s4t',lt,5.8)}
+ if(id==='s5'){sh('s5h',lt,.1);sh('s5s',lt,.7);sh('s5c',lt,.4,.5,-40,0);typ('s5t','שלום, הגעתם ל... לשירות לקוחות הקישו 1, למכירות 2.',lt,1.1,24);
+  $('s5b').style.transform=`scale(${1-.05*Math.sin(clamp((lt-3.6)/.3)*Math.PI)})`;$('s5w').style.opacity=seg(lt,4,.3);animWave('w5',t,1,seg(lt,4,.6));$('s5ok').style.opacity=seg(lt,5.4,.35)}
+ if(id==='s6'){sh('s6h',lt,.1);sh('s6s',lt,.8);sh('s6c',lt,.4,.5,-40,0);CODE.forEach((_,i)=>$('cd'+i).style.opacity=seg(lt,1+i*.28,.2));
+  $('s6p').setAttribute('stroke-dashoffset',1-seg(lt,3.4,.9));$('s6p').setAttribute('stroke-dasharray',seg(lt,3.4,.9)<1?'1':'0.02 0.015');
+  sh('s6n',lt,4.1,.4,0,0);$('s6g').style.opacity=seg(lt,4.3,.3)*(.6+.4*Math.sin(lt*5))}
+ if(id==='s7'){jobs.push(setImg($('v7'),pp('skull',lt*24+60,720)));sh('s7h',lt,.1);sh('s7s',lt,.8);sh('s7w',lt,1.2);animWave('w7',t,1,1);sh('s7t',lt,2);$('t1').style.opacity=seg(lt,2.5,.3);$('t2').style.opacity=seg(lt,3.4,.3);sh('s7r',lt,4.6,.5,0,20)}
+ if(id==='s8'){jobs.push(setImg($('v8'),pp('phone',lt*24,192)));sh('s8h',lt,.1);sh('s8m',lt,.6,.5,0,30);
+  [...$('s8bars').querySelectorAll('i')].forEach((b,i)=>b.style.height=(+b.dataset.h*seg(lt,1.4+i*.12,.5))+'px');
+  sh('s8a',lt,2.4,.3,0,8);sh('s8b',lt,2.7,.3,0,8);sh('s8c',lt,3,.3,0,8);sh('s8r',lt,3.8,.45,0,14)}
+ if(id==='s9'){sh('s9h',lt,.1,.5,0,30);[...$('s9c').querySelectorAll('.chip')].forEach((c,i)=>{const p=seg(lt,.7+i*.17,.3);c.style.opacity=p;c.style.transform=`scale(${.7+.3*p})`});sh('s9p',lt,3.4,.5,0,20)}
+ if(id==='s10'){jobs.push(setImg($('v10'),pp('city',lt*24,199)));lgAnims().forEach(a=>a.currentTime=Math.max(0,lt-.2)*1000);sh('s10n',lt,2.8);sh('s10c',lt,3.5)}
+ await Promise.all(jobs);
+}
+window.render=render;
+</script></body></html>
