@@ -46,8 +46,8 @@ const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL=/*TL*/{"seg": [[0, 5, "s1"], [5, 13, "s2"], [13, 20.5, "s3"], [20.5, 28.5, "s4"], [28.5, 35.0, "s5"], [35.0, 41.5, "s6"], [41.5, 49.0, "s7"], [49.0, 55.0, "s8"], [55.0, 60.0, "s9"], [60.0, 69.0, "s10"]], "total": 69.0}/*/TL*/;
-const SPD={s2:1.6,s3:1.3,s4:1.2,s5:1.4,s6:1.3,s7:1.3,s8:1.2,s9:1.2};
+const TL=/*TL*/{"seg": [[0, 8.25, "s1"], [8.25, 17.05, "s2"], [17.05, 22.4, "s3"], [22.4, 30.12, "s4"], [30.12, 34.2, "s5"], [34.2, 40.03, "s6"], [40.03, 48.12, "s7"], [48.12, 51.95, "s8"], [51.95, 58.7, "s9"], [58.7, 66.7, "s10"]], "total": 66.7}/*/TL*/;
+const SPD={s3:1.25,s5:1.4,s6:1.1,s7:1.2,s8:1.25};
 const SEG=TL.seg;
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
 const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
@@ -62,6 +62,7 @@ const tint=(a,b,dir='90deg')=>`<div class="tint" style="background:linear-gradie
 
 // S1 hook
 S('s1',`<img class="bgv" id="v1">${tint(.55,.85,'270deg')}<div class="tint" style="background:radial-gradient(ellipse at 70% 50%,transparent,rgba(3,6,15,.6))"></div>
+<div class="abs" id="s1c" style="right:90px;top:300px;font-size:30px"><span class="chip" id="s1c1" style="font-size:30px">כותב</span><span class="chip" id="s1c2" style="font-size:30px">מנתח</span><span class="chip hi" id="s1c3" style="font-size:30px">עונה על הכל</span></div>
 <div class="abs o k" id="s1k" style="right:96px;top:220px;font-size:15px">AGENT-NATIVE TELEPHONY</div>
 <div class="abs big gt" id="s1h" style="right:92px;top:252px;font-size:76px;width:760px">טלפוניה לעסק,<br>שסוכן ה-AI בונה לבד</div>
 <div class="abs" id="s1l" style="right:96px;top:450px;height:3px;width:420px;background:linear-gradient(270deg,var(--cy),transparent);transform-origin:right"></div>`);
@@ -135,9 +136,10 @@ S('s8',`<img class="bgv" id="v8" style="width:640px;left:0;right:auto">${'<div c
  <div style="display:flex;justify-content:space-between;font-size:20px;margin-top:14px"><span id="s8a">שיחות: <b class="vi">412</b></span><span id="s8b">נענו: <b class="vi">96%</b></span><span id="s8c">לידים: <b class="vi">38</b></span></div>
  <div id="s8r" style="margin-top:16px;border-radius:12px;border:1.5px solid #a98bff;padding:10px 16px;font-size:20px;font-weight:800;color:#d6c8ff">✦ המלצת AI: להוסיף נציג בשעות 10:00 עד 12:00</div></div>`);
 // S9 everything via agent
-S('s9',`<div class="abs big gt" id="s9h" style="left:0;right:0;top:130px;text-align:center;font-size:74px">הכל דרך סוכן ה-AI</div>
-<div class="abs" id="s9c" style="left:120px;right:120px;top:290px;text-align:center"></div>
-<div class="abs big" id="s9p" style="left:0;right:0;top:520px;text-align:center;font-size:52px;color:#d6c8ff">פשוט.</div>`);
+S('s9',`<div class="abs" id="s9x" style="left:0;right:0;top:170px;text-align:center">
+<div class="big gt" id="s9a" style="font-size:72px">בלי טכנאים</div><div class="big gt" id="s9b" style="font-size:72px;margin-top:22px">בלי הגדרות מסובכות</div><div class="big vi" id="s9d" style="font-size:72px;margin-top:22px">בלי לחכות</div></div>
+<div class="abs big gt" id="s9h" style="left:0;right:0;top:230px;text-align:center;font-size:84px">הכל דרך סוכן ה-AI</div>
+<div class="abs big" id="s9p" style="left:0;right:0;top:380px;text-align:center;font-size:56px;color:#d6c8ff">פשוט ומהיר.</div>`);
 // S10 CTA with logo
 S('s10',`<img class="bgv" id="v10">${tint(.82,.82)}<div class="tint" style="background:radial-gradient(ellipse at 50% 45%,rgba(12,26,63,.3),rgba(3,6,15,.9) 70%)"></div>
 <div class="abs" id="lg" style="left:330px;top:70px;width:620px"></div>
@@ -149,7 +151,7 @@ const LINES=[['n0','n1'],['n0','n2'],['n0','n3'],['n1','n4'],['n2','n5'],['n2','
 const NC=id=>{const e=$(id);return[parseFloat(e.style.left)+(parseFloat(e.style.width)||170)/2,parseFloat(e.style.top)]};
 $('s4s').innerHTML=LINES.map((l,i)=>{const a=NC(l[0]),b=NC(l[1]);return `<path id="ln${i}" d="M${a[0]} ${a[1]+56} C ${a[0]} ${a[1]+86}, ${b[0]} ${b[1]-30}, ${b[0]} ${b[1]}" fill="none" stroke="#6ff3ff" stroke-width="2.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`}).join('');
 const CHIPS9=['הקלטת שיחות','תמלול','סיכום והמלצות AI','כל CRM עם API','דוחות AI למנהל','הכרזות ElevenLabs','בוט קולי','בוט וואטסאפ','כל סוגי הניתוב','מספר לעסק','הרשמה חינם'];
-$('s9c').innerHTML=CHIPS9.map((c,i)=>`<span class="chip${i%3==2?' hi':''}" style="font-size:24px">${c}</span>`).join('');
+//$('s9c').innerHTML=CHIPS9.map((c,i)=>`<span class="chip${i%3==2?' hi':''}" style="font-size:24px">${c}</span>`).join('');
 $('s8bars').innerHTML=[52,70,64,88,96,40,30].map((h,i)=>`<div style="width:46px;display:flex;flex-direction:column;align-items:center;gap:6px"><i data-h="${h}" style="display:block;width:46px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#9ff6ff,#3d8bff 60%,#8a5cff)"></i><span style="font-size:13px;color:var(--dim)">${['א','ב','ג','ד','ה','ו','ש'][i]}</span></div>`).join('');
 const CODE=['import { mitsi } from "mitsi-ai";','','mitsi.bots.connect({','  router: "main",','  type: "voice",','  endpoint: MY_BOT_URL','});'];
 $('s6code').innerHTML=CODE.map((l,i)=>`<div id="cd${i}" style="opacity:0;white-space:pre">${l.replace(/"([^"]*)"/g,'<span style="color:#d6c8ff">"$1"</span>')||'&nbsp;'}</div>`).join('');
@@ -164,7 +166,7 @@ async function render(t){
  const m=Math.floor(t/60),ss=Math.floor(t%60),ff=Math.floor((t%1)*24);$('tc').textContent=`${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}:${String(ff).padStart(2,'0')}`;
  $('live').style.opacity=.4+.6*Math.abs(Math.sin(t*3));
  lt*=(SPD[id]||1);
- if(id==='s1'){jobs.push(setImg($('v1'),pp('hands',lt*24+20,360)));sh('s1k',lt,.15,.4,0,0);sh('s1h',lt,.35,.6,0,30);const p=seg(lt,1.1,.6);$('s1l').style.transform=`scaleX(${p})`;$('s1l').style.opacity=p}
+ if(id==='s1'){jobs.push(setImg($('v1'),pp('hands',lt*24+20,360)));sh('s1k',lt,.15,.4,0,0);['s1c1','s1c2','s1c3'].forEach((c,i)=>{sh(c,lt,.5+i*.75,.35,0,16)});$('s1c').style.opacity=1-seg(lt,3.7,.35);sh('s1h',lt,4.1,.6,0,30);const p=seg(lt,4.8,.6);$('s1l').style.transform=`scaleX(${p})`;$('s1l').style.opacity=p}
  if(id==='s2'){sh('s2h',lt,.1);sh('s2cr',lt,.6);sh('s2f',lt,.4,.5,-40,0);typ('s2e','you@business.co.il',lt,1,15);$('s2c').style.opacity=Math.floor(lt*3)%2;
   $('s2b').style.transform=`scale(${1-.05*Math.sin(clamp((lt-2.5)/.3)*Math.PI)})`;$('s2b').style.boxShadow=`0 0 ${40*seg(lt,2.6,.4)}px rgba(111,243,255,.6)`;
   sh('c1',lt,3.4,.4,30,0);sh('c2',lt,4.6,.4,30,0);sh('c3',lt,5.8,.4,30,0)}
@@ -183,8 +185,8 @@ async function render(t){
  if(id==='s8'){jobs.push(setImg($('v8'),pp('phone',lt*24,192)));sh('s8h',lt,.1);sh('s8m',lt,.6,.5,0,30);
   [...$('s8bars').querySelectorAll('i')].forEach((b,i)=>b.style.height=(+b.dataset.h*seg(lt,1.4+i*.12,.5))+'px');
   sh('s8a',lt,2.4,.3,0,8);sh('s8b',lt,2.7,.3,0,8);sh('s8c',lt,3,.3,0,8);sh('s8r',lt,3.8,.45,0,14)}
- if(id==='s9'){sh('s9h',lt,.1,.5,0,30);[...$('s9c').querySelectorAll('.chip')].forEach((c,i)=>{const p=seg(lt,.7+i*.17,.3);c.style.opacity=p;c.style.transform=`scale(${.7+.3*p})`});sh('s9p',lt,3.4,.5,0,20)}
- if(id==='s10'){jobs.push(setImg($('v10'),pp('city',lt*24,199)));LG.draw(Math.max(0,lt-.1));sh('s10n',lt,5.3);sh('s10c',lt,5.8)}
+ if(id==='s9'){sh('s9a',lt,.1,.4,0,24);sh('s9b',lt,1.0,.4,0,24);sh('s9d',lt,2.2,.4,0,24);$('s9x').style.opacity=1-seg(lt,3.25,.3);sh('s9h',lt,3.5,.5,0,30);sh('s9p',lt,5.0,.45,0,20)}
+ if(id==='s10'){jobs.push(setImg($('v10'),pp('city',lt*24,199)));LG.draw(Math.max(0,lt-.1));sh('s10n',lt,1.5);sh('s10c',lt,5.6)}
  await Promise.all(jobs);
 }
 window.render=render;
