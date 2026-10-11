@@ -46,7 +46,8 @@ const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL=/*TL*/{seg:[[0,5,'s1'],[5,14,'s2'],[14,22,'s3'],[22,31,'s4'],[31,39,'s5'],[39,47,'s6'],[47,56,'s7'],[56,63,'s8'],[63,69,'s9'],[69,78,'s10']],total:78}/*/TL*/;
+const TL=/*TL*/{"seg": [[0, 5, "s1"], [5, 13, "s2"], [13, 20.5, "s3"], [20.5, 28.5, "s4"], [28.5, 35.0, "s5"], [35.0, 41.5, "s6"], [41.5, 49.0, "s7"], [49.0, 55.0, "s8"], [55.0, 60.0, "s9"], [60.0, 69.0, "s10"]], "total": 69.0}/*/TL*/;
+const SPD={s2:1.6,s3:1.3,s4:1.2,s5:1.4,s6:1.3,s7:1.3,s8:1.2,s9:1.2};
 const SEG=TL.seg;
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
 const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
@@ -156,12 +157,13 @@ const LG=MitsiLogo.mount($('lg'),{theme:'dark',autoplay:false});
 
 function sceneOf(t){for(const s of SEG)if(t>=s[0]&&t<s[1])return s;return SEG[SEG.length-1]}
 async function render(t){
- const cur=sceneOf(t);const lt=t-cur[0];const id=cur[2];const dur=cur[1]-cur[0];const jobs=[];
+ const cur=sceneOf(t);let lt=t-cur[0];const id=cur[2];const dur=cur[1]-cur[0];const jobs=[];
  for(const s of SEG){const e=sc[s[2]];let o=0;if(s[2]===id){o=clamp(lt/.22);if(id!=='s10'&&lt>dur-.18)o=clamp((dur-lt)/.18);if(id==='s10')o*=clamp((TL.total-t)/.8)}e.style.opacity=o;e.style.transform=s[2]===id?`scale(${1.035-.035*ease(lt/.6)})`:''}
  $('flash').style.opacity=t>.1?Math.max(0,.32-lt*1.4):0;
  $('grid').style.backgroundPosition=`0 ${(t*40)%60}px`;$('grid').style.opacity=['s1','s3','s7','s8','s10'].includes(id)?.12:.35;
  const m=Math.floor(t/60),ss=Math.floor(t%60),ff=Math.floor((t%1)*24);$('tc').textContent=`${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}:${String(ff).padStart(2,'0')}`;
  $('live').style.opacity=.4+.6*Math.abs(Math.sin(t*3));
+ lt*=(SPD[id]||1);
  if(id==='s1'){jobs.push(setImg($('v1'),pp('hands',lt*24+20,360)));sh('s1k',lt,.15,.4,0,0);sh('s1h',lt,.35,.6,0,30);const p=seg(lt,1.1,.6);$('s1l').style.transform=`scaleX(${p})`;$('s1l').style.opacity=p}
  if(id==='s2'){sh('s2h',lt,.1);sh('s2cr',lt,.6);sh('s2f',lt,.4,.5,-40,0);typ('s2e','you@business.co.il',lt,1,15);$('s2c').style.opacity=Math.floor(lt*3)%2;
   $('s2b').style.transform=`scale(${1-.05*Math.sin(clamp((lt-2.5)/.3)*Math.PI)})`;$('s2b').style.boxShadow=`0 0 ${40*seg(lt,2.6,.4)}px rgba(111,243,255,.6)`;
