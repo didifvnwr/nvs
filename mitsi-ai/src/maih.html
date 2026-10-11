@@ -46,7 +46,7 @@ const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL=/*TL*/{"seg": [[0, 8.25, "s1"], [8.25, 17.05, "s2"], [17.05, 22.4, "s3"], [22.4, 30.12, "s4"], [30.12, 34.2, "s5"], [34.2, 40.03, "s6"], [40.03, 48.12, "s7"], [48.12, 51.95, "s8"], [51.95, 58.7, "s9"], [58.7, 66.7, "s10"]], "total": 66.7}/*/TL*/;
+const TL=/*TL*/{"seg": [[0, 8.15, "s1"], [8.15, 17.75, "s2"], [17.75, 23.03, "s3"], [23.03, 30.8, "s4"], [30.8, 34.83, "s5"], [34.83, 40.65, "s6"], [40.65, 48.58, "s7"], [48.58, 52.47, "s8"], [52.47, 59.3, "s9"], [59.3, 67.3, "s10"]], "total": 67.3}/*/TL*/;
 const SPD={s3:1.25,s5:1.4,s6:1.1,s7:1.2,s8:1.25};
 const SEG=TL.seg;
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
@@ -68,7 +68,7 @@ S('s1',`<img class="bgv" id="v1">${tint(.55,.85,'270deg')}<div class="tint" styl
 <div class="abs" id="s1l" style="right:96px;top:450px;height:3px;width:420px;background:linear-gradient(270deg,var(--cy),transparent);transform-origin:right"></div>`);
 // S2 signup
 S('s2',`<div class="abs big gt" id="s2h" style="right:96px;top:120px;font-size:68px">נרשמים בחינם</div>
-<div class="abs" id="s2cr" style="right:90px;top:208px"><span class="chip hi">✦ קרדיט להתחלה, במתנה</span></div>
+<div class="abs" id="s2cr" style="right:90px;top:208px"><span class="chip hi">✦ קרדיט מתנה כדי להתחיל</span></div>
 <div class="glass check" id="c1" style="right:96px;top:300px;width:470px"><span>מספר לעסק</span><b>✓</b></div>
 <div class="glass check" id="c2" style="right:96px;top:384px;width:470px"><span>נתב חכם</span><b>✓</b></div>
 <div class="glass check" id="c3" style="right:96px;top:468px;width:470px"><span>הקלטה מקצועית</span><b>✓</b></div>
@@ -102,7 +102,7 @@ S('s4',`<div class="bub" id="s4m" style="right:96px;top:84px;max-width:640px">"�
 <div class="abs big gt" id="s4t" style="left:0;right:0;top:600px;text-align:center;font-size:46px">כל סוגי הניתוב האפשריים</div>`);
 // S5 announcements ElevenLabs
 S('s5',`<div class="abs big gt" id="s5h" style="right:96px;top:150px;font-size:62px;width:520px">הכרזות,<br>ישירות מהמערכת</div>
-<div class="abs" id="s5s" style="right:96px;top:316px"><span class="chip hi" style="margin:0">ElevenLabs · מובנה</span></div>
+<div class="abs" id="s5s" style="right:96px;top:316px"><span class="chip hi" style="margin:0">בקול שבוחרים · בתוך המערכת</span></div>
 <div class="glass abs" id="s5c" style="left:100px;top:130px;width:560px;height:440px;padding:26px">
  <div class="o k" style="font-size:12px">ANNOUNCEMENT STUDIO</div>
  <div style="margin-top:14px;min-height:92px;border-radius:12px;background:rgba(255,255,255,.95);color:#0a1830;font-size:23px;font-weight:500;padding:12px 16px;line-height:1.4"><span id="s5t"></span></div>
@@ -150,7 +150,7 @@ S('s10',`<img class="bgv" id="v10">${tint(.82,.82)}<div class="tint" style="back
 const LINES=[['n0','n1'],['n0','n2'],['n0','n3'],['n1','n4'],['n2','n5'],['n2','n6']];
 const NC=id=>{const e=$(id);return[parseFloat(e.style.left)+(parseFloat(e.style.width)||170)/2,parseFloat(e.style.top)]};
 $('s4s').innerHTML=LINES.map((l,i)=>{const a=NC(l[0]),b=NC(l[1]);return `<path id="ln${i}" d="M${a[0]} ${a[1]+56} C ${a[0]} ${a[1]+86}, ${b[0]} ${b[1]-30}, ${b[0]} ${b[1]}" fill="none" stroke="#6ff3ff" stroke-width="2.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`}).join('');
-const CHIPS9=['הקלטת שיחות','תמלול','סיכום והמלצות AI','כל CRM עם API','דוחות AI למנהל','הכרזות ElevenLabs','בוט קולי','בוט וואטסאפ','כל סוגי הניתוב','מספר לעסק','הרשמה חינם'];
+const CHIPS9=['הקלטת שיחות','תמלול','סיכום והמלצות AI','כל CRM עם API','דוחות AI למנהל','הכרזות מובנות','בוט קולי','בוט וואטסאפ','כל סוגי הניתוב','מספר לעסק','הרשמה חינם'];
 //$('s9c').innerHTML=CHIPS9.map((c,i)=>`<span class="chip${i%3==2?' hi':''}" style="font-size:24px">${c}</span>`).join('');
 $('s8bars').innerHTML=[52,70,64,88,96,40,30].map((h,i)=>`<div style="width:46px;display:flex;flex-direction:column;align-items:center;gap:6px"><i data-h="${h}" style="display:block;width:46px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#9ff6ff,#3d8bff 60%,#8a5cff)"></i><span style="font-size:13px;color:var(--dim)">${['א','ב','ג','ד','ה','ו','ש'][i]}</span></div>`).join('');
 const CODE=['import { mitsi } from "mitsi-ai";','','mitsi.bots.connect({','  router: "main",','  type: "voice",','  endpoint: MY_BOT_URL','});'];

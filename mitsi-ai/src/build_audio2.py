@@ -1,9 +1,9 @@
 import json,subprocess,glob
 U='/root/.claude/uploads/0f9540b5-d01e-533c-b68d-1d5a2bac763f/'
-V=glob.glob(U+'c84780c3-*')[0];M=glob.glob(U+'bb7d09d7-*')[0]
+V=glob.glob(U+'4256172d-*')[0];M=glob.glob(U+'bb7d09d7-*')[0]
 W='/tmp/claude-0/-home-user-nvs/0f9540b5-d01e-533c-b68d-1d5a2bac763f/scratchpad/show/whoosh.wav'
 # scene cuts aligned to pauses in Omer's read (lines 1-2 | 3-4 | 5-6 | 7-8 | 9 | 10-11 | 12-14 | 15 | 16-17 | 18)
-CUT=[0,8.25,17.05,22.40,30.12,34.20,40.03,48.12,51.95,58.70];END=66.7
+CUT=[0,8.15,17.75,23.03,30.80,34.83,40.65,48.58,52.47,59.30];END=67.3
 ids=['s%d'%(i+1) for i in range(10)]
 seg=[[CUT[i],CUT[i+1] if i<9 else END,ids[i]] for i in range(10)]
 f=[f"[0:a]loudnorm=I=-16:TP=-1.5,aresample=48000,apad=whole_dur={END}[voice]",

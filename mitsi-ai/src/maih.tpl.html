@@ -46,7 +46,7 @@ const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const ease=x=>1-Math.pow(1-clamp(x),3);
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
-const TL=/*TL*/{"seg": [[0, 8.25, "s1"], [8.25, 17.05, "s2"], [17.05, 22.4, "s3"], [22.4, 30.12, "s4"], [30.12, 34.2, "s5"], [34.2, 40.03, "s6"], [40.03, 48.12, "s7"], [48.12, 51.95, "s8"], [51.95, 58.7, "s9"], [58.7, 66.7, "s10"]], "total": 66.7}/*/TL*/;
+const TL=/*TL*/{"seg": [[0, 8.15, "s1"], [8.15, 17.75, "s2"], [17.75, 23.03, "s3"], [23.03, 30.8, "s4"], [30.8, 34.83, "s5"], [34.83, 40.65, "s6"], [40.65, 48.58, "s7"], [48.58, 52.47, "s8"], [52.47, 59.3, "s9"], [59.3, 67.3, "s10"]], "total": 67.3}/*/TL*/;
 const SPD={s3:1.25,s5:1.4,s6:1.1,s7:1.2,s8:1.25};
 const SEG=TL.seg;
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
