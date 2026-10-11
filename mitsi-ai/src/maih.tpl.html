@@ -40,6 +40,7 @@ svg.full{position:absolute;left:0;top:0;width:1280px;height:720px}
 <div class="abs o" id="tc" style="left:72px;bottom:38px;font-size:11px;color:var(--dim)">00:00</div></div>
 <div id="scan"></div><div id="flash"></div>
 </div>
+<script src="mitsi-ai-logo.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
@@ -138,9 +139,9 @@ S('s9',`<div class="abs big gt" id="s9h" style="left:0;right:0;top:130px;text-al
 <div class="abs big" id="s9p" style="left:0;right:0;top:520px;text-align:center;font-size:52px;color:#d6c8ff">פשוט.</div>`);
 // S10 CTA with logo
 S('s10',`<img class="bgv" id="v10">${tint(.82,.82)}<div class="tint" style="background:radial-gradient(ellipse at 50% 45%,rgba(12,26,63,.3),rgba(3,6,15,.9) 70%)"></div>
-<div class="abs" id="lg" style="left:240px;top:160px;width:800px">/*LOGO*/</div>
-<div class="abs big gt" id="s10n" style="left:0;right:0;top:438px;text-align:center;font-size:58px">הדבר הבא</div>
-<div class="abs" id="s10c" style="left:0;right:0;top:530px;text-align:center"><span class="chip hi" style="font-size:26px;padding:10px 28px">הרשמה חינם · <span class="o" style="font-size:22px">mitsi.ai</span></span></div>`);
+<div class="abs" id="lg" style="left:330px;top:70px;width:620px"></div>
+<div class="abs big gt" id="s10n" style="left:0;right:0;top:500px;text-align:center;font-size:50px">הדבר הבא</div>
+<div class="abs" id="s10c" style="left:0;right:0;top:580px;text-align:center"><span class="chip hi" style="font-size:26px;padding:10px 28px">הרשמה חינם · <span class="o" style="font-size:22px">mitsi.ai</span></span></div>`);
 
 // builders
 const LINES=[['n0','n1'],['n0','n2'],['n0','n3'],['n1','n4'],['n2','n5'],['n2','n6']];
@@ -151,8 +152,7 @@ $('s9c').innerHTML=CHIPS9.map((c,i)=>`<span class="chip${i%3==2?' hi':''}" style
 $('s8bars').innerHTML=[52,70,64,88,96,40,30].map((h,i)=>`<div style="width:46px;display:flex;flex-direction:column;align-items:center;gap:6px"><i data-h="${h}" style="display:block;width:46px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#9ff6ff,#3d8bff 60%,#8a5cff)"></i><span style="font-size:13px;color:var(--dim)">${['א','ב','ג','ד','ה','ו','ש'][i]}</span></div>`).join('');
 const CODE=['import { mitsi } from "mitsi-ai";','','mitsi.bots.connect({','  router: "main",','  type: "voice",','  endpoint: MY_BOT_URL','});'];
 $('s6code').innerHTML=CODE.map((l,i)=>`<div id="cd${i}" style="opacity:0;white-space:pre">${l.replace(/"([^"]*)"/g,'<span style="color:#d6c8ff">"$1"</span>')||'&nbsp;'}</div>`).join('');
-const lgAnims=()=>$('lg').getAnimations({subtree:true});
-lgAnims().forEach(a=>a.pause());
+const LG=MitsiLogo.mount($('lg'),{theme:'dark',autoplay:false});
 
 function sceneOf(t){for(const s of SEG)if(t>=s[0]&&t<s[1])return s;return SEG[SEG.length-1]}
 async function render(t){
@@ -182,7 +182,7 @@ async function render(t){
   [...$('s8bars').querySelectorAll('i')].forEach((b,i)=>b.style.height=(+b.dataset.h*seg(lt,1.4+i*.12,.5))+'px');
   sh('s8a',lt,2.4,.3,0,8);sh('s8b',lt,2.7,.3,0,8);sh('s8c',lt,3,.3,0,8);sh('s8r',lt,3.8,.45,0,14)}
  if(id==='s9'){sh('s9h',lt,.1,.5,0,30);[...$('s9c').querySelectorAll('.chip')].forEach((c,i)=>{const p=seg(lt,.7+i*.17,.3);c.style.opacity=p;c.style.transform=`scale(${.7+.3*p})`});sh('s9p',lt,3.4,.5,0,20)}
- if(id==='s10'){jobs.push(setImg($('v10'),pp('city',lt*24,199)));lgAnims().forEach(a=>a.currentTime=Math.max(0,lt-.2)*1000);sh('s10n',lt,2.8);sh('s10c',lt,3.5)}
+ if(id==='s10'){jobs.push(setImg($('v10'),pp('city',lt*24,199)));LG.draw(Math.max(0,lt-.1));sh('s10n',lt,5.3);sh('s10c',lt,5.8)}
  await Promise.all(jobs);
 }
 window.render=render;
