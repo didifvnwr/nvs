@@ -87,6 +87,15 @@ S('s3',`<img class="bgv" id="v3">${tint(.8,.6,'270deg')}
  <div style="display:flex;justify-content:space-between;align-items:center"><span class="o" style="font-size:12px;color:var(--cy)">AI AGENT</span><span style="display:flex;gap:7px"><i style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:block"></i><i style="width:11px;height:11px;border-radius:50%;background:#febc2e;display:block"></i><i style="width:11px;height:11px;border-radius:50%;background:#28c840;display:block"></i></span></div>
  <div class="mono" style="margin-top:16px;font-size:21px;line-height:1.95;color:#bfe9ff">
  <div id="l1" style="opacity:0">› connecting to mitsi.ai …</div><div id="l2" style="opacity:0">› provisioning number …</div><div id="l3" style="opacity:0">› building call flow …</div><div id="l4" style="opacity:0">› uploading announcements …</div><div id="l5" style="opacity:0;color:#9ff6ff">✓ live</div></div></div>`);
+// S3b no agent? Mitsi expert agent inside the system
+S('s3b',`<div class="abs big gt" id="s3bh" style="right:96px;top:150px;font-size:60px;width:540px">אין סוכן AI?<br>אין בעיה.</div>
+<div class="abs" id="s3bs" style="right:96px;top:316px;font-size:28px;font-weight:500;color:var(--dim);width:520px;line-height:1.4">סוכן מומחה של מיצי מחכה במערכת, ויעזור בכל מה שצריך</div>
+<div class="glass abs" id="s3bw" style="left:100px;top:120px;width:540px;height:470px;padding:22px 24px;background:rgba(4,9,24,.9)">
+ <div style="display:flex;justify-content:space-between;align-items:center"><span class="o" style="font-size:12px;color:var(--cy)">MITSI.AI · EXPERT AGENT</span><span style="display:flex;align-items:center;gap:8px;font-size:16px;color:#9ff6ff"><i style="display:block;width:9px;height:9px;border-radius:50%;background:#28c840;box-shadow:0 0 8px #28c840"></i>מחובר</span></div>
+ <div class="bub" id="s3b1" style="position:absolute;right:24px;top:70px;max-width:360px;font-size:21px">אין לי סוכן AI. אפשר להתחיל?</div>
+ <div class="bub" id="s3b2" style="position:absolute;left:24px;top:150px;max-width:420px;font-size:21px;background:linear-gradient(90deg,#6ff3ff,#3d8bff 55%,#8a5cff);color:#03122b">בטח! אני הסוכן המומחה של מיצי ✦<br>מה נבנה היום?</div>
+ <div class="bub" id="s3b3" style="position:absolute;right:24px;top:270px;max-width:380px;font-size:21px">נתב עם תפריט ושעות פעילות</div>
+ <div class="bub" id="s3b4" style="position:absolute;left:24px;top:350px;max-width:420px;font-size:21px;background:linear-gradient(90deg,#6ff3ff,#3d8bff 55%,#8a5cff);color:#03122b">מעולה, בונה עכשיו… ✓</div></div>`);
 // S4 router
 S('s4',`<div class="bub" id="s4m" style="right:96px;top:84px;max-width:640px">"מכירות לשלוש, שירות לארבע, ומחוץ לשעות הודעה"</div>
 <div class="abs o k" id="s4k" style="right:100px;top:150px;font-size:12px">AI AGENT · BUILDING ROUTER</div>
@@ -172,6 +181,7 @@ async function render(t){
   sh('c1',lt,3.4,.4,30,0);sh('c2',lt,4.6,.4,30,0);sh('c3',lt,5.8,.4,30,0)}
  if(id==='s3'){jobs.push(setImg($('v3'),pp('hands',lt*24+140,360)));sh('s3h',lt,.1);sh('s3s',lt,4.6);sh('s3k',lt,.6,.45,-40,0);$('s3ar').style.opacity=seg(lt,1.6,.4);sh('s3w',lt,2,.5,0,30);
   ['l1','l2','l3','l4','l5'].forEach((l,i)=>$(l).style.opacity=seg(lt,2.7+i*.8,.25))}
+ if(id==='s3b'){sh('s3bh',lt,.1);sh('s3bs',lt,.7);sh('s3bw',lt,.3,.5,-40,0);sh('s3b1',lt,.9,.35,0,14);sh('s3b2',lt,1.8,.35,0,14);sh('s3b3',lt,3.0,.35,0,14);sh('s3b4',lt,3.9,.35,0,14)}
  if(id==='s4'){sh('s4m',lt,.15);sh('s4k',lt,.7,.4,0,0);
   ['n0','n1','n2','n3','n4','n5','n6'].forEach((n,i)=>{const d=1.1+i*.45;const p=seg(lt,d,.4);$(n).style.opacity=p;$(n).style.transform=`scale(${.8+.2*p})`});
   LINES.forEach((l,i)=>$('ln'+i).setAttribute('stroke-dashoffset',1-seg(lt,1.4+i*.45,.5)));
