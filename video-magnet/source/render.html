@@ -1,0 +1,73 @@
+<!doctype html><meta charset=utf-8><style>
+@font-face{font-family:Heebo;font-weight:300;src:url(fonts/heebo-300.ttf)}
+@font-face{font-family:Heebo;font-weight:500;src:url(fonts/heebo-500.ttf)}
+@font-face{font-family:Heebo;font-weight:800;src:url(fonts/heebo-800.ttf)}
+html,body{margin:0;background:transparent}canvas{display:block}</style>
+<canvas id=c width=1080 height=1920></canvas><script src=tl.js></script><script>
+const W=1080,H=1920,c=document.getElementById('c'),g=c.getContext('2d');
+const GOLD='#e9b35f',OR='#f08a3c',CREAM='#faf8f4',BLUE='#7aa2ff';
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),P=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3),eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eb=x=>{const a=1.70158,b=a+1;return 1+b*Math.pow(x-1,3)+a*Math.pow(x-1,2)};
+const vis=(t,a,b,fi=.4,fo=.4)=>eo(P(t,a,a+fi))*(1-P(t,b-fo,b));
+const S=i=>PH[i][1],E=i=>PH[i][2];
+function T(str,x,y,o={}){g.save();g.globalAlpha*=o.a??1;g.font=`${o.w||500} ${o.s||48}px Heebo`;g.fillStyle=o.c||CREAM;g.textAlign=o.al||'center';g.textBaseline='middle';g.direction='rtl';g.shadowColor='rgba(0,0,0,.55)';g.shadowBlur=o.sh??14;g.fillText(str,x,y);g.restore()}
+function A(al,fn){if(al<=0.003)return;g.save();g.globalAlpha*=al;fn();g.restore()}
+function rr(x,y,w,h,r){g.beginPath();g.roundRect(x,y,w,h,r)}
+function wrap(str,maxW,font){g.save();g.font=font;const ws=str.split(' '),L=[];let cur='';for(const w of ws){const t=cur?cur+' '+w:w;if(g.measureText(t).width>maxW&&cur){L.push(cur);cur=w}else cur=t}L.push(cur);g.restore();return L}
+function grad(y0,y1,a0,a1){const q=g.createLinearGradient(0,y0,0,y1);q.addColorStop(0,`rgba(0,0,0,${a0})`);q.addColorStop(1,`rgba(0,0,0,${a1})`);g.fillStyle=q;g.fillRect(0,Math.min(y0,y1),W,Math.abs(y1-y0))}
+function sun(cx,cy,r,rot,al=1,clipY=null){g.save();if(clipY!=null){g.beginPath();g.rect(0,0,W,clipY);g.clip()}g.globalAlpha*=al;
+ const q=g.createRadialGradient(cx,cy,r*.2,cx,cy,r*2.6);q.addColorStop(0,'rgba(255,214,140,.55)');q.addColorStop(1,'rgba(240,138,60,0)');g.fillStyle=q;g.beginPath();g.arc(cx,cy,r*2.6,0,7);g.fill();
+ g.strokeStyle=GOLD;g.lineWidth=Math.max(4,r*.07);g.lineCap='round';for(let i=0;i<14;i++){const a=rot+i*Math.PI*2/14,r1=r*1.25,r2=r*(i%2?1.55:1.8);g.beginPath();g.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);g.lineTo(cx+Math.cos(a)*r2,cy+Math.sin(a)*r2);g.stroke()}
+ const d=g.createRadialGradient(cx-r*.2,cy-r*.2,r*.1,cx,cy,r);d.addColorStop(0,'#fff2cf');d.addColorStop(1,OR);g.fillStyle=d;g.beginPath();g.arc(cx,cy,r,0,7);g.fill();g.restore()}
+
+const mix=(a,b,k)=>a.map((v,i)=>Math.round(v+(b[i]-v)*k));const COOL=[122,162,255],WARM=[233,179,95];
+const rgba=(c,a)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+let lab=1;function node(x,y,r,col,label,al=1){A(al,()=>{g.save();g.shadowColor=rgba(col,.9);g.shadowBlur=40;const q=g.createRadialGradient(x-r*.25,y-r*.25,r*.1,x,y,r);q.addColorStop(0,rgba(mix(col,[255,255,255],.55),1));q.addColorStop(1,rgba(col,.95));g.fillStyle=q;g.beginPath();g.arc(x,y,r,0,7);g.fill();g.restore();if(label)T(label,x,y+r+55,{s:44,w:800,a:lab})})}
+function field(xl,xr,y,cf,t){const col=mix(COOL,WARM,cf);for(let m=-3;m<=3;m++){const o=m*62*(.55+.45*cf);g.save();g.strokeStyle=rgba(col,.12+.8*cf*(1-Math.abs(m)*.12));g.lineWidth=3+2*cf;g.setLineDash(cf>.9?[]:[8,10+30*(1-cf)]);g.lineDashOffset=-t*60;g.beginPath();g.moveTo(xl+70,y);g.bezierCurveTo(xl+70+(xr-xl)*.3,y+o*2.1,xr-70-(xr-xl)*.3,y+o*2.1,xr-70,y);g.stroke();g.restore()}}
+function wave(y,amp,cf,t){g.save();g.lineWidth=7;g.lineCap='round';g.lineJoin='round';const col=mix(COOL,WARM,cf);g.strokeStyle=rgba(col,.95);g.shadowColor=rgba(col,.9);g.shadowBlur=22;g.beginPath();for(let x=50;x<=1030;x+=5){const u=x/1080,s=Math.sin(u*Math.PI*6-t*5)*amp,j=(1-cf)*(Math.sin(u*Math.PI*31+t*9)*.35+Math.sin(u*Math.PI*17-t*7)*.25)*amp;const yy=y+s+j;x==50?g.moveTo(x,yy):g.lineTo(x,yy)}g.stroke();g.restore()}
+const cf0=t=>eo(P(t,S(2)+1.2,E(2)));
+function frame(t){g.clearRect(0,0,W,H);
+ grad(0,620,.55,0);grad(1250,H,0,.7);A(.34,()=>{g.fillStyle='#000';g.fillRect(0,0,W,H)});
+ // ---- 0-2 magnet / signal / connection
+ A(vis(t,S(0)-.1,E(2)+.4,.5,.6),()=>{lab=1-cf0(t);const my=930,gapStart=620,gapEnd=190;const ap=eio(P(t,S(2)+.3,E(2)-.5)),gp=gapStart+(gapEnd-gapStart)*ap,xl=540-gp/2,xr=540+gp/2,cf=eo(P(t,S(2)+1.2,E(2)));
+  field(xl,xr,my,cf,t);node(xr,my,64,mix(COOL,WARM,cf),'אנחנו',1);node(xl,my,64,mix(COOL,WARM,cf),'המשהו',1);
+  A(vis(t,S(0)+1.6,S(1)-.1,.4,.4),()=>{g.strokeStyle=rgba(COOL,.8);g.lineWidth=3;g.beginPath();g.moveTo(xl+10,my+160);g.lineTo(xl+10,my+185);g.lineTo(xr-10,my+185);g.lineTo(xr-10,my+160);g.stroke();T('נפרדים',540,my+235,{s:50,w:800,c:BLUE})});
+  A(vis(t,S(0)-.1,E(0)+.3,.5,.4),()=>{T('אי אפשר למגנט משהו',W/2,360,{s:76,w:800});T('שאנחנו מרגישים נפרדים ממנו',W/2,470,{s:52,c:BLUE,w:500})});
+  A(vis(t,S(1),E(1)+.3,.5,.4),()=>{T('השתוקקות עזה',W/2,340,{s:90,w:800});T('משדרת ליקום תדר של חוסר',W/2,455,{s:56,c:BLUE})});
+  A(vis(t,S(2),E(2)+.4,.5,.5),()=>{T('להרגיש מחוברים',W/2,340,{s:90,w:800});T('כבר עכשיו',W/2,455,{s:96,c:GOLD,w:800})});
+  A(vis(t,S(1)+.3,E(2)+.2,.6,.6),()=>{wave(1350,70*(1-.4*cf),cf,t);T(cf>.5?'יש':'חוסר',W/2,1500,{s:64,w:800,c:rgba(mix(COOL,WARM,cf),1)})})});
+ // ---- 3 amplify
+ A(vis(t,S(3)-.1,E(3)+.4,.5,.5),()=>{T('היקום תמיד מעצים',W/2,340,{s:84,w:800});T('את מה שקיים בתוכנו',W/2,450,{s:60,c:GOLD});const cy=980;
+  for(let i=0;i<4;i++){const r=((t*130+i*105)%420)+70,al=Math.max(0,1-(r-70)/420);g.strokeStyle=rgba(WARM,al*.85);g.lineWidth=6;g.beginPath();g.arc(540,cy,r,0,7);g.stroke()}
+  node(540,cy,60+10*Math.sin(t*5),WARM,'');T('מה שבתוכנו',540,cy,{s:34,w:800,c:'#1a1a1a',sh:0})});
+ // ---- 4 question
+ A(vis(t,S(4)-.1,E(4)+.5,.5,.5),()=>{T('אז מה נוכח',W/2,830,{s:100,w:800});T('אצלכם כרגע?',W/2,960,{s:116,w:800,c:GOLD})});
+ // ---- 5-7 sliders
+ A(vis(t,S(5)-.1,S(8)+1.3,.5,.5),()=>{T('מה נוכח אצלכם?',W/2,330,{s:56,c:GOLD,w:800});
+  [['קורבנות','הכרת תודה',S(5)],['פחד','אמון',S(6)],['עצב','שמחה',S(7)]].forEach(([neg,pos,st],i)=>{const k=eo(P(t,st,st+.5)),y=640+i*290;A(k,()=>{
+   const settle=eo(P(t,S(8)-.1,S(8)+1)),u=(.5+.4*Math.sin((t-st)*2.1+i))*(1-settle)+.07*settle;
+   const q=g.createLinearGradient(160,0,920,0);q.addColorStop(0,'rgba(233,179,95,.9)');q.addColorStop(1,'rgba(122,162,255,.9)');g.fillStyle=q;rr(160,y-14,760,28,14);g.fill();
+   T(neg,920,y-70,{s:56,w:800,al:'right',c:BLUE});T(pos,160,y-70,{s:56,w:800,al:'left',c:GOLD});T('או',540,y-70,{s:36,a:.7});
+   const kx=160+760*u;g.save();g.shadowColor='#fff';g.shadowBlur=26;g.fillStyle='#fff';g.beginPath();g.arc(kx,y,30,0,7);g.fill();g.restore()})})});
+ // ---- 8 practice 'yesh'
+ A(vis(t,S(8)+1.6,E(8)+.4,.5,.5),()=>{T('חוויית ה״יש״',W/2,360,{s:100,w:800,c:GOLD});T('בכל יום',W/2,480,{s:64});
+  for(let i=0;i<7;i++){const x=900-i*120,y=860,t0=S(8)+2.5+i*.38,p=eb(P(t,t0,t0+.4));g.strokeStyle='rgba(250,248,244,.5)';g.lineWidth=4;g.beginPath();g.arc(x,y,44,0,7);g.stroke();if(p>0){g.save();g.shadowColor=GOLD;g.shadowBlur=26;g.fillStyle=GOLD;g.beginPath();g.arc(x,y,44*Math.min(1,p),0,7);g.fill();g.restore();g.strokeStyle='#1a1a1a';g.lineWidth=7;g.lineCap='round';g.beginPath();g.moveTo(x-16,y+2);g.lineTo(x-4,y+14);g.lineTo(x+18,y-12);g.stroke()}else T(String(i+1),x,y,{s:38,a:.7})}
+  const jit=Math.max(0,1-P(t,S(8)+3.4,E(8)))*5;T('גם אם בהתחלה זה מרגיש מאולץ',W/2+Math.sin(t*22)*jit,1100,{s:50})});
+ // ---- 9 remind body
+ A(vis(t,S(9)-.1,E(9)+.4,.5,.5),()=>{T('הזכירו לגוף',W/2,340,{s:100,w:800});T('איך זה מרגיש',W/2,455,{s:60,c:GOLD});
+  [['להכיר תודה',S(9)+2.2],['לשמוח',S(9)+4],['להתרגש',S(9)+5.5]].forEach(([s,t0],i)=>{const y=760+i*250,p=eb(P(t,t0,t0+.6));A(Math.min(1,p*2),()=>{for(let k=0;k<2;k++){const r=((t*70+k*50)%100)+50;g.strokeStyle=rgba(WARM,Math.max(0,1-r/150)*.7);g.lineWidth=4;g.beginPath();g.arc(870,y,r*.6,0,7);g.stroke()}node(870,y,48*(1+.06*Math.sin(t*7+i)),WARM,'');T(s,780,y,{s:72,w:800,al:'right'})})})});
+ // ---- 10 new version
+ A(vis(t,S(10)-.1,E(10)+.4,.5,.5),()=>{T('אתם בוראים',W/2,340,{s:84,w:800});T('גרסה חדשה ומדויקת יותר',W/2,450,{s:56,c:GOLD});const cx=540,cy=980,sh=eo(P(t,S(10)+.4,E(10)-.3));
+  g.save();g.setLineDash([10,14]);g.strokeStyle='rgba(250,248,244,.35)';g.lineWidth=3;g.beginPath();g.arc(cx,cy,220,0,7);g.stroke();g.restore();
+  for(let k=0;k<3;k++){const t0=S(10)+1+k*1.8,f=eo(P(t,t0,t0+1.2));g.save();g.strokeStyle=GOLD;g.lineWidth=18;g.lineCap='round';g.shadowColor=GOLD;g.shadowBlur=24;g.beginPath();g.arc(cx,cy,220,-Math.PI/2+k*Math.PI*2/3,-Math.PI/2+k*Math.PI*2/3+f*Math.PI*2/3-.12);g.stroke();g.restore()}
+  g.save();g.shadowColor=GOLD;g.shadowBlur=90*(1-sh)+14;g.globalAlpha*=.25+.75*sh;const q=g.createRadialGradient(cx,cy-30,10,cx,cy,150);q.addColorStop(0,'#fff2cf');q.addColorStop(1,GOLD);g.fillStyle=q;g.beginPath();g.arc(cx,cy,140+8*Math.sin(t*3),0,7);g.fill();g.restore();
+  A(eo(P(t,S(10)+1,S(10)+1.8)),()=>T('בכל פעם',W/2,1330,{s:68,w:800}))});
+ // ---- 11 echo
+ A(vis(t,S(11)-.1,E(11)+.8,.5,.7),()=>{T('וליקום לא תישאר ברירה',W/2,340,{s:72,w:800});T('אלא להדהד לכם בחזרה',W/2,450,{s:60,c:GOLD});const cy=980,q=(t-S(11));
+  for(let i=0;i<3;i++){const ph=((q*.5+i/3)%1),r=60+ph*460;g.strokeStyle=rgba(WARM,(1-ph)*.9);g.lineWidth=6;g.beginPath();g.arc(540,cy,r,0,7);g.stroke();const r2=520-ph*460;g.strokeStyle=rgba(COOL,ph*.55);g.lineWidth=4;g.beginPath();g.arc(540,cy,r2,0,7);g.stroke()}
+  node(540,cy,58,WARM,'');A(eo(P(t,S(11)+3,S(11)+3.8)),()=>T('עוד מאותו הדבר',W/2,1560,{s:84,w:800,c:GOLD}))});
+ // ---- end card
+ if(t>=END0){const k=eo(P(t,END0,END0+.9)),f=1-P(t,TOTAL-.5,TOTAL);A(f*P(t,END0,END0+.5),()=>{g.fillStyle='rgba(8,6,4,.62)';g.fillRect(0,0,W,H)});A(f*k,()=>{lab=0;field(360,720,1250,1,t);node(720,1250,50,WARM,'');node(360,1250,50,WARM,'');T('יש',W/2,880,{s:300,w:800,c:GOLD})})}
+}
+</script>
