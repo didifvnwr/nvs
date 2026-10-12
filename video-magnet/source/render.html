@@ -67,7 +67,7 @@ function frame(t){g.clearRect(0,0,W,H);
   const jit=Math.max(0,1-P(t,S(8)+3.4,E(8)))*5;T('גם אם בהתחלה זה מרגיש מאולץ',W/2+Math.sin(t*22)*jit,1100,{s:50})});
  // ---- 9 remind body
  A(vis(t,S(9)-.1,E(9)+.4,.5,.5),()=>{T('הזכירו לגוף',W/2,340,{s:100,w:800});T('איך זה מרגיש',W/2,455,{s:60,c:GOLD});
-  [['להכיר תודה',S(9)+2.2],['לשמוח',S(9)+4],['להתרגש',S(9)+5.5]].forEach(([s,t0],i)=>{const y=760+i*250,p=eb(P(t,t0,t0+.6));A(Math.min(1,p*2),()=>{for(let k=0;k<2;k++){const r=((t*70+k*50)%100)+50;g.strokeStyle=rgba(WARM,Math.max(0,1-r/150)*.7);g.lineWidth=4;g.beginPath();g.arc(870,y,r*.6,0,7);g.stroke()}node(870,y,48*(1+.06*Math.sin(t*7+i)),WARM,'');T(s,780,y,{s:72,w:800,al:'right'})})})});
+  [['להכיר תודה',S(9)+1.7],['לשמוח',S(9)+3.9],['להתרגש',S(9)+5.8]].forEach(([s,t0],i)=>{const y=760+i*250,p=eb(P(t,t0,t0+.6));A(Math.min(1,p*2),()=>{for(let k=0;k<2;k++){const r=((t*70+k*50)%100)+50;g.strokeStyle=rgba(WARM,Math.max(0,1-r/150)*.7);g.lineWidth=4;g.beginPath();g.arc(870,y,r*.6,0,7);g.stroke()}node(870,y,48*(1+.06*Math.sin(t*7+i)),WARM,'');T(s,780,y,{s:72,w:800,al:'right'})})})});
  // ---- 10 new version
  A(vis(t,S(12)-.1,E(12)+.4,.5,.5),()=>{T('אתם בוראים',W/2,340,{s:84,w:800});T('גרסה חדשה ומדויקת יותר',W/2,450,{s:56,c:GOLD});const cx=540,cy=980,sh=eo(P(t,S(12)+.4,E(12)-.3));
   g.save();g.setLineDash([10,14]);g.strokeStyle='rgba(250,248,244,.35)';g.lineWidth=3;g.beginPath();g.arc(cx,cy,220,0,7);g.stroke();g.restore();
@@ -80,15 +80,15 @@ function frame(t){g.clearRect(0,0,W,H);
   node(540,cy,58,WARM,'');A(eo(P(t,S(13)+3,S(13)+3.8)),()=>T('עוד מאותו הדבר',W/2,1560,{s:84,w:800,c:GOLD}))});
 
  // ---- 10 pregnant: already yours
- A(vis(t,S(10)-.1,E(10)+2.6,.6,.8),()=>{T('מבחינת היקום',W/2,340,{s:84,w:800});A(eo(P(t,S(10)+.9,S(10)+1.7)),()=>T('זה כבר שלכם',W/2,480,{s:130,w:800,c:GOLD}))});
+ A(vis(t,S(10)-.1,E(10)+1.8,.6,.8),()=>{T('מבחינת היקום',W/2,340,{s:84,w:800});A(eo(P(t,S(10)+1.3,S(10)+2)),()=>T('זה כבר שלכם',W/2,480,{s:130,w:800,c:GOLD}))});
  // ---- 11 pause, breathe, feel as if you received everything
  A(vis(t,S(11)-.1,E(11)+.5,.5,.6),()=>{const s=S(11),cy=1060,cyc=(t-s-2)/4,br=110+55*Math.sin(2*Math.PI*cyc);
-  A(vis(t,s,s+2.6,.4,.4),()=>T('גם אם זה לכמה דקות',W/2,420,{s:76,w:800}));
-  A(eo(P(t,s+2.2,s+2.9))*(1-P(t,s+3.5,s+3.9)),()=>T('עצרו',W/2,420,{s:120,w:800,c:GOLD}));
-  A(eo(P(t,s+3.6,s+4.3))*(1-P(t,s+5,s+5.4)),()=>T('נשמו',W/2,420,{s:120,w:800,c:GOLD}));
-  A(eo(P(t,s+4.8,s+5.6)),()=>{T('והרגישו כאילו',W/2,350,{s:64});T('קיבלתם הכל',W/2,470,{s:110,w:800,c:GOLD})});
+  A(vis(t,s,s+1.9,.3,.3),()=>T('גם אם זה לכמה דקות',W/2,420,{s:76,w:800}));
+  A(eo(P(t,s+1.9,s+2.4))*(1-P(t,s+2.8,s+3.1)),()=>T('עצרו',W/2,420,{s:120,w:800,c:GOLD}));
+  A(eo(P(t,s+3,s+3.5))*(1-P(t,s+3.9,s+4.2)),()=>T('נשמו',W/2,420,{s:120,w:800,c:GOLD}));
+  A(eo(P(t,s+4,s+4.7)),()=>{T('והרגישו כאילו',W/2,350,{s:64});T('קיבלתם הכל',W/2,470,{s:110,w:800,c:GOLD})});
   A(eo(P(t,s+2,s+2.8)),()=>{g.save();g.shadowColor=GOLD;g.shadowBlur=70;const q=g.createRadialGradient(540,cy-20,10,540,cy,br);q.addColorStop(0,'#fff2cf');q.addColorStop(1,'rgba(233,179,95,.55)');g.fillStyle=q;g.beginPath();g.arc(540,cy,br,0,7);g.fill();g.restore();T(Math.sin(2*Math.PI*cyc)>Math.sin(2*Math.PI*(cyc-.02))?'שאיפה':'נשיפה',540,cy,{s:40,w:800,c:'#1a1a1a',sh:0})});
-  A(eo(P(t,E(11)-3.2,E(11)-2.6)),()=>{const f=P(t,E(11)-3,E(11)+.2);g.lineWidth=16;g.strokeStyle='rgba(255,255,255,.2)';g.beginPath();g.arc(540,1480,70,0,7);g.stroke();g.strokeStyle=GOLD;g.lineCap='round';g.beginPath();g.arc(540,1480,70,-Math.PI/2,-Math.PI/2+f*Math.PI*2);g.stroke();T('10',540,1472,{s:56,w:800});T('דקות',540,1580,{s:36,c:GOLD})})});
+  A(eo(P(t,E(11)-1.9,E(11)-1.4)),()=>{const f=P(t,E(11)-1.6,E(11)+.4);g.lineWidth=16;g.strokeStyle='rgba(255,255,255,.2)';g.beginPath();g.arc(540,1480,70,0,7);g.stroke();g.strokeStyle=GOLD;g.lineCap='round';g.beginPath();g.arc(540,1480,70,-Math.PI/2,-Math.PI/2+f*Math.PI*2);g.stroke();T('10',540,1472,{s:56,w:800});T('דקות',540,1580,{s:36,c:GOLD})})});
  // ---- 14 open the door
  A(vis(t,S(14)-.2,END0+.2,.6,.6),()=>{const p=eio(P(t,S(14)+.4,E(14)+1.3)),ang=p*1.35,cy=1050,fx=340,fw=400,ft=cy-380,fb=cy+380;
   T('עכשיו תוכלו',W/2,330,{s:84,w:800});T('לפתוח את הדלת',W/2,450,{s:110,w:800,c:GOLD});
