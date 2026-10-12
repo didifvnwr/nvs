@@ -9,10 +9,13 @@ const P=[
 "שמחה – או עצב?",
 "תרגלו את חוויית ה״יש״ בכל יום, גם אם בהתחלה זה מרגיש מעט מאולץ.",
 "הזכירו לגוף איך זה מרגיש להכיר תודה באמת, איך זה מרגיש לשמוח, איך זה מרגיש להתרגש.",
+"כי מבחינת היקום — זה כבר שלכם.",
+"גם אם זה לכמה דקות — תעצרו, תנשמו, ותרגישו כמו שהייתם מרגישים אילו קיבלתם הכל. גם אם זה לעשר דקות.",
 "בכל פעם שאתם עושים זאת, אתם בוראים ומחזקים גרסה חדשה ומדויקת יותר של עצמכם –",
-"וליקום פשוט לא תישאר ברירה אלא להדהד לכם בחזרה עוד מאותו הדבר."];
-let t=0.4;const PH=P.map(x=>{const d=Math.max(1.4,x.length/11.8),r=[x,+t.toFixed(2),+(t+d).toFixed(2)];t+=d+0.55;return r});
-const END0=+(PH[PH.length-1][2]+0.9).toFixed(2),TOTAL=+(END0+4.6).toFixed(2);
+"וליקום פשוט לא תישאר ברירה אלא להדהד לכם בחזרה עוד מאותו הדבר.",
+"עכשיו תוכלו לפתוח את הדלת."];
+const EXTRA={9:3.0,10:2.5};let t=0.4;const PH=P.map((x,i)=>{const d=Math.max(1.4,x.length/11.8),r=[x,+t.toFixed(2),+(t+d).toFixed(2)];t+=d+0.55+(EXTRA[i]||0);return r});
+const END0=+(PH[PH.length-1][2]+1.6).toFixed(2),TOTAL=+(END0+5.6).toFixed(2);
 require('fs').writeFileSync('tl.js','const PH='+JSON.stringify(PH)+',END0='+END0+',TOTAL='+TOTAL+';');
 require('fs').writeFileSync('tl.json',JSON.stringify({PH,END0,TOTAL}));
 console.log(PH.map((p,i)=>i+' '+p[1]+'-'+p[2]).join(' | '),END0,TOTAL);

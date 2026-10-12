@@ -2,13 +2,14 @@ import subprocess,os,json
 from concurrent.futures import ThreadPoolExecutor
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 tl=json.load(open('tl.json'));S=lambda i:tl['PH'][i][1];T=tl['TOTAL']
-b=[0,S(1)+2.5,S(2),S(4),S(8),S(9),S(10),S(11),T]
-d=[b[i+1]-b[i] for i in range(8)]
-rows=[('v13',0,d[0]),('v11',6,d[1]),('v14',0,d[2]),('v4',0,d[3]),('v15',0,d[4]),('v1',14,d[5]),('v3',0,d[6]),('v12',0,d[7])]
+b=[0,S(1)+2.5,S(2),S(4),S(8),S(9),S(10),S(11),S(12),S(13),S(14),T]
+d=[b[i+1]-b[i] for i in range(len(b)-1)]
+rows=[('v13',0,d[0]),('v11',6,d[1]),('v14',0,d[2]),('v19',2,d[3]),('v15',0,d[4]),('v1',18,d[5]),('v18',0,d[6]),('v12',0,d[7]),('v17',0,d[8]),('v11',0,d[9]),('v14',0,d[10])]
 def dur(p):return float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',p]))
 def job(a):
     n,(s,ss,dd)=a;f=max(1.0,dd/(dur(f'src/{s}.mp4')-ss-0.05));u=dd/f
-    vf=(f"tpad=stop_duration=3:stop_mode=clone,trim=duration={u},setpts=(PTS-STARTPTS)*{f},scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,trim=duration={dd},setpts=PTS-STARTPTS,setsar=1,eq=brightness=-0.1:saturation=0.9,fade=t=in:st=0:d=0.2,fade=t=out:st={dd-0.2}:d=0.2,format=yuv420p")
+    zoom='scale=1340:2380,crop=1080:1920,' if s=='v19' else ''
+    vf=(f"tpad=stop_duration=3:stop_mode=clone,trim=duration={u},setpts=(PTS-STARTPTS)*{f},scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{zoom}fps=30,trim=duration={dd},setpts=PTS-STARTPTS,setsar=1,eq=brightness=-0.1:saturation=0.9,fade=t=in:st=0:d=0.2,fade=t=out:st={dd-0.2}:d=0.2,format=yuv420p")
     subprocess.run(['ffmpeg','-v','error','-y','-ss',str(ss),'-i',f'src/{s}.mp4','-an','-vf',vf,'-c:v','libx264','-preset','fast','-crf','18',f'seg/{n:02d}.mp4'],check=True)
     return (s,round(f,2))
 with ThreadPoolExecutor(4) as ex:print(list(ex.map(job,enumerate(rows,1))))
