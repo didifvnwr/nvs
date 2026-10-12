@@ -4,7 +4,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 tl=json.load(open('tl.json'));S=lambda i:tl['PH'][i][1];T=tl['TOTAL']
 b=[0,S(1)+2.5,S(2),S(4),S(8),S(9),S(10),S(11),S(12),S(13),S(14),T]
 d=[b[i+1]-b[i] for i in range(len(b)-1)]
-rows=[('v13',0,d[0]),('v11',6,d[1]),('v14',0,d[2]),('v19',2,d[3]),('v15',0,d[4]),('v1',18,d[5]),('v18',0,d[6]),('v12',0,d[7]),('v17',0,d[8]),('v11',0,d[9]),('v14',0,d[10])]
+rows=[('v13',0,d[0]),('v11',6,d[1]),('v14',0,d[2]),('v19',2,d[3]),('v15',0,d[4]),('v1',17,d[5]+d[6]),('v12',0,d[7]),('v17',0,d[8]),('v11',0,d[9]),('v14',0,d[10])]
 def dur(p):return float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',p]))
 def job(a):
     n,(s,ss,dd)=a;f=max(1.0,dd/(dur(f'src/{s}.mp4')-ss-0.05));u=dd/f

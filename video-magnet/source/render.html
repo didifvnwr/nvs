@@ -32,6 +32,14 @@ function infinity(cy,q){const pts=infPts(cy,150,240),draw=P(q,0,1.6),n=Math.floo
  if(draw>=1){const hd=Math.floor(((q-1.6)*.45%1)*240),L=70;g.shadowColor=GOLD;g.shadowBlur=30;for(let k=0;k<L;k++){const p=pts[(hd-k+240)%240],q2=pts[(hd-k-1+240)%240];g.strokeStyle='rgba(255,226,160,'+(1-k/L)+')';g.lineWidth=14*(1-k/L)+3;g.beginPath();g.moveTo(p[0],p[1]);g.lineTo(q2[0],q2[1]);g.stroke()}}g.restore()}
 function frame(t){g.clearRect(0,0,W,H);
  grad(0,620,.55,0);grad(1250,H,0,.7);A(.34,()=>{g.fillStyle='#000';g.fillRect(0,0,W,H)});
+ // ---- title card: how to magnetize everything we want
+ A(vis(t,.1,TITLE-.1,.7,.6),()=>{
+  A(eo(P(t,.2,1)),()=>T('איך למגנט לחיים',W/2,430+20*(1-eo(P(t,.2,1))),{s:112,w:800}));
+  A(eo(P(t,1,1.8)),()=>T('כל מה שאנחנו רוצים',W/2,570,{s:96,w:800,c:GOLD}));
+  const cx=540,cy=1180,pull=eo(P(t,.6,3));
+  for(let i=0;i<46;i++){const ph=((t*.28+i*.173)%1),ang=i*2.399+t*.9*(1-ph),r=480*(1-ph)+36,x=cx+Math.cos(ang)*r*1.15,y=cy+Math.sin(ang)*r*.85;g.save();g.globalAlpha*=Math.min(1,ph*4)*(1-ph*.2)*.9;g.fillStyle=i%3?GOLD:CREAM;g.shadowColor=GOLD;g.shadowBlur=14;g.beginPath();g.arc(x,y,3+4*(1-ph),0,7);g.fill();g.restore()}
+  for(let k=0;k<3;k++){const r=((t*90+k*70)%210)+60;g.strokeStyle='rgba(233,179,95,'+Math.max(0,(1-(r-60)/210))*.5+')';g.lineWidth=4;g.beginPath();g.ellipse(cx,cy,r*1.15,r*.85,0,0,7);g.stroke()}
+  node(cx,cy,56+6*Math.sin(t*5),WARM,'')});
  // ---- 0-2 magnet / signal / connection
  A(vis(t,S(0)-.1,E(2)+.4,.5,.6),()=>{lab=1-cf0(t);const my=930,gapStart=620,gapEnd=190;const ap=eio(P(t,S(2)+.3,E(2)-.5)),gp=gapStart+(gapEnd-gapStart)*ap,xl=540-gp/2,xr=540+gp/2,cf=eo(P(t,S(2)+1.2,E(2)));
   field(xl,xr,my,cf,t);node(xr,my,64,mix(COOL,WARM,cf),'אנחנו',1);node(xl,my,64,mix(COOL,WARM,cf),'המשהו',1);
