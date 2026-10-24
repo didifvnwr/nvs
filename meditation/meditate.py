@@ -27,6 +27,15 @@ SYSTEM_PROMPT = """את/ה כותב/ת מדיטציות מודרכות מקצו�
 - אל תכתוב/י מילים באנגלית ואל תשתמש/י בקיצורים או במספרים בספרות; כתוב/י הכול במילים כדי שההקראה תהיה נכונה.
 """
 
+MESSAGES_PROMPT = """את/ה כותב/ת מסרים קצרים ומחזקים להשראה ולהקשבה.
+כתוב/י בשפה המבוקשת, בקול חם, אישי ופשוט, בגוף שני.
+כללים:
+- פלט: טקסט להקראה בלבד. בלי כותרות, מספור, אימוג'ים או כוכביות.
+- כל מסר הוא שניים עד ארבעה משפטים קצרים ושלמים. אחרי כל מסר שורה נפרדת [הפסקה N] עם N בין 4 ל-8 שניות.
+- התחל/י במשפט פתיחה קצר ובקש/י לקחת נשימה, וסיים/י במסר סיום מחבק.
+- כתוב/י הכול במילים (בלי ספרות, בלי מילים באנגלית) כדי שההקראה תהיה נכונה.
+"""
+
 PAUSE_RE = re.compile(r"\[\s*הפסקה\s+(\d+(?:\.\d+)?)\s*\]")
 
 
@@ -36,14 +45,21 @@ def http_json(url, payload, headers):
         return r.read()
 
 
-def write_script(prompt, minutes):
+def write_script(prompt, minutes, kind="meditation"):
     key = os.environ["ANTHROPIC_API_KEY"]
-    words = int(minutes * WORDS_PER_MINUTE * 0.7)  # ~30% מהזמן הוא שקט
-    user = (f"בקשה: {prompt}\nאורך יעד: כ-{minutes} דקות. "
-            f"כ-{words} מילים של דיבור, והשאר הפסקות שקט.")
+    if kind == "messages":
+        words = int(minutes * WORDS_PER_MINUTE * 0.8)
+        user = (f"נושא המסרים: {prompt}\nאורך יעד: כ-{minutes} דקות, "
+                f"כ-{words} מילים בסך הכול, מחולקות למספר מסרים קצרים.")
+        system = MESSAGES_PROMPT
+    else:
+        words = int(minutes * WORDS_PER_MINUTE * 0.7)  # ~30% מהזמן הוא שקט
+        user = (f"בקשה: {prompt}\nאורך יעד: כ-{minutes} דקות. "
+                f"כ-{words} מילים של דיבור, והשאר הפסקות שקט.")
+        system = SYSTEM_PROMPT
     out = http_json(
         "https://api.anthropic.com/v1/messages",
-        {"model": CLAUDE_MODEL, "max_tokens": 8000, "system": SYSTEM_PROMPT,
+        {"model": CLAUDE_MODEL, "max_tokens": 8000, "system": system,
          "messages": [{"role": "user", "content": user}]},
         {"x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
     )
@@ -88,7 +104,7 @@ def ffmpeg(*args):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *args], check=True)
 
 
-def build_voice_track(parts, voice_id, workdir):
+def build_voice_track(parts, voice_id, workdir, progress=print):
     """מקליט כל קטע דיבור, מוסיף שקט להפסקות, ומחבר לקובץ אחד."""
     files = []
     for i, (kind, val) in enumerate(parts):
@@ -97,7 +113,7 @@ def build_voice_track(parts, voice_id, workdir):
             mp3 = workdir / f"{i:03d}.mp3"
             prev = next((v for k, v in reversed(parts[:i]) if k == "speech"), None)
             nxt = next((v for k, v in parts[i + 1:] if k == "speech"), None)
-            print(f"  מקליט קטע {i + 1}/{len(parts)} ({len(val.split())} מילים)")
+            progress(f"מקליט קטע {i + 1}/{len(parts)} ({len(val.split())} מילים)")
             tts(val, voice_id, mp3, prev, nxt)
             ffmpeg("-i", str(mp3), "-ar", "44100", "-ac", "2", str(f))
         else:

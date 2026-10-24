@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מחולל מדיטציות</title>
+<style>
+:root{--bg:#f4f1ec;--card:#fff;--ink:#2b2a33;--mute:#6f6c78;--acc:#5b6b9a;--line:#e3dfd7}
+@media(prefers-color-scheme:dark){:root{--bg:#17171d;--card:#22222b;--ink:#ecebf2;--mute:#9a98a8;--acc:#8d9bd0;--line:#33333f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Arial,sans-serif;line-height:1.5}
+main{max-width:680px;margin:0 auto;padding:24px 16px 64px}
+h1{font-weight:600;font-size:1.6rem;margin:8px 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+label{display:block;font-size:.9rem;color:var(--mute);margin:14px 0 6px}
+label:first-child{margin-top:0}
+textarea,select,input[type=number]{width:100%;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
+textarea{min-height:90px;resize:vertical}
+#script{min-height:280px}
+.row{display:flex;gap:12px}.row>*{flex:1}
+.seg{display:flex;gap:8px}
+.seg label{flex:1;margin:0;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer}
+.seg input{display:none}
+.seg input:checked+span{font-weight:600;color:var(--acc)}
+.seg label:has(input:checked){border-color:var(--acc)}
+button{font:inherit;background:var(--acc);color:#fff;border:0;border-radius:10px;padding:11px 18px;cursor:pointer}
+button.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+button:disabled{opacity:.5;cursor:default}
+.warn{background:#fff3cd;color:#664d03;border-radius:10px;padding:10px;margin-bottom:16px;display:none}
+.status{color:var(--mute);margin:10px 0 0;min-height:1.4em}
+.err{color:#c0392b}
+audio{width:100%;margin-top:10px}
+.musicrow{display:flex;gap:8px;align-items:center}.musicrow select{flex:1}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<h1>מחולל מדיטציות ומסרים</h1>
+<div class="warn" id="warn"></div>
+
+<div class="card">
+  <label>על מה?</label>
+  <textarea id="prompt" placeholder="לדוגמה: שחרור מלחץ אחרי יום עבודה, לשינה עמוקה, ביטחון עצמי לפני ראיון"></textarea>
+  <label>סוג</label>
+  <div class="seg">
+    <label><input type="radio" name="kind" value="meditation" checked><span>מדיטציה מודרכת</span></label>
+    <label><input type="radio" name="kind" value="messages"><span>מסרים קצרים</span></label>
+  </div>
+  <div class="row">
+    <div><label>אורך (דקות)</label><input type="number" id="minutes" value="10" min="1" max="60" step="1"></div>
+    <div><label>קול</label><select id="voice"></select></div>
+  </div>
+  <label>מוזיקת רקע</label>
+  <div class="musicrow">
+    <select id="music"></select>
+    <button class="ghost" id="up">העלאה</button>
+    <input type="file" id="file" accept="audio/*" hidden>
+  </div>
+  <audio id="musicPreview" controls hidden></audio>
+  <label>עוצמת המוזיקה: <bdi id="dbv">-14</bdi> dB</label>
+  <input type="range" id="db" min="-30" max="-6" value="-14" style="width:100%">
+  <p><button id="gen">כתוב טקסט</button></p>
+  <div class="status" id="s1"></div>
+</div>
+
+<div class="card" id="step2" hidden>
+  <label>הטקסט (אפשר לערוך לפני ההקלטה, <code>[הפסקה 5]</code> = חמש שניות שקט)</label>
+  <textarea id="script"></textarea>
+  <p><button id="rec">הקלט ושלב מוזיקה</button></p>
+  <div class="status" id="s2"></div>
+  <audio id="result" controls hidden></audio>
+  <p><a id="dl" hidden download>הורדה</a></p>
+</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const post=(u,b)=>fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(async r=>{const j=await r.json();if(!r.ok)throw new Error(j.error||r.status);return j});
+
+async function loadConfig(keepMusic){
+  const c=await fetch('/api/config').then(r=>r.json());
+  const w=[];
+  if(!c.anthropic)w.push('חסר ANTHROPIC_API_KEY (לכתיבת הטקסט)');
+  if(!c.elevenlabs)w.push('חסר ELEVENLABS_API_KEY (להקלטה)');
+  $('warn').style.display=w.length?'block':'none';$('warn').textContent=w.join(' · ')+' — הוסיפו אותם לקובץ .env';
+  $('voice').innerHTML=c.voices.map(v=>`<option value="${v.id}">${v.name}</option>`).join('');
+  $('music').innerHTML='<option value="">ללא מוזיקה</option>'+c.music.map(m=>`<option>${m}</option>`).join('');
+  if(keepMusic)$('music').value=keepMusic;else if(c.music.length)$('music').value=c.music[0];
+  previewMusic();
+}
+function previewMusic(){const m=$('music').value;$('musicPreview').hidden=!m;if(m)$('musicPreview').src='/music/'+encodeURIComponent(m)}
+$('music').onchange=previewMusic;
+$('db').oninput=()=>$('dbv').textContent=$('db').value;
+$('up').onclick=()=>$('file').click();
+$('file').onchange=async()=>{
+  const f=$('file').files[0];if(!f)return;
+  $('s1').textContent='מעלה מוזיקה...';
+  const r=await fetch('/api/upload',{method:'POST',headers:{'X-Filename':encodeURIComponent(f.name)},body:f});
+  const j=await r.json();
+  if(!r.ok){$('s1').innerHTML='<span class=err>'+j.error+'</span>';return}
+  $('s1').textContent='';await loadConfig(j.name);
+};
+$('gen').onclick=async()=>{
+  const prompt=$('prompt').value.trim();if(!prompt){$('s1').textContent='כתבו נושא קודם';return}
+  $('gen').disabled=true;$('s1').textContent='כותב טקסט...';
+  try{
+    const j=await post('/api/script',{prompt,minutes:+$('minutes').value,kind:document.querySelector('[name=kind]:checked').value});
+    $('script').value=j.text;$('step2').hidden=false;$('s1').textContent='';$('step2').scrollIntoView({behavior:'smooth'});
+  }catch(e){$('s1').innerHTML='<span class=err>'+e.message+'</span>'}
+  $('gen').disabled=false;
+};
+$('rec').onclick=async()=>{
+  $('rec').disabled=true;$('result').hidden=true;$('dl').hidden=true;$('s2').textContent='מתחיל...';
+  try{
+    const {job}=await post('/api/produce',{text:$('script').value,voice:$('voice').value,music:$('music').value,music_db:+$('db').value});
+    while(true){
+      await new Promise(r=>setTimeout(r,1500));
+      const j=await fetch('/api/job/'+job).then(r=>r.json());
+      $('s2').textContent=j.status||'';
+      if(j.done){
+        if(j.error)throw new Error(j.error);
+        $('result').src=j.file;$('result').hidden=false;$('dl').href=j.file;$('dl').hidden=false;$('dl').textContent='הורדה';break;
+      }
+    }
+  }catch(e){$('s2').innerHTML='<span class=err>'+e.message+'</span>'}
+  $('rec').disabled=false;
+};
+loadConfig();
+</script>
+</body>
+</html>

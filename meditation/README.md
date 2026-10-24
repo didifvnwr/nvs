@@ -1,23 +1,22 @@
-# מחולל מדיטציות
+# מחולל מדיטציות ומסרים
 
-בקשה חופשית -> Claude כותב טקסט -> ElevenLabs מקליט -> ffmpeg מערבב עם המוזיקה שלך.
-
-## הגדרה
-```
-export ANTHROPIC_API_KEY=...
-export ELEVENLABS_API_KEY=...
-# קול ברירת המחדל הוא של שי (הקול החדש). לשינוי: export ELEVENLABS_VOICE_ID=...
-```
-דרוש `ffmpeg`. שים/י את קבצי המוזיקה בתיקיית `music/`.
+נושא -> Claude כותב טקסט -> ElevenLabs מקליט -> ffmpeg מערבב עם המוזיקה שלך.
 
 ## הרצה
-```
-python meditate.py "מדיטציה לשחרור מלחץ אחרי יום עבודה" --minutes 10 --music music/calm.mp3
-python meditate.py "..." --script-only        # לבדיקת הטקסט לפני הקלטה (חוסך קרדיטים)
-python meditate.py "..." --script-file output/meditation.txt   # הקלטה מטקסט שערכת
-```
-התוצאה: `output/meditation.mp3` ולצידה `output/meditation.txt`.
+1. התקנה: דרוש `python3` ו-`ffmpeg`. אין חבילות נוספות.
+2. מפתחות: מעתיקים את `.env.example` ל-`.env` ומלאים `ANTHROPIC_API_KEY` ו-`ELEVENLABS_API_KEY`.
+3. `python server.py` ואז פותחים http://localhost:8000
 
-## איך זה עובד
-- הטקסט כולל סימוני `[הפסקה N]`; כל קטע דיבור מוקלט בנפרד והשקטים נוצרים ב-ffmpeg (מדויק יותר מתגיות break).
+## בממשק
+נושא, סוג (מדיטציה מודרכת או מסרים קצרים), אורך, קול (ברירת מחדל: שי של הקול החדש, ושאר הקולים מהחשבון), מוזיקה (העלאה או בחירה מתיקיית `music/`) ועוצמתה.
+הטקסט נכתב קודם ואפשר לערוך אותו לפני ההקלטה, כדי לא לבזבז קרדיטים. התוצאה נשמרת ב-`output/`.
+
+## שורת פקודה
+```
+python meditate.py "מדיטציה לשחרור מלחץ" --minutes 10 --music music/calm.mp3
+python meditate.py "..." --script-only
+```
+
+## בפנים
+- `[הפסקה N]` בטקסט = N שניות שקט. כל קטע דיבור מוקלט בנפרד והשקטים נוצרים ב-ffmpeg.
 - המוזיקה בלופ, מונמכת אוטומטית בזמן דיבור, עם פייד אין/אאוט ונרמול עוצמה.
