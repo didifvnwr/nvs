@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>נסיך פרסי</title>
+<style>
+  html,body{margin:0;height:100%;background:#1a1208;color:#f3e2b3;font-family:system-ui,Arial,sans-serif}
+  body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+  canvas{width:min(96vw,960px);aspect-ratio:5/3;background:#000;image-rendering:pixelated;border:4px solid #6b4a1e;border-radius:6px}
+  p{margin:0;font-size:14px;opacity:.85;text-align:center;padding:0 8px}
+</style>
+</head>
+<body>
+<canvas id="c" width="640" height="384"></canvas>
+<p>חצים ← → ללכת · ↑ / רווח לקפוץ · Z / X חרב · R להתחלה מחדש</p>
+<script>
+const T = 32, W = 640, H = 384;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+
+// # = בלוק, ^ = קוצים, G = שומר, E = יציאה, P = התחלה
+const MAP = [
+"################################################################",
+"#                                                              #",
+"#                                                              #",
+"#                                                              #",
+"#                              ####                            #",
+"#                                                          E   #",
+"#                    ###                      ####       #######",
+"#                                  G                           #",
+"#           ###          ###     #####                         #",
+"#                                          ^^^       ###       #",
+"# P       G           ####               #######            G  #",
+"#######  ######  ###########  ######  ##########  ##############",
+"#######  ######  ###########  ######  ##########  ##############",
+"################################################################",
+];
+const ROWS = MAP.length, COLS = MAP[0].length;
+
+let keys = {}, prev = {};
+addEventListener('keydown', e => { keys[e.code] = true; if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault(); });
+addEventListener('keyup', e => keys[e.code] = false);
+const pressed = c => keys[c] && !prev[c];
+
+let player, guards, spikes, exit, state, timeLeft, cam, particles;
+
+function tile(x, y) {
+  if (x < 0 || x >= COLS) return '#';
+  if (y < 0 || y >= ROWS) return ' ';
+  return MAP[y][x];
+}
+const solid = (x, y) => tile(x, y) === '#';
+
+function mkActor(x, y, hp, isGuard) {
+  return { x, y, w: 18, h: 30, vx: 0, vy: 0, face: 1, ground: false, hp, maxHp: hp,
+           atk: 0, cool: 0, hurt: 0, dead: false, isGuard, walk: 0 };
+}
+
+function reset() {
+  guards = []; spikes = []; particles = [];
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+    const c = MAP[y][x];
+    if (c === 'P') player = mkActor(x * T + 7, y * T + 2, 3, false);
+    if (c === 'G') guards.push(mkActor(x * T + 7, y * T + 2, 2, true));
+    if (c === '^') spikes.push({ x: x * T, y: y * T + 12, w: T, h: 20 });
+    if (c === 'E') exit = { x: x * T, y: y * T - T + 32, w: T, h: T };
+  }
+  exit.y = (MAP.findIndex(r => r.includes('E'))) * T;
+  state = 'play'; timeLeft = 300; cam = 0;
+}
+
+function move(a) {
+  a.x += a.vx;
+  for (let y = Math.floor(a.y / T); y <= Math.floor((a.y + a.h - 1) / T); y++)
+    for (let x = Math.floor(a.x / T); x <= Math.floor((a.x + a.w - 1) / T); x++)
+      if (solid(x, y)) { a.x = a.vx > 0 ? x * T - a.w : (x + 1) * T; a.vx = 0; }
+  a.y += a.vy; a.ground = false;
+  for (let y = Math.floor(a.y / T); y <= Math.floor((a.y + a.h - 1) / T); y++)
+    for (let x = Math.floor(a.x / T); x <= Math.floor((a.x + a.w - 1) / T); x++)
+      if (solid(x, y)) {
+        if (a.vy > 0) { a.y = y * T - a.h; a.ground = true; } else a.y = (y + 1) * T;
+        a.vy = 0;
+      }
+}
+
+function hitbox(a) { // אזור פגיעת החרב
+  return { x: a.face > 0 ? a.x + a.w : a.x - 22, y: a.y + 6, w: 22, h: 16 };
+}
+const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+
+function blood(a) {
+  for (let i = 0; i < 10; i++) particles.push({ x: a.x + a.w / 2, y: a.y + 12, vx: (Math.random() - .5) * 4,
+    vy: -Math.random() * 3, life: 30 });
+}
+function damage(a, from) {
+  if (a.hurt > 0 || a.dead) return;
+  a.hp--; a.hurt = 40; a.vx = from * 4; a.vy = -3; blood(a);
+  if (a.hp <= 0) { a.dead = true; if (!a.isGuard) state = 'lose'; }
+}
+
+function updateActor(a) {
+  if (a.hurt > 0) a.hurt--;
+  if (a.cool > 0) a.cool--;
+  if (a.atk > 0) a.atk--;
+  a.vy = Math.min(a.vy + 0.5, 10);
+  move(a);
+  if (a.ground) a.vx *= 0.7;
+  if (a.y > ROWS * T + 50) { a.hp = 0; a.dead = true; if (!a.isGuard) state = 'lose'; }
+}
+
+function update() {
+  if (state !== 'play') { if (pressed('KeyR') || pressed('Enter')) reset(); return; }
+  timeLeft -= 1 / 60;
+  if (timeLeft <= 0) state = 'lose';
+
+  // שחקן
+  const p = player;
+  if (p.hurt < 25) {
+    const sp = p.atk ? 0 : 2.4;
+    if (keys.ArrowLeft) { p.vx = -sp; p.face = -1; p.walk += .2; }
+    else if (keys.ArrowRight) { p.vx = sp; p.face = 1; p.walk += .2; }
+    if ((pressed('ArrowUp') || pressed('Space')) && p.ground) p.vy = -9.2;
+    if ((pressed('KeyZ') || pressed('KeyX')) && p.cool === 0) { p.atk = 12; p.cool = 22; }
+  }
+  updateActor(p);
+
+  for (const g of guards) {
+    if (g.dead) continue;
+    updateActor(g);
+    const dx = p.x - g.x, near = Math.abs(dx) < 220 && Math.abs(p.y - g.y) < 40;
+    if (near && g.hurt < 25) {
+      g.face = Math.sign(dx) || 1;
+      if (Math.abs(dx) > 32) { g.vx = g.face * 1.2; g.walk += .15; }
+      else if (g.cool === 0) { g.atk = 12; g.cool = 55 + Math.random() * 30; }
+    }
+    if (g.atk === 6 && overlap(hitbox(g), p)) damage(p, g.face);
+    if (p.atk === 6 && overlap(hitbox(p), g)) damage(g, p.face);
+  }
+
+  for (const s of spikes) if (overlap(p, s) && p.vy >= 0 && !p.dead) { p.hp = 0; p.dead = true; blood(p); state = 'lose'; }
+  if (overlap(p, exit)) state = 'win';
+
+  for (const q of particles) { q.x += q.vx; q.y += q.vy; q.vy += .2; q.life--; }
+  particles = particles.filter(q => q.life > 0);
+
+  const target = p.x - W / 2;
+  cam += (Math.max(0, Math.min(COLS * T - W, target)) - cam) * 0.1;
+  prev = { ...keys };
+}
+
+function drawActor(a, col) {
+  const x = Math.round(a.x - cam), y = Math.round(a.y);
+  if (a.dead) { ctx.fillStyle = col; ctx.fillRect(x - 6, y + a.h - 8, 30, 8); return; }
+  if (a.hurt % 6 > 3) return;
+  const bob = a.ground ? Math.sin(a.walk * 3) * 2 * (Math.abs(a.vx) > .3) : 0;
+  ctx.fillStyle = '#e8c9a0'; ctx.fillRect(x + 5, y, 8, 8);             // ראש
+  ctx.fillStyle = a.isGuard ? '#7a1010' : '#f6f6f6'; ctx.fillRect(x + 3, y + 8, 12, 14); // גוף
+  ctx.fillStyle = a.isGuard ? '#400' : '#ddd';
+  ctx.fillRect(x + 4, y + 22, 4, 8 + bob); ctx.fillRect(x + 10, y + 22, 4, 8 - bob);
+  ctx.fillStyle = a.isGuard ? '#111' : '#c0392b'; ctx.fillRect(x + 3, y - 2, 12, 3); // כובע / רצועה
+  // חרב
+  ctx.fillStyle = '#cfd8dc';
+  const sx = a.face > 0 ? x + a.w : x;
+  const reach = a.atk ? 22 : 10, sy = a.atk ? y + 12 : y + 18;
+  ctx.fillRect(a.face > 0 ? sx : sx - reach, sy, reach, 2);
+}
+
+function draw() {
+  ctx.fillStyle = '#2a1d3a'; ctx.fillRect(0, 0, W, H);
+  // רקע - קשתות
+  ctx.fillStyle = '#35264a';
+  for (let i = 0; i < 12; i++) {
+    const x = ((i * 160 - cam * 0.4) % (W + 160) + W + 160) % (W + 160) - 80;
+    ctx.fillRect(x, 60, 70, 300);
+    ctx.beginPath(); ctx.arc(x + 35, 60, 35, Math.PI, 0); ctx.fill();
+  }
+  const x0 = Math.floor(cam / T), x1 = x0 + Math.ceil(W / T) + 1;
+  for (let y = 0; y < ROWS; y++) for (let x = x0; x <= x1; x++) {
+    const c = tile(x, y), px = x * T - Math.round(cam), py = y * T;
+    if (c === '#') {
+      ctx.fillStyle = '#8a6a3a'; ctx.fillRect(px, py, T, T);
+      ctx.fillStyle = '#6e5228'; ctx.fillRect(px, py + T - 3, T, 3); ctx.fillRect(px + T - 3, py, 3, T);
+      ctx.fillStyle = '#a5844d'; ctx.fillRect(px, py, T, 3);
+    } else if (c === '^') {
+      ctx.fillStyle = '#b0bec5';
+      for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(px + i * 8, py + T); ctx.lineTo(px + i * 8 + 4, py + 12); ctx.lineTo(px + i * 8 + 8, py + T); ctx.fill(); }
+    }
+  }
+  // דלת יציאה
+  const ex = exit.x - Math.round(cam);
+  ctx.fillStyle = '#ffd54f'; ctx.fillRect(ex + 2, exit.y - 34, 28, 66);
+  ctx.fillStyle = '#3e2723'; ctx.fillRect(ex + 6, exit.y - 28, 20, 60);
+  for (const g of guards) drawActor(g, '#7a1010');
+  drawActor(player, '#fff');
+  ctx.fillStyle = '#c0392b';
+  for (const q of particles) ctx.fillRect(q.x - cam, q.y, 3, 3);
+
+  // ממשק
+  ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0, H - 28, W, 28);
+  for (let i = 0; i < player.maxHp; i++) {
+    ctx.fillStyle = i < player.hp ? '#e53935' : '#4a2a2a'; ctx.fillRect(12 + i * 22, H - 21, 16, 14);
+  }
+  const t = Math.max(0, Math.ceil(timeLeft));
+  ctx.fillStyle = '#f3e2b3'; ctx.font = 'bold 16px system-ui'; ctx.textAlign = 'right';
+  ctx.fillText(`זמן: ${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`, W - 12, H - 8);
+
+  if (state !== 'play') {
+    ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(0, 0, W, H);
+    ctx.textAlign = 'center'; ctx.fillStyle = state === 'win' ? '#ffd54f' : '#ef5350';
+    ctx.font = 'bold 40px system-ui';
+    ctx.fillText(state === 'win' ? 'הצלת את הנסיכה!' : (timeLeft <= 0 ? 'הזמן נגמר' : 'נפלת בקרב'), W / 2, H / 2 - 6);
+    ctx.fillStyle = '#f3e2b3'; ctx.font = '18px system-ui';
+    ctx.fillText('R או Enter להתחלה מחדש', W / 2, H / 2 + 28);
+  }
+}
+
+reset();
+(function loop() { update(); draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>
