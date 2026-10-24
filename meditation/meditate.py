@@ -136,7 +136,7 @@ def main():
     ap.add_argument("prompt", help="על מה המדיטציה (נושא, מטרה, קהל, סגנון)")
     ap.add_argument("--minutes", type=float, default=10)
     ap.add_argument("--music", help="קובץ מוזיקת רקע (mp3/wav). ברירת מחדל: הראשון בתיקיית music/")
-    ap.add_argument("--voice", default=os.getenv("ELEVENLABS_VOICE_ID"), help="ElevenLabs voice_id")
+    ap.add_argument("--voice", default=os.getenv("ELEVENLABS_VOICE_ID", "uwHajH4FhtzVp6X17pr7"), help="ElevenLabs voice_id")
     ap.add_argument("--out", default="output/meditation.mp3")
     ap.add_argument("--script-only", action="store_true", help="רק לכתוב את הטקסט, בלי הקלטה")
     ap.add_argument("--script-file", help="להשתמש בטקסט קיים במקום לכתוב חדש")
