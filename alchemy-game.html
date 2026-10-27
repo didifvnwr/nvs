@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אלכימיה – משחק שילוב יסודות</title>
+<style>
+  :root {
+    --bg1: #1b1145;
+    --bg2: #0f3b63;
+    --bg3: #3a1250;
+    --panel: rgba(18, 14, 48, .72);
+    --panel-border: rgba(255, 255, 255, .14);
+    --text: #f3f1ff;
+    --muted: #b8b3de;
+    --accent: #ffcf4a;
+    --accent2: #6ee7ff;
+    --good: #5dffb0;
+    --bad: #ff7a8a;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: "Segoe UI", "Rubik", "Heebo", "Arial Hebrew", Arial, sans-serif;
+    color: var(--text);
+    background: linear-gradient(135deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+    background-attachment: fixed;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  /* עיטורי רקע */
+  .orbs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .orbs span {
+    position: absolute; border-radius: 50%; filter: blur(60px); opacity: .45;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .orbs span:nth-child(1) { width: 380px; height: 380px; background: #ff5fa2; top: -80px; right: -60px; }
+  .orbs span:nth-child(2) { width: 460px; height: 460px; background: #3b82f6; bottom: -140px; left: 20%; animation-duration: 24s; }
+  .orbs span:nth-child(3) { width: 300px; height: 300px; background: #22d3a6; top: 35%; left: -80px; animation-duration: 21s; }
+  .orbs span:nth-child(4) { width: 260px; height: 260px; background: #ffb347; bottom: 10%; right: 25%; animation-duration: 27s; opacity: .3; }
+  @keyframes drift { to { transform: translate(60px, -40px) scale(1.15); } }
+
+  .app {
+    position: relative; z-index: 1;
+    height: 100dvh;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  /* ===== סרגל צד ===== */
+  .side {
+    display: flex; flex-direction: column; min-height: 0;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 14px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.35);
+    transition: box-shadow .2s, border-color .2s, background .2s;
+  }
+  .side.trash { border-color: var(--bad); box-shadow: 0 0 0 3px rgba(255,122,138,.35), 0 10px 40px rgba(0,0,0,.35); background: rgba(70, 14, 30, .75); }
+  .side h2 { margin: 0 0 8px; font-size: 1.05rem; color: var(--accent); letter-spacing: .3px; }
+  .progress-text { font-size: .95rem; margin-bottom: 6px; }
+  .progress-text b { color: var(--accent); font-size: 1.15rem; }
+  .bar { height: 10px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden; margin-bottom: 12px; }
+  .bar > i {
+    display: block; height: 100%; width: 0%;
+    background: linear-gradient(90deg, #ff5fa2, #ffcf4a, #5dffb0, #6ee7ff);
+    border-radius: 99px; transition: width .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .search {
+    width: 100%; padding: 10px 14px; border-radius: 12px;
+    border: 1px solid var(--panel-border); background: rgba(255,255,255,.08);
+    color: var(--text); font-size: 1rem; outline: none; font-family: inherit;
+  }
+  .search::placeholder { color: var(--muted); }
+  .search:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(110,231,255,.2); }
+  .sorts { display: flex; gap: 6px; margin: 10px 0; flex-wrap: wrap; }
+  .sorts button {
+    flex: 1; padding: 6px 8px; border-radius: 10px; border: 1px solid var(--panel-border);
+    background: rgba(255,255,255,.06); color: var(--muted); cursor: pointer; font-size: .85rem; font-family: inherit;
+  }
+  .sorts button.on { background: rgba(255,207,74,.18); color: var(--accent); border-color: rgba(255,207,74,.5); }
+  .list {
+    flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden;
+    display: flex; flex-wrap: wrap; align-content: flex-start; gap: 7px;
+    padding: 4px 2px 8px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent;
+  }
+  .empty-list { color: var(--muted); text-align: center; width: 100%; padding: 24px 8px; font-size: .95rem; }
+
+  /* ===== יסוד (צ'יפ) ===== */
+  .chip {
+    --h: 200;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px 6px 10px; border-radius: 999px;
+    font-size: .95rem; font-weight: 600; white-space: nowrap;
+    color: #fff;
+    background: linear-gradient(135deg, hsl(var(--h) 70% 38%), hsl(calc(var(--h) + 35) 70% 28%));
+    border: 1.5px solid hsl(var(--h) 90% 70% / .65);
+    box-shadow: 0 3px 10px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.25);
+    cursor: grab; position: relative;
+    touch-action: pan-y;
+    transition: transform .15s, box-shadow .15s, filter .15s;
+  }
+  .chip .em { font-size: 1.3rem; line-height: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,.4)); }
+  .chip:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.3); filter: brightness(1.1); }
+  .chip:active { cursor: grabbing; }
+  .chip.new::after {
+    content: "חדש"; position: absolute; top: -8px; left: -4px;
+    background: var(--accent); color: #3a2a00; font-size: .62rem; font-weight: 800;
+    padding: 1px 6px; border-radius: 99px; animation: bob 1.2s ease-in-out infinite;
+  }
+  .chip.hinted { animation: hintPulse .9s ease-in-out infinite; z-index: 2; }
+  @keyframes bob { 50% { transform: translateY(-3px); } }
+  @keyframes hintPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,207,74,.0), 0 3px 10px rgba(0,0,0,.3); transform: scale(1); }
+    50% { box-shadow: 0 0 0 6px rgba(255,207,74,.55), 0 0 22px rgba(255,207,74,.8); transform: scale(1.1); }
+  }
+
+  /* ===== אזור ראשי ===== */
+  .stage { display: flex; flex-direction: column; min-height: 0; gap: 12px; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius);
+    padding: 10px 16px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo .mark {
+    font-size: 1.8rem; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px;
+    background: linear-gradient(135deg, #ff5fa2, #ffb347); box-shadow: 0 4px 14px rgba(255,95,162,.45);
+  }
+  .logo h1 { margin: 0; font-size: 1.35rem; line-height: 1.1; }
+  .logo small { color: var(--muted); font-size: .8rem; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border-radius: 12px;
+    border: 1px solid var(--panel-border); background: rgba(255,255,255,.1); color: var(--text);
+    cursor: pointer; font-size: .95rem; font-family: inherit; font-weight: 600;
+    transition: transform .12s, background .15s;
+  }
+  .btn:hover { background: rgba(255,255,255,.18); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn.hint { background: linear-gradient(135deg, #ffcf4a, #ff9f43); color: #3a2400; border-color: transparent; box-shadow: 0 4px 14px rgba(255,159,67,.4); }
+  .btn.danger { background: rgba(255,122,138,.16); border-color: rgba(255,122,138,.45); color: #ffc3ca; }
+
+  .ws {
+    position: relative; flex: 1; min-height: 0; overflow: hidden;
+    border-radius: var(--radius);
+    border: 1.5px dashed rgba(255,255,255,.22);
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.08), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(110,231,255,.08), transparent 45%),
+      rgba(10, 8, 34, .45);
+    background-image:
+      radial-gradient(rgba(255,255,255,.12) 1px, transparent 1.5px),
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.08), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(110,231,255,.08), transparent 45%);
+    background-size: 26px 26px, auto, auto;
+  }
+  .ws-hint {
+    position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+    color: rgba(255,255,255,.4); font-size: 1.15rem; pointer-events: none; padding: 20px; line-height: 1.7;
+    transition: opacity .3s;
+  }
+  .ws-hint .big { font-size: 3rem; display: block; margin-bottom: 6px; animation: bob 2.4s ease-in-out infinite; }
+  .ws.has-items .ws-hint { opacity: 0; }
+
+  .item { position: absolute; z-index: 5; touch-action: none; cursor: grab; }
+  .item.dragging { z-index: 50; cursor: grabbing; transform: scale(1.1) rotate(-3deg); filter: drop-shadow(0 10px 14px rgba(0,0,0,.5)); transition: none; }
+  .item.selected { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 999px; animation: selPulse 1s ease-in-out infinite; }
+  .item.target { outline: 3px dashed var(--good); outline-offset: 4px; border-radius: 999px; transform: scale(1.1); }
+  .item.pop { animation: pop .55s cubic-bezier(.2,1.6,.4,1); }
+  .item.shake { animation: shake .45s; }
+  @keyframes selPulse { 50% { outline-color: rgba(255,207,74,.35); } }
+  @keyframes pop { 0% { transform: scale(0) rotate(-30deg); opacity: 0; } 70% { transform: scale(1.3) rotate(6deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-9px) rotate(-4deg); } 40% { transform: translateX(9px) rotate(4deg); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+  .ghost { position: fixed; z-index: 1000; pointer-events: none; transform: translate(-50%, -50%) scale(1.1) rotate(-3deg); filter: drop-shadow(0 10px 14px rgba(0,0,0,.5)); }
+
+  .status {
+    min-height: 24px; text-align: center; color: var(--muted); font-size: .95rem; padding: 0 8px;
+  }
+  .status.hint-msg { color: var(--accent); font-weight: 700; }
+
+  /* ===== הודעות ===== */
+  .toasts { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+  .toast {
+    background: rgba(20, 16, 54, .95); border: 1px solid var(--panel-border); color: var(--text);
+    padding: 10px 18px; border-radius: 14px; box-shadow: 0 8px 28px rgba(0,0,0,.45);
+    animation: toastIn .3s ease-out, toastOut .4s ease-in 2.3s forwards; font-size: .98rem; max-width: 90vw; text-align: center;
+  }
+  .toast.warn { border-color: rgba(255,122,138,.55); }
+  .toast.ok { border-color: rgba(93,255,176,.55); }
+  @keyframes toastIn { from { transform: translateY(-14px); opacity: 0; } }
+  @keyframes toastOut { to { transform: translateY(-10px); opacity: 0; } }
+
+  .discover {
+    position: fixed; left: 50%; top: 50%; z-index: 3000; transform: translate(-50%, -50%);
+    background: linear-gradient(160deg, rgba(60, 30, 120, .97), rgba(20, 70, 120, .97));
+    border: 2px solid var(--accent); border-radius: 26px; padding: 22px 38px 24px; text-align: center;
+    box-shadow: 0 0 0 9999px rgba(8, 5, 28, .45), 0 0 60px rgba(255,207,74,.55);
+    animation: discoverIn .55s cubic-bezier(.2,1.5,.4,1), discoverOut .45s ease-in 2.3s forwards;
+    pointer-events: none;
+  }
+  .discover .tag { color: var(--accent); font-weight: 800; letter-spacing: 1px; font-size: .95rem; }
+  .discover .big-em { font-size: 4.6rem; line-height: 1.15; display: block; animation: spin .9s ease-out; filter: drop-shadow(0 6px 10px rgba(0,0,0,.4)); }
+  .discover .nm { font-size: 1.8rem; font-weight: 800; margin: 2px 0 6px; }
+  .discover .rc { color: var(--muted); font-size: 1rem; }
+  @keyframes discoverIn { from { transform: translate(-50%, -50%) scale(.3); opacity: 0; } }
+  @keyframes discoverOut { to { transform: translate(-50%, -60%) scale(.85); opacity: 0; } }
+  @keyframes spin { from { transform: rotate(-200deg) scale(.2); } }
+  .confetti { position: fixed; z-index: 2999; pointer-events: none; font-size: 1.4rem; animation: fly 1.4s ease-out forwards; }
+  @keyframes fly {
+    from { transform: translate(0,0) scale(.4); opacity: 1; }
+    to { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(1.2); opacity: 0; }
+  }
+
+  /* חלון אישור */
+  .modal-back { position: fixed; inset: 0; background: rgba(5, 3, 20, .65); z-index: 4000; display: none; place-items: center; padding: 16px; }
+  .modal-back.show { display: grid; }
+  .modal {
+    background: linear-gradient(160deg, #2a1a66, #143a66); border: 1px solid var(--panel-border);
+    border-radius: 20px; padding: 24px; max-width: 380px; width: 100%; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6); animation: discoverIn .3s ease-out;
+  }
+  .modal h3 { margin: 0 0 8px; font-size: 1.3rem; }
+  .modal p { color: var(--muted); margin: 0 0 18px; }
+  .modal .row { display: flex; gap: 10px; justify-content: center; }
+
+  .win { position: fixed; inset: 0; z-index: 3500; display: none; place-items: center; background: rgba(5,3,20,.7); }
+  .win.show { display: grid; }
+
+  /* ===== מובייל ===== */
+  @media (max-width: 820px) {
+    body { overflow: hidden; }
+    .app { grid-template-columns: 1fr; grid-template-rows: minmax(0, 56fr) minmax(0, 44fr); padding: 8px; gap: 8px; }
+    .stage { order: 1; gap: 8px; }
+    .side { order: 2; padding: 10px; }
+    .logo small { display: none; }
+    .logo h1 { font-size: 1.1rem; }
+    .logo .mark { width: 38px; height: 38px; font-size: 1.4rem; }
+    .topbar { padding: 8px 10px; }
+    .btn { padding: 7px 10px; font-size: .85rem; }
+    .btn .lbl { display: none; }
+    .status { display: none; }
+    .sorts { margin: 6px 0; }
+    .side h2 { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="orbs"><span></span><span></span><span></span><span></span></div>
+
+<div class="app">
+  <aside class="side" id="side">
+    <h2>📚 האוסף שלך</h2>
+    <div class="progress-text" id="progressText"></div>
+    <div class="bar"><i id="barFill"></i></div>
+    <input class="search" id="search" type="search" placeholder="🔍 חיפוש יסוד…" autocomplete="off">
+    <div class="sorts" id="sorts">
+      <button data-sort="recent" class="on">החדשים ראשון</button>
+      <button data-sort="abc">א–ב</button>
+      <button data-sort="first">לפי גילוי</button>
+    </div>
+    <div class="list" id="list"></div>
+  </aside>
+
+  <main class="stage">
+    <div class="topbar">
+      <div class="logo">
+        <div class="mark">⚗️</div>
+        <div><h1>אלכימיה</h1><small>גלו את כל היסודות בעולם</small></div>
+      </div>
+      <div class="actions">
+        <button class="btn hint" id="hintBtn" title="הצע שילוב אפשרי">💡 <span class="lbl">רמז</span></button>
+        <button class="btn" id="clearBtn" title="נקה את שולחן העבודה">🧹 <span class="lbl">נקה שולחן</span></button>
+        <button class="btn" id="soundBtn" title="צליל">🔊</button>
+        <button class="btn danger" id="resetBtn" title="אפס משחק">🔄 <span class="lbl">איפוס משחק</span></button>
+      </div>
+    </div>
+
+    <div class="ws" id="ws">
+      <div class="ws-hint"><div><span class="big">🧪</span>לחצו על יסוד ברשימה או גררו אותו לכאן.<br>גררו יסוד אחד על אחר – או לחצו על שניים ברצף – כדי לשלב ביניהם!</div></div>
+    </div>
+    <div class="status" id="status">טיפ: גררו יסוד בחזרה לרשימה כדי למחוק אותו מהשולחן.</div>
+  </main>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<div class="modal-back" id="modalBack">
+  <div class="modal">
+    <h3>לאפס את המשחק?</h3>
+    <p>כל היסודות שגיליתם יימחקו ותתחילו מחדש מ-4 היסודות הבסיסיים.</p>
+    <div class="row">
+      <button class="btn danger" id="confirmReset">כן, אפס</button>
+      <button class="btn" id="cancelReset">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<div class="win" id="win">
+  <div class="modal">
+    <h3 style="font-size:2rem">🏆 גיליתם הכול!</h3>
+    <p>כל הכבוד, אלכימאי/ת אמיתי/ת! הכרתם את כל <span id="winCount"></span> היסודות.</p>
+    <div class="row"><button class="btn hint" id="winClose">להמשיך לשחק</button></div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   מאגר היסודות והשילובים
+   פורמט שורה:  שם|אמוג'י|רכיב1+רכיב2[/רכיב1+רכיב2 …]
+   ===================================================================== */
+const BASE = [
+  ['אדמה', '🌍'], ['מים', '💧'], ['אש', '🔥'], ['אוויר', '💨'],
+];
+
+const RAW = `
+קיטור|♨️|מים+אש
+בוץ|🟤|אדמה+מים
+לבה|🟧|אדמה+אש
+אבק|🌫️|אדמה+אוויר
+רוח|🌬️|אוויר+אוויר
+הר|⛰️|אדמה+אדמה
+אגם|🏞️|מים+מים
+אנרגיה|⚡|אש+אוויר
+ענן|☁️|אוויר+קיטור
+גשם|🌧️|ענן+מים
+אבן|🪨|לבה+מים
+חול|🟨|אבן+אוויר
+ים|🌊|אגם+אגם
+אוקיינוס|🌐|ים+ים
+ברק|🌩️|ענן+אנרגיה
+סערה|⛈️|גשם+ברק
+שמיים|🌤️|ענן+רוח
+שמש|☀️|אש+שמיים
+קשת|🌈|גשם+שמש
+קור|🥶|רוח+מים
+קרח|🧊|מים+קור
+שלג|🌨️|גשם+קור
+קרחון|🏔️|קרח+הר
+מדבר|🏜️|חול+שמש
+נווה מדבר|🏝️|מדבר+מים
+ערפל|🌁|קיטור+קור
+שלולית|💦|גשם+בוץ
+נהר|🏞️|גשם+הר
+מפל|🚿|נהר+הר
+עמק|🌄|נהר+אדמה
+אי|🏝️|ים+אדמה
+חוף|🏖️|ים+חול
+רכס הרים|🗻|הר+הר
+הר געש|🌋|הר+לבה
+רעידת אדמה|📳|אדמה+אנרגיה
+צונאמי|🌊|רעידת אדמה+ים
+טורנדו|🌪️|רוח+סערה
+הוריקן|🌀|טורנדו+ים
+שיטפון|🌊|גשם+גשם
+טל|💧|ערפל+דשא
+כפור|🥶|קור+טל
+צמח|🌱|אדמה+גשם
+דשא|🌿|צמח+אדמה
+עץ|🌳|צמח+צמח
+יער|🌲|עץ+עץ
+פרח|🌸|צמח+שמש
+זרע|🌰|פרח+אדמה
+שדה|🟩|דשא+דשא
+חיטה|🌾|שדה+שמש
+ג'ונגל|🦜|יער+גשם
+בצה|🪷|בוץ+אגם
+שריפה|🔥|אש+יער
+אפר|🌫️|שריפה+אדמה
+מדורה|🏕️|אש+עץ
+פחם|⬛|מדורה+אדמה
+יהלום|💎|פחם+הר
+זכוכית|🪟|חול+אש
+שעון חול|⏳|חול+זכוכית
+זמן|⌛|שעון חול+אנרגיה
+אביב|🌷|פרח+זמן
+קיץ|🏖️|שמש+זמן
+סתיו|🍂|עץ+זמן
+חורף|☃️|שלג+זמן
+שנה|📅|קיץ+חורף
+יום|🌞|שמיים+שמש
+ירח|🌙|אבן+שמיים
+לילה|🌃|שמיים+ירח
+כוכב|⭐|שמיים+אנרגיה
+קבוצת כוכבים|✨|כוכב+כוכב
+
+חיים|🧬|בצה+ברק
+חיידק|🦠|חיים+מים
+תא|🔬|חיידק+חיידק
+חיה|🐾|חיים+אדמה
+דג|🐟|חיים+ים
+ציפור|🐦|חיים+שמיים
+לטאה|🦎|חיים+חול
+חרק|🐛|חיים+צמח
+צפרדע|🐸|בצה+דג
+ביצה|🥚|ציפור+בצה
+אפרוח|🐤|ביצה+שמש
+תרנגולת|🐔|אפרוח+שדה
+פרה|🐄|חיה+חיטה
+חלב|🥛|פרה+מים
+חמאה|🧈|חלב+חלב
+גבינה|🧀|חלב+זמן
+כבשה|🐑|חיה+הר
+סוס|🐎|חיה+שדה
+זאב|🐺|חיה+יער
+מערה|🕳️|הר+רוח
+דוב|🐻|חיה+מערה
+דבורה|🐝|חרק+פרח
+דבש|🍯|דבורה+פרח
+פרפר|🦋|חרק+שמיים
+נמלה|🐜|חרק+אדמה
+עכביש|🕷️|חרק+מערה
+נחש|🐍|לטאה+דשא
+תנין|🐊|לטאה+אגם
+צב|🐢|לטאה+אבן
+דינוזאור|🦖|לטאה+הר
+לווייתן|🐋|דג+אוקיינוס
+כריש|🦈|דג+ים
+תמנון|🐙|דג+חול
+מדוזה|🪼|דג+ענן
+סרטן|🦀|חרק+ים
+אלמוג|🪸|אוקיינוס+חיים
+צדף|🐚|חוף+חיים
+פנינה|🦪|צדף+זמן
+נוצה|🪶|ציפור+אוויר
+עוף החול|🦅|ציפור+אש
+דרקון|🐉|דינוזאור+אש
+קוף|🐒|חיה+ג'ונגל
+פיל|🐘|חיה+פרה
+ג'ירפה|🦒|חיה+עץ
+זברה|🦓|סוס+שדה
+ינשוף|🦉|ציפור+לילה
+עטלף|🦇|ציפור+מערה
+קיר|🧱|לבנה+לבנה
+
+אדם|🧑|חיים+בוץ
+אישה|👩|אדם+פרח
+ילד|👶|אדם+אישה
+משפחה|👪|ילד+אישה
+כלב|🐕|זאב+אדם
+חתול|🐈|חיה+אדם
+אריה|🦁|חתול+מדבר
+נמר|🐅|חתול+ג'ונגל
+שלד|💀|אדם+זמן
+רעיון|💡|אדם+נורה
+ספר|📖|נייר+רעיון
+בית ספר|🏫|ספר+ילד
+ספרייה|📚|ספר+בית
+מדע|🔬|ספר+מיקרוסקופ
+כלי|🔨|אדם+אבן
+פטיש|🔨|כלי+עץ
+גרזן|🪓|כלי+יער
+מתכת|🔩|אבן+לבה
+ברזל|⚙️|מתכת+אש
+זהב|🥇|מתכת+שמש
+כסף|🥈|מתכת+ירח
+מטבע|🪙|זהב+כלי
+שוק|🏪|מטבע+אדם
+בנק|🏦|מטבע+בית
+חרב|🗡️|ברזל+אדם
+בד|🧵|צמח+אדם
+בגד|👕|בד+אדם
+חבל|🪢|צמח+בד
+קשת וחץ|🏹|עץ+חבל
+מגן|🛡️|ברזל+עץ
+שריון|🪖|ברזל+בד
+עור|🟫|פרה+כלי
+נעל|👞|עור+אבן
+מעיל|🧥|עור+קור
+תיק|👜|עור+בד
+כובע|🎩|בד+שמש
+מטרייה|☂️|גשם+בד
+בית|🏠|עץ+אבן
+כפר|🏘️|בית+בית
+עיר|🏙️|כפר+כפר
+מדינה|🗺️|עיר+עיר
+דלת|🚪|עץ+בית
+חלון|🖼️|זכוכית+בית
+כיסא|🪑|עץ+אדם
+שולחן|🍽️|עץ+כיסא
+מיטה|🛏️|עץ+בד
+מפתח|🔑|מתכת+כלי
+מנעול|🔒|מתכת+מפתח
+לבנה|🧱|בוץ+אש
+בטון|🏗️|חול+בוץ
+מגדל|🗼|לבנה+שמיים
+גורד שחקים|🏢|מגדל+עיר
+גשר|🌉|ברזל+נהר
+סכר|🏞️|נהר+בטון
+נייר|📄|עץ+מים
+צבע|🖌️|בוץ+פרח
+עט|🖊️|פלסטיק+צבע
+מכתב|✉️|נייר+עט
+דואר|📮|מכתב+בית
+עיתון|📰|נייר+אינטרנט
+ציור|🎨|צבע+בד
+פסל|🗿|אבן+כלי
+מוזיאון|🏛️|ציור+בית
+אמן|🧑‍🎨|אדם+צבע
+מנורה|🪔|שמן+אש
+נר|🕯️|דבש+אש
+פנס|🔦|נורה+מתכת
+
+פרי|🍐|עץ+פרח
+תפוח|🍎|פרי+שמש
+ענבים|🍇|פרי+גשם
+יין|🍷|ענבים+זמן
+בננה|🍌|פרי+ג'ונגל
+תפוז|🍊|פרי+נווה מדבר
+אבטיח|🍉|פרי+מדבר
+תפוח אדמה|🥔|אדמה+פרי
+תירס|🌽|שדה+פרי
+גזר|🥕|זרע+בוץ
+עגבנייה|🍅|פרי+צמח
+אורז|🍚|שדה+מים
+קמח|🥣|חיטה+אבן
+בצק|🫓|קמח+מים
+לחם|🍞|בצק+אש
+סוכר|🍬|פרי+אש
+עוגה|🍰|לחם+סוכר
+שוקולד|🍫|סוכר+זרע
+גלידה|🍦|חלב+קרח
+פיצה|🍕|לחם+גבינה
+המבורגר|🍔|לחם+פרה
+סושי|🍣|דג+אורז
+מרק|🍲|גזר+קיטור
+קפה|☕|זרע+קיטור
+תה|🍵|דשא+קיטור
+פופקורן|🍿|תירס+אש
+בקבוק|🍾|זכוכית+מים
+שמן|🛢️|אדמה+דינוזאור
+בנזין|⛽|שמן+אנרגיה
+פלסטיק|🧴|שמן+אבן
+
+חשמל|🔌|ברק+מתכת
+נורה|💡|זכוכית+חשמל
+מגנט|🧲|ברזל+אנרגיה
+מצפן|🧭|מגנט+סירה
+מפה|🗺️|מצפן+ספר
+אוצר|💰|מפה+זהב
+שעון|⌚|שעון חול+מתכת
+גלגל|🛞|עץ+גרזן
+עגלה|🛒|גלגל+סוס
+מכונית|🚗|גלגל+בנזין
+אופניים|🚲|גלגל+גלגל
+אופנוע|🏍️|אופניים+בנזין
+אוטובוס|🚌|מכונית+אדם
+משאית|🚚|מכונית+עגלה
+רכבת|🚆|מכונית+ברזל
+סירה|⛵|עץ+אגם
+אונייה|🚢|סירה+ברזל
+צוללת|🤿|אונייה+אוקיינוס
+מטוס|✈️|מכונית+שמיים
+מסוק|🚁|מטוס+רוח
+כדור פורח|🎈|בד+אש
+טיל|🚀|בנזין+מתכת
+חללית|🛸|טיל+שמיים
+לוויין|🛰️|טיל+לילה
+מיקרוסקופ|🔬|זכוכית+חיידק
+טלסקופ|🔭|זכוכית+שמיים
+משקפיים|👓|זכוכית+אדם
+מראה|🪞|זכוכית+כסף
+מצלמה|📷|זכוכית+ברזל
+פאנל סולארי|🔆|זכוכית+שמש
+טורבינת רוח|🌬️|רוח+חשמל
+תחנת כוח|🏭|סכר+חשמל
+רדיו|📻|חשמל+אוויר
+מסך|🖥️|נורה+זכוכית
+טלוויזיה|📺|מסך+רדיו
+טלפון|📱|מסך+מתכת
+מחשב|💻|מסך+חשמל
+אינטרנט|🌐|מחשב+מחשב
+משחק וידאו|🎮|מחשב+ילד
+רובוט|🤖|מתכת+חיים
+בינה מלאכותית|🧠|רובוט+מחשב
+סרט|🎬|מצלמה+תיאטרון
+קולנוע|🎥|סרט+בית
+אבק שריפה|⚫|אבק+אש
+זיקוקים|🎆|אבק שריפה+שמיים
+
+חלל|🌌|שמיים+כוכב
+גלקסיה|🌀|חלל+חלל
+יקום|🪐|גלקסיה+גלקסיה
+מפץ גדול|💥|חלל+אנרגיה
+כוכב לכת|🪐|כוכב+אדמה
+כדור הארץ|🌎|כוכב לכת+חיים
+מאדים|🔴|כוכב לכת+חול
+נפטון|🔵|כוכב לכת+מים
+צדק|🟠|כוכב לכת+סערה
+שבתאי|🪐|כוכב לכת+קרח
+ערפילית|🌌|חלל+ענן
+שביט|☄️|קרח+חלל
+מטאור|🌠|שביט+אוויר
+אסטרואיד|🪨|אבן+חלל
+כבידה|🍎|כוכב לכת+אבן
+חור שחור|⚫|גלקסיה+כבידה
+אסטרונאוט|🧑‍🚀|אדם+חללית
+חייזר|👽|חלל+חיים
+צלחת מעופפת|🛸|חייזר+חללית
+תחנת חלל|🛰️|לוויין+אסטרונאוט
+ליקוי חמה|🌑|ירח+שמש
+ירח מלא|🌕|ירח+לילה
+זריחה|🌅|שמש+חוף
+שקיעה|🌇|שמש+עיר
+
+קסם|🪄|אנרגיה+כוכב
+שרביט|🪄|עץ+קסם
+קוסם|🧙|אדם+קסם
+מכשפה|🧙‍♀️|אישה+קסם
+שיקוי|🧪|מים+קסם
+ספר קסמים|📜|ספר+קסם
+פיה|🧚|פרפר+קסם
+אלף|🧝|אדם+יער
+גמד|🧌|אדם+מערה
+ענק|🗿|אדם+הר
+טרול|👹|ענק+מערה
+יוניקורן|🦄|סוס+קסם
+בת ים|🧜|אישה+דג
+רוח רפאים|👻|אדם+רוח
+ערפד|🧛|אדם+לילה
+איש זאב|🐺|אדם+ירח מלא
+זומבי|🧟|אדם+חיידק
+מלאך|😇|אדם+נוצה
+שד|😈|אדם+לבה
+גן עדן|☁️|מלאך+שמיים
+גיהנום|🌋|שד+אדמה
+גולם|🤖|בוץ+קסם
+כתר|👑|זהב+יהלום
+מלך|🤴|אדם+כתר
+מלכה|👸|אישה+כתר
+טירה|🏰|מלך+בית
+אביר|🤺|אדם+שריון
+סיפור|📜|טירה+דרקון
+אגדה|📚|סיפור+זמן
+כדור בדולח|🔮|קסם+זכוכית
+מטמון|🏴‍☠️|אוצר+אי
+פיראט|🏴‍☠️|אדם+מטמון
+תחיית המתים|⚰️|שלד+קסם
+קלפים|🃏|נייר+קסם
+
+שיר|🎤|אדם+אוויר
+מוזיקה|🎵|שיר+שיר
+גיטרה|🎸|עץ+מוזיקה
+תוף|🥁|עץ+פרה
+פסנתר|🎹|מוזיקה+מתכת
+כינור|🎻|חבל+מוזיקה
+חליל|🪈|עץ+רוח
+להקה|🎶|גיטרה+תוף
+קונצרט|🎼|להקה+אדם
+תיאטרון|🎭|בית+שיר
+כדור|⚽|פלסטיק+אוויר
+כדורגל|🥅|כדור+שדה
+כדורסל|🏀|כדור+עץ
+מדליה|🏅|זהב+כדור
+גביע|🏆|מדליה+כדורגל
+אולימפיאדה|🔥|גביע+אש
+
+תרופה|💊|חיידק+מדע
+חיסון|💉|תרופה+חיידק
+רופא|🧑‍⚕️|אדם+תרופה
+בית חולים|🏥|רופא+בית
+דנ"א|🧬|תא+מדע
+שיבוט|🐑|כבשה+דנ"א
+`;
+
+/* ===================================================================== */
+const ELEMENTS = {};       // name -> {name, emoji}
+const RECIPES = new Map(); // "a+b" (ממוין) -> תוצאה
+const RECIPE_LIST = [];    // [a, b, result]
+const keyOf = (a, b) => [a, b].sort().join('+');
+
+BASE.forEach(([name, emoji]) => { ELEMENTS[name] = { name, emoji }; });
+RAW.split('\n').map(l => l.trim()).filter(Boolean).forEach(line => {
+  const [name, emoji, recs] = line.split('|');
+  ELEMENTS[name] = ELEMENTS[name] || { name, emoji };
+  recs.split('/').forEach(r => {
+    const [a, b] = r.split('+').map(s => s.trim());
+    RECIPES.set(keyOf(a, b), name);
+    RECIPE_LIST.push([a, b, name]);
+  });
+});
+const TOTAL = Object.keys(ELEMENTS).length;
+
+/* ===================================================================== */
+const $ = id => document.getElementById(id);
+const ws = $('ws'), listEl = $('list'), side = $('side');
+const STORE = 'alchemy-he-v1';
+
+let discovered = [];           // לפי סדר גילוי
+let newSet = new Set();        // יסודות חדשים שטרם נגעו בהם
+let sortMode = 'recent';
+let query = '';
+let selected = null;           // פריט נבחר בלחיצה
+let soundOn = true;
+let hinted = [];
+
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (d && Array.isArray(d.discovered)) {
+      discovered = d.discovered.filter(n => ELEMENTS[n]);
+      soundOn = d.sound !== false;
+    }
+  } catch (e) {}
+  BASE.forEach(([n]) => { if (!discovered.includes(n)) discovered.unshift(n); });
+}
+function save() {
+  try { localStorage.setItem(STORE, JSON.stringify({ discovered, sound: soundOn })); } catch (e) {}
+}
+
+/* ---------- צבע לפי שם ---------- */
+function hue(name) {
+  let h = 0;
+  for (const c of name) h = (h * 31 + c.charCodeAt(0)) % 360;
+  return h;
+}
+function makeChip(name, extra = '') {
+  const el = document.createElement('div');
+  el.className = 'chip ' + extra;
+  el.style.setProperty('--h', hue(name));
+  el.dataset.name = name;
+  el.innerHTML = `<span class="em">${ELEMENTS[name].emoji}</span><span class="nm"></span>`;
+  el.querySelector('.nm').textContent = name;
+  return el;
+}
+
+/* ---------- רשימת יסודות ---------- */
+function renderProgress() {
+  $('progressText').innerHTML = `גילית <b>${discovered.length}</b> מתוך <b>${TOTAL}</b> יסודות`;
+  $('barFill').style.width = (discovered.length / TOTAL * 100) + '%';
+}
+function renderList() {
+  let names = discovered.slice();
+  if (sortMode === 'recent') names.reverse();
+  else if (sortMode === 'abc') names.sort((a, b) => a.localeCompare(b, 'he'));
+  const q = query.trim();
+  if (q) names = names.filter(n => n.includes(q));
+  listEl.innerHTML = '';
+  if (!names.length) {
+    listEl.innerHTML = `<div class="empty-list">${q ? 'לא נמצא יסוד בשם הזה 🤷' : 'אין יסודות להצגה'}</div>`;
+  }
+  const frag = document.createDocumentFragment();
+  names.forEach(n => {
+    const c = makeChip(n, newSet.has(n) ? 'new' : '');
+    if (hinted.includes(n)) c.classList.add('hinted');
+    c.addEventListener('pointerdown', e => sideDown(e, n));
+    frag.appendChild(c);
+  });
+  listEl.appendChild(frag);
+  renderProgress();
+}
+$('search').addEventListener('input', e => { query = e.target.value; renderList(); });
+$('sorts').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  sortMode = b.dataset.sort;
+  [...$('sorts').children].forEach(x => x.classList.toggle('on', x === b));
+  renderList();
+});
+
+/* ---------- שולחן עבודה ---------- */
+function updateWsState() { ws.classList.toggle('has-items', ws.querySelectorAll('.item').length > 0); }
+
+function createItem(name, x, y, popIn = true) {
+  const it = makeChip(name, 'item');
+  it.classList.remove('chip'); it.classList.add('chip', 'item');
+  it.style.touchAction = 'none';
+  ws.appendChild(it);
+  const w = it.offsetWidth, h = it.offsetHeight;
+  const r = ws.getBoundingClientRect();
+  x = Math.max(4, Math.min(r.width - w - 4, x));
+  y = Math.max(4, Math.min(r.height - h - 4, y));
+  it.style.left = x + 'px'; it.style.top = y + 'px';
+  if (popIn) { it.classList.add('pop'); setTimeout(() => it.classList.remove('pop'), 600); }
+  it.addEventListener('pointerdown', e => itemDown(e, it));
+  newSet.delete(name);
+  updateWsState();
+  return it;
+}
+function freeSpot() {
+  const r = ws.getBoundingClientRect();
+  const items = [...ws.querySelectorAll('.item')].map(i => i.getBoundingClientRect());
+  let best = null;
+  for (let t = 0; t < 30; t++) {
+    const x = 20 + Math.random() * Math.max(10, r.width - 190);
+    const y = 20 + Math.random() * Math.max(10, r.height - 80);
+    const ok = items.every(b => Math.abs(b.left - r.left - x) > 110 || Math.abs(b.top - r.top - y) > 50);
+    best = { x, y };
+    if (ok) break;
+  }
+  return best;
+}
+function itemCenter(it) { const b = it.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; }
+function findTarget(it) {
+  const [cx, cy] = itemCenter(it);
+  let best = null, bd = 1e9;
+  ws.querySelectorAll('.item').forEach(o => {
+    if (o === it) return;
+    const b = o.getBoundingClientRect();
+    const pad = 8;
+    if (cx > b.left - pad && cx < b.right + pad && cy > b.top - pad && cy < b.bottom + pad) {
+      const d = Math.hypot(cx - (b.left + b.width / 2), cy - (b.top + b.height / 2));
+      if (d < bd) { bd = d; best = o; }
+    }
+  });
+  return best;
+}
+
+/* ---------- גרירה מהרשימה ---------- */
+function sideDown(e, name) {
+  if (e.button !== undefined && e.button !== 0) return;
+  const sx = e.clientX, sy = e.clientY;
+  let moved = false, ghost = null;
+  const isTouch = e.pointerType === 'touch';
+  const move = ev => {
+    if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 8) {
+      moved = true;
+      ghost = makeChip(name, 'ghost'); document.body.appendChild(ghost);
+    }
+    if (ghost) {
+      ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px';
+      side.classList.toggle('trash', false);
+    }
+  };
+  const up = ev => {
+    cleanup();
+    if (ghost) ghost.remove();
+    const r = ws.getBoundingClientRect();
+    if (!moved) {
+      const p = freeSpot();
+      spawnAndCombine(name, p.x, p.y);
+    } else if (ev.clientX > r.left && ev.clientX < r.right && ev.clientY > r.top && ev.clientY < r.bottom) {
+      spawnAndCombine(name, ev.clientX - r.left - 40, ev.clientY - r.top - 18);
+    }
+  };
+  const cleanup = () => {
+    document.removeEventListener('pointermove', move);
+    document.removeEventListener('pointerup', up);
+    document.removeEventListener('pointercancel', cancel);
+  };
+  const cancel = () => { cleanup(); if (ghost) ghost.remove(); };
+  document.addEventListener('pointermove', move);
+  document.addEventListener('pointerup', up);
+  document.addEventListener('pointercancel', cancel);
+  if (!isTouch) e.preventDefault();
+}
+function spawnAndCombine(name, x, y) {
+  const it = createItem(name, x, y);
+  clearHints();
+  // אם הונח מעל יסוד אחר – שלב מיד
+  const t = findTarget(it);
+  if (t) setTimeout(() => combine(it, t), 80);
+}
+
+/* ---------- גרירה בתוך השולחן ---------- */
+function itemDown(e, it) {
+  if (e.button !== undefined && e.button !== 0) return;
+  e.preventDefault();
+  const b = it.getBoundingClientRect();
+  const ox = e.clientX - b.left, oy = e.clientY - b.top;
+  const sx = e.clientX, sy = e.clientY;
+  let moved = false, target = null;
+  ws.appendChild(it); // לקדמה
+  const move = ev => {
+    if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 6) { moved = true; it.classList.add('dragging'); }
+    if (!moved) return;
+    const r = ws.getBoundingClientRect();
+    it.style.left = (ev.clientX - r.left - ox) + 'px';
+    it.style.top = (ev.clientY - r.top - oy) + 'px';
+    const t = findTarget(it);
+    if (t !== target) { if (target) target.classList.remove('target'); target = t; if (t) t.classList.add('target'); }
+    const sr = side.getBoundingClientRect();
+    side.classList.toggle('trash', ev.clientX > sr.left && ev.clientX < sr.right && ev.clientY > sr.top && ev.clientY < sr.bottom);
+  };
+  const up = ev => {
+    cleanup();
+    side.classList.remove('trash');
+    it.classList.remove('dragging');
+    if (target) target.classList.remove('target');
+    if (!moved) { tapItem(it); return; }
+    const sr = side.getBoundingClientRect();
+    if (ev.clientX > sr.left && ev.clientX < sr.right && ev.clientY > sr.top && ev.clientY < sr.bottom) {
+      it.remove(); updateWsState(); if (selected === it) selected = null; return;
+    }
+    // החזרה לגבולות
+    const r = ws.getBoundingClientRect();
+    const w = it.offsetWidth, h = it.offsetHeight;
+    it.style.left = Math.max(4, Math.min(r.width - w - 4, parseFloat(it.style.left))) + 'px';
+    it.style.top = Math.max(4, Math.min(r.height - h - 4, parseFloat(it.style.top))) + 'px';
+    if (target) combine(it, target);
+  };
+  const cancel = () => { cleanup(); side.classList.remove('trash'); it.classList.remove('dragging'); if (target) target.classList.remove('target'); };
+  const cleanup = () => {
+    document.removeEventListener('pointermove', move);
+    document.removeEventListener('pointerup', up);
+    document.removeEventListener('pointercancel', cancel);
+  };
+  document.addEventListener('pointermove', move);
+  document.addEventListener('pointerup', up);
+  document.addEventListener('pointercancel', cancel);
+}
+function tapItem(it) {
+  if (selected && selected !== it && selected.isConnected) {
+    const s = selected; selected = null; s.classList.remove('selected');
+    combine(s, it);
+  } else if (selected === it) {
+    it.classList.remove('selected'); selected = null;
+  } else {
+    selected = it; it.classList.add('selected');
+  }
+}
+ws.addEventListener('dblclick', e => {
+  const it = e.target.closest('.item');
+  if (it) { it.remove(); if (selected === it) selected = null; updateWsState(); }
+});
+ws.addEventListener('pointerdown', e => {
+  if (e.target === ws || e.target.closest('.ws-hint')) { if (selected) { selected.classList.remove('selected'); selected = null; } }
+});
+
+/* ---------- שילוב ---------- */
+function combine(a, b) {
+  if (!a.isConnected || !b.isConnected || a === b) return;
+  const na = a.dataset.name, nb = b.dataset.name;
+  const res = RECIPES.get(keyOf(na, nb));
+  const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect(), wr = ws.getBoundingClientRect();
+  if (!res) {
+    [a, b].forEach(el => { el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 500); });
+    // הדחיפה בין היסודות
+    const dx = (ra.left - rb.left) >= 0 ? 1 : -1;
+    a.style.transition = b.style.transition = 'left .3s, top .3s';
+    a.style.left = Math.min(wr.width - a.offsetWidth - 4, Math.max(4, parseFloat(a.style.left) + dx * 50)) + 'px';
+    b.style.left = Math.min(wr.width - b.offsetWidth - 4, Math.max(4, parseFloat(b.style.left) - dx * 50)) + 'px';
+    setTimeout(() => { a.style.transition = b.style.transition = ''; }, 350);
+    beep('bad');
+    toast(`${ELEMENTS[na].emoji} ${na} + ${ELEMENTS[nb].emoji} ${nb} – לא קרה כלום… נסו שילוב אחר`, 'warn');
+    return;
+  }
+  const mx = (ra.left + rb.left) / 2 - wr.left, my = (ra.top + rb.top) / 2 - wr.top;
+  a.remove(); b.remove();
+  if (selected === a || selected === b) selected = null;
+  createItem(res, mx, my);
+  clearHints();
+  if (!discovered.includes(res)) {
+    discovered.push(res); newSet.add(res); save();
+    renderList();
+    celebrate(res, na, nb);
+  } else {
+    beep('again');
+    toast(`${ELEMENTS[res].emoji} ${res} – כבר גילית את זה`, 'ok');
+  }
+}
+
+/* ---------- אנימציית גילוי ---------- */
+let discoverEl = null;
+function celebrate(res, a, b) {
+  beep('good');
+  if (discoverEl) discoverEl.remove();
+  const d = document.createElement('div');
+  d.className = 'discover';
+  d.innerHTML = `<div class="tag">✨ יסוד חדש התגלה! ✨</div><span class="big-em">${ELEMENTS[res].emoji}</span><div class="nm"></div><div class="rc"></div>`;
+  d.querySelector('.nm').textContent = res;
+  d.querySelector('.rc').textContent = `${ELEMENTS[a].emoji} ${a}  +  ${ELEMENTS[b].emoji} ${b}`;
+  document.body.appendChild(d);
+  discoverEl = d;
+  setTimeout(() => { if (discoverEl === d) discoverEl = null; d.remove(); }, 2800);
+  confetti(window.innerWidth / 2, window.innerHeight / 2);
+  $('status').classList.remove('hint-msg');
+  $('status').textContent = `🎉 גילית את "${res}"!  (${discovered.length}/${TOTAL})`;
+  if (discovered.length === TOTAL) {
+    setTimeout(() => { $('winCount').textContent = TOTAL; $('win').classList.add('show'); }, 2600);
+  }
+}
+function confetti(cx, cy) {
+  const bits = ['✨', '⭐', '🎉', '💫', '🌟', '🎊'];
+  for (let i = 0; i < 26; i++) {
+    const s = document.createElement('span');
+    s.className = 'confetti';
+    s.textContent = bits[i % bits.length];
+    const ang = Math.random() * Math.PI * 2, dist = 120 + Math.random() * 220;
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    s.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+    s.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+    s.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1500);
+  }
+}
+function toast(msg, kind = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + kind; t.textContent = msg;
+  const box = $('toasts');
+  while (box.children.length > 2) box.firstChild.remove();
+  box.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}
+
+/* ---------- צלילים ---------- */
+let actx = null;
+function beep(kind) {
+  if (!soundOn) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const seqs = {
+      good: [[523, 0], [659, .1], [784, .2], [1047, .32]],
+      again: [[660, 0], [740, .09]],
+      bad: [[220, 0], [180, .1]],
+    };
+    (seqs[kind] || []).forEach(([f, t]) => {
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = kind === 'bad' ? 'sawtooth' : 'triangle'; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, actx.currentTime + t);
+      g.gain.exponentialRampToValueAtTime(.12, actx.currentTime + t + .02);
+      g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + t + .22);
+      o.connect(g).connect(actx.destination);
+      o.start(actx.currentTime + t); o.stop(actx.currentTime + t + .25);
+    });
+  } catch (e) {}
+}
+function paintSound() { $('soundBtn').textContent = soundOn ? '🔊' : '🔇'; }
+$('soundBtn').addEventListener('click', () => { soundOn = !soundOn; paintSound(); save(); });
+
+/* ---------- רמז ---------- */
+function clearHints() {
+  if (!hinted.length) return;
+  hinted = [];
+  listEl.querySelectorAll('.hinted').forEach(c => c.classList.remove('hinted'));
+}
+$('hintBtn').addEventListener('click', () => {
+  const have = new Set(discovered);
+  const options = RECIPE_LIST.filter(([a, b, r]) => have.has(a) && have.has(b) && !have.has(r));
+  if (!options.length) {
+    toast(discovered.length === TOTAL ? '🏆 גילית הכול! אין עוד מה לגלות.' : 'אין כרגע רמז זמין – נסו לשלב יסודות חדשים!', 'warn');
+    return;
+  }
+  const [a, b] = options[Math.floor(Math.random() * options.length)];
+  clearHints();
+  hinted = [a, b];
+  query = ''; $('search').value = '';
+  renderList();
+  const first = listEl.querySelector('.hinted');
+  if (first) first.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  const st = $('status');
+  st.className = 'status hint-msg';
+  st.textContent = `💡 רמז: נסו לשלב ${ELEMENTS[a].emoji} ${a} עם ${ELEMENTS[b].emoji} ${b}`;
+  toast(`💡 נסו לשלב ${ELEMENTS[a].emoji} ${a} + ${ELEMENTS[b].emoji} ${b}`, 'ok');
+  setTimeout(() => { if (hinted[0] === a && hinted[1] === b) clearHints(); }, 9000);
+});
+
+/* ---------- ניקוי ואיפוס ---------- */
+$('clearBtn').addEventListener('click', () => {
+  ws.querySelectorAll('.item').forEach(i => i.remove());
+  selected = null; updateWsState();
+});
+$('resetBtn').addEventListener('click', () => $('modalBack').classList.add('show'));
+$('cancelReset').addEventListener('click', () => $('modalBack').classList.remove('show'));
+$('confirmReset').addEventListener('click', () => {
+  discovered = BASE.map(b => b[0]); newSet.clear();
+  ws.querySelectorAll('.item').forEach(i => i.remove());
+  selected = null; hinted = []; updateWsState();
+  save(); renderList();
+  $('modalBack').classList.remove('show');
+  $('status').className = 'status';
+  $('status').textContent = 'המשחק אופס. בהצלחה!';
+  toast('🔄 המשחק אופס – מתחילים מחדש');
+});
+$('winClose').addEventListener('click', () => $('win').classList.remove('show'));
+
+/* ---------- אתחול ---------- */
+load(); paintSound(); renderList();
+</script>
+</body>
+</html>
