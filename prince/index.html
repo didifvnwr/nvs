@@ -2,83 +2,150 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>נסיך פרסי</title>
 <style>
-  html,body{margin:0;height:100%;background:#1a1208;color:#f3e2b3;font-family:system-ui,Arial,sans-serif}
-  body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-  canvas{width:min(96vw,960px);aspect-ratio:5/3;background:#000;image-rendering:pixelated;border:4px solid #6b4a1e;border-radius:6px}
-  p{margin:0;font-size:14px;opacity:.85;text-align:center;padding:0 8px}
+  /* Layout: one centered game screen, hint line, touch pad for phones. Single dark look by design. */
+  :root{--bg:#1a1208;--fg:#f3e2b3;--frame:#6b4a1e;--btn:#3a2810;--btn-fg:#f3e2b3;color-scheme:dark}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,Arial,sans-serif;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+  canvas{width:min(100%,960px);aspect-ratio:5/3;background:#000;image-rendering:pixelated;border:4px solid var(--frame);border-radius:6px;box-sizing:border-box;touch-action:none}
+  p{margin:0;font-size:14px;opacity:.85;text-align:center}
+  .pad{display:none;width:min(100%,960px);justify-content:space-between;gap:12px}
+  .pad div{display:flex;gap:10px}
+  .pad button{width:64px;height:56px;font-size:22px;border:2px solid var(--frame);border-radius:10px;background:var(--btn);color:var(--btn-fg);touch-action:none;user-select:none}
+  .pad button:focus-visible{outline:2px solid var(--fg)}
+  @media (pointer:coarse){.pad{display:flex}}
 </style>
 </head>
 <body>
 <canvas id="c" width="640" height="384"></canvas>
-<p>חצים ← → ללכת · ↑ / רווח לקפוץ · Z / X חרב · R להתחלה מחדש</p>
+<div class="pad" dir="ltr">
+  <div><button data-k="ArrowLeft" aria-label="שמאלה">◀</button><button data-k="ArrowRight" aria-label="ימינה">▶</button></div>
+  <div><button data-k="KeyZ" aria-label="חרב">⚔</button><button data-k="Space" aria-label="קפיצה">▲</button></div>
+</div>
+<p>חצים ← → ללכת · ↑ / רווח לקפוץ · Z / X חרב · R להתחלת השלב מחדש</p>
 <script>
-const T = 32, W = 640, H = 384;
+const T = 32, W = 640, H = 384, ROWS = 14;
 const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+ctx.direction = 'rtl';
 
-// # = בלוק, ^ = קוצים, G = שומר, E = יציאה, P = התחלה
-const MAP = [
-"################################################################",
-"#                                                              #",
-"#                                                              #",
-"#                                                              #",
-"#                              ####                            #",
-"#                                                          E   #",
-"#                    ###                      ####       #######",
-"#                                  G                           #",
-"#           ###          ###     #####                         #",
-"#                                          ^^^       ###       #",
-"# P       G           ####               #######            G  #",
-"#######  ######  ###########  ######  ##########  ##############",
-"#######  ######  ###########  ######  ##########  ##############",
-"################################################################",
+// LEVELS-START
+// P התחלה · E יציאה · # בלוק · L רצפה רופפת · ^ קוצים קבועים · v קוצים נעים · C מלתעות
+// D יורה חיצים (בתוך בלוק) · p לחצן · g שער · H שיקוי · G שומר · S שומר חזק · B הווזיר
+function level(name, time, len, ground, ops) {
+  const rows = Array.from({ length: 10 }, () => Array(len).fill(' '));
+  for (const [r, c, s] of ops) [...s].forEach((ch, i) => { if (c + i < len) rows[r - 1][c + i] = ch; });
+  for (const r of rows) { r[0] = '#'; r[len - 1] = '#'; }
+  const gr = ground.padEnd(len, '#');
+  const grid = [Array(len).fill('#'), ...rows];
+  for (let y = 11; y < ROWS; y++) grid.push([...gr].map(ch => (ch === 'L' && y > 11) ? '#' : ch));
+  grid.forEach(r => { r[0] = '#'; r[len - 1] = '#'; });
+  return { name, time, grid: grid.map(r => r.join('')) };
+}
+const col = (c, r0, r1, ch) => Array.from({ length: r1 - r0 + 1 }, (_, i) => [r0 + i, c, ch]);
+const rep = (ch, n) => ch.repeat(n);
+
+const LEVELS = [
+  level('הצינוק', 180, 72,
+    rep('#', 16) + '  ' + rep('#', 20) + '  ' + rep('#', 6) + 'LLLL' + rep('#', 22), [
+    [10, 2, 'P'], [9, 6, '##'], [8, 9, '###'], [7, 10, 'H'],
+    [10, 22, '^'], [10, 29, 'G'], [10, 34, 'H'],
+    [10, 56, '^'], [10, 60, '^'], [10, 64, 'G'], [10, 69, 'E'],
+  ]),
+  level('גשר המלכודות', 220, 90,
+    rep('#', 12) + '  ' + rep('#', 26) + '  ' + rep('#', 48), [
+    [10, 2, 'P'], [10, 20, 'vv'], [10, 28, 'C'], [10, 34, 'G'],
+    [9, 48, '#######'], [10, 48, 'D######'],
+    [10, 58, 'H'], [10, 60, 'p'], [10, 64, 'vv'], [10, 68, 'C'],
+    ...col(72, 8, 10, 'g'), [10, 78, 'S'], [10, 86, 'E'],
+  ]),
+  level('המגדל', 260, 84,
+    rep('#', 24) + '  ' + rep('#', 30) + '  ' + rep('#', 26), [
+    [10, 2, 'P'], [9, 6, '##'], [7, 9, '###'], [5, 14, '####'],
+    [5, 18, 'LLL'], [5, 21, rep('#', 10)], [5, 31, 'LL'], [5, 33, rep('#', 7)],
+    [4, 22, 'C'], [4, 26, '^'], [4, 29, 'H'], [4, 36, 'G'],
+    [10, 28, 'vv'], [10, 34, 'C'],
+    [10, 44, 'p'], [10, 48, 'vv'], ...col(52, 8, 10, 'g'),
+    [10, 60, 'S'], [10, 62, 'C'], [10, 66, 'H'],
+    [9, 70, '#####'], [10, 70, 'D####'], [10, 80, 'E'],
+  ]),
+  level('הווזיר', 320, 100,
+    rep('#', 10) + 'LLLL' + rep('#', 9) + '  ' + rep('#', 36) + '  ' + rep('#', 37), [
+    [10, 2, 'P'], [10, 7, 'H'], [10, 17, 'C'], [10, 20, 'v'],
+    [9, 27, '##'], [7, 30, '###'], [6, 31, 'H'],
+    [10, 36, 'p'], [9, 42, '#####'], [10, 42, 'D####'], ...col(50, 8, 10, 'g'),
+    [10, 53, 'vv'], [10, 57, 'S'],
+    [10, 68, 'C'], [10, 72, 'vv'], [10, 77, 'H'],
+    [10, 90, 'B'], [10, 97, 'E'],
+  ]),
 ];
-const ROWS = MAP.length, COLS = MAP[0].length;
+// LEVELS-END
 
-let keys = {}, prev = {};
-addEventListener('keydown', e => { keys[e.code] = true; if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault(); });
+let keys = {}, taps = {};
+addEventListener('keydown', e => { if (!e.repeat) taps[e.code] = true; keys[e.code] = true; if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault(); });
 addEventListener('keyup', e => keys[e.code] = false);
-const pressed = c => keys[c] && !prev[c];
+const pressed = c => !!taps[c];
 
-let player, guards, spikes, exit, state, timeLeft, cam, particles;
+let lv = 0, grid, cols, player, guards, spikes, vspikes, chompers, shooters, plates, potions, darts, loose;
+let exit, state, loseMsg, timeLeft, cam, particles, frame, banner, maxHp = 3;
 
+const SOLID = '#DLg';
 function tile(x, y) {
-  if (x < 0 || x >= COLS) return '#';
+  if (x < 0 || x >= cols) return '#';
   if (y < 0 || y >= ROWS) return ' ';
-  return MAP[y][x];
+  return grid[y][x];
 }
-const solid = (x, y) => tile(x, y) === '#';
+const solid = (x, y) => SOLID.includes(tile(x, y));
 
-function mkActor(x, y, hp, isGuard) {
+const KINDS = {
+  G: { hp: 2, body: '#7a1010', dark: '#400', cap: '#111', speed: 1.2, cool: 55 },
+  S: { hp: 3, body: '#1d4d7a', dark: '#0f2840', cap: '#cfd8dc', speed: 1.5, cool: 42 },
+  B: { hp: 5, body: '#a63fcf', dark: '#5a1d78', cap: '#ffd54f', speed: 1.7, cool: 34 },
+};
+
+function mkActor(x, y, hp, kind) {
   return { x, y, w: 18, h: 30, vx: 0, vy: 0, face: 1, ground: false, hp, maxHp: hp,
-           atk: 0, cool: 0, hurt: 0, dead: false, isGuard, walk: 0 };
+           atk: 0, cool: 0, hurt: 0, dead: false, kind, walk: 0 };
 }
 
-function reset() {
-  guards = []; spikes = []; particles = [];
-  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
-    const c = MAP[y][x];
-    if (c === 'P') player = mkActor(x * T + 7, y * T + 2, 3, false);
-    if (c === 'G') guards.push(mkActor(x * T + 7, y * T + 2, 2, true));
-    if (c === '^') spikes.push({ x: x * T, y: y * T + 12, w: T, h: 20 });
-    if (c === 'E') exit = { x: x * T, y: y * T - T + 32, w: T, h: T };
+function loadLevel(i, hp) {
+  lv = i;
+  grid = LEVELS[i].grid.map(r => [...r]);
+  cols = grid[0].length;
+  guards = []; spikes = []; vspikes = []; chompers = []; shooters = []; plates = []; potions = [];
+  darts = []; particles = []; loose = new Map();
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < cols; x++) {
+    const c = grid[y][x];
+    if (c === 'P') player = mkActor(x * T + 7, y * T + 2, hp, null);
+    else if (KINDS[c]) { const g = mkActor(x * T + 7, y * T + 2, KINDS[c].hp, c); g.face = -1; guards.push(g); }
+    else if (c === '^') spikes.push({ x: x * T, y: y * T + 12, w: T, h: 20 });
+    else if (c === 'v') vspikes.push({ x: x * T, y: y * T + 8, w: T, h: 24, off: x * 37 });
+    else if (c === 'C') chompers.push({ x: x * T, y: y * T, off: x * 53 });
+    else if (c === 'D') shooters.push({ x: x * T, y: y * T, dir: tile(x - 1, y) !== '#' ? -1 : 1, off: x * 41 });
+    else if (c === 'p') plates.push({ x: x * T, y: y * T + 24, w: T, h: 8, down: false });
+    else if (c === 'H') potions.push({ x: x * T + 8, y: y * T + 10, w: 16, h: 22 });
+    else if (c === 'E') exit = { x: x * T, y: y * T, w: T, h: T };
+    if ('PGSB^vCpHE'.includes(c)) grid[y][x] = ' ';
   }
-  exit.y = (MAP.findIndex(r => r.includes('E'))) * T;
-  state = 'play'; timeLeft = 300; cam = 0;
+  state = 'play'; loseMsg = ''; timeLeft = LEVELS[i].time; cam = 0; frame = 0; banner = 150;
 }
+function newGame() { maxHp = 3; loadLevel(0, maxHp); }
 
 function move(a) {
-  a.x += a.vx;
+  const vx0 = a.vx;
+  a.x += vx0;
   for (let y = Math.floor(a.y / T); y <= Math.floor((a.y + a.h - 1) / T); y++)
     for (let x = Math.floor(a.x / T); x <= Math.floor((a.x + a.w - 1) / T); x++)
-      if (solid(x, y)) { a.x = a.vx > 0 ? x * T - a.w : (x + 1) * T; a.vx = 0; }
-  a.y += a.vy; a.ground = false;
+      if (solid(x, y)) { a.x = vx0 > 0 ? x * T - a.w : (x + 1) * T; a.vx = 0; }
+  const vy0 = a.vy;
+  a.y += vy0; a.ground = false;
   for (let y = Math.floor(a.y / T); y <= Math.floor((a.y + a.h - 1) / T); y++)
     for (let x = Math.floor(a.x / T); x <= Math.floor((a.x + a.w - 1) / T); x++)
       if (solid(x, y)) {
-        if (a.vy > 0) { a.y = y * T - a.h; a.ground = true; } else a.y = (y + 1) * T;
+        if (vy0 > 0) { a.y = y * T - a.h; a.ground = true; } else a.y = (y + 1) * T;
         a.vy = 0;
       }
 }
@@ -88,14 +155,20 @@ function hitbox(a) { // אזור פגיעת החרב
 }
 const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 
-function blood(a) {
-  for (let i = 0; i < 10; i++) particles.push({ x: a.x + a.w / 2, y: a.y + 12, vx: (Math.random() - .5) * 4,
-    vy: -Math.random() * 3, life: 30 });
+function burst(x, y, color, n, spread) {
+  for (let i = 0; i < n; i++) particles.push({ x, y, vx: (Math.random() - .5) * spread,
+    vy: -Math.random() * 3, life: 30, c: color });
+}
+const blood = a => burst(a.x + a.w / 2, a.y + 12, '#c0392b', 10, 4);
+
+function kill(msg) {
+  if (state !== 'play') return;
+  player.hp = 0; player.dead = true; blood(player); loseMsg = msg; state = 'lose';
 }
 function damage(a, from) {
   if (a.hurt > 0 || a.dead) return;
   a.hp--; a.hurt = 40; a.vx = from * 4; a.vy = -3; blood(a);
-  if (a.hp <= 0) { a.dead = true; if (!a.isGuard) state = 'lose'; }
+  if (a.hp <= 0) { a.dead = true; if (!a.kind) { loseMsg = 'נפלת בקרב'; state = 'lose'; } }
 }
 
 function updateActor(a) {
@@ -105,15 +178,35 @@ function updateActor(a) {
   a.vy = Math.min(a.vy + 0.5, 10);
   move(a);
   if (a.ground) a.vx *= 0.7;
-  if (a.y > ROWS * T + 50) { a.hp = 0; a.dead = true; if (!a.isGuard) state = 'lose'; }
+  if (a.y > ROWS * T + 50) { a.hp = 0; a.dead = true; if (!a.kind) { loseMsg = 'נפלת לתהום'; state = 'lose'; } }
+}
+
+// מצב המלכודות לפי מחזור הזמן
+const chomperPhase = c => (frame + c.off) % 150;
+const chomperShut = c => { const p = chomperPhase(c); return p < 40 || p >= 140; };
+const vspikePhase = s => (frame + s.off) % 200;
+const vspikeUp = s => { const p = vspikePhase(s); return p >= 120 && p < 170; };
+
+function canStep(g, dir) {
+  const tx = Math.floor((dir > 0 ? g.x + g.w + 2 : g.x - 2) / T);
+  return solid(tx, Math.floor((g.y + g.h + 2) / T)) && !solid(tx, Math.floor((g.y + g.h - 4) / T));
 }
 
 function update() {
-  if (state !== 'play') { if (pressed('KeyR') || pressed('Enter')) reset(); return; }
+  if (state !== 'play') {
+    if (pressed('KeyR') || pressed('Enter') || pressed('Space')) {
+      if (state === 'lose') loadLevel(lv, maxHp);
+      else if (state === 'clear') loadLevel(lv + 1, Math.min(maxHp, player.hp + 1));
+      else if (state === 'win') newGame();
+    }
+    taps = {};
+    return;
+  }
+  if (pressed('KeyR')) { loadLevel(lv, maxHp); taps = {}; return; }
+  frame++; if (banner > 0) banner--;
   timeLeft -= 1 / 60;
-  if (timeLeft <= 0) state = 'lose';
+  if (timeLeft <= 0) { loseMsg = 'הזמן נגמר'; state = 'lose'; }
 
-  // שחקן
   const p = player;
   if (p.hurt < 25) {
     const sp = p.atk ? 0 : 2.4;
@@ -124,97 +217,223 @@ function update() {
   }
   updateActor(p);
 
+  // רצפה רופפת: נופלת חצי שנייה אחרי שדורכים עליה
+  if (p.ground) {
+    const ty = Math.floor((p.y + p.h) / T);
+    for (let tx = Math.floor(p.x / T); tx <= Math.floor((p.x + p.w - 1) / T); tx++)
+      if (tile(tx, ty) === 'L' && !loose.has(tx + ',' + ty)) loose.set(tx + ',' + ty, 30);
+  }
+  for (const [k, t] of loose) {
+    if (t > 1) { loose.set(k, t - 1); continue; }
+    const [tx, ty] = k.split(',').map(Number);
+    grid[ty][tx] = ' '; loose.delete(k);
+    burst(tx * T + 16, ty * T + 16, '#8a6a3a', 14, 5);
+  }
+
+  // לחצנים ושערים
+  for (const pl of plates) {
+    pl.down = overlap(p, pl);
+    if (pl.down) for (const row of grid) for (let x = 0; x < cols; x++) if (row[x] === 'g') row[x] = 'o';
+  }
+
+  // שיקויים
+  potions = potions.filter(po => {
+    if (!overlap(p, po)) return true;
+    if (p.hp < maxHp) { p.hp++; burst(po.x + 8, po.y + 8, '#66bb6a', 10, 3); return false; }
+    return true;
+  });
+
+  // חיצים
+  for (const s of shooters) {
+    if ((frame + s.off) % 170 === 0 && Math.abs(p.x - s.x) < 420)
+      darts.push({ x: s.dir > 0 ? s.x + T : s.x - 10, y: s.y + 15, vx: s.dir * 4, w: 10, h: 4 });
+  }
+  darts = darts.filter(d => {
+    d.x += d.vx;
+    if (solid(Math.floor((d.vx > 0 ? d.x + d.w : d.x) / T), Math.floor(d.y / T))) return false;
+    if (overlap(d, p) && !p.dead) { damage(p, Math.sign(d.vx)); return false; }
+    return true;
+  });
+
+  // שומרים
   for (const g of guards) {
     if (g.dead) continue;
     updateActor(g);
-    const dx = p.x - g.x, near = Math.abs(dx) < 220 && Math.abs(p.y - g.y) < 40;
+    const K = KINDS[g.kind];
+    const dx = p.x - g.x, near = Math.abs(dx) < 240 && Math.abs(p.y - g.y) < 40;
     if (near && g.hurt < 25) {
       g.face = Math.sign(dx) || 1;
-      if (Math.abs(dx) > 32) { g.vx = g.face * 1.2; g.walk += .15; }
-      else if (g.cool === 0) { g.atk = 12; g.cool = 55 + Math.random() * 30; }
+      if (Math.abs(dx) > 32) { if (canStep(g, g.face)) { g.vx = g.face * K.speed; g.walk += .15; } }
+      else if (g.cool === 0) { g.atk = 12; g.cool = K.cool + Math.random() * 30; }
     }
     if (g.atk === 6 && overlap(hitbox(g), p)) damage(p, g.face);
     if (p.atk === 6 && overlap(hitbox(p), g)) damage(g, p.face);
   }
 
-  for (const s of spikes) if (overlap(p, s) && p.vy >= 0 && !p.dead) { p.hp = 0; p.dead = true; blood(p); state = 'lose'; }
-  if (overlap(p, exit)) state = 'win';
+  // קוצים ומלתעות
+  for (const s of spikes) if (overlap(p, s) && p.vy >= 0 && !p.dead) kill('נדקרת בקוצים');
+  for (const s of vspikes) if (vspikeUp(s) && overlap(p, s)) kill('נדקרת בקוצים');
+  for (const c of chompers)
+    if (chomperShut(c) && overlap(p, { x: c.x + 6, y: c.y, w: T - 12, h: T })) kill('נמעכת במלתעות');
+
+  if (overlap(p, exit)) {
+    if (lv === LEVELS.length - 1) state = 'win'; else state = 'clear';
+  }
 
   for (const q of particles) { q.x += q.vx; q.y += q.vy; q.vy += .2; q.life--; }
   particles = particles.filter(q => q.life > 0);
 
   const target = p.x - W / 2;
-  cam += (Math.max(0, Math.min(COLS * T - W, target)) - cam) * 0.1;
-  prev = { ...keys };
+  cam += (Math.max(0, Math.min(cols * T - W, target)) - cam) * 0.1;
+  taps = {};
 }
 
-function drawActor(a, col) {
+function drawActor(a) {
+  const K = a.kind ? KINDS[a.kind] : null;
   const x = Math.round(a.x - cam), y = Math.round(a.y);
-  if (a.dead) { ctx.fillStyle = col; ctx.fillRect(x - 6, y + a.h - 8, 30, 8); return; }
+  if (a.dead) { ctx.fillStyle = K ? K.body : '#f6f6f6'; ctx.fillRect(x - 6, y + a.h - 8, 30, 8); return; }
   if (a.hurt % 6 > 3) return;
   const bob = a.ground ? Math.sin(a.walk * 3) * 2 * (Math.abs(a.vx) > .3) : 0;
   ctx.fillStyle = '#e8c9a0'; ctx.fillRect(x + 5, y, 8, 8);             // ראש
-  ctx.fillStyle = a.isGuard ? '#7a1010' : '#f6f6f6'; ctx.fillRect(x + 3, y + 8, 12, 14); // גוף
-  ctx.fillStyle = a.isGuard ? '#400' : '#ddd';
+  ctx.fillStyle = K ? K.body : '#f6f6f6'; ctx.fillRect(x + 3, y + 8, 12, 14); // גוף
+  ctx.fillStyle = K ? K.dark : '#ddd';
   ctx.fillRect(x + 4, y + 22, 4, 8 + bob); ctx.fillRect(x + 10, y + 22, 4, 8 - bob);
-  ctx.fillStyle = a.isGuard ? '#111' : '#c0392b'; ctx.fillRect(x + 3, y - 2, 12, 3); // כובע / רצועה
-  // חרב
-  ctx.fillStyle = '#cfd8dc';
+  ctx.fillStyle = K ? K.cap : '#c0392b'; ctx.fillRect(x + 3, y - 2, 12, a.kind === 'B' ? 5 : 3); // כובע / רצועה
+  ctx.fillStyle = '#cfd8dc';                                           // חרב
   const sx = a.face > 0 ? x + a.w : x;
   const reach = a.atk ? 22 : 10, sy = a.atk ? y + 12 : y + 18;
   ctx.fillRect(a.face > 0 ? sx : sx - reach, sy, reach, 2);
+  if (a.kind) {                                                        // פס חיים לשומר
+    ctx.fillStyle = '#3a1010'; ctx.fillRect(x, y - 8, 18, 3);
+    ctx.fillStyle = '#e53935'; ctx.fillRect(x, y - 8, 18 * a.hp / a.maxHp, 3);
+  }
+}
+
+function drawTile(c, px, py, key) {
+  if (c === '#' || c === 'L') {
+    let ox = 0;
+    if (c === 'L' && loose.has(key)) ox = Math.round(Math.sin(frame * 2) * 1.5);
+    ctx.fillStyle = '#8a6a3a'; ctx.fillRect(px + ox, py, T, T);
+    ctx.fillStyle = '#6e5228'; ctx.fillRect(px + ox, py + T - 3, T, 3); ctx.fillRect(px + ox + T - 3, py, 3, T);
+    ctx.fillStyle = '#a5844d'; ctx.fillRect(px + ox, py, T, 3);
+    if (c === 'L') {
+      ctx.strokeStyle = '#3b2a12'; ctx.lineWidth = 2; ctx.beginPath();
+      ctx.moveTo(px + ox + 8, py + 4); ctx.lineTo(px + ox + 14, py + 14); ctx.lineTo(px + ox + 10, py + 24);
+      ctx.moveTo(px + ox + 24, py + 6); ctx.lineTo(px + ox + 20, py + 18); ctx.stroke();
+    }
+  } else if (c === 'D') {
+    ctx.fillStyle = '#6e5a46'; ctx.fillRect(px, py, T, T);
+    ctx.fillStyle = '#a5844d'; ctx.fillRect(px, py, T, 3);
+    ctx.fillStyle = '#111'; ctx.fillRect(px + 6, py + 13, 20, 6);
+  } else if (c === 'g') {
+    ctx.fillStyle = '#9aa5ab';
+    for (let i = 0; i < 4; i++) ctx.fillRect(px + 3 + i * 8, py, 4, T);
+    ctx.fillRect(px, py + 6, T, 3); ctx.fillRect(px, py + 22, T, 3);
+  } else if (c === 'o') {
+    ctx.fillStyle = '#9aa5ab';
+    for (let i = 0; i < 4; i++) ctx.fillRect(px + 3 + i * 8, py, 4, 5);
+  }
 }
 
 function draw() {
   ctx.fillStyle = '#2a1d3a'; ctx.fillRect(0, 0, W, H);
-  // רקע - קשתות
-  ctx.fillStyle = '#35264a';
+  ctx.fillStyle = '#35264a';                                           // רקע - קשתות
   for (let i = 0; i < 12; i++) {
     const x = ((i * 160 - cam * 0.4) % (W + 160) + W + 160) % (W + 160) - 80;
     ctx.fillRect(x, 60, 70, 300);
     ctx.beginPath(); ctx.arc(x + 35, 60, 35, Math.PI, 0); ctx.fill();
   }
   const x0 = Math.floor(cam / T), x1 = x0 + Math.ceil(W / T) + 1;
-  for (let y = 0; y < ROWS; y++) for (let x = x0; x <= x1; x++) {
-    const c = tile(x, y), px = x * T - Math.round(cam), py = y * T;
-    if (c === '#') {
-      ctx.fillStyle = '#8a6a3a'; ctx.fillRect(px, py, T, T);
-      ctx.fillStyle = '#6e5228'; ctx.fillRect(px, py + T - 3, T, 3); ctx.fillRect(px + T - 3, py, 3, T);
-      ctx.fillStyle = '#a5844d'; ctx.fillRect(px, py, T, 3);
-    } else if (c === '^') {
-      ctx.fillStyle = '#b0bec5';
-      for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(px + i * 8, py + T); ctx.lineTo(px + i * 8 + 4, py + 12); ctx.lineTo(px + i * 8 + 8, py + T); ctx.fill(); }
+  for (let y = 0; y < ROWS; y++) for (let x = x0; x <= x1; x++)
+    drawTile(tile(x, y), x * T - Math.round(cam), y * T, x + ',' + y);
+
+  ctx.fillStyle = '#b0bec5';                                           // קוצים קבועים
+  for (const s of spikes) {
+    const px = s.x - Math.round(cam);
+    for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(px + i * 8, s.y + 20); ctx.lineTo(px + i * 8 + 4, s.y); ctx.lineTo(px + i * 8 + 8, s.y + 20); ctx.fill(); }
+  }
+  for (const s of vspikes) {                                           // קוצים נעים
+    const ph = vspikePhase(s), px = s.x - Math.round(cam);
+    const rise = ph >= 120 && ph < 170 ? 1 : ph >= 100 && ph < 120 ? .35 : ph >= 170 && ph < 190 ? .5 : 0;
+    ctx.fillStyle = '#4a3a22'; ctx.fillRect(px + 2, s.y + 20, T - 4, 4);
+    ctx.fillStyle = rise === 1 ? '#e0e6e9' : '#b0bec5';
+    for (let i = 0; i < 4; i++) {
+      const h = 3 + 21 * rise;
+      ctx.beginPath(); ctx.moveTo(px + i * 8 + 1, s.y + 24); ctx.lineTo(px + i * 8 + 4, s.y + 24 - h); ctx.lineTo(px + i * 8 + 7, s.y + 24); ctx.fill();
     }
   }
-  // דלת יציאה
-  const ex = exit.x - Math.round(cam);
+  for (const c of chompers) {                                          // מלתעות
+    const ph = chomperPhase(c), px = c.x - Math.round(cam);
+    const shut = ph < 40 ? 1 : ph >= 140 ? 1 : ph < 60 ? 1 - (ph - 40) / 20 : ph < 110 ? 0 : (ph - 110) / 30 * .8;
+    const jaw = 4 + 12 * shut;
+    ctx.fillStyle = '#78909c'; ctx.fillRect(px + 4, c.y, T - 8, jaw); ctx.fillRect(px + 4, c.y + T - jaw, T - 8, jaw);
+    ctx.fillStyle = '#eceff1';
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath(); ctx.moveTo(px + 6 + i * 8, c.y + jaw); ctx.lineTo(px + 10 + i * 8, c.y + jaw + 6); ctx.lineTo(px + 14 + i * 8, c.y + jaw); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(px + 6 + i * 8, c.y + T - jaw); ctx.lineTo(px + 10 + i * 8, c.y + T - jaw - 6); ctx.lineTo(px + 14 + i * 8, c.y + T - jaw); ctx.fill();
+    }
+  }
+  for (const pl of plates) {                                           // לחצנים
+    ctx.fillStyle = pl.down ? '#7a5a1c' : '#d4a937';
+    ctx.fillRect(pl.x - Math.round(cam) + 4, pl.y + (pl.down ? 5 : 2), T - 8, pl.down ? 3 : 6);
+  }
+  for (const s of shooters) {                                          // הבהוב לפני ירי
+    if ((frame + s.off) % 170 > 150) { ctx.fillStyle = '#ff7043'; ctx.fillRect(s.x - Math.round(cam) + 10, s.y + 14, 12, 4); }
+  }
+  ctx.fillStyle = '#eee';
+  for (const d of darts) ctx.fillRect(d.x - Math.round(cam), d.y, d.w, d.h);
+  for (const po of potions) {                                          // שיקוי
+    const px = po.x - Math.round(cam), bob = Math.sin(frame / 12) * 2;
+    ctx.fillStyle = '#cfd8dc'; ctx.fillRect(px + 5, po.y + bob, 6, 5);
+    ctx.fillStyle = '#e53935'; ctx.fillRect(px + 1, po.y + 5 + bob, 14, 15);
+    ctx.fillStyle = '#ff8a80'; ctx.fillRect(px + 3, po.y + 8 + bob, 3, 8);
+  }
+  const ex = exit.x - Math.round(cam);                                 // דלת יציאה
   ctx.fillStyle = '#ffd54f'; ctx.fillRect(ex + 2, exit.y - 34, 28, 66);
   ctx.fillStyle = '#3e2723'; ctx.fillRect(ex + 6, exit.y - 28, 20, 60);
-  for (const g of guards) drawActor(g, '#7a1010');
-  drawActor(player, '#fff');
-  ctx.fillStyle = '#c0392b';
-  for (const q of particles) ctx.fillRect(q.x - cam, q.y, 3, 3);
+  for (const g of guards) drawActor(g);
+  drawActor(player);
+  for (const q of particles) { ctx.fillStyle = q.c; ctx.fillRect(q.x - cam, q.y, 3, 3); }
 
-  // ממשק
-  ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0, H - 28, W, 28);
-  for (let i = 0; i < player.maxHp; i++) {
+  ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fillRect(0, H - 28, W, 28);  // ממשק
+  for (let i = 0; i < maxHp; i++) {
     ctx.fillStyle = i < player.hp ? '#e53935' : '#4a2a2a'; ctx.fillRect(12 + i * 22, H - 21, 16, 14);
   }
+  ctx.fillStyle = '#f3e2b3'; ctx.font = 'bold 16px system-ui';
+  ctx.textAlign = 'left'; ctx.fillText(`שלב ${lv + 1}/${LEVELS.length}`, 90, H - 8);
   const t = Math.max(0, Math.ceil(timeLeft));
-  ctx.fillStyle = '#f3e2b3'; ctx.font = 'bold 16px system-ui'; ctx.textAlign = 'right';
+  ctx.textAlign = 'right';
   ctx.fillText(`זמן: ${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`, W - 12, H - 8);
+
+  if (banner > 0 && state === 'play') {
+    ctx.globalAlpha = Math.min(1, banner / 40);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#ffd54f'; ctx.font = 'bold 30px system-ui';
+    ctx.fillText(`שלב ${lv + 1}: ${LEVELS[lv].name}`, W / 2, 80);
+    ctx.globalAlpha = 1;
+  }
 
   if (state !== 'play') {
     ctx.fillStyle = 'rgba(0,0,0,.7)'; ctx.fillRect(0, 0, W, H);
-    ctx.textAlign = 'center'; ctx.fillStyle = state === 'win' ? '#ffd54f' : '#ef5350';
-    ctx.font = 'bold 40px system-ui';
-    ctx.fillText(state === 'win' ? 'הצלת את הנסיכה!' : (timeLeft <= 0 ? 'הזמן נגמר' : 'נפלת בקרב'), W / 2, H / 2 - 6);
+    ctx.textAlign = 'center'; ctx.font = 'bold 40px system-ui';
+    const good = state === 'win' || state === 'clear';
+    ctx.fillStyle = good ? '#ffd54f' : '#ef5350';
+    ctx.fillText(state === 'win' ? 'הצלת את הנסיכה!' : state === 'clear' ? 'השלב הושלם' : loseMsg, W / 2, H / 2 - 6);
     ctx.fillStyle = '#f3e2b3'; ctx.font = '18px system-ui';
-    ctx.fillText('R או Enter להתחלה מחדש', W / 2, H / 2 + 28);
+    ctx.fillText(state === 'clear' ? 'Enter או לחיצה לשלב הבא' : state === 'win' ? 'Enter או לחיצה למשחק חדש' : 'Enter או לחיצה לנסות שוב', W / 2, H / 2 + 28);
   }
 }
 
-reset();
+document.querySelectorAll('[data-k]').forEach(b => {
+  const k = b.dataset.k, on = e => { e.preventDefault(); keys[k] = true; }, off = e => { e.preventDefault(); keys[k] = false; };
+  b.addEventListener('pointerdown', e => { if (k === 'Space' || k === 'KeyZ') taps[k] = true; on(e); });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(t => b.addEventListener(t, off));
+});
+cv.addEventListener('pointerdown', () => {
+  if (state === 'lose') loadLevel(lv, maxHp);
+  else if (state === 'clear') loadLevel(lv + 1, Math.min(maxHp, player.hp + 1));
+  else if (state === 'win') newGame();
+});
+newGame();
 (function loop() { update(); draw(); requestAnimationFrame(loop); })();
 </script>
 </body>
