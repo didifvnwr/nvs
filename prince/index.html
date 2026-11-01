@@ -26,7 +26,7 @@
   <div><button data-k="ArrowLeft" aria-label="שמאלה">◀</button><button data-k="ArrowRight" aria-label="ימינה">▶</button></div>
   <div><button data-k="KeyZ" aria-label="חרב">⚔</button><button data-k="Space" aria-label="קפיצה">▲</button></div>
 </div>
-<p>חצים ← → ללכת · ↑ / רווח לקפוץ · Z / X חרב · R להתחלת השלב מחדש</p>
+<p>חצים או A D ללכת · ↑ / W / רווח לקפוץ · Z / X / J / K חרב · R להתחלת השלב מחדש</p>
 <script>
 const T = 32, W = 640, H = 384, ROWS = 14;
 const cv = document.getElementById('c'), ctx = cv.getContext('2d');
@@ -85,8 +85,14 @@ const LEVELS = [
 // LEVELS-END
 
 let keys = {}, taps = {};
-addEventListener('keydown', e => { if (!e.repeat) taps[e.code] = true; keys[e.code] = true; if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault(); });
-addEventListener('keyup', e => keys[e.code] = false);
+const ALIAS = { KeyA: 'ArrowLeft', KeyD: 'ArrowRight', KeyW: 'ArrowUp', KeyJ: 'KeyZ', KeyK: 'KeyX' };
+addEventListener('keydown', e => {
+  const c = ALIAS[e.code] || e.code;
+  if (!e.repeat) taps[c] = true;
+  keys[c] = true;
+  if (c.startsWith('Arrow') || c === 'Space') e.preventDefault();
+});
+addEventListener('keyup', e => keys[ALIAS[e.code] || e.code] = false);
 const pressed = c => !!taps[c];
 
 let lv = 0, grid, cols, player, guards, spikes, vspikes, chompers, shooters, plates, potions, darts, loose;
@@ -148,6 +154,10 @@ function move(a) {
         if (vy0 > 0) { a.y = y * T - a.h; a.ground = true; } else a.y = (y + 1) * T;
         a.vy = 0;
       }
+  if (!a.ground && vy0 >= 0) { // סף אחיזה: עומדים גם כשהרצפה במרחק פחות מפיקסל
+    const ty = Math.floor((a.y + a.h + 1) / T);
+    for (let x = Math.floor(a.x / T); x <= Math.floor((a.x + a.w - 1) / T); x++) if (solid(x, ty)) a.ground = true;
+  }
 }
 
 function hitbox(a) { // אזור פגיעת החרב
