@@ -50,6 +50,7 @@ const AD=new URLSearchParams(location.search).get('ad')||'1';
 const ADS=/*ADS*/{}/*/ADS*/;
 const TL=ADS[AD];const SEG=TL.seg;
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
+const fw=(dir,start,lt,spd,max)=>`clips/${dir}/${String(Math.min(max,Math.max(1,Math.floor(start+lt*24*spd)+1))).padStart(4,'0')}.jpg`;
 const pp=(dir,n,max)=>`clips/${dir}/${String(pingpong(n,max)).padStart(4,'0')}.jpg`;
 async function setImg(el,src){if(el.getAttribute('data-s')===src)return;el.setAttribute('data-s',src);el.src=src;try{await el.decode()}catch(e){}}
 const sc={};
@@ -291,7 +292,7 @@ S('h2',`<img class="bgv" id="v2">${BOT}
 <div class="abs big" id="h2k" style="left:0;right:0;top:730px;font-size:42px;font-weight:500">עם <span class="gt" style="font-weight:800">מיצי תקשורת</span></div>
 <div class="glass abs" id="h2c" style="left:80px;right:80px;top:800px;height:120px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;border-color:#e0b877;background:rgba(4,10,24,.7)"><span style="font-size:38px;font-weight:800">🇮🇱 הקו הישראלי</span><span class="o" style="font-size:24px;color:#e0b877">03-•••••••</span></div>
 <div class="abs big gt" id="h2h" style="left:0;right:0;top:945px;font-size:50px">עובר איתכם ✈</div>`);
-S('h3',`<img class="bgv" id="v3">${BOT}
+S('h3',`<img class="bgv" id="v3">${tint(.55,.85)}${BOT}
 <div class="glass abs" id="h3a" style="left:70px;right:70px;top:700px;height:100px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:34px;font-weight:800;background:rgba(4,10,24,.72)"><span>☎ טלפון נייח במשרד</span><span class="o" id="h3ra" style="font-size:18px;color:#7dffa0">RINGING</span></div>
 <div class="glass abs" id="h3b" style="left:70px;right:70px;top:815px;height:100px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:34px;font-weight:800;border-color:#e0b877;background:rgba(4,10,24,.72)"><span>📱 הנייד שבכיס</span><span class="o" id="h3rb" style="font-size:18px;color:#7dffa0">RINGING</span></div>
 <div class="abs big gt" id="h3h" style="left:0;right:0;top:940px;font-size:48px">מקבלים את כל השיחות</div>`);
@@ -311,7 +312,7 @@ S('k1',`<img class="bgv" id="v1">${BOT}
 S('k2',`<img class="bgv" id="v2">${BOT}
 <div class="glass abs" id="k2c" style="left:190px;right:190px;top:720px;height:90px;display:flex;align-items:center;justify-content:center;gap:14px;font-size:34px;font-weight:800;border-color:#28c840;background:rgba(4,20,10,.7)"><i id="k2d" style="display:block;width:18px;height:18px;border-radius:50%;background:#28c840;box-shadow:0 0 16px #28c840"></i>זמינים 24/7</div>
 <div class="abs big gt" id="k2h" style="left:0;right:0;top:840px;font-size:60px">אף לקוח לא נשאר<br>בלי מענה</div>`);
-S('k3',`<img class="bgv" id="v3">${BOT}
+S('k3',`<img class="bgv" id="v3">${tint(.55,.85)}${BOT}
 <div class="glass abs" id="k3c" style="left:70px;right:70px;top:640px;height:84px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:28px;font-weight:800;background:rgba(4,10,24,.75)"><span>📞 שיחה נכנסת</span><span class="o" style="font-size:20px;color:var(--cy)">050-•••••83</span></div>
 <div class="bub w" id="k3m1" style="right:70px;top:745px;max-width:470px;font-size:27px"><span style="font-size:17px;color:#1f8a3a">WhatsApp Bot</span><br>היי! ראינו שהתקשרת 👋 איך אפשר לעזור?</div>
 <div class="abs big gt" id="k3h" style="left:0;right:0;top:900px;font-size:46px">וואטסאפ לכל שיחה נכנסת</div>`);
@@ -379,18 +380,18 @@ async function render(t){
  if(id==='g5'){sh('g5h',lt,.05);sh('g5p',lt,.4,.4,0,30);SUMS.forEach((_,i)=>sh('sm'+i,lt,.9+i*.55,.3,40,0))}
  if(id==='g6'){jobs.push(setImg($('v6'),pp('bung',lt*24+100,240)));sh('g6k',lt,.1);sh('g6h',lt,1.1,.45,0,30)}
  // AD 7
- if(id==='h1'){jobs.push(setImg($('v1'),pp('bung',lt*24,240)));sh('h1k',lt,.1);sh('h1h',lt,.4,.5,0,40)}
- if(id==='h2'){jobs.push(setImg($('v2'),pp('beach',lt*24,140)));sh('h2k',lt,.05);pop('h2c',lt,.6,.4);sh('h2h',lt,1.4,.4)}
- if(id==='h3'){jobs.push(setImg($('v3'),pp('bung2',lt*24,60)));sh('h3a',lt,.2,.35,60,0);sh('h3b',lt,1.9,.35,60,0);['h3ra','h3rb'].forEach(r=>$(r).style.opacity=.4+.6*Math.abs(Math.sin(t*6)));sh('h3h',lt,3.0,.4)}
- if(id==='h4'){jobs.push(setImg($('v4'),pp('bung',lt*24+110,240)));pop('h4c1',lt,.05,.3);pop('h4c2',lt,.6,.3);pop('h4c3',lt,1.4,.3);['hw1','hw2','hw3'].forEach((w,i)=>$(w).style.opacity=seg(lt,2.4+i*.2,.2)*(.6+.4*Math.sin(t*5-i)));sh('h4h',lt,2.6,.4)}
- if(id==='h5'){jobs.push(setImg($('v5'),pp('beach',lt*24+60,140)));sh('h5a',lt,.05,.35,0,20);sh('h5ar',lt,.8,.3);$('h5ar').style.transform=`translateY(${Math.abs(Math.sin(t*4))*8}px)`;sh('h5b',lt,1.5,.35,0,20)}
+ if(id==='h1'){jobs.push(setImg($('v1'),fw('bung',0,lt,1,240)));sh('h1k',lt,.1);sh('h1h',lt,.4,.5,0,40)}
+ if(id==='h2'){jobs.push(setImg($('v2'),fw('beach',0,lt,1,140)));sh('h2k',lt,.05);pop('h2c',lt,.6,.4);sh('h2h',lt,1.4,.4)}
+ if(id==='h3'){jobs.push(setImg($('v3'),fw('city',0,lt,1,199)));sh('h3a',lt,.2,.35,60,0);sh('h3b',lt,1.9,.35,60,0);['h3ra','h3rb'].forEach(r=>$(r).style.opacity=.4+.6*Math.abs(Math.sin(t*6)));sh('h3h',lt,3.0,.4)}
+ if(id==='h4'){jobs.push(setImg($('v4'),fw('bung',68,lt,1,240)));pop('h4c1',lt,.05,.3);pop('h4c2',lt,.6,.3);pop('h4c3',lt,1.4,.3);['hw1','hw2','hw3'].forEach((w,i)=>$(w).style.opacity=seg(lt,2.4+i*.2,.2)*(.6+.4*Math.sin(t*5-i)));sh('h4h',lt,2.6,.4)}
+ if(id==='h5'){jobs.push(setImg($('v5'),fw('bung2',0,lt,.62,60)));sh('h5a',lt,.05,.35,0,20);sh('h5ar',lt,.8,.3);$('h5ar').style.transform=`translateY(${Math.abs(Math.sin(t*4))*8}px)`;sh('h5b',lt,1.5,.35,0,20)}
  // AD 8
- if(id==='k1'){jobs.push(setImg($('v1'),pp('beach',lt*24,140)));sh('k1k',lt,.1);sh('k1h',lt,1.6,.45,0,30)}
- if(id==='k2'){jobs.push(setImg($('v2'),pp('bung',lt*24,240)));pop('k2c',lt,.3,.4);$('k2d').style.opacity=.5+.5*Math.abs(Math.sin(t*4));sh('k2h',lt,.6,.4)}
- if(id==='k3'){jobs.push(setImg($('v3'),pp('bung2',lt*24,60)));sh('k3c',lt,.1,.35,0,20);$('k3c').style.boxShadow=`0 0 ${15+15*Math.abs(Math.sin(lt*7))}px rgba(63,208,255,.4)`;pop('k3m1',lt,1.0,.35);sh('k3h',lt,1.8,.4)}
- if(id==='k4'){jobs.push(setImg($('v4'),pp('beach',lt*24+40,140)));sh('k4w',lt,.1,.4);animWave('w8',t,seg(lt,.2,.4),45);pop('k4c1',lt,1.3,.35);pop('k4c2',lt,2.6,.35)}
- if(id==='k5'){jobs.push(setImg($('v5'),pp('bung',lt*24+150,240)));sh('k5p',lt,.2,.4,0,30);SUMS2.forEach((_,i)=>sh('sk'+i,lt,.8+i*.6,.3,40,0))}
- if(id==='k6'){jobs.push(setImg($('v6'),pp('bung2',lt*24+20,60)));sh('k6k',lt,.1);sh('k6h',lt,1.1,.45,0,30)}
+ if(id==='k1'){jobs.push(setImg($('v1'),fw('beach',0,lt,1,140)));sh('k1k',lt,.1);sh('k1h',lt,1.6,.45,0,30)}
+ if(id==='k2'){jobs.push(setImg($('v2'),fw('bung',0,lt,1,240)));pop('k2c',lt,.3,.4);$('k2d').style.opacity=.5+.5*Math.abs(Math.sin(t*4));sh('k2h',lt,.6,.4)}
+ if(id==='k3'){jobs.push(setImg($('v3'),fw('city',0,lt,1,199)));sh('k3c',lt,.1,.35,0,20);$('k3c').style.boxShadow=`0 0 ${15+15*Math.abs(Math.sin(lt*7))}px rgba(63,208,255,.4)`;pop('k3m1',lt,1.0,.35);sh('k3h',lt,1.8,.4)}
+ if(id==='k4'){jobs.push(setImg($('v4'),fw('bung',180,lt,.63,240)));sh('k4w',lt,.1,.4);animWave('w8',t,seg(lt,.2,.4),45);pop('k4c1',lt,1.3,.35);pop('k4c2',lt,2.6,.35)}
+ if(id==='k5'){jobs.push(setImg($('v5'),fw('bung',80,lt,1,240)));sh('k5p',lt,.2,.4,0,30);SUMS2.forEach((_,i)=>sh('sk'+i,lt,.8+i*.6,.3,40,0))}
+ if(id==='k6'){jobs.push(setImg($('v6'),fw('bung2',0,lt,.8,60)));sh('k6k',lt,.1);sh('k6h',lt,1.1,.45,0,30)}
  await Promise.all(jobs);
 }
 window.render=render;
