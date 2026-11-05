@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YT Learn – תמלול ולמידה</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#1c2033;--mut:#6b7190;--pri:#5b5bd6;--ok:#1a9a5b;--bad:#d64545;--bd:#e3e5f0}
+@media (prefers-color-scheme:dark){:root{--bg:#14151f;--card:#1e2030;--ink:#eceef8;--mut:#9aa0c0;--bd:#2d3048}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Arial,sans-serif;line-height:1.6}
+main{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+h1{margin:0 0 4px}.sub{color:var(--mut);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-bottom:16px}
+.row{display:flex;gap:8px}input[type=text]{flex:1;padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--ink);font-size:16px;direction:ltr;text-align:left}
+button{background:var(--pri);color:#fff;border:0;border-radius:10px;padding:10px 18px;font-size:15px;cursor:pointer}
+button.ghost{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:var(--pri);width:0;transition:width .4s}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.tabs button{background:var(--card);color:var(--ink);border:1px solid var(--bd)}.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.seg{display:flex;gap:10px;padding:4px 0;cursor:pointer}.seg:hover{background:var(--bg)}.ts{color:var(--pri);font-variant-numeric:tabular-nums;direction:ltr;min-width:48px}
+.fc{perspective:800px;cursor:pointer;min-height:130px;text-align:center;display:flex;align-items:center;justify-content:center;font-size:20px;padding:24px}
+.opt{display:block;width:100%;text-align:right;background:var(--bg);color:var(--ink);border:1px solid var(--bd);margin:6px 0}
+.opt.right{background:var(--ok);color:#fff}.opt.wrong{background:var(--bad);color:#fff}
+.mut{color:var(--mut)}.err{color:var(--bad)}.hidden{display:none}
+.chat .a{background:var(--bg);padding:10px;border-radius:10px;margin:8px 0;white-space:pre-wrap}.chat .q{font-weight:600;margin-top:10px}
+audio{width:100%;margin-bottom:10px}
+ul.lib{list-style:none;padding:0;margin:0}ul.lib li{padding:6px 0;cursor:pointer;color:var(--pri)}
+</style>
+</head>
+<body>
+<main>
+<h1>🎓 YT Learn</h1>
+<p class="sub">הדבק קישור ליוטיוב – הסרטון יורד, מתומלל, והמערכת לומדת אותו ומכינה לך סיכום, כרטיסיות, בוחן ושאלות.</p>
+
+<div class="card">
+  <div class="row"><input id="url" type="text" placeholder="https://www.youtube.com/watch?v=..."><button id="go">התחל</button></div>
+  <div id="prog" class="hidden"><div id="msg" class="mut" style="margin-top:10px"></div><div class="bar"><i id="fill"></i></div></div>
+  <div id="err" class="err"></div>
+</div>
+
+<div id="lib" class="card hidden"><b>סרטונים קודמים</b><ul class="lib" id="libList"></ul></div>
+
+<div id="result" class="hidden">
+  <h2 id="title"></h2>
+  <audio id="player" controls></audio>
+  <div class="tabs" id="tabs"></div>
+  <div id="pane"></div>
+</div>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mmss=t=>{t=Math.floor(t);const m=Math.floor(t/60),s=t%60;return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")};
+const toSec=t=>String(t||"0:0").split(":").reverse().reduce((a,v,i)=>a+(+v||0)*60**i,0);
+let cur=null,tab="transcript",poll=null;
+
+async function loadLib(){
+  const r=await (await fetch("/api/library")).json();
+  $("#lib").classList.toggle("hidden",!r.length);
+  $("#libList").innerHTML=r.map(i=>`<li data-id="${i.id}">${esc(i.title)}</li>`).join("");
+  document.querySelectorAll("#libList li").forEach(li=>li.onclick=()=>{track(li.dataset.id)});
+}
+function track(id){
+  clearInterval(poll);$("#err").textContent="";$("#prog").classList.remove("hidden");
+  const tick=async()=>{
+    const j=await (await fetch("/api/jobs/"+id)).json();
+    $("#msg").textContent=j.message||"";$("#fill").style.width=((j.progress||0)*100)+"%";
+    if(j.error){clearInterval(poll);$("#err").textContent=j.message;return}
+    if(j.transcript){cur=j;cur.id=id;show()}
+    if(j.done){clearInterval(poll);$("#prog").classList.add("hidden");loadLib()}
+  };
+  tick();poll=setInterval(tick,2000);
+}
+$("#go").onclick=async()=>{
+  const url=$("#url").value.trim();$("#err").textContent="";
+  const r=await fetch("/api/jobs",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url})});
+  const j=await r.json();if(!r.ok){$("#err").textContent=j.error;return}
+  $("#result").classList.add("hidden");track(j.id);
+};
+function show(){
+  $("#result").classList.remove("hidden");
+  $("#title").textContent=cur.meta?.title||"";
+  if(!$("#player").src.includes(cur.id))$("#player").src="/api/jobs/"+cur.id+"/audio";
+  const L=cur.learn;
+  const tabs=[["transcript","תמלול"]];
+  if(L)tabs.push(["summary","סיכום"],["cards","כרטיסיות"],["quiz","בוחן"]);
+  tabs.push(["ask","שאל את הסרטון"]);
+  $("#tabs").innerHTML=tabs.map(([k,n])=>`<button class="${k===tab?"on":""}" data-t="${k}">${n}</button>`).join("");
+  document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;render()});
+  if(!tabs.some(t=>t[0]===tab))tab="transcript";
+  render(true);
+}
+function seek(t){const p=$("#player");p.currentTime=t;p.play()}
+function render(keep){
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));
+  const pane=$("#pane"),L=cur.learn;
+  if(keep&&pane.dataset.tab===tab&&tab!=="transcript"){return}
+  pane.dataset.tab=tab;
+  if(tab==="transcript"){
+    pane.innerHTML=`<div class="card"><button class="ghost" id="dl">הורד כטקסט</button><div style="margin-top:10px">`+
+      cur.transcript.segments.map(s=>`<div class="seg" data-t="${s.start}"><span class="ts">${mmss(s.start)}</span><span>${esc(s.text)}</span></div>`).join("")+`</div></div>`;
+    pane.querySelectorAll(".seg").forEach(e=>e.onclick=()=>seek(+e.dataset.t));
+    $("#dl").onclick=()=>{const t=cur.transcript.segments.map(s=>`[${mmss(s.start)}] ${s.text}`).join("\n");
+      const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/plain"}));a.download="transcript.txt";a.click()};
+  }else if(tab==="summary"){
+    const ts=t=>`<a href="#" class="ts" data-t="${toSec(t)}">${esc(t)}</a>`;
+    pane.innerHTML=`<div class="card"><h3>סיכום</h3><p>${esc(L.summary)}</p></div>
+    <div class="card"><h3>נקודות מפתח</h3><ul>${L.key_points.map(k=>`<li>${esc(k.point)} ${ts(k.time)}</li>`).join("")}</ul></div>
+    <div class="card"><h3>פרקים</h3>${L.chapters.map(c=>`<p>${ts(c.time)} <b>${esc(c.title)}</b><br><span class="mut">${esc(c.summary)}</span></p>`).join("")}</div>
+    <div class="card"><h3>מילון מונחים</h3>${L.glossary.map(g=>`<p><b>${esc(g.term)}</b> – ${esc(g.definition)}</p>`).join("")}</div>
+    <div class="card"><h3>טיפים ללמידה</h3><ul>${(L.study_tips||[]).map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>`;
+    pane.querySelectorAll("a.ts").forEach(a=>a.onclick=e=>{e.preventDefault();seek(+a.dataset.t)});
+  }else if(tab==="cards"){
+    let i=0,flip=false;const cs=L.flashcards;
+    const draw=()=>{pane.innerHTML=`<div class="card fc" id="fc">${esc(flip?cs[i].a:cs[i].q)}</div>
+      <div class="row" style="justify-content:space-between;align-items:center"><button id="nx">הקודם</button><span class="mut">${i+1} / ${cs.length} · לחץ על הכרטיס להיפוך</span><button id="pv">הבא</button></div>`;
+      $("#fc").onclick=()=>{flip=!flip;draw()};$("#nx").onclick=()=>{i=(i-1+cs.length)%cs.length;flip=false;draw()};$("#pv").onclick=()=>{i=(i+1)%cs.length;flip=false;draw()}};
+    draw();
+  }else if(tab==="quiz"){
+    let score=0,done=0;const qs=L.quiz;
+    pane.innerHTML=qs.map((q,qi)=>`<div class="card" data-q="${qi}"><b>${qi+1}. ${esc(q.q)}</b>${q.options.map((o,oi)=>`<button class="opt" data-o="${oi}">${esc(o)}</button>`).join("")}<div class="mut hidden ex"></div></div>`).join("")+`<div class="card" id="score"></div>`;
+    pane.querySelectorAll(".card[data-q]").forEach(card=>{const q=qs[+card.dataset.q];
+      card.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+        if(card.dataset.done)return;card.dataset.done=1;done++;
+        const ok=+b.dataset.o===q.answer;if(ok)score++;
+        b.classList.add(ok?"right":"wrong");card.querySelectorAll(".opt")[q.answer].classList.add("right");
+        const ex=card.querySelector(".ex");ex.textContent=q.explanation||"";ex.classList.remove("hidden");
+        $("#score").textContent=`ציון: ${score} / ${done} (מתוך ${qs.length})`;
+      })});
+  }else if(tab==="ask"){
+    pane.innerHTML=`<div class="card chat"><div id="log"></div><div class="row" style="margin-top:10px"><input type="text" id="q" style="direction:rtl;text-align:right" placeholder="שאל כל דבר על הסרטון..."><button id="send">שלח</button></div></div>`;
+    const send=async()=>{const q=$("#q").value.trim();if(!q)return;$("#q").value="";
+      $("#log").insertAdjacentHTML("beforeend",`<div class="q">${esc(q)}</div><div class="a mut">חושב...</div>`);
+      const r=await fetch(`/api/jobs/${cur.id}/ask`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q})});
+      const j=await r.json();const last=$("#log").lastElementChild;last.classList.remove("mut");last.textContent=j.answer||j.error};
+    $("#send").onclick=send;$("#q").onkeydown=e=>{if(e.key==="Enter")send()};
+  }
+}
+loadLib();
+</script>
+</body>
+</html>
