@@ -65,9 +65,9 @@ function animWave(id,t,on=1,amp=60){[...$(id).querySelectorAll('i')].forEach((b,
 S('cta',`${tint(.2,.6)}
 <div class="abs" id="lgbox" style="left:-40px;right:-40px;top:250px"><!--LOGO--></div>
 <div class="abs big gt" id="ctah" style="left:0;right:0;top:600px;font-size:44px">מרכזייה חכמה. פתרון אחד.</div>
-<div class="cta" id="cta1" style="top:690px;background:linear-gradient(90deg,#3fd0ff,#2a9be6);color:#02122a;box-shadow:0 0 50px rgba(63,208,255,.5)">👆 לחצו לפרטים וליצירת קשר</div>
-<div class="cta glass" id="cta2" style="top:800px;border-color:#e0b877;color:#e0b877">⚡ הדגמה מיידית</div>
-<div class="abs" id="ctac" style="left:0;right:0;top:920px;text-align:center;font-size:30px;font-weight:800;direction:ltr"><span class="o" style="font-size:28px;letter-spacing:3px">03-3826600</span><span style="color:var(--dim);margin:0 14px">·</span><span class="o" style="font-size:24px;color:var(--cy)">mitsi.co.il</span></div>`);
+<div class="cta glass" id="cta1" style="top:680px;border-color:#e0b877;color:#ffffff">לפרטים <span style="color:#e0b877;margin:0 8px">·</span> הדגמה מיידית</div>
+<div class="abs" id="cta2" style="left:0;right:0;top:880px;text-align:center"><div style="font-size:32px;font-weight:800;color:#a8f0ff">לחצו על הכפתור למטה</div><div id="chev" style="margin-top:6px;font-size:0;line-height:0"><svg width="120" height="110" viewBox="0 0 120 110"><path d="M20 15 L60 50 L100 15" fill="none" stroke="#3fd0ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 55 L60 90 L100 55" fill="none" stroke="#3fd0ff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></svg></div></div>
+<div class="abs" id="ctac" style="left:0;right:0;top:790px;text-align:center;font-size:30px;font-weight:800;direction:ltr"><span class="o" style="font-size:28px;letter-spacing:3px">03-3826600</span><span style="color:var(--dim);margin:0 14px">·</span><span class="o" style="font-size:24px;color:var(--cy)">mitsi.co.il</span></div>`);
 let rs=1;const rnd=()=>{rs=(rs*16807)%2147483647;return rs/2147483647};
 function logoFrame(t){ // t in ms, port of the supplied animation (no canvas)
  const g=id=>document.getElementById(id);
@@ -92,8 +92,8 @@ function logoFrame(t){ // t in ms, port of the supplied animation (no canvas)
  const q=easeOut(clamp((ts-850)/900));g('sub').setAttribute('opacity',q.toFixed(3));g('sub').setAttribute('letter-spacing',(40*(1-q)+6).toFixed(2));
  const sw=((ts-1900)%4600)/1500;if(ts>1900&&sw<1){const x=1000-820*easeInOut(sw);g('sheen').setAttribute('x1',x-90);g('sheen').setAttribute('x2',x+90)}else{g('sheen').setAttribute('x1',-400);g('sheen').setAttribute('x2',-200)}
 }
-function renderCta(lt,t){logoFrame(lt*1000);sh('ctah',lt,2.9,.45);pop('cta1',lt,1.2,.4);pop('cta2',lt,1.7,.4);sh('ctac',lt,2.2,.4);
- $('cta1').style.boxShadow=`0 0 ${30+25*Math.sin(t*4)}px rgba(63,208,255,.55)`}
+function renderCta(lt,t){logoFrame(lt*1000);sh('ctah',lt,2.9,.45);pop('cta1',lt,1.2,.4);sh('ctac',lt,1.7,.4);sh('cta2',lt,2.2,.4);
+ $('chev').style.transform=`translateY(${Math.abs(Math.sin(t*4))*18}px)`;$('cta1').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(224,184,119,.4)`}
 
 /* ---------- AD 1: the complete solution ---------- */
 if(AD==='1'){
