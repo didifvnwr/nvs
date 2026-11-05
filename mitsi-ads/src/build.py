@@ -6,7 +6,7 @@ TAIL=4.0
 AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27.85],'ids':['a1','a2','a3','a4','a5','a6','a7','cta']},
     '2':{'v':'6f0bf6ff-______2.mp3','cuts':[0,3.25,5.55,9.2,14.3,16.25],'ids':['b1','b2','b3','b4','b5','cta']},
     '3':{'v':'2657470b-______3.mp3','cuts':[0,3.85,8.6,12.4,16.0],'ids':['e1','e2','e3','e4','cta']},
-    '4':{'v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
+    '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():
     d=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',U+a['v']]))
@@ -21,7 +21,7 @@ for k,a in AD.items():
     for i in range(n):
         dl=int(max(0,(c[i+1]-0.3))*1000);f.append(f"[ws{i}]aresample=48000,volume=0.35,adelay={dl}|{dl},apad=whole_dur={END}[w{i}]");wh.append(f'[w{i}]')
     f.append(f"[voice][mus]{''.join(wh)}amix=inputs={2+n}:normalize=0:duration=longest,atrim=0:{END}[out]")
-    subprocess.run(['ffmpeg','-y','-loglevel','error','-i',U+a['v'],'-i',MUS,'-i',A+'whoosh.wav','-filter_complex',';'.join(f),'-map','[out]','-c:a','aac','-b:a','192k',A+f'audio{k}.m4a'],check=True)
+    subprocess.run(['ffmpeg','-y','-loglevel','error','-i',U+a['v'],'-i',a.get('m',MUS),'-i',A+'whoosh.wav','-filter_complex',';'.join(f),'-map','[out]','-c:a','aac','-b:a','192k',A+f'audio{k}.m4a'],check=True)
 s=open('ads.tpl.html').read()
 s=s.replace('/*ADS*/{}/*/ADS*/','/*ADS*/'+json.dumps(out)+'/*/ADS*/')
 s=s.replace('<!--LOGO-->',open(A+'logo_svg.txt').read().replace('viewBox="0 0 1600 600"','viewBox="200 40 1500 520"'))
