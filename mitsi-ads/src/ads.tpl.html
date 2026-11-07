@@ -396,6 +396,45 @@ var ZM=[['b','היי! 👋 כאן הבוט של הצימר. לאילו תארי�
 $('z6px').innerHTML=ZM.map((m,i)=>`<div class="bub ${m[0]==='b'?'w':'u'}" id="zm${i}" style="${m[0]==='b'?'right:0':'left:0'};top:${20+i*128}px;max-width:470px;font-size:25px;opacity:0">${m[1]}</div>`).join('');
 $('z7px').innerHTML=`<div class="bub w" id="zh0" style="right:0;top:20px;max-width:470px;font-size:24px">✓ ההזמנה נסגרה! נשלח אישור</div><div id="zh1" style="position:absolute;left:0;right:0;top:130px;text-align:center;font-size:22px;color:#e0b877;font-weight:800;opacity:0">— 👤 בעל הצימר הצטרף לשיחה —</div><div class="bub u" id="zh2" style="left:0;top:190px;max-width:470px;font-size:25px;opacity:0;background:#e0b877;color:#2a1b02">היי, כאן יוסי מהצימר 🙂 מחכים לכם!</div><div class="bub w" id="zh3" style="right:0;top:320px;max-width:470px;font-size:25px;opacity:0;background:#fff;color:#0a1830">תודה! 😍</div>`;
 }
+/* ---------- AD 11: you have a life (humor) ---------- */
+if(AD==='11'){
+const BOTY=`<div class="tint" style="background:linear-gradient(180deg,rgba(2,6,14,.25) 0%,transparent 18%,transparent 42%,rgba(2,6,14,.88) 70%,rgba(2,6,14,.95) 100%)"></div>`;
+const ring=id=>`<div class="glass abs" id="${id}" style="left:200px;right:200px;top:200px;height:84px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:30px;font-weight:800;border-color:#ff6b7a;background:rgba(30,4,10,.8);color:#ffb3bb">📞 מצלצל...</div>`;
+const scene=(id,emo,title,sub)=>S(id,`${tint(0,0)}${ring(id+'r')}
+<div class="abs" id="${id}e" style="left:0;right:0;top:380px;text-align:center;font-size:${emo.length>3?170:230}px;line-height:1;white-space:nowrap">${emo}</div>
+<div class="abs big" id="${id}k" style="left:0;right:0;top:680px;font-size:46px;font-weight:500;color:var(--dim)">${sub}</div>
+<div class="abs big gt" id="${id}h" style="left:20px;right:20px;top:745px;font-size:66px">${title}</div>`);
+S('y1',`${tint(0,0)}<div class="abs" id="y1e" style="left:0;right:0;top:380px;text-align:center;font-size:260px;line-height:1">📞</div>
+<div class="abs o" id="y1h" style="left:0;right:0;top:720px;text-align:center;font-size:56px;color:#ff6b7a;letter-spacing:8px">RING RING</div>`);
+scene('y2','🛁🧽','מנקים את הג׳קוזי','ואתם? בדיוק');
+scene('y3','🍷🕯️🍞','ארוחת שישי','או באמצע');
+scene('y4','😴','סוף סוף נרדמתם','או ש...');
+S('y5',`<img class="bgv" id="v5">${BOTY}
+<div class="abs big" id="y5k" style="left:0;right:0;top:770px;font-size:46px;font-weight:500">בואו נודה באמת</div>
+<div class="abs big gt" id="y5h" style="left:0;right:0;top:840px;font-size:82px">יש לכם חיים</div><div class="abs" id="y5s" style="left:0;right:0;top:940px;text-align:center;font-size:60px">🙂</div>`);
+S('y6',`${tint(0,0)}
+<div class="abs big" id="y6k" style="left:0;right:0;top:300px;font-size:72px">אבל העסק?</div>
+<div class="abs" id="y6c" style="left:0;right:0;top:430px;text-align:center"><div class="o" style="display:inline-block;font-size:120px;color:var(--cy);text-shadow:0 0 40px rgba(63,208,255,.6)">24/7</div></div>
+<div class="abs big gt" id="y6h" style="left:0;right:0;top:640px;font-size:62px">צריך לעבוד כל הזמן</div>`);
+S('y7',`<img class="bgv" id="v7">${tint(.65,.9)}
+<div class="abs big" id="y7k" style="left:0;right:0;top:400px;font-size:52px;font-weight:500">עם <span class="gt" style="font-weight:800">מיצי תקשורת</span></div>
+<div class="abs big gt" id="y7h" style="left:0;right:0;top:480px;font-size:80px">כל שיחה<br>מקבלת מענה</div>
+<div class="abs" id="y7i" style="left:0;right:0;top:720px;text-align:center;font-size:110px;color:#28c840;text-shadow:0 0 30px rgba(40,200,64,.6)">✓</div>`);
+S('y8',`${tint(0,0)}
+<div class="abs" id="y8n" style="left:0;right:0;top:160px;text-align:center"><span class="chip" style="font-size:28px">🎙 בוט קולי</span><span class="chip" style="font-size:28px;border-color:#25d366;color:#7dffa0">💬 בוט וואטסאפ</span></div>
+<div class="glass abs" id="y8p" style="left:80px;right:80px;top:250px;height:760px;padding:16px 18px;background:#0b141a;border-color:#25d366"><div style="display:flex;align-items:center;gap:12px;font-size:24px;font-weight:800;color:#e9edef"><span style="width:42px;height:42px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center">🏡</span>הצימר שלכם · WhatsApp</div><div id="y8x" style="position:relative"></div></div>`);
+S('y9',`<img class="bgv" id="v9">${BOTY}
+<div class="bub w" id="y9b" style="right:80px;top:700px;max-width:520px;font-size:26px">✓ ההזמנה נסגרה! נשלח אישור</div>
+<div class="abs" id="y9j" style="left:0;right:0;top:830px;text-align:center;font-size:26px;font-weight:800;color:#e0b877">— 👤 הצטרפתם לשיחה, כשנוח לכם —</div>
+<div class="bub u" id="y9m" style="left:80px;top:890px;max-width:520px;font-size:26px;background:#e0b877;color:#2a1b02">היי! מחכים לכם 🙂</div>`);
+S('y10',`${tint(0,0)}<div class="abs" id="y10g" style="left:-100px;right:-100px;top:300px;height:600px;background:radial-gradient(ellipse at center,rgba(63,208,255,.25),transparent 65%)"></div>
+<div class="abs big gt" id="y10a" style="left:0;right:0;top:330px;font-size:96px">מיצי</div>
+<div class="abs big" id="y10s" style="left:0;right:0;top:440px;font-size:44px;font-weight:300;letter-spacing:10px;color:#8fc9ec">תקשורת</div>
+<div class="abs big" id="y10b" style="left:0;right:0;top:570px;font-size:72px">אתם חיים 🙂</div>
+<div class="abs big gold" id="y10c" style="left:0;right:0;top:670px;font-size:72px">והעסק עובד</div>`);
+var YM=[['b','היי! 👋 תודה שהתקשרתם. לאילו תאריכים?'],['u','חמישי–שבת, משפחה'],['b','יש זמינות 🎉 בקתה משפחתית עם ג׳קוזי'],['u','סוגרים!'],['b','✓ ההזמנה נסגרה! נשלח אישור']];
+$('y8x').innerHTML=YM.map((m,i)=>`<div class="bub ${m[0]==='b'?'w':'u'}" id="ym${i}" style="${m[0]==='b'?'right:0':'left:0'};top:${20+i*132}px;max-width:470px;font-size:25px;opacity:0">${m[1]}</div>`).join('');
+}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -476,6 +515,15 @@ async function render(t){
  if(id==='z7'){jobs.push(setImg($('v7'),fw('hands',0,lt,1,360)));sh('z7h',lt,.05);sh('z7p',lt,.2,.4,0,30);sh('zh1',lt,.9,.3,0,0);pop('zh2',lt,1.5,.3);pop('zh3',lt,2.6,.3)}
  if(id==='z8'){pop('z8i',lt,.05,.45);sh('z8h',lt,.35,.4);$('z8g').style.opacity=.6+.4*Math.sin(t*3)}
  if(id==='z9'){pop('z9a',lt,.05,.4);sh('z9s',lt,.4,.35);sh('z9b',lt,1.1,.4);pop('z9c',lt,2.6,.4);$('z9g').style.opacity=.6+.4*Math.sin(t*3)}
+ // AD 11
+ if(id==='y1'){pop('y1e',lt,.02,.25);$('y1e').style.transform=`rotate(${Math.sin(t*40)*10}deg)`;$('y1h').style.opacity=.5+.5*Math.abs(Math.sin(t*8))}
+ if(['y2','y3','y4'].includes(id)){$(id+'r').style.opacity=.5+.5*Math.abs(Math.sin(t*6));$(id+'r').style.transform=`translateX(${Math.sin(t*40)*3}px)`;pop(id+'e',lt,.05,.35);sh(id+'k',lt,.1,.3);sh(id+'h',lt,id==='y2'?.9:.4,.35);if(id==='y4'){$('y4e').style.transform=`scale(${1+.04*Math.sin(t*2)})`;if(lt>2.2){$('y4h').textContent='...לחמש דקות';}}}
+ if(id==='y5'){jobs.push(setImg($('v5'),fw('bung',0,lt,1,240)));sh('y5k',lt,.1);pop('y5h',lt,1.0,.4);pop('y5s',lt,1.5,.35)}
+ if(id==='y6'){sh('y6k',lt,.05);pop('y6c',lt,.9,.4);sh('y6h',lt,1.2,.4)}
+ if(id==='y7'){jobs.push(setImg($('v7'),fw('city',0,lt,1,199)));sh('y7k',lt,.05);sh('y7h',lt,.5,.4);pop('y7i',lt,1.6,.4)}
+ if(id==='y8'){sh('y8n',lt,.05);sh('y8p',lt,.2,.4,0,30);YM.forEach((m,i)=>pop('ym'+i,lt,[.6,1.5,2.4,3.3,4.0][i],.28))}
+ if(id==='y9'){jobs.push(setImg($('v9'),fw('beach',0,lt,1,140)));pop('y9b',lt,.1,.3);sh('y9j',lt,.6,.3,0,0);pop('y9m',lt,1.3,.3)}
+ if(id==='y10'){pop('y10a',lt,.05,.4);sh('y10s',lt,.4,.35);pop('y10b',lt,1.0,.4);pop('y10c',lt,1.9,.4);$('y10g').style.opacity=.6+.4*Math.sin(t*3)}
  await Promise.all(jobs);
 }
 window.render=render;
