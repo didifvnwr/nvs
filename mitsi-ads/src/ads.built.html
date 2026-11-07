@@ -47,7 +47,7 @@ const ease=x=>1-Math.pow(1-clamp(x),3);
 const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 const AD=new URLSearchParams(location.search).get('ad')||'1';
-const ADS=/*ADS*/{"1": {"seg": [[0, 3.2, "a1"], [3.2, 6.9, "a2"], [6.9, 12.15, "a3"], [12.15, 16.43, "a4"], [16.43, 21.82, "a5"], [21.82, 25.42, "a6"], [25.42, 27.85, "a7"], [27.85, 35.63, "cta"]], "total": 35.63}, "2": {"seg": [[0, 3.25, "b1"], [3.25, 5.55, "b2"], [5.55, 9.2, "b3"], [9.2, 14.3, "b4"], [14.3, 16.25, "b5"], [16.25, 24.27, "cta"]], "total": 24.27}, "3": {"seg": [[0, 3.85, "e1"], [3.85, 8.6, "e2"], [8.6, 12.4, "e3"], [12.4, 16.0, "e4"], [16.0, 23.72, "cta"]], "total": 23.72}, "5": {"seg": [[0, 2.8, "f1"], [2.8, 6.5, "f2"], [6.5, 11.3, "f3"], [11.3, 15.95, "f4"], [15.95, 20.0, "f5"], [20.0, 27.88, "cta"]], "total": 27.88}, "6": {"seg": [[0, 3.55, "g1"], [3.55, 6.85, "g2"], [6.85, 10.5, "g3"], [10.5, 14.55, "g4"], [14.55, 18.7, "g5"], [18.7, 21.8, "g6"], [21.8, 29.55, "cta"]], "total": 29.55}, "7": {"seg": [[0, 2.8, "h1"], [2.8, 6.5, "h2"], [6.5, 11.3, "h3"], [11.3, 15.95, "h4"], [15.95, 20.0, "h5"], [20.0, 27.88, "cta"]], "total": 27.88}, "8": {"seg": [[0, 3.55, "k1"], [3.55, 6.85, "k2"], [6.85, 10.5, "k3"], [10.5, 14.55, "k4"], [14.55, 18.7, "k5"], [18.7, 21.8, "k6"], [21.8, 29.55, "cta"]], "total": 29.55}, "9": {"seg": [[0, 5.0, "p1"], [5.0, 7.3, "p2"], [7.3, 11.33, "p3"], [11.33, 13.95, "p4"], [13.95, 16.7, "p5"], [16.7, 19.05, "p6"], [19.05, 26.91, "cta"]], "total": 26.91}, "10": {"seg": [[0, 3.13, "z1"], [3.13, 4.4, "z2"], [4.4, 8.35, "z3"], [8.35, 10.77, "z4"], [10.77, 14.95, "z5"], [14.95, 23.02, "z6"], [23.02, 26.71, "z7"], [26.71, 28.8, "z8"], [28.8, 32.9, "z9"], [32.9, 39.63, "cta"]], "total": 39.63}, "11": {"seg": [[0, 1.3, "y1"], [1.3, 4.22, "y2"], [4.22, 6.6, "y3"], [6.6, 10.15, "y4"], [10.15, 12.87, "y5"], [12.87, 16.02, "y6"], [16.02, 18.94, "y7"], [18.94, 23.81, "y8"], [23.81, 26.52, "y9"], [26.52, 29.75, "y10"], [29.75, 36.21, "cta"]], "total": 36.21}, "12": {"seg": [[0, 1.9, "q1"], [1.9, 5.6, "q2"], [5.6, 10.5, "q3"], [10.5, 13.6, "q4"], [13.6, 19.97, "q5"], [19.97, 23.14, "q6"], [23.14, 27.3, "q7"], [27.3, 30.2, "q8"], [30.2, 36.6, "cta"]], "total": 36.6}, "13": {"seg": [[0, 2.37, "x1"], [2.37, 5.74, "x2"], [5.74, 8.58, "x3"], [8.58, 14.15, "x4"], [14.15, 16.15, "x5"], [16.15, 20.86, "x6"], [20.86, 24.71, "x7"], [24.71, 31.32, "cta"]], "total": 31.32}, "4": {"seg": [[0, 4.08, "d1"], [4.08, 8.18, "d2"], [8.18, 10.4, "d3"], [10.4, 15.25, "d4"], [15.25, 19.0, "d5"], [19.0, 26.75, "cta"]], "total": 26.75}}/*/ADS*/;
+const ADS=/*ADS*/{"1": {"seg": [[0, 3.2, "a1"], [3.2, 6.9, "a2"], [6.9, 12.15, "a3"], [12.15, 16.43, "a4"], [16.43, 21.82, "a5"], [21.82, 25.42, "a6"], [25.42, 27.85, "a7"], [27.85, 35.63, "cta"]], "total": 35.63}, "2": {"seg": [[0, 3.25, "b1"], [3.25, 5.55, "b2"], [5.55, 9.2, "b3"], [9.2, 14.3, "b4"], [14.3, 16.25, "b5"], [16.25, 24.27, "cta"]], "total": 24.27}, "3": {"seg": [[0, 3.85, "e1"], [3.85, 8.6, "e2"], [8.6, 12.4, "e3"], [12.4, 16.0, "e4"], [16.0, 23.72, "cta"]], "total": 23.72}, "5": {"seg": [[0, 2.8, "f1"], [2.8, 6.5, "f2"], [6.5, 11.3, "f3"], [11.3, 15.95, "f4"], [15.95, 20.0, "f5"], [20.0, 27.88, "cta"]], "total": 27.88}, "6": {"seg": [[0, 3.55, "g1"], [3.55, 6.85, "g2"], [6.85, 10.5, "g3"], [10.5, 14.55, "g4"], [14.55, 18.7, "g5"], [18.7, 21.8, "g6"], [21.8, 29.55, "cta"]], "total": 29.55}, "7": {"seg": [[0, 2.8, "h1"], [2.8, 6.5, "h2"], [6.5, 11.3, "h3"], [11.3, 15.95, "h4"], [15.95, 20.0, "h5"], [20.0, 27.88, "cta"]], "total": 27.88}, "8": {"seg": [[0, 3.55, "k1"], [3.55, 6.85, "k2"], [6.85, 10.5, "k3"], [10.5, 14.55, "k4"], [14.55, 18.7, "k5"], [18.7, 21.8, "k6"], [21.8, 29.55, "cta"]], "total": 29.55}, "9": {"seg": [[0, 5.0, "p1"], [5.0, 7.3, "p2"], [7.3, 11.33, "p3"], [11.33, 13.95, "p4"], [13.95, 16.7, "p5"], [16.7, 19.05, "p6"], [19.05, 26.91, "cta"]], "total": 26.91}, "10": {"seg": [[0, 3.13, "z1"], [3.13, 4.4, "z2"], [4.4, 8.35, "z3"], [8.35, 10.77, "z4"], [10.77, 14.95, "z5"], [14.95, 23.02, "z6"], [23.02, 26.71, "z7"], [26.71, 28.8, "z8"], [28.8, 32.9, "z9"], [32.9, 39.63, "cta"]], "total": 39.63}, "11": {"seg": [[0, 1.3, "y1"], [1.3, 4.22, "y2"], [4.22, 6.6, "y3"], [6.6, 10.15, "y4"], [10.15, 12.87, "y5"], [12.87, 16.02, "y6"], [16.02, 18.94, "y7"], [18.94, 23.81, "y8"], [23.81, 26.52, "y9"], [26.52, 29.75, "y10"], [29.75, 36.21, "cta"]], "total": 36.21}, "12": {"seg": [[0, 1.9, "q1"], [1.9, 5.6, "q2"], [5.6, 10.5, "q3"], [10.5, 13.6, "q4"], [13.6, 19.97, "q5"], [19.97, 23.14, "q6"], [23.14, 27.3, "q7"], [27.3, 30.2, "q8"], [30.2, 36.6, "cta"]], "total": 36.6}, "13": {"seg": [[0, 2.37, "x1"], [2.37, 5.74, "x2"], [5.74, 8.58, "x3"], [8.58, 14.15, "x4"], [14.15, 16.15, "x5"], [16.15, 20.86, "x6"], [20.86, 24.71, "x7"], [24.71, 31.32, "cta"]], "total": 31.32}, "14": {"seg": [[0, 4.27, "w1"], [4.27, 8.58, "w2"], [8.58, 15.05, "w3"], [15.05, 17.96, "w4"], [17.96, 22.04, "w5"], [22.04, 26.2, "w6"], [26.2, 32.68, "cta"]], "total": 32.68}, "4": {"seg": [[0, 4.08, "d1"], [4.08, 8.18, "d2"], [8.18, 10.4, "d3"], [10.4, 15.25, "d4"], [15.25, 19.0, "d5"], [19.0, 26.75, "cta"]], "total": 26.75}}/*/ADS*/;
 const TL=ADS[AD];const SEG=TL.seg;
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
 const fw=(dir,start,lt,spd,max)=>`clips/${dir}/${String(Math.min(max,Math.max(1,Math.floor(start+lt*24*spd)+1))).padStart(4,'0')}.jpg`;
@@ -593,6 +593,40 @@ S('x7',`<img class="bgv" id="v7">${tint(.65,.9)}
 <div class="abs big gold" id="x7c" style="left:0;right:0;top:670px;font-size:72px">כבר כאן</div>`);
 $('x2g').innerHTML=Array.from({length:28},(_,i)=>`<div style="height:46px;border-radius:5px;background:${['#b9c0c8','#c9ced4','#a7afb8'][i%3]};display:flex;align-items:center;justify-content:center;font-size:13px;color:#4a525c;font-family:monospace">${['SIP','IVR','QUEUE','TRUNK','DID','ACD','CODEC','NAT'][i%8]}</div>`).join('');
 }
+/* ---------- AD 14: one PBX, everything connects ---------- */
+if(AD==='14'){
+const BOTW=`<div class="tint" style="background:linear-gradient(180deg,rgba(2,6,14,.25) 0%,transparent 18%,transparent 42%,rgba(2,6,14,.88) 70%,rgba(2,6,14,.95) 100%)"></div>`;
+S('w1',`<img class="bgv" id="v1">${BOTW}
+<div class="abs big gt" id="w1h" style="left:0;right:0;top:760px;font-size:84px">מרכזייה אחת</div>
+<div class="abs big" id="w1k" style="left:20px;right:20px;top:870px;font-size:44px;font-weight:500">וכל מה שהעסק צריך, מתחבר אליה</div>`);
+S('w2',`${tint(0,0)}<svg class="full" id="w2s"></svg>
+<div class="abs" id="w2c" style="left:250px;top:500px;width:220px;height:220px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,#0f2d5c,#061226);border:3px solid #3fd0ff;box-shadow:0 0 60px rgba(63,208,255,.5)"><div style="font-size:60px">☎</div><div style="font-size:30px;font-weight:800">מרכזייה</div></div>
+${[['💬','בוט וואטסאפ',90,240],['🎙','בוט קולי',430,240],['📱','שלוחות בנייד',260,880]].map((n,i)=>`<div class="abs" id="wn${i}" style="left:${n[2]}px;top:${n[3]}px;width:200px;text-align:center;opacity:0"><div style="width:120px;height:120px;margin:0 auto;border-radius:50%;background:rgba(6,16,40,.9);border:2px solid #3fd0ff;display:flex;align-items:center;justify-content:center;font-size:56px">${n[0]}</div><div style="font-size:30px;font-weight:800;margin-top:10px">${n[1]}</div></div>`).join('')}`);
+S('w3',`<img class="bgv" id="v3">${BOTW}
+<div class="abs" id="w3c" style="left:20px;right:20px;top:690px;text-align:center"><span class="chip" id="w3c1" style="font-size:32px">⚙ אוטומציות</span><span class="chip" id="w3c2" style="font-size:32px">🔗 API לכל מערכת</span><span class="chip" id="w3c3" style="font-size:32px;border-color:#e0b877;color:#e0b877">🛠 פיתוח לפי דרישה</span></div>
+<div class="abs big gt" id="w3h" style="left:0;right:0;top:900px;font-size:52px">בדיוק לעסק שלכם</div>`);
+S('w4',`${tint(0,0)}
+<div class="abs" id="w4i" style="left:0;right:0;top:240px;text-align:center;font-size:170px">🎵</div>
+<div class="abs" id="w4w" style="left:80px;right:80px;top:470px">${waveHTML('w14',46,120)}</div>
+<div class="abs big" id="w4k" style="left:0;right:0;top:640px;font-size:46px;font-weight:500">ואפילו</div>
+<div class="abs big gt" id="w4h" style="left:0;right:0;top:700px;font-size:80px">ג׳ינגל מקצועי</div>
+<div class="abs" id="w4s" style="left:0;right:0;top:820px;text-align:center"><span class="chip hi" style="font-size:32px">כחלק מהשירות</span></div>`);
+S('w5',`<img class="bgv" id="v5">${tint(.7,.9)}
+<div class="abs big gt" id="w5h" style="left:0;right:0;top:190px;font-size:56px">את הכל מנהלים<br>מול הסוכן החכם</div>
+<div class="glass abs" id="w5w" style="left:60px;right:60px;top:390px;height:450px;padding:22px 24px;background:rgba(4,10,24,.88)">
+ <div style="display:flex;justify-content:space-between;align-items:center"><span class="o" style="font-size:14px;color:var(--cy)">AI AGENT · CLAUDE</span><span style="display:flex;align-items:center;gap:8px;font-size:18px;color:#a8f0ff"><i style="display:block;width:10px;height:10px;border-radius:50%;background:#28c840;box-shadow:0 0 8px #28c840"></i>מחובר</span></div>
+ <div class="bub u" id="w5b1" style="right:24px;top:70px;max-width:440px">תחבר בוט וואטסאפ לשלוחה 2</div>
+ <div class="bub a" id="w5b2" style="left:24px;top:170px;max-width:440px">✓ חובר</div>
+ <div class="bub u" id="w5b3" style="right:24px;top:260px;max-width:440px">ותשים את הג׳ינגל בתפריט</div>
+ <div class="bub a" id="w5b4" style="left:24px;top:360px;max-width:440px">✓ עודכן</div></div>`);
+S('w6',`${tint(0,0)}<div class="abs" id="w6g" style="left:-100px;right:-100px;top:300px;height:600px;background:radial-gradient(ellipse at center,rgba(63,208,255,.25),transparent 65%)"></div>
+<div class="abs big gt" id="w6a" style="left:0;right:0;top:330px;font-size:96px">מיצי</div>
+<div class="abs big" id="w6s" style="left:0;right:0;top:440px;font-size:44px;font-weight:300;letter-spacing:10px;color:#8fc9ec">תקשורת</div>
+<div class="abs big" id="w6b" style="left:0;right:0;top:570px;font-size:68px">מרכזייה אחת</div>
+<div class="abs big gold" id="w6c" style="left:0;right:0;top:670px;font-size:60px">שהכל מתחבר אליה</div>`);
+const WC=[[190,340],[530,340],[360,940]];
+$('w2s').innerHTML=WC.map((c,i)=>`<line id="wl${i}" x1="360" y1="610" x2="${c[0]}" y2="${c[1]}" stroke="#3fd0ff" stroke-width="3" stroke-dasharray="8 7" opacity="0"/>`).join('');
+}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -699,6 +733,13 @@ async function render(t){
  if(id==='x5'){pop('x5i',lt,.05,.4);sh('x5k',lt,.1,.3);pop('x5h',lt,.8,.35);$('x5g').style.opacity=.6+.4*Math.sin(t*4)}
  if(id==='x6'){jobs.push(setImg($('v6'),fw('hands',0,lt,1,360)));sh('x6a',lt,.05,.3,60,0);sh('x6b',lt,.7,.3,60,0);sh('x6c',lt,1.5,.3,60,0);sh('x6k',lt,2.2,.3);sh('x6h',lt,2.6,.4)}
  if(id==='x7'){jobs.push(setImg($('v7'),fw('city',0,lt,1,199)));pop('x7a',lt,.05,.4);sh('x7s',lt,.4,.35);sh('x7b',lt,1.2,.4);pop('x7c',lt,2.6,.4)}
+ // AD 14
+ if(id==='w1'){jobs.push(setImg($('v1'),fw('conf',0,lt,1,240)));pop('w1h',lt,.1,.4);sh('w1k',lt,1.6,.4)}
+ if(id==='w2'){pop('w2c',lt,.02,.35);$('w2c').style.boxShadow=`0 0 ${40+25*Math.sin(t*4)}px rgba(63,208,255,.5)`;[0,1,2].forEach(i=>{const d=[.15,1.0,2.25][i];pop('wn'+i,lt,d,.35);$('wl'+i).setAttribute('opacity',seg(lt,d,.3))})}
+ if(id==='w3'){jobs.push(setImg($('v3'),fw('conf',102,lt,.89,240)));pop('w3c1',lt,.15,.3);pop('w3c2',lt,1.0,.3);pop('w3c3',lt,3.6,.3);sh('w3h',lt,4.7,.4)}
+ if(id==='w4'){pop('w4i',lt,.05,.35);$('w4i').style.transform=`rotate(${Math.sin(t*5)*8}deg)`;sh('w4w',lt,.3);animWave('w14',t,1,80);sh('w4k',lt,.05,.3);sh('w4h',lt,.4,.4);pop('w4s',lt,1.4,.35)}
+ if(id==='w5'){jobs.push(setImg($('v5'),fw('hands',60,lt,1,360)));sh('w5h',lt,.05);sh('w5w',lt,.3,.4,0,30);pop('w5b1',lt,.7,.3);pop('w5b2',lt,1.4,.3);pop('w5b3',lt,2.1,.3);pop('w5b4',lt,2.8,.3)}
+ if(id==='w6'){pop('w6a',lt,.05,.4);sh('w6s',lt,.4,.35);pop('w6b',lt,1.2,.4);pop('w6c',lt,2.2,.4);$('w6g').style.opacity=.6+.4*Math.sin(t*3)}
  await Promise.all(jobs);
 }
 window.render=render;
