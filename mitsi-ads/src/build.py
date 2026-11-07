@@ -11,10 +11,11 @@ AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27
     '7':{'m':U+'c7c0e382-____________3.mp3','v':'2c04855e-______5.mp3','cuts':[0,2.8,6.5,11.3,15.95,20.0],'ids':['h1','h2','h3','h4','h5','cta']},
     '8':{'m':U+'23d20477-____________5.mp3','v':'5d2bd2e1-______6.mp3','cuts':[0,3.55,6.85,10.5,14.55,18.7,21.8],'ids':['k1','k2','k3','k4','k5','k6','cta']},
     '9':{'m':U+'23d20477-____________5.mp3','v':'ce3ba23a-ElevenLabs_2026-11-05T15_25_38_Danit_-_Natural_Israeli_Hebrew_pvc_s50_sim75_v4.mp3','cuts':[0,5.0,7.3,11.33,13.95,16.7,19.05],'ids':['p1','p2','p3','p4','p5','p6','cta']},
+    '10':{'m':U+'4cf73a77-____________2.mp3','vp':'/home/user/nvs/mitsi-ads/audio/zimmer-omer-take1.mp3','v':'','cuts':[0,3.13,4.4,8.35,10.77,14.95,23.02,26.71,28.8,32.9],'ids':['z1','z2','z3','z4','z5','z6','z7','z8','z9','cta']},
     '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():
-    d=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',U+a['v']]))
+    d=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',a.get('vp',U+a['v'])]))
     END=round(d+TAIL,2);c=a['cuts']
     seg=[[c[i],c[i+1] if i+1<len(c) else END,a['ids'][i]] for i in range(len(c))]
     out[k]={'seg':seg,'total':END}
@@ -26,7 +27,7 @@ for k,a in AD.items():
     for i in range(n):
         dl=int(max(0,(c[i+1]-0.3))*1000);f.append(f"[ws{i}]aresample=48000,volume=0.35,adelay={dl}|{dl},apad=whole_dur={END}[w{i}]");wh.append(f'[w{i}]')
     f.append(f"[voice][mus]{''.join(wh)}amix=inputs={2+n}:normalize=0:duration=longest,atrim=0:{END}[out]")
-    subprocess.run(['ffmpeg','-y','-loglevel','error','-i',U+a['v'],'-i',a.get('m',MUS),'-i',A+'whoosh.wav','-filter_complex',';'.join(f),'-map','[out]','-c:a','aac','-b:a','192k',A+f'audio{k}.m4a'],check=True)
+    subprocess.run(['ffmpeg','-y','-loglevel','error','-i',a.get('vp',U+a['v']),'-i',a.get('m',MUS),'-i',A+'whoosh.wav','-filter_complex',';'.join(f),'-map','[out]','-c:a','aac','-b:a','192k',A+f'audio{k}.m4a'],check=True)
 s=open('ads.tpl.html').read()
 s=s.replace('/*ADS*/{}/*/ADS*/','/*ADS*/'+json.dumps(out)+'/*/ADS*/')
 s=s.replace('<!--LOGO-->',open(A+'logo_svg.txt').read().replace('viewBox="0 0 1600 600"','viewBox="200 40 1500 520"'))

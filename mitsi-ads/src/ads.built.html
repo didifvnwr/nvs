@@ -47,7 +47,7 @@ const ease=x=>1-Math.pow(1-clamp(x),3);
 const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 const seg=(lt,d,dur)=>ease((lt-d)/dur);
 const AD=new URLSearchParams(location.search).get('ad')||'1';
-const ADS=/*ADS*/{"1": {"seg": [[0, 3.2, "a1"], [3.2, 6.9, "a2"], [6.9, 12.15, "a3"], [12.15, 16.43, "a4"], [16.43, 21.82, "a5"], [21.82, 25.42, "a6"], [25.42, 27.85, "a7"], [27.85, 35.63, "cta"]], "total": 35.63}, "2": {"seg": [[0, 3.25, "b1"], [3.25, 5.55, "b2"], [5.55, 9.2, "b3"], [9.2, 14.3, "b4"], [14.3, 16.25, "b5"], [16.25, 24.27, "cta"]], "total": 24.27}, "3": {"seg": [[0, 3.85, "e1"], [3.85, 8.6, "e2"], [8.6, 12.4, "e3"], [12.4, 16.0, "e4"], [16.0, 23.72, "cta"]], "total": 23.72}, "5": {"seg": [[0, 2.8, "f1"], [2.8, 6.5, "f2"], [6.5, 11.3, "f3"], [11.3, 15.95, "f4"], [15.95, 20.0, "f5"], [20.0, 27.88, "cta"]], "total": 27.88}, "6": {"seg": [[0, 3.55, "g1"], [3.55, 6.85, "g2"], [6.85, 10.5, "g3"], [10.5, 14.55, "g4"], [14.55, 18.7, "g5"], [18.7, 21.8, "g6"], [21.8, 29.55, "cta"]], "total": 29.55}, "7": {"seg": [[0, 2.8, "h1"], [2.8, 6.5, "h2"], [6.5, 11.3, "h3"], [11.3, 15.95, "h4"], [15.95, 20.0, "h5"], [20.0, 27.88, "cta"]], "total": 27.88}, "8": {"seg": [[0, 3.55, "k1"], [3.55, 6.85, "k2"], [6.85, 10.5, "k3"], [10.5, 14.55, "k4"], [14.55, 18.7, "k5"], [18.7, 21.8, "k6"], [21.8, 29.55, "cta"]], "total": 29.55}, "9": {"seg": [[0, 5.0, "p1"], [5.0, 7.3, "p2"], [7.3, 11.33, "p3"], [11.33, 13.95, "p4"], [13.95, 16.7, "p5"], [16.7, 19.05, "p6"], [19.05, 26.91, "cta"]], "total": 26.91}, "4": {"seg": [[0, 4.08, "d1"], [4.08, 8.18, "d2"], [8.18, 10.4, "d3"], [10.4, 15.25, "d4"], [15.25, 19.0, "d5"], [19.0, 26.75, "cta"]], "total": 26.75}}/*/ADS*/;
+const ADS=/*ADS*/{"1": {"seg": [[0, 3.2, "a1"], [3.2, 6.9, "a2"], [6.9, 12.15, "a3"], [12.15, 16.43, "a4"], [16.43, 21.82, "a5"], [21.82, 25.42, "a6"], [25.42, 27.85, "a7"], [27.85, 35.63, "cta"]], "total": 35.63}, "2": {"seg": [[0, 3.25, "b1"], [3.25, 5.55, "b2"], [5.55, 9.2, "b3"], [9.2, 14.3, "b4"], [14.3, 16.25, "b5"], [16.25, 24.27, "cta"]], "total": 24.27}, "3": {"seg": [[0, 3.85, "e1"], [3.85, 8.6, "e2"], [8.6, 12.4, "e3"], [12.4, 16.0, "e4"], [16.0, 23.72, "cta"]], "total": 23.72}, "5": {"seg": [[0, 2.8, "f1"], [2.8, 6.5, "f2"], [6.5, 11.3, "f3"], [11.3, 15.95, "f4"], [15.95, 20.0, "f5"], [20.0, 27.88, "cta"]], "total": 27.88}, "6": {"seg": [[0, 3.55, "g1"], [3.55, 6.85, "g2"], [6.85, 10.5, "g3"], [10.5, 14.55, "g4"], [14.55, 18.7, "g5"], [18.7, 21.8, "g6"], [21.8, 29.55, "cta"]], "total": 29.55}, "7": {"seg": [[0, 2.8, "h1"], [2.8, 6.5, "h2"], [6.5, 11.3, "h3"], [11.3, 15.95, "h4"], [15.95, 20.0, "h5"], [20.0, 27.88, "cta"]], "total": 27.88}, "8": {"seg": [[0, 3.55, "k1"], [3.55, 6.85, "k2"], [6.85, 10.5, "k3"], [10.5, 14.55, "k4"], [14.55, 18.7, "k5"], [18.7, 21.8, "k6"], [21.8, 29.55, "cta"]], "total": 29.55}, "9": {"seg": [[0, 5.0, "p1"], [5.0, 7.3, "p2"], [7.3, 11.33, "p3"], [11.33, 13.95, "p4"], [13.95, 16.7, "p5"], [16.7, 19.05, "p6"], [19.05, 26.91, "cta"]], "total": 26.91}, "10": {"seg": [[0, 3.13, "z1"], [3.13, 4.4, "z2"], [4.4, 8.35, "z3"], [8.35, 10.77, "z4"], [10.77, 14.95, "z5"], [14.95, 23.02, "z6"], [23.02, 26.71, "z7"], [26.71, 28.8, "z8"], [28.8, 32.9, "z9"], [32.9, 39.63, "cta"]], "total": 39.63}, "4": {"seg": [[0, 4.08, "d1"], [4.08, 8.18, "d2"], [8.18, 10.4, "d3"], [10.4, 15.25, "d4"], [15.25, 19.0, "d5"], [19.0, 26.75, "cta"]], "total": 26.75}}/*/ADS*/;
 const TL=ADS[AD];const SEG=TL.seg;
 function pingpong(n,max){let i=Math.floor(n)+1;const period=2*(max-1);i=((i-1)%period+period)%period;if(i>=max)i=period-i;return i+1}
 const fw=(dir,start,lt,spd,max)=>`clips/${dir}/${String(Math.min(max,Math.max(1,Math.floor(start+lt*24*spd)+1))).padStart(4,'0')}.jpg`;
@@ -436,6 +436,48 @@ S('p6',`<img class="bgv" id="v6">${BOT9}
 <div class="abs big" id="p6k" style="left:0;right:0;top:830px;font-size:44px;font-weight:500">כל מה שצריך</div>
 <div class="abs big gt" id="p6h" style="left:0;right:0;top:890px;font-size:80px">זה אינטרנט</div>`);
 }
+/* ---------- AD 10: hospitality / zimmers ---------- */
+if(AD==='10'){
+const BOTZ=`<div class="tint" style="background:linear-gradient(180deg,rgba(2,6,14,.25) 0%,transparent 18%,transparent 42%,rgba(2,6,14,.88) 70%,rgba(2,6,14,.95) 100%)"></div>`;
+const chat=(id,top,h)=>`<div class="glass abs" id="${id}" style="left:80px;right:80px;top:${top}px;height:${h}px;padding:16px 18px;background:#0b141a;border-color:#25d366"><div style="display:flex;align-items:center;gap:12px;font-size:24px;font-weight:800;color:#e9edef"><span style="width:42px;height:42px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center">🏡</span>צימר נוף הגליל · WhatsApp</div><div id="${id}x" style="position:relative"></div></div>`;
+S('z1',`<img class="bgv" id="v1">${BOTZ}
+<div class="glass abs" id="z1c" style="left:80px;right:80px;top:700px;height:110px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(4,10,24,.78)"><span style="font-size:34px;font-weight:800">📞 מחייגת לצימר...</span><span class="o" id="z1r" style="font-size:18px;color:var(--cy)">CALLING</span></div>
+<div class="abs big gt" id="z1h" style="left:10px;right:10px;top:840px;font-size:54px">לסגור צימר לסוף השבוע</div>`);
+S('z2',`<img class="bgv" id="v2" style="filter:saturate(.4) brightness(.6)">${BOTZ}<div class="tint" style="background:rgba(80,0,10,.25)"></div>
+<div class="glass abs" id="z2c" style="left:80px;right:80px;top:640px;height:110px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-color:#ff6b7a;background:rgba(30,4,10,.8)"><span style="font-size:34px;font-weight:800;color:#ffb3bb">📵 אין מענה</span><span class="o" id="z2n" style="font-size:22px;color:#ff6b7a">RING 7</span></div>
+<div class="abs big" id="z2h" style="left:0;right:0;top:800px;font-size:100px;color:#ff6b7a;text-shadow:0 0 30px rgba(255,107,122,.5)">אין מענה.</div>`);
+S('z3',`${tint(0,0)}
+<div class="abs big gt" id="z3h" style="left:0;right:0;top:190px;font-size:58px">אז הוא מתקשר<br>לבא בתור</div>
+<div class="glass card" id="z3a" style="top:400px;height:130px;font-size:36px;border-color:rgba(255,107,122,.6);opacity:.5"><span>🏡 הצימר שלכם</span><span style="color:#ff6b7a;font-size:30px">✕ לא ענו</span></div>
+<div class="abs" id="z3ar" style="left:0;right:0;top:545px;text-align:center;font-size:54px;color:#e0b877">⬇</div>
+<div class="glass card" id="z3b" style="top:630px;height:130px;font-size:36px;border-color:#28c840"><span>🏡 המתחרה</span><span style="color:#7dffa0;font-size:30px">✓ הוזמן</span></div>
+<div class="abs big" id="z3t" style="left:0;right:0;top:810px;font-size:44px;color:#ffb3bb">וסוגר אצלו.</div>`);
+S('z4',`<img class="bgv" id="v4">${tint(.65,.9)}
+<div class="abs big" id="z4k" style="left:0;right:0;top:430px;font-size:52px;font-weight:500">עם <span class="gt" style="font-weight:800">מיצי תקשורת</span></div>
+<div class="abs big gt" id="z4h" style="left:0;right:0;top:510px;font-size:100px">זה לא קורה.</div>`);
+S('z5',`${tint(0,0)}
+<div class="abs big gt" id="z5h" style="left:0;right:0;top:190px;font-size:58px">הטלפון מצלצל<br>כמה שתרצו</div>
+<div class="glass abs" id="z5c" style="left:120px;right:120px;top:400px;height:330px;padding:26px;text-align:center;background:rgba(4,10,24,.85)">
+ <div style="font-size:70px" id="z5i">📞</div><div class="o" id="z5t" style="font-size:64px;color:var(--cy);margin-top:10px">00:00</div><div style="font-size:26px;color:var(--dim);margin-top:10px">שיחה נכנסת · ממתינה</div></div>
+<div class="abs" id="z5ok" style="left:0;right:0;top:780px;text-align:center"><span class="chip" style="font-size:34px;border-color:#28c840;color:#7dffa0">✓ השיחה לא מתנתקת</span></div>`);
+S('z6',`${tint(0,0)}
+<div class="abs" id="z6n" style="left:0;right:0;top:160px;text-align:center"><span class="chip" style="font-size:28px;border-color:#ff6b7a;color:#ffb3bb">אין מענה?</span><span class="chip" style="font-size:28px">🎙 בוט קולי</span><span class="chip" style="font-size:28px;border-color:#25d366;color:#7dffa0">💬 בוט וואטסאפ</span></div>
+${chat('z6p',250,760)}`);
+S('z7',`<img class="bgv" id="v7">${tint(.7,.9)}
+<div class="abs big gt" id="z7h" style="left:0;right:0;top:190px;font-size:56px">ואתם מצטרפים<br>מתי שנוח לכם</div>
+${chat('z7p',390,520)}`);
+S('z8',`${tint(0,0)}<div class="abs" id="z8g" style="left:-100px;right:-100px;top:300px;height:600px;background:radial-gradient(ellipse at center,rgba(40,200,64,.22),transparent 65%)"></div>
+<div class="abs" id="z8i" style="left:0;right:0;top:350px;text-align:center;font-size:140px;color:#28c840;text-shadow:0 0 40px rgba(40,200,64,.6)">✓</div>
+<div class="abs big gt" id="z8h" style="left:0;right:0;top:560px;font-size:76px">אף אורח לא הולך<br>למתחרים</div>`);
+S('z9',`${tint(0,0)}<div class="abs" id="z9g" style="left:-100px;right:-100px;top:300px;height:600px;background:radial-gradient(ellipse at center,rgba(63,208,255,.25),transparent 65%)"></div>
+<div class="abs big gt" id="z9a" style="left:0;right:0;top:330px;font-size:96px">מיצי</div>
+<div class="abs big" id="z9s" style="left:0;right:0;top:440px;font-size:44px;font-weight:300;letter-spacing:10px;color:#8fc9ec">תקשורת</div>
+<div class="abs big" id="z9b" style="left:0;right:0;top:560px;font-size:64px">לא מאבדים אף שיחה</div>
+<div class="abs big gold" id="z9c" style="left:0;right:0;top:660px;font-size:64px">בעלות מינימלית</div>`);
+var ZM=[['b','היי! 👋 כאן הבוט של הצימר. לאילו תאריכים?',0],['u','שישי–שבת, זוג',1],['b','יש זמינות 🎉 בקתה עם ג׳קוזי · ארוחת בוקר כלולה',2],['u','מעולה, אפשר לסגור?',3],['b','✓ ההזמנה נסגרה! נשלח אישור',4]];
+$('z6px').innerHTML=ZM.map((m,i)=>`<div class="bub ${m[0]==='b'?'w':'u'}" id="zm${i}" style="${m[0]==='b'?'right:0':'left:0'};top:${20+i*128}px;max-width:470px;font-size:25px;opacity:0">${m[1]}</div>`).join('');
+$('z7px').innerHTML=`<div class="bub w" id="zh0" style="right:0;top:20px;max-width:470px;font-size:24px">✓ ההזמנה נסגרה! נשלח אישור</div><div id="zh1" style="position:absolute;left:0;right:0;top:130px;text-align:center;font-size:22px;color:#e0b877;font-weight:800;opacity:0">— 👤 בעל הצימר הצטרף לשיחה —</div><div class="bub u" id="zh2" style="left:0;top:190px;max-width:470px;font-size:25px;opacity:0;background:#e0b877;color:#2a1b02">היי, כאן יוסי מהצימר 🙂 מחכים לכם!</div><div class="bub w" id="zh3" style="right:0;top:320px;max-width:470px;font-size:25px;opacity:0;background:#fff;color:#0a1830">תודה! 😍</div>`;
+}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -506,6 +548,16 @@ async function render(t){
  if(id==='p4'){jobs.push(setImg($('v4'),fw('city',0,lt,1,199)));sh('p4a',lt,.05,.35,0,-20);$('p4s').style.opacity=seg(lt,.5,.3);const q=clamp((lt-.6)/1.2);const P=$('p4s').querySelector('path');const L=P.getTotalLength(),pt=P.getPointAtLength(L*eio(q));$('p4dot').setAttribute('cx',pt.x);$('p4dot').setAttribute('cy',pt.y);sh('p4b',lt,1.6,.35,0,20)}
  if(id==='p5'){jobs.push(setImg($('v5'),fw('cafe',140,lt,.8,240)));pop('p5c',lt,.6,.4)}
  if(id==='p6'){jobs.push(setImg($('v6'),fw('cafe',193,lt,.8,240)));['pw1','pw2','pw3'].forEach((w,i)=>$(w).style.opacity=seg(lt,.1+i*.2,.2)*(.6+.4*Math.sin(t*5-i)));sh('p6k',lt,.2,.35);sh('p6h',lt,.9,.4)}
+ // AD 10
+ if(id==='z1'){jobs.push(setImg($('v1'),fw('cafe',0,lt,1,240)));sh('z1c',lt,.2,.35,0,20);$('z1r').style.opacity=.4+.6*Math.abs(Math.sin(t*5));sh('z1h',lt,.8,.4)}
+ if(id==='z2'){jobs.push(setImg($('v2'),fw('cafe',75,lt,.6,240)));pop('z2c',lt,.05,.3);$('z2n').textContent='RING '+(5+Math.floor(lt*2));pop('z2h',lt,.25,.35)}
+ if(id==='z3'){sh('z3h',lt,.05);sh('z3a',lt,.6,.3,60,0);$('z3a').style.opacity=.55*seg(lt,.6,.3);sh('z3ar',lt,1.2,.3);pop('z3b',lt,1.6,.35);sh('z3t',lt,2.6,.35)}
+ if(id==='z4'){jobs.push(setImg($('v4'),fw('city',0,lt,1,199)));sh('z4k',lt,.05);pop('z4h',lt,.5,.4)}
+ if(id==='z5'){sh('z5h',lt,.05);sh('z5c',lt,.3,.4);const sec=Math.floor(lt*12);$('z5t').textContent='00:'+String(Math.min(59,sec)).padStart(2,'0');$('z5i').style.transform=`rotate(${Math.sin(t*30)*12}deg)`;pop('z5ok',lt,2.2,.35)}
+ if(id==='z6'){sh('z6n',lt,.05);sh('z6p',lt,.4,.4,0,30);ZM.forEach((m,i)=>pop('zm'+i,lt,[1.3,2.6,4.2,5.4,6.6][i],.3))}
+ if(id==='z7'){jobs.push(setImg($('v7'),fw('hands',0,lt,1,360)));sh('z7h',lt,.05);sh('z7p',lt,.2,.4,0,30);sh('zh1',lt,.9,.3,0,0);pop('zh2',lt,1.5,.3);pop('zh3',lt,2.6,.3)}
+ if(id==='z8'){pop('z8i',lt,.05,.45);sh('z8h',lt,.35,.4);$('z8g').style.opacity=.6+.4*Math.sin(t*3)}
+ if(id==='z9'){pop('z9a',lt,.05,.4);sh('z9s',lt,.4,.35);sh('z9b',lt,1.1,.4);pop('z9c',lt,2.6,.4);$('z9g').style.opacity=.6+.4*Math.sin(t*3)}
  await Promise.all(jobs);
 }
 window.render=render;
