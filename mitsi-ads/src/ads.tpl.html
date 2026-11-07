@@ -475,6 +475,42 @@ S('q8',`${tint(0,0)}<div class="abs" id="q8g" style="left:-100px;right:-100px;to
 <div class="abs big" id="q8b" style="left:0;right:0;top:570px;font-size:72px">כל שיחה</div>
 <div class="abs big gold" id="q8c" style="left:0;right:0;top:670px;font-size:72px">= לקוח</div>`);
 }
+/* ---------- AD 13: PBX of the future, run by your AI agent ---------- */
+if(AD==='13'){
+const BOTX=`<div class="tint" style="background:linear-gradient(180deg,rgba(2,6,14,.25) 0%,transparent 18%,transparent 42%,rgba(2,6,14,.88) 70%,rgba(2,6,14,.95) 100%)"></div>`;
+S('x1',`<img class="bgv" id="v1">${BOTX}
+<div class="abs big" id="x1k" style="left:0;right:0;top:780px;font-size:46px;font-weight:500">ככה נראית</div>
+<div class="abs big gt" id="x1h" style="left:10px;right:10px;top:840px;font-size:76px">מרכזייה מהעתיד</div>`);
+S('x2',`${tint(0,0)}
+<div class="abs" id="x2p" style="left:90px;right:90px;top:200px;height:440px;border-radius:14px;background:#d9dde3;padding:14px;box-sizing:border-box;filter:grayscale(1)">
+ <div style="height:30px;background:#9aa3ad;border-radius:6px"></div>
+ <div id="x2g" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px"></div></div>
+<svg class="full" id="x2x" style="opacity:0"><path d="M120 230 L600 610 M600 230 L120 610" stroke="#ff6b7a" stroke-width="16" stroke-linecap="round"/></svg>
+<div class="abs big" id="x2a" style="left:0;right:0;top:700px;font-size:50px;color:#ffb3bb">בלי מסכי ניהול מסובכים</div>
+<div class="abs big gt" id="x2b" style="left:0;right:0;top:780px;font-size:56px">ובלי לחכות לטכנאי</div>`);
+S('x3',`<img class="bgv" id="v3">${BOTX}
+<div class="abs big" id="x3k" style="left:0;right:0;top:790px;font-size:46px;font-weight:500">כל מה שצריך</div>
+<div class="abs big gt" id="x3h" style="left:10px;right:10px;top:850px;font-size:62px">אומרים לסוכן החכם</div>`);
+S('x4',`<img class="bgv" id="v4">${BOTX}
+<div class="abs o" id="x4k" style="left:0;right:0;top:600px;text-align:center;font-size:15px;color:var(--cy)">AI AGENT · LISTENING</div>
+${[0,1,2].map(i=>`<div class="abs" id="xr${i}" style="left:60px;right:60px;top:${650+i*120}px;height:100px;opacity:0"><div class="bub u" style="right:0;top:0;max-width:470px;font-size:27px">${['תפנה את השיחות לנייד שלי','תעדכן שעות פעילות לחג','תוסיף שלוחה למכירות'][i]}</div><div class="bub a" id="xd${i}" style="left:0;top:4px;font-size:24px;opacity:0">✓ בוצע</div></div>`).join('')}`);
+S('x5',`${tint(0,0)}<div class="abs" id="x5g" style="left:-100px;right:-100px;top:300px;height:600px;background:radial-gradient(ellipse at center,rgba(63,208,255,.3),transparent 65%)"></div>
+<div class="abs" id="x5i" style="left:0;right:0;top:360px;text-align:center;font-size:150px;color:#3fd0ff;text-shadow:0 0 40px rgba(63,208,255,.7)">✓</div>
+<div class="abs big" id="x5k" style="left:0;right:0;top:580px;font-size:56px">והוא מבצע.</div>
+<div class="abs big gt" id="x5h" style="left:0;right:0;top:660px;font-size:110px">מיד.</div>`);
+S('x6',`<img class="bgv" id="v6">${tint(.7,.9)}
+<div class="glass card" id="x6a" style="top:240px;height:110px;font-size:40px"><span>הניהול</span><span class="ic">⚙</span></div>
+<div class="glass card" id="x6b" style="top:370px;height:110px;font-size:40px"><span>העדכונים</span><span class="ic">⟳</span></div>
+<div class="glass card" id="x6c" style="top:500px;height:110px;font-size:40px"><span>ההפניות</span><span class="ic">↪</span></div>
+<div class="abs big" id="x6k" style="left:0;right:0;top:680px;font-size:46px;font-weight:500">הכל מול</div>
+<div class="abs big gt" id="x6h" style="left:0;right:0;top:740px;font-size:70px">הסוכן החכם שלכם</div>`);
+S('x7',`<img class="bgv" id="v7">${tint(.65,.9)}
+<div class="abs big gt" id="x7a" style="left:0;right:0;top:330px;font-size:96px">מיצי</div>
+<div class="abs big" id="x7s" style="left:0;right:0;top:440px;font-size:44px;font-weight:300;letter-spacing:10px;color:#8fc9ec">תקשורת</div>
+<div class="abs big" id="x7b" style="left:0;right:0;top:570px;font-size:64px">המרכזייה מהעתיד</div>
+<div class="abs big gold" id="x7c" style="left:0;right:0;top:670px;font-size:72px">כבר כאן</div>`);
+$('x2g').innerHTML=Array.from({length:28},(_,i)=>`<div style="height:46px;border-radius:5px;background:${['#b9c0c8','#c9ced4','#a7afb8'][i%3]};display:flex;align-items:center;justify-content:center;font-size:13px;color:#4a525c;font-family:monospace">${['SIP','IVR','QUEUE','TRUNK','DID','ACD','CODEC','NAT'][i%8]}</div>`).join('');
+}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -573,6 +609,14 @@ async function render(t){
  if(id==='q6'){jobs.push(setImg($('v6'),fw('skull',100,lt,1,480)));sh('q6h',lt,.05);sh('q6p',lt,.3,.4,0,30);['q6l1','q6l2','q6l3'].forEach((l,i)=>$(l).style.opacity=seg(lt,.8+i*.5,.3));pop('q6s',lt,2.3,.35)}
  if(id==='q7'){jobs.push(setImg($('v7'),fw('office',140,lt,1,240)));pop('q7c',lt,.6,.35);sh('q7h',lt,1.6,.4)}
  if(id==='q8'){pop('q8a',lt,.05,.4);sh('q8s',lt,.35,.35);pop('q8b',lt,1.0,.35);pop('q8c',lt,1.8,.35);$('q8g').style.opacity=.6+.4*Math.sin(t*3)}
+ // AD 13
+ if(id==='x1'){jobs.push(setImg($('v1'),fw('expo',0,lt,1,240)));sh('x1k',lt,.1);sh('x1h',lt,.4,.4,0,30)}
+ if(id==='x2'){sh('x2p',lt,.05,.35);$('x2x').style.opacity=seg(lt,.9,.2);$('x2p').style.opacity=1-.5*seg(lt,1.1,.4);sh('x2a',lt,.4,.35);sh('x2b',lt,1.7,.35)}
+ if(id==='x3'){jobs.push(setImg($('v3'),fw('expo',57,lt,1,240)));sh('x3k',lt,.1);sh('x3h',lt,.9,.4,0,30)}
+ if(id==='x4'){jobs.push(setImg($('v4'),fw('expo',125,lt,.86,240)));$('x4k').style.opacity=.4+.6*Math.abs(Math.sin(t*3));[0,1,2].forEach(i=>{const d=[.1,1.97,3.78][i];sh('xr'+i,lt,d,.3,40,0);pop('xd'+i,lt,d+1.0,.3)})}
+ if(id==='x5'){pop('x5i',lt,.05,.4);sh('x5k',lt,.1,.3);pop('x5h',lt,.8,.35);$('x5g').style.opacity=.6+.4*Math.sin(t*4)}
+ if(id==='x6'){jobs.push(setImg($('v6'),fw('hands',0,lt,1,360)));sh('x6a',lt,.05,.3,60,0);sh('x6b',lt,.7,.3,60,0);sh('x6c',lt,1.5,.3,60,0);sh('x6k',lt,2.2,.3);sh('x6h',lt,2.6,.4)}
+ if(id==='x7'){jobs.push(setImg($('v7'),fw('city',0,lt,1,199)));pop('x7a',lt,.05,.4);sh('x7s',lt,.4,.35);sh('x7b',lt,1.2,.4);pop('x7c',lt,2.6,.4)}
  await Promise.all(jobs);
 }
 window.render=render;
