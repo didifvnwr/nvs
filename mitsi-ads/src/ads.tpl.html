@@ -435,6 +435,46 @@ S('y10',`${tint(0,0)}<div class="abs" id="y10g" style="left:-100px;right:-100px;
 var YM=[['b','היי! 👋 תודה שהתקשרתם. לאילו תאריכים?'],['u','חמישי–שבת, משפחה'],['b','יש זמינות 🎉 בקתה משפחתית עם ג׳קוזי'],['u','סוגרים!'],['b','✓ ההזמנה נסגרה! נשלח אישור']];
 $('y8x').innerHTML=YM.map((m,i)=>`<div class="bub ${m[0]==='b'?'w':'u'}" id="ym${i}" style="${m[0]==='b'?'right:0':'left:0'};top:${20+i*132}px;max-width:470px;font-size:25px;opacity:0">${m[1]}</div>`).join('');
 }
+/* ---------- AD 12: every lost call is a lost customer ---------- */
+if(AD==='12'){
+const BOTQ=`<div class="tint" style="background:linear-gradient(180deg,rgba(2,6,14,.25) 0%,transparent 18%,transparent 42%,rgba(2,6,14,.88) 70%,rgba(2,6,14,.95) 100%)"></div>`;
+S('q1',`<img class="bgv" id="v1">${BOTQ}
+<div class="abs big gt" id="q1h" style="left:20px;right:20px;top:790px;font-size:76px">כמה שווה לכם<br>שיחה אחת?</div>`);
+S('q2',`${tint(0,0)}
+<div class="glass card" id="q2a" style="top:250px;height:130px;font-size:36px;border-color:rgba(255,107,122,.7);background:rgba(30,4,10,.7)"><span>📵 שיחה שלא נענתה</span><span style="color:#ff6b7a;font-size:30px">✕</span></div>
+<div class="abs" id="q2ar" style="left:0;right:0;top:400px;text-align:center;font-size:60px;color:#e0b877">⬇</div>
+<div class="glass card" id="q2b" style="top:490px;height:130px;font-size:36px;border-color:#e0b877"><span>🏃 לקוח שמתקשר למתחרה</span><span style="font-size:30px">😬</span></div>
+<div class="abs big" id="q2h" style="left:0;right:0;top:690px;font-size:56px;color:#ffb3bb">כל שיחה שלא נענית<br>= לקוח שהלך</div>`);
+S('q3',`<img class="bgv" id="v3">${BOTQ}
+<div class="abs big" id="q3k" style="left:0;right:0;top:700px;font-size:48px">וזה קורה כל יום</div>
+<div class="abs" id="q3c" style="left:20px;right:20px;top:790px;text-align:center"><span class="chip" id="q3c1" style="font-size:32px">📅 בפגישה</span><span class="chip" id="q3c2" style="font-size:32px">🚗 בנסיעה</span><span class="chip" id="q3c3" style="font-size:32px">🥗 בהפסקת צהריים</span></div>`);
+S('q4',`<img class="bgv" id="v4">${tint(.65,.9)}
+<div class="abs big" id="q4k" style="left:0;right:0;top:400px;font-size:52px;font-weight:500">עם <span class="gt" style="font-weight:800">מיצי תקשורת</span></div>
+<div class="abs big gt" id="q4h" style="left:0;right:0;top:480px;font-size:76px">אף שיחה<br>לא הולכת לאיבוד</div>`);
+S('q5',`${tint(0,0)}
+<div class="glass card" id="q5a" style="top:200px;height:110px;font-size:36px"><span>📱 בנייד</span><span class="o" id="q5ra" style="font-size:18px;color:#7dffa0">RINGING</span></div>
+<div class="glass card" id="q5b" style="top:325px;height:110px;font-size:36px"><span>☎ ובמשרד</span><span class="o" id="q5rb" style="font-size:18px;color:#7dffa0">RINGING</span></div>
+<div class="abs" id="q5n" style="left:0;right:0;top:470px;text-align:center"><span class="chip" style="font-size:32px;border-color:#ff6b7a;color:#ffb3bb">אין מענה?</span></div>
+<div class="abs" id="q5c" style="left:0;right:0;top:560px;text-align:center"><span class="chip" style="font-size:30px">🎙 בוט קולי</span><span class="chip" style="font-size:30px;border-color:#25d366;color:#7dffa0">💬 בוט וואטסאפ</span></div>
+<div class="bub w" id="q5w" style="right:80px;top:680px;max-width:540px;font-size:27px"><span style="font-size:17px;color:#1f8a3a">WhatsApp Bot</span><br>היי! ראינו שהתקשרת 👋 איך אפשר לעזור?</div>
+<div class="abs big gt" id="q5h" style="left:0;right:0;top:860px;font-size:54px">עונים מיד</div>`);
+S('q6',`<img class="bgv" id="v6">${tint(.72,.92)}
+<div class="abs big gt" id="q6h" style="left:0;right:0;top:200px;font-size:58px">מבינים מה הלקוח צריך</div>
+<div class="glass abs" id="q6p" style="left:70px;right:70px;top:330px;height:300px;padding:22px 26px;background:rgba(4,10,24,.88);border-color:#e0b877">
+ <div style="display:flex;justify-content:space-between;font-size:27px;font-weight:800"><span>📝 פנייה חדשה</span><span class="o" style="font-size:13px;color:#e0b877">AI SUMMARY</span></div>
+ <div id="q6l1" style="margin-top:16px;font-size:27px;opacity:0">👤 רונית · 052-•••••18</div>
+ <div id="q6l2" style="margin-top:10px;font-size:27px;opacity:0">💬 מעוניינת בהצעת מחיר</div>
+ <div id="q6l3" style="margin-top:10px;font-size:27px;opacity:0;color:#e0b877;font-weight:800">⏱ לחזור היום</div></div>
+<div class="abs" id="q6s" style="left:0;right:0;top:680px;text-align:center"><span class="chip" style="font-size:34px;border-color:#28c840;color:#7dffa0">📲 הועבר אליכם</span></div>`);
+S('q7',`<img class="bgv" id="v7">${BOTQ}
+<div class="glass abs" id="q7c" style="left:80px;right:80px;top:700px;height:110px;display:flex;align-items:center;justify-content:center;gap:14px;font-size:36px;font-weight:800;border-color:#28c840;background:rgba(4,20,10,.72)">📞 חוזרים ללקוח</div>
+<div class="abs big gt" id="q7h" style="left:0;right:0;top:850px;font-size:56px">לפני המתחרה ⏱</div>`);
+S('q8',`${tint(0,0)}<div class="abs" id="q8g" style="left:-100px;right:-100px;top:300px;height:600px;background:radial-gradient(ellipse at center,rgba(63,208,255,.25),transparent 65%)"></div>
+<div class="abs big gt" id="q8a" style="left:0;right:0;top:330px;font-size:96px">מיצי</div>
+<div class="abs big" id="q8s" style="left:0;right:0;top:440px;font-size:44px;font-weight:300;letter-spacing:10px;color:#8fc9ec">תקשורת</div>
+<div class="abs big" id="q8b" style="left:0;right:0;top:570px;font-size:72px">כל שיחה</div>
+<div class="abs big gold" id="q8c" style="left:0;right:0;top:670px;font-size:72px">= לקוח</div>`);
+}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -524,6 +564,15 @@ async function render(t){
  if(id==='y8'){sh('y8n',lt,.05);sh('y8p',lt,.2,.4,0,30);YM.forEach((m,i)=>pop('ym'+i,lt,[.6,1.5,2.4,3.3,4.0][i],.28))}
  if(id==='y9'){jobs.push(setImg($('v9'),fw('beach',0,lt,1,140)));pop('y9b',lt,.1,.3);sh('y9j',lt,.6,.3,0,0);pop('y9m',lt,1.3,.3)}
  if(id==='y10'){pop('y10a',lt,.05,.4);sh('y10s',lt,.4,.35);pop('y10b',lt,1.0,.4);pop('y10c',lt,1.9,.4);$('y10g').style.opacity=.6+.4*Math.sin(t*3)}
+ // AD 12
+ if(id==='q1'){jobs.push(setImg($('v1'),fw('office',0,lt,1,240)));sh('q1h',lt,.1,.4,0,30)}
+ if(id==='q2'){sh('q2a',lt,.05,.3,60,0);sh('q2ar',lt,.8,.3);$('q2ar').style.transform=`translateY(${Math.abs(Math.sin(t*4))*8}px)`;pop('q2b',lt,1.3,.35);sh('q2h',lt,2.2,.4)}
+ if(id==='q3'){jobs.push(setImg($('v3'),fw('office',46,lt,.8,240)));sh('q3k',lt,.05);pop('q3c1',lt,1.4,.3);pop('q3c2',lt,2.4,.3);pop('q3c3',lt,3.3,.3)}
+ if(id==='q4'){jobs.push(setImg($('v4'),fw('city',0,lt,1,199)));sh('q4k',lt,.05);sh('q4h',lt,.6,.4)}
+ if(id==='q5'){sh('q5a',lt,.1,.3,60,0);sh('q5b',lt,.9,.3,60,0);['q5ra','q5rb'].forEach(r=>$(r).style.opacity=.4+.6*Math.abs(Math.sin(t*6)));pop('q5n',lt,2.4,.3);sh('q5c',lt,3.6,.35);pop('q5w',lt,4.6,.35);sh('q5h',lt,5.3,.35)}
+ if(id==='q6'){jobs.push(setImg($('v6'),fw('skull',100,lt,1,480)));sh('q6h',lt,.05);sh('q6p',lt,.3,.4,0,30);['q6l1','q6l2','q6l3'].forEach((l,i)=>$(l).style.opacity=seg(lt,.8+i*.5,.3));pop('q6s',lt,2.3,.35)}
+ if(id==='q7'){jobs.push(setImg($('v7'),fw('office',140,lt,1,240)));pop('q7c',lt,.6,.35);sh('q7h',lt,1.6,.4)}
+ if(id==='q8'){pop('q8a',lt,.05,.4);sh('q8s',lt,.35,.35);pop('q8b',lt,1.0,.35);pop('q8c',lt,1.8,.35);$('q8g').style.opacity=.6+.4*Math.sin(t*3)}
  await Promise.all(jobs);
 }
 window.render=render;
