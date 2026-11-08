@@ -16,6 +16,7 @@ AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27
     '12':{'m':U+'23d20477-____________5.mp3','vp':'/home/user/nvs/mitsi-ads/audio/lost-calls-danit-v2-take1.mp3','v':'','cuts':[0,1.9,5.6,10.5,13.6,19.97,23.14,27.3,30.2],'ids':['q1','q2','q3','q4','q5','q6','q7','q8','cta']},
     '13':{'m':U+'4cf73a77-____________2.mp3','vp':'/home/user/nvs/mitsi-ads/audio/future-danit-take1-fixed.mp3','v':'','cuts':[0,2.37,5.74,8.58,14.15,16.15,20.86,24.71],'ids':['x1','x2','x3','x4','x5','x6','x7','cta']},
     '14':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/allinone-danit-take2.mp3','v':'','cuts':[0,4.27,8.58,15.05,17.96,22.04,26.2],'ids':['w1','w2','w3','w4','w5','w6','cta']},
+    '15':{'m':U+'4cf73a77-____________2.mp3','vp':'/home/user/nvs/mitsi-ads/audio/claude-pbx-v2-take1.mp3','v':'','cuts':[0,3.86,9.92,14.83,24.30,27.78,34.87,41.10,44.78,48.07,50.62],'ids':['u1','u2','u3','u4','u5','u6','u7','u8','u9','u10','cta']},
     '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():
@@ -24,6 +25,7 @@ for k,a in AD.items():
     seg=[[c[i],c[i+1] if i+1<len(c) else END,a['ids'][i]] for i in range(len(c))]
     out[k]={'seg':seg,'total':END}
     n=len(c)-1
+    if len(sys.argv)>1 and k not in sys.argv[1:]:continue
     f=[f"[0:a]loudnorm=I=-15:TP=-1.5,aresample=48000,apad=whole_dur={END}[voice]",
        f"[1:a]atrim=0:{END},asetpts=PTS-STARTPTS,aresample=48000,loudnorm=I=-29:TP=-3,afade=t=in:d=0.5,afade=t=out:st={END-2.5}:d=2.5[mus]",
        f"[2:a]asplit={n}"+''.join(f'[ws{i}]' for i in range(n))]
@@ -35,4 +37,7 @@ for k,a in AD.items():
 s=open('ads.tpl.html').read()
 s=s.replace('/*ADS*/{}/*/ADS*/','/*ADS*/'+json.dumps(out)+'/*/ADS*/')
 s=s.replace('<!--LOGO-->',open(A+'logo_svg.txt').read().replace('viewBox="0 0 1600 600"','viewBox="200 40 1500 520"'))
+import os
+if os.path.isdir(A+'clips/pres'):
+    s=s.replace("/*PRESDIR*/'conf'/*/PRESDIR*/","'pres'").replace('/*PRESN*/240/*/PRESN*/',str(len(os.listdir(A+'clips/pres'))))
 open(A+'ads.html','w').write(s);json.dump(out,open('timeline.json','w'));print(json.dumps(out))
