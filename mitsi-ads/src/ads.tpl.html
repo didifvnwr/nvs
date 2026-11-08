@@ -810,6 +810,131 @@ function frame17p(t,cur,lt,jobs){
  $('pleak').style.transform=`rotate(${t*12}deg)`;animWave('pwv17',t,t<36.6?.8:0,26);
  const g=(Math.floor(t*24)%97)<2;$('pimg17').style.transform=g?`translateX(${(Math.floor(t*24)%5-2)*4}px)`:'none';
 }
+/* ---------- AD 18: Mitsi the cat (Omer), flat vector character ---------- */
+const CO=1.4; // voice offset (yawn first)
+const MOUTH=/*MOUTH*/[]/*/MOUTH*/;
+const SUBS=[[0.9,2.54,'תגידו, אתם לא מתעייפים?'],[3.02,4.98,'כל היום "הלו, אני אחזור אליך"'],[5.4,6.68,'"הלו, אני בפקק"...'],[7.12,8.8,'מתי נשאר לכם זמן ללטף אותי?'],[9.1,11.4,'או יותר חשוב – לפתוח לי פחית שימורים?'],[11.94,13.96,'פעם, כדי להקים מרכזייה לעסק,'],[14.04,15.22,'הייתם צריכים טכנאי,'],[15.42,17.24,'שרתים שעושים רעש של שואב אבק'],[17.56,19.0,'– ואני שונא שואבי אבק –'],[19.34,20.24,'ומשכנתא קטנה.'],[20.56,21.96,'בקיצור, כאב ראש.'],[22.46,25.1,'אז במיצי תקשורת החלטנו לעשות לזה סוף.'],[25.38,28.96,'מרכזייה וירטואלית חכמה, זולה ופשוטה בטירוף.'],[29.32,29.92,'כמה פשוטה?'],[30.32,33.94,'אתם פשוט מדברים עם ה-AI, והוא מקים ומנהל לכם הכל.'],[34.22,36.62,'בלי קוד, בלי טכנאים ובלי דרמות.'],[36.96,38.76,'רוצים תפריט קולי? תכתבו לו.'],[39.12,42.9,'ניתוב שיחות חכם או סיכום שיחה אוטומטי? תבקשו ממנו.'],[43.24,45.84,'כל אחד יכול לחבר לעצמו מערכת בדקות.'],[46.14,49.34,'אם אני מצליח בלי אגודלים – גם אתם יכולים.'],[49.84,50.74,'מיצי תקשורת.'],[50.98,54.26,'מרכזייה חכמה במחיר של שתי שקיות חטיפים פרימיום.'],[54.6,57.96,'יאללה, תתחברו, שיהיה לכם זמן לדברים החשובים באמת...'],[58.4,58.84,'כמוני.'],[59.3,59.95,'מיאו.']];
+if(AD==='18'){
+/*CATJS*/
+const st=$('stage');st.style.background='#f6e7d2';
+['hud','scanl'].forEach(i=>$(i).style.display='none');
+const SVGW=(id,inner,bg)=>`<svg class="full" id="${id}" viewBox="0 0 720 1280">${bg||''}${inner}</svg>`;
+const OUT='#26242b';
+// Scene 1: living room
+S('c1',SVGW('c1s',`<rect width="720" height="1280" fill="#f6e7d2"/><rect y="930" width="720" height="350" fill="#e2bf95"/><line x1="0" y1="930" x2="720" y2="930" stroke="${OUT}" stroke-width="6"/>
+<rect x="60" y="170" width="230" height="300" rx="14" fill="#cfe9f7" stroke="${OUT}" stroke-width="6"/><line x1="175" y1="170" x2="175" y2="470" stroke="${OUT}" stroke-width="6"/><line x1="60" y1="320" x2="290" y2="320" stroke="${OUT}" stroke-width="6"/>
+<path d="M30 160 h290" stroke="${OUT}" stroke-width="8" stroke-linecap="round"/><path d="M40 160 q 30 120 0 330 M310 160 q -30 120 0 330" fill="#e8a0a8" stroke="${OUT}" stroke-width="5"/>
+<rect x="420" y="700" width="300" height="26" rx="6" fill="#b07a4f" stroke="${OUT}" stroke-width="6"/><rect x="450" y="726" width="18" height="206" fill="#9a6640" stroke="${OUT}" stroke-width="5"/><rect x="680" y="726" width="18" height="206" fill="#9a6640" stroke="${OUT}" stroke-width="5"/>
+<g id="c1bowl" transform="translate(500 1010)"><path d="M-70 0 L 70 0 L 52 40 L -52 40 Z" fill="#5aa9e6" stroke="${OUT}" stroke-width="6" stroke-linejoin="round"/><ellipse cx="0" cy="0" rx="70" ry="14" fill="#3b7fb8" stroke="${OUT}" stroke-width="6"/><text x="0" y="30" text-anchor="middle" font-size="22" font-weight="800" fill="#fff" font-family="H">MITSI</text></g>
+<g id="c1fly"><circle r="6" fill="${OUT}"/><ellipse cx="-6" cy="-6" rx="7" ry="4" fill="#cfe9f7" stroke="${OUT}" stroke-width="2"/><ellipse cx="6" cy="-6" rx="7" ry="4" fill="#cfe9f7" stroke="${OUT}" stroke-width="2"/></g>
+<g id="c1ph"><g id="c1phw"><path d="M-70 -30 q -16 30 0 60 M-90 -48 q -26 48 0 96 M70 -30 q 16 30 0 60 M90 -48 q 26 48 0 96" fill="none" stroke="#ff4d5e" stroke-width="6" stroke-linecap="round"/></g><rect x="-48" y="-80" width="96" height="160" rx="18" fill="#2c2c36" stroke="${OUT}" stroke-width="6"/><rect x="-38" y="-66" width="76" height="126" rx="8" fill="#4ec06b"/><text x="0" y="-10" text-anchor="middle" font-size="44">📞</text><text x="0" y="36" text-anchor="middle" font-size="16" font-weight="800" fill="#fff" font-family="H">שיחה נכנסת</text></g>
+<g id="c1th" opacity="0"><circle cx="300" cy="560" r="12" fill="#fff" stroke="${OUT}" stroke-width="5"/><circle cx="330" cy="520" r="18" fill="#fff" stroke="${OUT}" stroke-width="5"/><ellipse cx="400" cy="430" rx="110" ry="80" fill="#fff" stroke="${OUT}" stroke-width="6"/><text x="400" y="458" text-anchor="middle" font-size="84">🥫</text></g>
+<g id="c1cat">${makeCat('k1')}</g>`));
+S('c1b',`<div class="bub u" id="c1q1" style="right:30px;top:470px;border:4px solid ${OUT}">"הלו, אני אחזור אליך" 📞</div><div class="bub u" id="c1q2" style="right:60px;top:560px;border:4px solid ${OUT}">"הלו, אני בפקק" 🚗</div>`);
+// Scene 2: chaos
+S('c2',SVGW('c2s',`<rect width="720" height="1280" fill="#d3d8e3"/><rect y="980" width="720" height="300" fill="#a9b0bf"/><line x1="0" y1="980" x2="720" y2="980" stroke="${OUT}" stroke-width="6"/>
+<g id="c2wires">${Array.from({length:9},(_,i)=>`<path d="M${330+i*30} ${360+(i%3)*150} C ${200+i*50} ${200+i*60}, ${700-i*40} ${700-i*30}, ${380+(i*47)%300} ${300+(i*83)%520}" fill="none" stroke="${['#e04848','#2b66d9','#f2b632','#37a85b'][i%4]}" stroke-width="8" stroke-linecap="round"/>`).join('')}</g>
+${[[390,330],[540,330],[390,520],[540,520],[465,710]].map((b,i)=>`<g id="c2b${i}"><rect x="${b[0]}" y="${b[1]}" width="140" height="170" rx="10" fill="#2a2a33" stroke="${OUT}" stroke-width="6"/>${[0,1,2,3].map(r=>`<rect x="${b[0]+16}" y="${b[1]+18+r*36}" width="108" height="20" rx="4" fill="#3c3c48"/><circle class="led" cx="${b[0]+112}" cy="${b[1]+28+r*36}" r="5" fill="#5f5"/>`).join('')}</g>`).join('')}
+<g id="c2q">${[[420,300],[640,460],[560,880],[350,700],[690,260]].map((q,i)=>`<g id="c2q${i}" transform="translate(${q[0]} ${q[1]})"><circle id="c2sm${i}" r="30" fill="#bbb" opacity="0"/><text id="c2qt${i}" y="22" text-anchor="middle" font-size="70" font-weight="800" fill="#e04848" stroke="${OUT}" stroke-width="3" font-family="H">?</text></g>`).join('')}</g>
+<g id="c2sp">${[[470,500],[600,690],[420,690],[640,330]].map((p,i)=>`<polygon id="c2s${i}" points="${p[0]},${p[1]-26} ${p[0]+8},${p[1]-8} ${p[0]+26},${p[1]} ${p[0]+8},${p[1]+8} ${p[0]},${p[1]+26} ${p[0]-8},${p[1]+8} ${p[0]-26},${p[1]} ${p[0]-8},${p[1]-8}" fill="#ffe14d" stroke="${OUT}" stroke-width="3"/>`).join('')}</g>
+<g id="c2cat">${makeCat('k2')}</g>`));
+S('c2t',`${[['c2l0','🔧 טכנאי',60,170],['c2l1','🗄 שרתים',330,140],['c2l2','🌪 שואב אבק?!',60,250],['c2l3','🏠 משכנתא',330,220]].map(l=>`<div class="abs" id="${l[0]}" style="left:${l[2]}px;top:${l[3]}px;background:#fff;border:4px solid ${OUT};border-radius:16px;padding:8px 20px;font-size:34px;font-weight:800;color:${OUT};box-shadow:6px 6px 0 ${OUT}">${l[1]}</div>`).join('')}
+<div class="abs" id="c2k" style="left:0;right:0;top:420px;text-align:center"><span style="display:inline-block;background:#e04848;color:#fff;font-size:64px;font-weight:800;padding:10px 34px;border:5px solid ${OUT};border-radius:18px;transform:rotate(-8deg);box-shadow:8px 8px 0 ${OUT}">🤕 כאב ראש</span></div>`);
+// Scene 3: remote -> clean chat
+S('c3',SVGW('c3s',`<rect width="720" height="1280" fill="#e9f2fc"/><rect y="1000" width="720" height="280" fill="#c9daee"/><line x1="0" y1="1000" x2="720" y2="1000" stroke="${OUT}" stroke-width="6"/>
+<g id="c3cat">${makeCat('k3')}</g>
+<g id="c3lap"><path d="M190 1000 L 530 1000 L 560 1040 L 160 1040 Z" fill="#b9c2cf" stroke="${OUT}" stroke-width="6" stroke-linejoin="round"/><rect x="210" y="860" width="300" height="140" rx="12" fill="#2a2f3a" stroke="${OUT}" stroke-width="6"/><circle cx="360" cy="930" r="18" fill="#d97757"/></g>`));
+S('c3w',`<div class="abs" id="c3win" style="left:50px;right:50px;top:150px;height:520px;background:#faf9f5;border:5px solid ${OUT};border-radius:28px;box-shadow:10px 10px 0 ${OUT};overflow:hidden;color:#29261b">
+ <div style="height:62px;background:#f0eee6;border-bottom:3px solid #ddd8cc;display:flex;align-items:center;justify-content:space-between;padding:0 22px"><span style="font-size:24px;font-weight:800"><span style="color:#d97757">✳</span> Claude · מיצי PBX</span><span style="display:flex;gap:8px;direction:ltr"><i style="width:14px;height:14px;border-radius:50%;background:#ff5f57;display:block"></i><i style="width:14px;height:14px;border-radius:50%;background:#febc2e;display:block"></i><i style="width:14px;height:14px;border-radius:50%;background:#28c840;display:block"></i></span></div>
+ <div id="c3chips" style="padding:20px 18px 0;text-align:center">${['☁ וירטואלית','🧠 חכמה','💸 זולה','⚡ פשוטה בטירוף'].map((c,i)=>`<span id="c3c${i}" style="display:inline-block;margin:6px;padding:8px 18px;border-radius:999px;background:#fff;border:3px solid ${i===3?'#d97757':'#29261b'};font-size:26px;font-weight:800">${c}</span>`).join('')}</div>
+ <div class="bub" id="c3r" style="left:18px;top:220px;background:#f0eee6;border:3px solid #ddd8cc;font-size:26px;max-width:480px">✓ המרכזייה שלך באוויר! מספר, תפריט ושלוחות מוכנים 🎉</div>
+ <div class="abs" style="left:18px;right:18px;bottom:18px;height:70px;border-radius:18px;background:#fff;border:3px solid #29261b;display:flex;align-items:center;padding:0 18px;font-size:26px;font-weight:800"><span id="c3in"></span><i id="c3cur" style="display:inline-block;width:3px;height:30px;background:#29261b;margin-right:2px"></i><span style="margin-right:auto;width:46px;height:46px;border-radius:12px;background:#d97757;color:#fff;display:flex;align-items:center;justify-content:center">↑</span></div>
+</div>
+<div class="abs" id="c3no" style="left:0;right:0;top:700px;text-align:center">${['בלי קוד','בלי טכנאים','בלי דרמות'].map((c,i)=>`<span id="c3n${i}" style="display:inline-block;margin:6px;padding:8px 18px;border-radius:14px;background:#fff;border:4px solid ${OUT};box-shadow:5px 5px 0 ${OUT};font-size:30px;font-weight:800;color:${OUT}">✕ ${c}</span>`).join('')}</div>`);
+S('c3f',`<div class="abs" id="c3flash" style="inset:0;background:#fff"></div>`);
+// Scene 4: chat setup + cat on back with yarn
+S('c4',SVGW('c4s',`<rect width="720" height="1280" fill="#eaf6ec"/><rect y="1010" width="720" height="270" fill="#bfe0c6"/><line x1="0" y1="1010" x2="720" y2="1010" stroke="${OUT}" stroke-width="6"/>
+<g id="c4cat">${makeCat('k4')}</g>
+<g id="c4yarn"><circle r="40" fill="#e05a8a" stroke="${OUT}" stroke-width="6"/><path d="M-30 -20 q 30 10 60 0 M-36 6 q 36 14 72 0 M-26 26 q 26 8 52 0" fill="none" stroke="#a83563" stroke-width="5"/><path id="c4str" d="M30 20 q 40 40 10 80" fill="none" stroke="#e05a8a" stroke-width="5"/></g>`));
+S('c4w',`<div class="abs" id="c4win" style="left:40px;right:40px;top:90px;height:560px;background:#faf9f5;border:5px solid ${OUT};border-radius:28px;box-shadow:10px 10px 0 ${OUT};overflow:hidden;color:#29261b">
+ <div style="height:58px;background:#f0eee6;border-bottom:3px solid #ddd8cc;display:flex;align-items:center;padding:0 22px;font-size:24px;font-weight:800"><span style="color:#d97757;margin-left:8px">✳</span> Claude · מיצי PBX</div>
+ ${[['תוסיף תפריט קולי 🎙',80],['תעביר שיחות לוואטסאפ אחרי 17:00',210],['תשלח לי סיכום אחרי כל שיחה 📝',340]].map((b,i)=>`<div class="bub" id="c4u${i}" style="right:18px;top:${b[1]}px;background:#d97757;color:#fff;font-size:25px;max-width:470px">${b[0]}</div><div class="bub" id="c4a${i}" style="left:18px;top:${b[1]+66}px;background:#f0eee6;border:3px solid #ddd8cc;font-size:24px">✅ בוצע</div>`).join('')}
+ <div class="abs" id="c4tm" style="left:0;right:0;bottom:22px;text-align:center"><span style="display:inline-block;padding:8px 22px;border-radius:999px;background:#fff;border:3px solid #29261b;font-size:28px;font-weight:800">⏱ מערכת מלאה – בדקות</span></div></div>
+<div class="abs" id="c4th" style="left:0;right:0;top:668px;text-align:center"><span style="display:inline-block;background:#fff;border:4px solid ${OUT};border-radius:16px;padding:8px 24px;font-size:34px;font-weight:800;color:${OUT};box-shadow:6px 6px 0 ${OUT}">🐾 בלי אגודלים. בלי בעיה.</span></div>`);
+// Scene 5: CTA
+S('c5',SVGW('c5s',`<defs><radialGradient id="c5g" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#16376e"/><stop offset="1" stop-color="#050d1f"/></radialGradient></defs><rect width="720" height="1280" fill="url(#c5g)"/>
+<circle id="c5ring" cx="360" cy="860" r="250" fill="none" stroke="#3fd0ff" stroke-width="3" stroke-dasharray="10 14" opacity=".5"/>
+<ellipse cx="360" cy="1110" rx="230" ry="26" fill="rgba(0,0,0,.35)"/>
+<g id="c5cat">${makeCat('k5')}</g>`));
+S('c5t',`<div class="abs" id="c5card" style="left:70px;right:70px;top:120px;padding:24px 20px;border-radius:28px;background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:2px solid rgba(63,208,255,.6);box-shadow:0 0 50px rgba(63,208,255,.3);text-align:center">
+ <div class="big gt" style="font-size:78px">מיצי תקשורת</div><div style="font-size:34px;font-weight:500;color:#cfe6f5;margin-top:6px">☎ מרכזייה חכמה בענן 💬</div></div>
+<div class="abs" id="c5p" style="left:0;right:0;top:370px;text-align:center"><span style="display:inline-block;padding:10px 26px;border-radius:999px;background:#e0b877;color:#1a1204;font-size:32px;font-weight:800;box-shadow:0 0 30px rgba(224,184,119,.5)">💰 במחיר של 2 שקיות חטיפים 🍿🍿</span></div>
+<div class="cta" id="c5b" style="top:470px;background:linear-gradient(90deg,#3fd0ff,#2a9be6);color:#02122a;border:none">לפרטים · הדגמה מיידית 👆</div>
+<div class="abs" id="c5m" style="left:420px;top:600px"><span style="display:inline-block;background:#fff;color:${OUT};border:4px solid ${OUT};border-radius:22px;padding:8px 24px;font-size:44px;font-weight:800">מיאו 😼</span></div>`);
+const sb=document.createElement('div');sb.id='sub18';sb.style.cssText='position:absolute;z-index:9;left:30px;right:30px;top:1150px;text-align:center;direction:rtl';sb.innerHTML='<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-size:32px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>';st.appendChild(sb);
+}
+function catBase(t,v){ // shared idle: blink, ears, tail, mouth from voice
+ const fr=Math.floor((v)*24);const m=v>0&&fr<MOUTH.length?MOUTH[fr]:0;
+ const bl=(t%3.7)<.12?1:0;const ear=Math.max(0,Math.sin(t*1.3))>.97?18:0;
+ return {mouth:m,blink:bl,ear,tail:Math.sin(t*2.2)*14};
+}
+function draw18(id,lt,t,jobs){
+ const v=t-CO;const B=catBase(t,v);const lid=(x)=>Math.max(x,B.blink);
+ if(id==='c1'||id==='c1b'){}
+ if(id==='c1'){
+  const yawn=t<1.35;const ym=yawn?Math.sin(clamp(t/1.3)*Math.PI):0;
+  const roll=v>7.1&&v<8.9;
+  poseCat('k1',{x:230,y:1050,s:.95,mouth:yawn?ym:B.mouth,lidL:yawn?1:lid(roll?.75:.5),lidR:yawn?1:lid(roll?.75:.5),look:roll?0:(v>3&&v<7?10:-4),earL:B.ear,earR:B.ear*.6,tail:B.tail,head:yawn?-6*ym:(v>7.1&&v<8.8?8:0),aL:yawn?-160*ym:8,aR:yawn?160*ym:-8,brow:v>0&&v<11.6?6:0});
+  // phone: vibrate, walk to edge, fall
+  const fall=clamp((v-10.85)/.55);const px=560+Math.min(110,Math.max(0,v)*9)+fall*40;const py=630+fall*fall*700;const vib=v<10.9&&v>-0.4?Math.sin(t*90)*5:0;
+  $('c1ph').setAttribute('transform',`translate(${px+vib} ${py}) rotate(${vib*1.2+fall*160})`);$('c1phw').setAttribute('opacity',v<10.9?(.4+.6*Math.abs(Math.sin(t*9))):0);
+  $('c1fly').setAttribute('transform',`translate(${500+Math.sin(t*3)*60} ${960+Math.cos(t*4.3)*22})`);
+  $('c1th').setAttribute('opacity',seg(v,10.1,.3));
+  pop('c1q1',v,3.1,.3);pop('c1q2',v,5.4,.3);if(v>7){$('c1q1').style.opacity=clamp(1-(v-7)/.3);$('c1q2').style.opacity=clamp(1-(v-7)/.3)}
+ }
+ if(id==='c2'){
+  const ang=v>17.5&&v<19.1;const pt=clamp((lt-.3)/.4);
+  poseCat('k2',{x:170,y:1040,s:.82,stand:1,mouth:B.mouth,lidL:lid(ang?.55:.45),lidR:lid(ang?.55:.45),earL:ang?-40:B.ear,earR:ang?-40:B.ear,tail:ang?Math.sin(t*14)*25:B.tail,aR:-60-55*eio(pt)+Math.sin(t*3)*6,aL:10,brow:ang?18:6,look:8,legL:Math.sin(t*2)*3,legR:-Math.sin(t*2)*3});
+  for(let i=0;i<5;i++){const b=$('c2b'+i);b.setAttribute('transform',`translate(${Math.sin(t*25+i)*2} ${Math.cos(t*21+i)*2})`)}
+  [...document.querySelectorAll('#c2s .led')].forEach((l,i)=>l.setAttribute('fill',(Math.floor(t*8+i*3)%5)?'#5f5':'#f44'));
+  for(let i=0;i<5;i++){const c=((t*.9+i*.37)%1.6)/1.6;$('c2qt'+i).setAttribute('opacity',c<.55?1:0);$('c2qt'+i).setAttribute('transform',`scale(${.6+c*.8})`);$('c2sm'+i).setAttribute('opacity',c>.5?(1-c)*1.6:0);$('c2sm'+i).setAttribute('r',20+c*40)}
+  for(let i=0;i<4;i++){const f=(Math.floor(t*12)+i*5)%9;$('c2s'+i).setAttribute('opacity',f<2?1:0)}
+ }
+ if(id==='c2t'){[14.7,15.4,16.7,19.3].forEach((d,i)=>pop('c2l'+i,v,d,.3));pop('c2k',v,21.3,.35)}
+ if(id==='c3'){
+  const typing=v>30.2&&v<34.2;const tp=typing?Math.sin(t*38):0;
+  const holdR=v<24.6;
+  poseCat('k3',{x:360,y:1000,s:.78,mouth:B.mouth,lidL:lid(.4),lidR:lid(.4),earL:B.ear,earR:B.ear,tail:B.tail,mug:v>25.0?1:0,remote:holdR?1:0,press:v>22.4&&v<22.8,aR:holdR?-125:(typing?24+tp*10:-12),aL:v>25?((((v-25)%3.2)<.9)?-150:-118)+(typing?Math.cos(t*30)*3:0):12,head:typing?Math.sin(t*6)*2:0,look:typing?-4:6});
+  $('c3lap').setAttribute('opacity',v>24.7?1:0);
+ }
+ if(id==='c3w'){
+  const app=seg(v,22.6,.4);$('c3win').style.opacity=app;$('c3win').style.transform=`scale(${.85+.15*app})`;
+  [25.4,26.6,27.4,27.9].forEach((d,i)=>pop('c3c'+i,v,d,.3));
+  typ('c3in','תקים לי מרכזייה לעסק 🙏',v,30.3,10);$('c3cur').style.opacity=Math.floor(t*4)%2;
+  pop('c3r',v,33.2,.35);[34.2,34.9,35.8].forEach((d,i)=>pop('c3n'+i,v,d,.3));
+ }
+ if(id==='c3f'){$('c3flash').style.opacity=v>22.45&&v<23.0?(1-(v-22.45)/.55):0}
+ if(id==='c4'){
+  const bat=Math.sin(t*5);
+  poseCat('k4',{x:610,y:950,s:.72,rot:-90,head:35,mouth:B.mouth,lidL:lid(.55),lidR:lid(.55),earL:B.ear,earR:B.ear,tail:Math.sin(t*3)*20,aL:-70+bat*22,aR:-110-bat*22,look:-6});
+  const yy=770-Math.abs(Math.sin(t*2.6))*70;$('c4yarn').setAttribute('transform',`translate(${470+Math.sin(t*1.3)*16} ${yy}) rotate(${t*120})`);
+ }
+ if(id==='c4w'){sh('c4win',lt,.05,.4,0,-40);[[37.1,38.3],[39.2,41.5],[40.8,42.6]].forEach((d,i)=>{sh('c4u'+i,v,d[0],.3,60,0);pop('c4a'+i,v,d[1],.3)});pop('c4tm',v,45.0,.35);pop('c4th',v,47.5,.35)}
+ if(id==='c5'){
+  const adj=v>49.7&&v<51.3;const me=v>58.3&&v<59.2;const wink=v>59.25&&v<60.4;
+  poseCat('k5',{x:360,y:1105,s:.9,mouth:B.mouth,lidL:lid(.38),lidR:wink?1:lid(.38),earL:B.ear,earR:B.ear,tail:B.tail,aR:adj?-158+Math.sin(t*16)*6:(me?-150:-8),aL:8,head:wink?-6:0,look:me?0:4,brow:wink?-6:0});
+  $('c5ring').setAttribute('transform',`rotate(${t*20} 360 860)`);
+ }
+ if(id==='c5t'){pop('c5card',v,50.0,.45);pop('c5p',v,52.1,.4);pop('c5b',v,54.6,.4);$('c5b').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(63,208,255,.55)`;pop('c5m',v,59.3,.3)}
+}
+let cur18=[0,0,''];
+function frame18(t,cur,lt,jobs){
+ cur18=cur;const v=t-CO;const s=SUBS.find(x=>v>=x[0]-.15&&v<x[1]+.35);const sb=$('sub18t');
+ if(s&&cur[2]!=='cta'){sb.textContent=s[2];sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0;
+ // keep paired overlay scenes visible together
+ const pairs={c1:['c1b'],c2:['c2t'],c3:['c3w','c3f'],c4:['c4w'],c5:['c5t']};
+ Object.keys(pairs).forEach(k=>pairs[k].forEach(o=>{sc[o].style.opacity=sc[k].style.opacity;sc[o].style.transform=sc[k].style.transform;if(sc[k].style.opacity>0)draw18(o,lt,t,jobs)}));
+}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -941,6 +1066,7 @@ async function render(t){
  if(id==='u10'){jobs.push(setImg($('pu10'),PRES(t)));pop('u10b',lt,.25,.4);$('u10b').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(224,184,119,.45)`}
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
+ if(AD==='18'){if(id!=='cta')draw18(id,lt,t,jobs);frame18(t,cur,lt,jobs)}
  await Promise.all(jobs);
 }
 window.render=render;
