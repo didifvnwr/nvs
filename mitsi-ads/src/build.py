@@ -17,6 +17,7 @@ AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27
     '13':{'m':U+'4cf73a77-____________2.mp3','vp':'/home/user/nvs/mitsi-ads/audio/future-danit-take1-fixed.mp3','v':'','cuts':[0,2.37,5.74,8.58,14.15,16.15,20.86,24.71],'ids':['x1','x2','x3','x4','x5','x6','x7','cta']},
     '14':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/allinone-danit-take2.mp3','v':'','cuts':[0,4.27,8.58,15.05,17.96,22.04,26.2],'ids':['w1','w2','w3','w4','w5','w6','cta']},
     '15':{'m':U+'4cf73a77-____________2.mp3','vp':'/home/user/nvs/mitsi-ads/audio/claude-pbx-v2-take1.mp3','v':'','cuts':[0,3.86,9.92,14.83,24.30,27.78,34.87,41.10,44.78,48.07,50.62],'ids':['u1','u2','u3','u4','u5','u6','u7','u8','u9','u10','cta']},
+    '16':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/selfservice-from-did.mp3','v':'','cuts':[0,5.0,10.5,14.3,17.7,21.55,27.2,29.1,34.65,40.6,45.55,48.0],'ids':['ss1','ss2','ss3','ss4','ss5','ss6','ss7','ss8','ss9','ss10','ss11','cta']},
     '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():
