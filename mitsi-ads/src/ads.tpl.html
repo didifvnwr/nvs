@@ -705,7 +705,7 @@ function frame16(t,cur,lt,jobs){
   for(const s of SEG)if(s[2]!==cur[2]&&!(lt<.55&&s[2]===prev))sc[s[2]].style.filter=''}
 }
 /* ---------- AD 17: "you can't always be available" (Danit, narration only, AE-style) ---------- */
-if(AD==='17'){
+if(AD==='17'||AD==='17p'){
 const st=$('stage');
 const bg=document.createElement('div');bg.id='bg17';bg.style.cssText='position:absolute;inset:0;overflow:hidden';
 bg.innerHTML=`<div class="abs" style="inset:0;background:radial-gradient(ellipse at 50% 30%,#0e2752,#030915 70%)"></div>
@@ -783,6 +783,32 @@ function frame17(t,cur,lt,jobs){
  const SEGI=SEG.findIndex(s=>s===cur);const prev=SEGI>0?SEG[SEGI-1][2]:cur[2];
  if(cur[2]!=='cta'){const curEl=sc[cur[2]];curEl.style.opacity=1;if(lt<.55&&SEGI>0){const pe=sc[prev];draw17(prev,SEG[SEGI-1][1]-SEG[SEGI-1][0]-.01,t,jobs);pe.style.opacity=1;pe.style.transform='';pe.style.zIndex=1;curEl.style.zIndex=2;const r=eio(clamp(lt/.55))*120;curEl.style.clipPath=`circle(${r}% at 50% 50%)`;pe.style.filter=`blur(${eio(clamp(lt/.55))*8}px) brightness(${1-.5*lt})`}else{curEl.style.clipPath='none';curEl.style.zIndex=2}
   for(const s of SEG)if(s[2]!==cur[2]&&!(lt<.55&&s[2]===prev))sc[s[2]].style.filter=''}
+}
+
+/* ---------- AD 17p: same scenes compressed into the upper area + stylised presenter window below ---------- */
+if(AD==='17p'){
+ const SCL=.78;
+ Object.keys(sc).filter(k=>k.startsWith('av')).forEach(k=>{const d=sc[k];const w=document.createElement('div');w.className='abs';w.style.cssText=`left:0;top:0;width:720px;height:1280px;transform-origin:50% 0;transform:translateY(-70px) scale(${SCL})`;
+  [...d.children].forEach(c=>{if(!(c.classList.contains('bgv')||c.classList.contains('tint')))w.appendChild(c)});d.appendChild(w)});
+ const pw=document.createElement('div');pw.id='pwin17';pw.style.cssText='position:absolute;z-index:5;left:70px;top:770px;width:580px;height:481px;border-radius:30px;overflow:hidden;border:2px solid rgba(63,208,255,.6);box-shadow:0 0 60px rgba(63,208,255,.35),0 30px 60px rgba(0,0,0,.6)';
+ pw.innerHTML=`<img id="pimg17" style="display:block;width:100%;height:100%;object-fit:cover;filter:blur(1.1px) saturate(.85) contrast(1.05)">
+ <div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(10,40,90,.25),rgba(2,8,20,.45));mix-blend-mode:multiply"></div>
+ <div class="abs" style="inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 4px)"></div>
+ <div class="abs" id="pleak" style="inset:-30%;background:radial-gradient(circle at 30% 30%,rgba(63,208,255,.35),transparent 40%),radial-gradient(circle at 75% 70%,rgba(224,184,119,.28),transparent 42%);mix-blend-mode:screen"></div>
+ <div class="abs" id="psh17" style="top:-20%;bottom:-20%;width:30%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:skewX(-18deg)"></div>
+ <div class="abs" style="inset:14px;border:2px solid rgba(168,240,255,.35);border-radius:20px"></div>
+ <div class="abs o" style="left:24px;top:20px;font-size:13px;color:#a8f0ff;display:flex;gap:6px;align-items:center"><i id="plv17" style="display:block;width:9px;height:9px;border-radius:50%;background:#ff4d5e"></i>MITSI · LIVE</div>
+ <div class="abs" style="left:24px;right:24px;bottom:22px;height:46px;display:flex;align-items:center;gap:12px"><div id="pw17" style="flex:1">${waveHTML('pwv17',34,40)}</div></div>`;
+ $('stage').insertBefore(pw,$('hud'));
+ const gl=document.createElement('div');gl.id='pglow17';gl.style.cssText='position:absolute;z-index:4;left:20px;right:20px;top:735px;height:560px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(63,208,255,.22),transparent 65%)';$('stage').insertBefore(gl,pw);
+}
+function frame17p(t,cur,lt,jobs){
+ const pw=$('pwin17');const off=cur[2]==='cta';const k=off?clamp(1-lt/.4):1;
+ pw.style.opacity=k;pw.style.transform=`perspective(1200px) rotateX(${6+Math.cos(t*.5)*2}deg) rotateY(${Math.sin(t*.4)*4}deg) translateY(${(1-k)*80}px)`;$('pglow17').style.opacity=k*(.6+.4*Math.sin(t*1.5));
+ if(k>0)jobs.push(setImg($('pimg17'),`clips/pres17/${String(Math.min(883,Math.floor(t*24)+1)).padStart(4,'0')}.jpg`));
+ const sp=((t%5)/1.1);$('psh17').style.left=(sp<1?-40+160*sp:-60)+'%';$('plv17').style.opacity=.4+.6*Math.abs(Math.sin(t*3));
+ $('pleak').style.transform=`rotate(${t*12}deg)`;animWave('pwv17',t,t<36.6?.8:0,26);
+ const g=(Math.floor(t*24)%97)<2;$('pimg17').style.transform=g?`translateX(${(Math.floor(t*24)%5-2)*4}px)`:'none';
 }
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
@@ -914,7 +940,7 @@ async function render(t){
  if(id==='u9'){jobs.push(setImg($('vu9'),fw('city',0,lt,1,199)));pop('u9a',lt,.05,.4);sh('u9s',lt,.4,.35);pop('u9b',lt,1.3,.4);pop('u9c',lt,1.8,.4);$('u9g').style.opacity=.6+.4*Math.sin(t*3)}
  if(id==='u10'){jobs.push(setImg($('pu10'),PRES(t)));pop('u10b',lt,.25,.4);$('u10b').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(224,184,119,.45)`}
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
- if(AD==='17'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs)}
+ if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  await Promise.all(jobs);
 }
 window.render=render;
