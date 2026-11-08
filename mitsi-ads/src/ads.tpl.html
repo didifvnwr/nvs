@@ -704,6 +704,86 @@ function frame16(t,cur,lt,jobs){
  if(cur[2]!=='cta'){const curEl=sc[cur[2]];curEl.style.opacity=1;if(lt<.55&&SEGI>0){const pe=sc[prev];draw16(prev,SEG[SEGI-1][1]-SEG[SEGI-1][0]-.01,t,jobs);pe.style.opacity=1;pe.style.transform='';pe.style.zIndex=1;curEl.style.opacity=1;curEl.style.zIndex=2;const r=eio(clamp(lt/.55))*120;curEl.style.clipPath=`circle(${r}% at 50% 55%)`;pe.style.filter=`blur(${eio(clamp(lt/.55))*8}px) brightness(${1-.5*lt})`}else{curEl.style.clipPath='none';curEl.style.zIndex=2}
   for(const s of SEG)if(s[2]!==cur[2]&&!(lt<.55&&s[2]===prev))sc[s[2]].style.filter=''}
 }
+/* ---------- AD 17: "you can't always be available" (Danit, narration only, AE-style) ---------- */
+if(AD==='17'){
+const st=$('stage');
+const bg=document.createElement('div');bg.id='bg17';bg.style.cssText='position:absolute;inset:0;overflow:hidden';
+bg.innerHTML=`<div class="abs" style="inset:0;background:radial-gradient(ellipse at 50% 30%,#0e2752,#030915 70%)"></div>
+<div class="abs" id="beamA" style="left:-200px;top:-300px;width:420px;height:1900px;background:linear-gradient(90deg,transparent,rgba(63,208,255,.10),transparent);transform-origin:50% 0"></div>
+<div class="abs" id="beamB" style="left:560px;top:-300px;width:320px;height:1900px;background:linear-gradient(90deg,transparent,rgba(224,184,119,.07),transparent);transform-origin:50% 0"></div>
+<div class="abs" style="left:-400px;right:-400px;top:880px;height:700px;perspective:500px"><svg width="1520" height="700" style="transform:rotateX(62deg);transform-origin:50% 0;opacity:.45">${Array.from({length:21},(_,i)=>`<line x1="${i*76}" y1="0" x2="${i*76}" y2="700" stroke="#3fd0ff" stroke-width="1.4" opacity=".5"/>`).join('')}<g id="gridh">${Array.from({length:12},(_,i)=>`<line x1="0" y1="${i*64}" x2="1520" y2="${i*64}" stroke="#3fd0ff" stroke-width="1.4" opacity=".5"/>`).join('')}</g></svg></div>
+<div class="abs" style="left:0;right:0;top:860px;height:300px;background:linear-gradient(180deg,#030915,transparent)"></div>
+${Array.from({length:46},(_,i)=>`<i class="pt16" style="position:absolute;display:block;border-radius:50%;background:${i%5?'#9cefff':'#e0b877'}"></i>`).join('')}`;
+st.insertBefore(bg,$('scenes'));
+const C='left:0;right:0;text-align:center;';
+const CARD=(id,ic,l,top,gold)=>`<div class="abs" id="${id}w" style="left:70px;right:70px;top:${top}px;height:120px;perspective:900px"><div id="${id}" class="glass" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:linear-gradient(160deg,rgba(14,34,70,.92),rgba(4,12,28,.94));${gold?'border-color:#e0b877':''}"><span style="font-size:42px;font-weight:800">${l}</span><span style="width:76px;height:76px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:44px;background:${gold?'linear-gradient(135deg,#f3d9a4,#e0b877)':'linear-gradient(135deg,#3fd0ff,#2a6bd6)'}">${ic}</span></div></div>`;
+S('av1',`<svg class="full"><g transform="translate(360 480)"><circle r="190" fill="none" stroke="rgba(63,208,255,.25)" stroke-width="10"/><circle id="a1ring" r="190" fill="none" stroke="#3fd0ff" stroke-width="10" stroke-dasharray="1194" stroke-dashoffset="1194" transform="rotate(-90)" stroke-linecap="round"/>${Array.from({length:12},(_,i)=>`<line x1="0" y1="-160" x2="0" y2="-176" stroke="#a8f0ff" stroke-width="5" transform="rotate(${i*30})"/>`).join('')}<line id="a1h" x1="0" y1="0" x2="0" y2="-95" stroke="#fff" stroke-width="10" stroke-linecap="round"/><line id="a1m" x1="0" y1="0" x2="0" y2="-140" stroke="#3fd0ff" stroke-width="6" stroke-linecap="round"/><circle r="12" fill="#e0b877"/></g></svg>
+<div class="abs big" id="a1k" style="${C}top:740px;font-size:46px;font-weight:500;color:var(--dim)">אין דבר כזה</div>
+<div class="abs" id="a1t" style="${C}top:800px"><span class="big gt" style="font-size:96px;position:relative;display:inline-block">זמינים 24/7<i id="a1x" style="position:absolute;left:-10px;right:-10px;top:52%;height:10px;background:#ff5a6e;border-radius:5px;transform-origin:right;box-shadow:0 0 20px #ff5a6e"></i></span></div>`);
+S('av2',`<img class="bgv" id="vav2" style="opacity:.28;filter:blur(3px)"><div class="tint" style="background:linear-gradient(180deg,rgba(3,9,21,.6),rgba(3,9,21,.9))"></div>
+<div class="abs big gt" id="a2h" style="${C}top:200px;font-size:54px">ואתם בדיוק…</div>
+${CARD('a2c0','🤝','בפגישה',330)}${CARD('a2c1','🚗','בנסיעה',475)}${CARD('a2c2','👥','עם לקוח אחר',620)}${CARD('a2c3','😴','גם לכם מגיע לנוח',765,1)}
+<div class="abs" id="a2p" style="${C}top:930px"><span class="chip" style="font-size:34px;border-color:#ff5a6e;color:#ffb3bb">📵 שיחה שלא נענתה</span></div>`);
+S('av3',`<svg class="full"><circle cx="360" cy="430" r="150" fill="rgba(40,200,64,.12)" stroke="#28c840" stroke-width="8" id="a3c" stroke-dasharray="943" stroke-dashoffset="943" transform="rotate(-90 360 430)"/><path id="a3k" d="M290 432 L343 485 L440 380" fill="none" stroke="#28c840" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="230" stroke-dashoffset="230"/></svg>
+<div class="abs big" id="a3h" style="${C}top:640px;font-size:90px;color:#fff">וזה בסדר.</div>
+<div class="abs big gt" id="a3s" style="left:40px;right:40px;top:770px;font-size:52px">עסק קטן לא חייב<br>להיות זמין תמיד</div>`);
+S('av4',`<svg class="full" id="a4s"></svg>
+<div class="abs" id="a4sh" style="left:210px;top:270px;width:300px;height:340px"><svg width="300" height="340" viewBox="0 0 300 340"><path d="M150 10 L280 60 L280 170 C280 250 220 305 150 330 C80 305 20 250 20 170 L20 60 Z" fill="rgba(63,208,255,.12)" stroke="#3fd0ff" stroke-width="8"/><text x="150" y="215" text-anchor="middle" font-size="130">👤</text></svg></div>
+<div class="abs big" id="a4h" style="${C}top:700px;font-size:46px;font-weight:500">רק צריך לדאוג</div>
+<div class="abs big gt" id="a4b" style="left:30px;right:30px;top:765px;font-size:62px">שאף לקוח<br>לא ילך לאיבוד</div>`);
+S('av5',`<div class="abs" id="a5g" style="left:-100px;right:-100px;top:250px;height:600px;background:radial-gradient(ellipse at center,rgba(63,208,255,.3),transparent 65%)"></div>
+<div class="abs big" id="a5k" style="${C}top:330px;font-size:44px;font-weight:500;color:var(--dim)">וזה בדיוק מה ש</div>
+<div class="abs big gt" id="a5a" style="${C}top:390px;font-size:130px">מיצי</div>
+<div class="abs big" id="a5ts" style="${C}top:540px;font-size:48px;font-weight:300;letter-spacing:14px;color:#8fc9ec">תקשורת</div>
+<div class="abs" id="a5l" style="left:160px;right:160px;top:630px;height:3px;background:linear-gradient(90deg,transparent,var(--cy),transparent)"></div>
+<div class="abs big gold" id="a5b" style="${C}top:670px;font-size:70px">פותרת</div>
+<div class="abs" id="a5sw" style="left:0;top:380px;width:160px;height:260px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);mix-blend-mode:overlay"></div>`);
+S('av6',`<div class="abs big" id="a6k" style="${C}top:160px;font-size:44px;font-weight:500;color:var(--dim)">כשאתם לא זמינים</div>
+<div class="abs" id="a6pw" style="left:180px;top:250px;width:360px;height:660px;perspective:1000px"><div id="a6p" style="position:absolute;inset:0;border-radius:52px;background:linear-gradient(160deg,#142a52,#050d1f);border:4px solid #a8f0ff;box-shadow:0 0 60px rgba(63,208,255,.4);overflow:hidden">
+<div class="o" style="text-align:center;margin-top:26px;font-size:16px;color:#a8f0ff">INCOMING · 03-372-4400</div>
+<div id="a6miss" style="text-align:center;margin-top:60px;font-size:100px">📞</div>
+<div id="a6bot" class="abs" style="left:0;right:0;top:110px;text-align:center"><div style="font-size:26px;font-weight:800;color:#3fd0ff">🎙 בוט קולי עונה</div><div style="margin-top:16px">${waveHTML('a6w',24,70)}</div></div>
+<div class="bub w" id="a6m1" style="right:18px;top:300px;font-size:22px;max-width:300px">היי! קיבלנו את השיחה שלך 🙂 איך אפשר לעזור?</div>
+<div class="bub u" id="a6m2" style="left:18px;top:420px;font-size:22px;max-width:280px">רציתי לקבוע תור למחר</div>
+<div class="bub w" id="a6m3" style="right:18px;top:520px;font-size:22px;max-width:300px">מעולה! רשמתי ✓</div></div></div>
+<div class="abs big gt" id="a6h" style="${C}top:960px;font-size:50px">עונים במקומכם</div>`);
+S('av7',`<div class="abs big gt" id="a7h" style="${C}top:170px;font-size:56px">והבוט…</div>
+${CARD('a7c0','🧠','מבין מה הלקוח צריך',300)}${CARD('a7c1','💬','נותן מענה',450)}${CARD('a7c2','📝','ומסכם לכם הכל',600,1)}
+<div class="abs" id="a7sw" style="left:70px;right:70px;top:760px;height:250px;perspective:900px"><div id="a7s" class="glass" style="position:absolute;inset:0;padding:22px 28px;background:linear-gradient(160deg,rgba(14,34,70,.95),rgba(4,12,28,.96));border-color:#e0b877"><div class="o" style="font-size:15px;color:#e0b877">CALL SUMMARY · AI</div>${['👤 דנה כהן · 052-•••-4410','📅 רוצה תור למחר ב-10:00','✓ נרשם · ממתין לאישור שלכם'].map((l,i)=>`<div id="a7l${i}" style="font-size:28px;font-weight:800;margin-top:14px">${l}</div>`).join('')}</div></div>`);
+S('av8',`<img class="bgv" id="vav8" style="opacity:.32;filter:blur(2px)"><div class="tint" style="background:linear-gradient(180deg,rgba(3,9,21,.5),rgba(3,9,21,.92))"></div>
+<div class="abs big" id="a8k" style="${C}top:200px;font-size:52px">וכשנוח לכם</div>
+<div class="abs" id="a8nw" style="left:60px;right:60px;top:330px;height:230px;perspective:900px"><div id="a8n" class="glass" style="position:absolute;inset:0;padding:22px 26px;background:rgba(240,248,255,.95);color:#0a1830;border-color:#fff"><div style="display:flex;justify-content:space-between;font-size:20px;color:#4a6080"><span class="o" style="font-size:16px">MITSI</span><span>עכשיו</span></div><div style="font-size:32px;font-weight:800;margin-top:10px">📝 סיכום שיחה · דנה כהן</div><div style="font-size:26px;margin-top:8px">רוצה תור למחר ב-10:00</div></div></div>
+<div class="cta" id="a8b" style="top:620px;background:linear-gradient(90deg,#28c840,#1fa858);color:#02160a">📞 חוזרים ללקוח</div>
+<div class="abs big gt" id="a8h" style="${C}top:770px;font-size:52px">עם כל הפרטים ביד</div>`);
+S('av9',`<div class="abs" id="a9l" style="left:40px;top:300px;width:310px;height:480px;border-radius:30px;background:rgba(40,44,60,.6);border:2px solid rgba(255,255,255,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px"><span style="font-size:110px;filter:grayscale(.3)">🌙</span><span style="font-size:40px;font-weight:800;color:#b8c2d6">אתם</span><span style="font-size:28px;color:#8b95aa">לא זמינים תמיד</span></div>
+<div class="abs" id="a9r" style="left:370px;top:300px;width:310px;height:480px;border-radius:30px;background:linear-gradient(160deg,rgba(20,60,120,.9),rgba(4,16,40,.95));border:3px solid #3fd0ff;box-shadow:0 0 60px rgba(63,208,255,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px"><span style="font-size:110px">☎</span><span style="font-size:40px;font-weight:800">העסק</span><span class="big gold" style="font-size:64px">כן. 24/7</span></div>`);
+S('av10',`<div class="abs" id="a10g" style="left:-100px;right:-100px;top:250px;height:600px;background:radial-gradient(ellipse at center,rgba(63,208,255,.28),transparent 65%)"></div>
+<div class="abs big gt" id="a10a" style="${C}top:330px;font-size:120px">מיצי</div>
+<div class="abs big" id="a10s" style="${C}top:470px;font-size:48px;font-weight:300;letter-spacing:14px;color:#8fc9ec">תקשורת</div>
+<div class="cta glass" id="a10b" style="top:640px;border-color:#e0b877;color:#ffffff">לפרטים <span style="color:#e0b877;margin:0 8px">·</span> הדגמה מיידית</div>`);
+}
+const typS17=(id,txt,lt,d,cps)=>{$(id).textContent=txt.slice(0,Math.floor(clamp((lt-d)*cps,0,txt.length)))};
+const tilt17=(id,t,ry,rx)=>{$(id).style.transform=`rotateY(${ry+Math.sin(t*.9)*3}deg) rotateX(${rx+Math.cos(t*.7)*2}deg)`};
+function draw17(id,lt,t,jobs){
+ if(id==='av1'){$('a1ring').setAttribute('stroke-dashoffset',1194*(1-eio(clamp(lt/1.2))));const sp=lt*720;$('a1m').setAttribute('transform',`rotate(${sp})`);$('a1h').setAttribute('transform',`rotate(${sp/12})`);sh('a1k',lt,.05,.35);pop('a1t',lt,1.1,.4);$('a1x').style.transform=`scaleX(${ease((lt-2.1)/.3)})`}
+ if(id==='av2'){jobs.push(setImg($('vav2'),fw('woman',0,lt,1,240)));sh('a2h',lt,.0,.3);[.15,1.1,2.1,3.6].forEach((d,i)=>{sh('a2c'+i+'w',lt,d,.4,90,0);tilt17('a2c'+i,t+i,i%2?6:-6,4)});pop('a2p',lt,4.6,.35);$('a2p').style.transform+=` translateX(${lt>4.6&&lt<5.2?Math.sin(t*50)*4:0}px)`}
+ if(id==='av3'){$('a3c').setAttribute('stroke-dashoffset',943*(1-eio(clamp((lt-.1)/.6))));$('a3k').setAttribute('stroke-dashoffset',230*(1-eio(clamp((lt-.5)/.35))));pop('a3h',lt,.15,.4);sh('a3s',lt,1.4,.45,0,40)}
+ if(id==='av4'){pop('a4sh',lt,.05,.45);$('a4sh').style.filter=`drop-shadow(0 0 ${20+20*Math.sin(t*4)}px rgba(63,208,255,.6))`;sh('a4h',lt,.2,.35);sh('a4b',lt,.9,.45,0,40);$('a4s').innerHTML=Array.from({length:7},(_,i)=>{const a=i/7*Math.PI*2+t*.6;const r=230+10*Math.sin(t*2+i);const o=seg(lt,.3+i*.12,.3);return `<g opacity="${o}"><circle cx="${360+Math.cos(a)*r}" cy="${440+Math.sin(a)*r*.55}" r="30" fill="rgba(6,16,40,.92)" stroke="#3fd0ff" stroke-width="3"/><text x="${360+Math.cos(a)*r}" y="${452+Math.sin(a)*r*.55}" text-anchor="middle" font-size="30">👤</text></g>`}).join('')}
+ if(id==='av5'){sh('a5k',lt,.05,.35);pop('a5a',lt,.4,.45);sh('a5ts',lt,.8,.35);$('a5l').style.transform=`scaleX(${ease((lt-.9)/.5)})`;pop('a5b',lt,1.7,.4);$('a5sw').style.left=(-200+1100*clamp((lt-1.0)/1.0))+'px';$('a5g').style.opacity=.6+.4*Math.sin(t*3)}
+ if(id==='av6'){sh('a6k',lt,.0,.3);sh('a6pw',lt,.1,.45,0,90);tilt17('a6p',t,-8,6);const ring=lt<1.0;$('a6miss').style.opacity=ring?1:0;$('a6miss').style.transform=`rotate(${ring?Math.sin(t*40)*14:0}deg)`;$('a6bot').style.opacity=seg(lt,1.0,.3);animWave('a6w',t,seg(lt,1.0,.3)*(lt<2.4?1:.3),45);pop('a6m1',lt,1.9,.3);pop('a6m2',lt,2.6,.3);pop('a6m3',lt,3.2,.3);sh('a6h',lt,2.0,.4)}
+ if(id==='av7'){sh('a7h',lt,.0,.3);[.15,1.6,2.6].forEach((d,i)=>{sh('a7c'+i+'w',lt,d,.4,90,0);tilt17('a7c'+i,t+i,i%2?6:-6,4)});sh('a7sw',lt,2.9,.45,0,60);tilt17('a7s',t,-5,8);[0,1,2].forEach(i=>sh('a7l'+i,lt,3.2+i*.3,.3,40,0))}
+ if(id==='av8'){jobs.push(setImg($('vav8'),fw('office',90,lt,1,240)));sh('a8k',lt,.0,.3);sh('a8nw',lt,.3,.45,0,-60);tilt17('a8n',t,5,6);pop('a8b',lt,1.1,.4);const pr=clamp((lt-1.8)/.2);$('a8b').style.transform+=` scale(${1-.06*Math.sin(pr*Math.PI)})`;$('a8b').style.boxShadow=`0 0 ${20+20*Math.sin(t*5)}px rgba(40,200,64,.5)`;sh('a8h',lt,2.1,.4)}
+ if(id==='av9'){sh('a9l',lt,.05,.45,-80,0);$('a9l').style.filter=`grayscale(${seg(lt,.8,.4)})`;sh('a9r',lt,1.5,.45,80,0);$('a9r').style.boxShadow=`0 0 ${40+30*Math.sin(t*5)}px rgba(63,208,255,.5)`}
+ if(id==='av10'){pop('a10a',lt,.05,.4);sh('a10s',lt,.4,.35);pop('a10b',lt,1.3,.4);$('a10b').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(224,184,119,.45)`;$('a10g').style.opacity=.6+.4*Math.sin(t*3)}
+}
+function frame17(t,cur,lt,jobs){
+ $('beamA').style.transform=`rotate(${-18+Math.sin(t*.25)*8}deg)`;$('beamB').style.transform=`rotate(${14+Math.sin(t*.2+1)*7}deg)`;
+ $('gridh').setAttribute('transform',`translate(0 ${(t*40)%64})`);
+ [...document.querySelectorAll('.pt16')].forEach((p,i)=>{const sx=(i*137.5)%720,sp=12+(i*7)%25,sz=2+(i%4);const y=((1400-(t*sp+i*97)%1500)+1500)%1500-100;p.style.left=(sx+Math.sin(t*.6+i)*20)+'px';p.style.top=y+'px';p.style.width=p.style.height=sz+'px';p.style.opacity=.25+.45*Math.abs(Math.sin(t*.8+i))});
+ const SEGI=SEG.findIndex(s=>s===cur);const prev=SEGI>0?SEG[SEGI-1][2]:cur[2];
+ if(cur[2]!=='cta'){const curEl=sc[cur[2]];curEl.style.opacity=1;if(lt<.55&&SEGI>0){const pe=sc[prev];draw17(prev,SEG[SEGI-1][1]-SEG[SEGI-1][0]-.01,t,jobs);pe.style.opacity=1;pe.style.transform='';pe.style.zIndex=1;curEl.style.zIndex=2;const r=eio(clamp(lt/.55))*120;curEl.style.clipPath=`circle(${r}% at 50% 50%)`;pe.style.filter=`blur(${eio(clamp(lt/.55))*8}px) brightness(${1-.5*lt})`}else{curEl.style.clipPath='none';curEl.style.zIndex=2}
+  for(const s of SEG)if(s[2]!==cur[2]&&!(lt<.55&&s[2]===prev))sc[s[2]].style.filter=''}
+}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -834,6 +914,7 @@ async function render(t){
  if(id==='u9'){jobs.push(setImg($('vu9'),fw('city',0,lt,1,199)));pop('u9a',lt,.05,.4);sh('u9s',lt,.4,.35);pop('u9b',lt,1.3,.4);pop('u9c',lt,1.8,.4);$('u9g').style.opacity=.6+.4*Math.sin(t*3)}
  if(id==='u10'){jobs.push(setImg($('pu10'),PRES(t)));pop('u10b',lt,.25,.4);$('u10b').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(224,184,119,.45)`}
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
+ if(AD==='17'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs)}
  await Promise.all(jobs);
 }
 window.render=render;
