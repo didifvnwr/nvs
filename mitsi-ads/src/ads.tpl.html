@@ -992,8 +992,8 @@ function draw20(id,lt,t,jobs){
 }
 function frame20(t,cur,lt,jobs){const v=t-0.3;const s=SUBS20.find(x=>v>=x[0]-.15&&v<x[1]+.35);const sb=$('sub18t');if(s){sb.textContent=s[2];sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
 /* ---------- AD 21: US number – American caller vs. Hebrew-speaking 3D cat ---------- */
-if(AD==='21'){
-window.CAT_CO=0;window.CAT_MOUTH=/*MOUTH21*/[]/*/MOUTH21*/;
+if(AD==='21'||AD==='21b'){
+window.CAT_CO=0;window.CAT_MOUTH=AD==='21b'?/*MOUTH21B*/[]/*/MOUTH21B*/:/*MOUTH21*/[]/*/MOUTH21*/;
 const st=$('stage');['hud','scanl'].forEach(i=>$(i).style.display='none');
 const O='#26242b';const C='left:0;right:0;text-align:center;';
 const card=(id,html,top,extra='')=>`<div class="abs" id="${id}" style="${C}top:${top}px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:10px 28px;font-size:40px;font-weight:800;box-shadow:7px 7px 0 ${O};${extra}">${html}</span></div>`;
@@ -1035,7 +1035,7 @@ S('us4',SV('us4s',room('#eaf3ff','#c4d8f0'))+`<div class="abs" id="us4card" styl
 S('us5',SV('us5s',room('#f1fbf3','#c6e8cd')+`<path id="us5arc" d="M130 760 Q 360 520 590 760" fill="none" stroke="#2f6fd6" stroke-width="6" stroke-dasharray="14 12"/><text x="130" y="830" text-anchor="middle" font-size="70">🗽</text><text x="590" y="830" text-anchor="middle" font-size="70">📱</text><text x="130" y="880" text-anchor="middle" font-size="26" font-weight="800" font-family="H" fill="${O}">ניו יורק</text><text x="590" y="880" text-anchor="middle" font-size="26" font-weight="800" font-family="H" fill="${O}">הנייד שלכם 🇮🇱</text><circle id="us5dot" r="14" fill="#ffc22e" stroke="${O}" stroke-width="4"/>`)
 +card('us5a','✅ מספר אמריקאי אמיתי',170,'font-size:34px')+card('us5b','📦 חבילת דקות',265,'font-size:34px;background:#e7ffdb')+card('us5c','💲 במחיר מעולה',360,'font-size:34px;background:#ffc22e')+card('us5d','📲 עונים מהנייד, בישראל',455,'font-size:32px;background:#2f6fd6;color:#fff'));
 // us6: she calls the new number, the cat answers in Hebrew
-S('us6',SV('us6s',NYC('#bfe3ff','#eaf6ff')+WOMAN('w6',230,640,.95))+`<div class="abs" id="us6tag" style="left:400px;top:430px;background:#e7ffdb;color:${O};border:5px solid ${O};border-radius:18px;padding:8px 16px;font-size:26px;font-weight:800;box-shadow:6px 6px 0 ${O};direction:ltr;font-family:Arial,Helvetica,sans-serif">📞 +1 (212)…<br>✅ Local call!</div>`+`<div class="abs" id="us6h" style="left:250px;top:560px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:22px;padding:10px 22px;font-size:40px;font-weight:800;box-shadow:7px 7px 0 ${O}">🇮🇱 "כן, הלו, מדבר."</span></div>`);
+S('us6',SV('us6s',NYC('#bfe3ff','#eaf6ff')+WOMAN('w6',230,640,.95))+`<div class="abs" id="us6tag" style="left:400px;top:430px;background:#e7ffdb;color:${O};border:5px solid ${O};border-radius:18px;padding:8px 16px;font-size:26px;font-weight:800;box-shadow:6px 6px 0 ${O};direction:ltr;font-family:Arial,Helvetica,sans-serif">📞 +1 (212)…<br>✅ Local call!</div>`+(AD==='21b'?card('us6d','📕 עברית ⇄ English',800,'font-size:30px;background:#ffe3a3').replace('top:800px','top:800px;left:30px;right:auto'):'')+`<div class="abs" id="us6h" style="left:250px;top:560px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:22px;padding:10px 22px;font-size:40px;font-weight:800;box-shadow:7px 7px 0 ${O}">🇮🇱 "כן, הלו, מדבר."</span></div>`);
 // us7: confusion + checklist
 S('us7',SV('us7s',room('#f6f0ff','#d9cdf3')+WOMAN('w7',560,560,.75))+`<div class="abs" id="us7l" style="left:40px;top:330px;width:380px;padding:18px 22px;border-radius:24px;background:#fff;color:${O};border:6px solid ${O};box-shadow:9px 9px 0 ${O};font-size:32px;font-weight:800;line-height:1.7">
 <div id="us7a">✅ מספר אמריקאי</div><div id="us7b">✅ חבילת דקות</div><div id="us7c" style="color:#d6283a">❌ אנגלית</div></div>`+card('us7k','😅 את זה... תסדרו לבד',230,'font-size:36px;background:#ffc22e'));
@@ -1066,6 +1066,15 @@ function draw21(id,lt,t,jobs){
  if(id==='us8'){pop('us8a',v,53.5,.35);pop('us8b',v,55.6,.35);pop('us8l',v,57.3,.4);pop('us8c',v,57.9,.4);sh('us8p',v,58.3,.35);$('us8c').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(63,208,255,.55)`}
 }
 function frame21(t,cur,lt,jobs){const v=t;const s=SUBS21.find(x=>v>=x[0]-.15&&v<x[1]+.35);const sb=$('sub18t');if(s){if(s[3]){sb.innerHTML=`<span dir="ltr" style="display:block;unicode-bidi:isolate;font-size:22px;opacity:.75;font-family:Arial,Helvetica,sans-serif">🇺🇸 ${s[2].replace(/</g,'')}</span>${s[4]}`;sb.style.background='#e4eeff'}else{sb.textContent=s[2];sb.style.background='rgba(255,255,255,.96)'}sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
+
+// ---- 21b: the cat tries (and fails) to answer in English. Real time t vs. story time tt (the 21 timeline) ----
+function warp21(t){const A=41.9,L=10.5,O=2.7;if(t<A)return t;if(t<A+L)return A+(t-A)*(O/L);return t-(L-O)}
+const SUB21B=[[42.0,45.95,'אה... <bdi>Yes! Hello! I am...</bdi> מדבר!'],[46.6,48.3,'<bdi>You want... order?</bdi>'],[48.8,49.9,'אוקיי... אוקיי... 😅'],[50.3,52.4,'🤫 רגע, איך אומרים "מחיר" באנגלית?']];
+const BUB21B=[[41.9,'🇮🇱 "<bdi>Yes! Hello! I am...</bdi> מדבר!"'],[46.5,'😬 "<bdi>You want... order?</bdi>"'],[48.7,'💦 "אוקיי... אוקיי..."'],[50.2,'🤫 "איך אומרים מחיר באנגלית?!"']];
+function draw21b(id,t){if(id!=='us6')return;const b=[...BUB21B].reverse().find(x=>t>=x[0]);const sp=$('us6h').firstElementChild;if(b&&sp.dataset.k!==String(b[0])){sp.style.maxWidth='420px';$('us6h').style.left='190px';sp.style.fontSize='34px';sp.innerHTML=b[1];sp.dataset.k=String(b[0])}
+ const k=b?b[0]:0;const p=clamp((t-k)/.3);$('us6h').style.transform=`scale(${t<41.9?0:(.85+.15*p)}) rotate(${t>48.7&&t<50.2?Math.sin(t*20)*2:0}deg)`;$('us6h').style.opacity=t<41.9?0:1;
+ pop('us6d',t,50.2,.35);if(t>50.6)$('us6d').style.transform+=` rotate(${Math.sin(t*5)*4}deg)`}
+function frame21b(t,tt,cur,lt,jobs){if(t>=41.9&&t<52.5){const s=SUB21B.find(x=>t>=x[0]-.15&&t<x[1]+.35);const sb=$('sub18t');if(s){sb.innerHTML=s[2];sb.style.background='rgba(255,255,255,.96)';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}else frame21(tt,cur,lt,jobs)}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -1199,6 +1208,7 @@ async function render(t){
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  if(AD==='20'){draw20(id,lt,t,jobs);frame20(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
  if(AD==='21'){draw21(id,lt,t,jobs);frame21(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
+ if(AD==='21b'){const tt=warp21(t);draw21(id,lt,tt,jobs);draw21b(id,t);frame21b(t,tt,cur,lt,jobs);jobs.push(window.hook3d(tt,cur,lt,t))}
  if(AD==='18'||AD==='19'){if(id!=='cta')draw18(id,lt,t,jobs);frame18(t,cur,lt,jobs);if(AD==='19')jobs.push(window.hook3d(t,cur,lt))}
  await Promise.all(jobs);
 }
@@ -1206,7 +1216,7 @@ window.render=render;
 </script>
 <script type="importmap">{"imports":{"three":"./three/three.module.js","three/addons/":"./three/addons/"}}</script>
 <script type="module">
-const AD3=new URLSearchParams(location.search).get('ad');if(AD3==='19'||AD3==='20'||AD3==='21'){
+const AD3=new URLSearchParams(location.search).get('ad');if(AD3==='19'||AD3==='20'||AD3==='21'||AD3==='21b'){
 const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
 const cv=document.createElement('canvas');cv.id='cv3d';cv.width=1080;cv.height=1920;cv.style.cssText='position:absolute;left:0;top:0;width:720px;height:1280px;pointer-events:none';
 ['c1cat','c2cat','c3cat','c4cat','c5cat','c3lap','c4yarn'].forEach(i=>{const e=document.getElementById(i);if(e)e.style.display='none'});
@@ -1222,13 +1232,13 @@ const mix=new THREE.AnimationMixer(M);const A={};g.animations.forEach(c=>{const 
 let head=null,hips=null,mesh=null,armL=null,armR=null;M.traverse(o=>{if(o.isBone&&/LeftArm$/.test(o.name))armL=o;if(o.isBone&&/RightArm$/.test(o.name))armR=o;if(o.isBone&&/Head$/.test(o.name))head=o;if(o.isBone&&/Hips$/.test(o.name))hips=o;if(o.isSkinnedMesh||o.isMesh)mesh=mesh||o});
 M.position.y=0;mix.update(0);const a0=mix.clipAction(g.animations.find(c=>c.name.startsWith('idle')));a0.setEffectiveWeight(1);a0.time=0;mix.update(0);M.updateMatrixWorld(true);const {armFix}=await import('./armfix.js');let skm=null;M.traverse(o=>{if(o.isSkinnedMesh&&!skm)skm=o});if(skm)armFix(THREE,skm);const {makeMouth}=await import('./mouth3d.js');const MO=makeMouth(THREE,M,head,mesh);a0.setEffectiveWeight(0);M.position.y=-box.min.y;let mPrev=0;
 const v0=()=>0;let hipRest=null;
-const CO=AD3==='20'?0.3:AD3==='21'?0:1.4;const MOUTH=(AD3==='20'||AD3==='21')?(window.CAT_MOUTH||[]):(window.MOUTH18||[]);
+const CO=AD3==='20'?0.3:(AD3==='21'||AD3==='21b')?0:1.4;const MOUTH=(AD3==='20'||AD3==='21'||AD3==='21b')?(window.CAT_MOUTH||[]):(window.MOUTH18||[]);
 document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
 const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
 function weights(list){let tot=0;for(const k in A){A[k].a.setEffectiveWeight(0)}for(const [k,w,tm] of list){if(!A[k]||w<=0)continue;A[k].a.time=tm%A[k].d;A[k].a.setEffectiveWeight(w)}mix.update(0)}
 function once(k,v,start){const p=v-start;if(p<0||p>A[k].d)return 0;return Math.min(ss(p/.35),ss((A[k].d-p)/.35))}
-window.hook3d=async function(t,cur,lt){
- const id=cur[2];const v=t-CO;cv.style.opacity=(id==='cta'||id==='mm9'||id==='us1'||id==='us2')?0:1;if((id==='cta'||id==='mm9'||id==='us1'||id==='us2'))return;
+window.hook3d=async function(t,cur,lt,tr){
+ const id=cur[2];const v=t-CO;const vr=(tr===undefined?t:tr)-CO;let useR=false;cv.style.opacity=(id==='cta'||id==='mm9'||id==='us1'||id==='us2')?0:1;if((id==='cta'||id==='mm9'||id==='us1'||id==='us2'))return;
  // base pose per scene + gestures [voiceStart, clipFrom, clipTo]
  const foldT=5+3.5*(1-Math.cos(t*.35));
  let px=360,py=1060,s=.66,ry=0,base=['wait',t%6.0],G=[],walk=false;
@@ -1246,7 +1256,7 @@ window.hook3d=async function(t,cur,lt){
  if(id==='us3'){px=575;py=1085;s=.6;ry=-.35;base=W();G=[['frustrated',16.4,.2,3.2],['complain',20.3,2.4,4.8]]}
  if(id==='us4'){px=130;py=1090;s=.6;ry=.4;base=STD;G=[['agree',22.2,.8,3.0],['greet',25.9,.3,2.4]]}
  if(id==='us5'){px=360;py=1150;s=.42;ry=0;base=STD;G=[['agree',28.4,.8,3.0],['complain',31.8,2.4,4.8]]}
- if(id==='us6'){px=575;py=1090;s=.58;ry=-.35;base=W();G=[['greet',41.7,.3,2.6]]}
+ if(id==='us6'){px=575;py=1090;s=.58;ry=-.35;base=W();G=[['greet',41.7,.3,2.6]];if(AD3==='21b'){useR=true;G=[['greet',41.8,.3,2.6],['agree',46.5,.8,2.6],['frustrated',48.6,.2,1.8],['complain',50.2,2.4,4.6]]}}
  if(id==='us7'){px=180;py=1100;s=.56;ry=.35;base=STD;G=[['frustrated',46.7,.2,3.0],['agree',48.7,.8,2.8],['complain',50.8,2.4,4.6]]}
  if(id==='us8'){px=170;py=1110;s=.62;ry=.3;base=STD;G=[['agree',53.4,.8,3.0],['greet',57.3,.3,2.6]]}
  if(id==='c1'){px=235;py=1045;s=.68;ry=.22;G=[['complain',6.9,2.2,5.2],['agree',9.9,.8,3.6]]}
@@ -1255,7 +1265,7 @@ window.hook3d=async function(t,cur,lt){
  if(id==='c4'){const WD=3.9,p=cl((v-36.9)/WD);s=.5;py=1075;px=-80+460*p;walk=p<1;ry=p<1?Math.PI/2:Math.PI/2*(1-ss((v-36.9-WD)/.6));base=['standing',t%17.6];G=[['agree',47.4,.8,3.6]]}
  if(id==='c5'){px=360;py=1115;s=.66;ry=Math.sin(t*.4)*.06;base=['standing',t%17.6];G=[['greet',54.4,.3,3.3],['agree',58.2,.8,2.8]]}
  const list=[];let gw=0;
- for(const [k,st,f,e] of G){const d=e-f,q=v-st;if(q<0||q>d)continue;const w=Math.min(ss(q/.45),ss((d-q)/.45));if(w<=0)continue;list.push([k,w,f+q]);gw=Math.max(gw,w)}
+ for(const [k,st,f,e] of G){const d=e-f,q=(useR?vr:v)-st;if(q<0||q>d)continue;const w=Math.min(ss(q/.45),ss((d-q)/.45));if(w<=0)continue;list.push([k,w,f+q]);gw=Math.max(gw,w)}
  if(walk)list.push(['walk',1,v]);else list.push([base[0],1-gw,base[1]]);
  for(const k in A)A[k].a.setEffectiveWeight(0);
  for(const [k,w,tm] of list){const x=A[k];if(!x||w<=0)continue;x.a.time=Math.min(tm,x.d-.001);x.a.setEffectiveWeight(w)}
@@ -1264,7 +1274,7 @@ window.hook3d=async function(t,cur,lt){
  // folded arms: rotate the upper arms so the forearms cross in front of the belly instead of sinking into it
  const fw=(!walk&&base[0]==='fold')?(1-gw):0;if(fw>0&&armL&&armR){const z=new THREE.Vector3(0,0,1);armL.rotateOnAxis(z,.3*fw);armR.rotateOnAxis(z,.3*fw)}
  if(hips){M.position.x=0;M.position.z=0;root.updateMatrixWorld(true);const hp=new THREE.Vector3();hips.getWorldPosition(hp);root.worldToLocal(hp);if(!hipRest)hipRest={x:-0.048,z:0.074};M.position.x=-(hp.x-hipRest.x);M.position.z=-(hp.z-hipRest.z)}
- const fr=Math.floor(v*24);const m=v>0&&fr<MOUTH.length?MOUTH[fr]:0;
+ const fr=Math.floor(vr*24);const m=v>0&&fr<MOUTH.length?MOUTH[fr]:0;
  const mm=Math.max(m,mPrev*.55);mPrev=mm;MO.set(mm);
  R.render(S,C);
 };
