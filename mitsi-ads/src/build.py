@@ -22,11 +22,12 @@ AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27
     '17p':{'m':U+'23d20477-____________5.mp3','vp':'/home/user/nvs/mitsi-ads/audio/available-from-did.mp3','v':'','cuts':[0,2.38,7.94,11.90,15.25,17.96,22.02,26.27,29.99,33.07,36.8],'ids':['av1','av2','av3','av4','av5','av6','av7','av8','av9','av10','cta']},
     '18':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/cat-mix.wav','v':'','cuts':[0,13.1,23.62,38.2,51.0,61.4],'ids':['c1','c2','c3','c4','c5','cta']},
     '19':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/cat-mix-v2.wav','v':'','cuts':[0,13.1,23.62,38.2,51.0,61.4],'ids':['c1','c2','c3','c4','c5','cta']},
+    '20':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/missed-mix.wav','v':'','tail':1.6,'cuts':[0,5.5,9.2,11.6,17.9,21.85,28.5,35.4,38.8,41.0],'ids':['mm1','mm2','mm3','mm4','mm5','mm6','mm7','mm8','mm9','mm10']},
     '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():
     d=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',a.get('vp',U+a['v'])]))
-    END=round(d+TAIL,2);c=a['cuts']
+    END=round(d+a.get('tail',TAIL),2);c=a['cuts']
     seg=[[c[i],c[i+1] if i+1<len(c) else END,a['ids'][i]] for i in range(len(c))]
     out[k]={'seg':seg,'total':END}
     n=len(c)-1
@@ -40,7 +41,7 @@ for k,a in AD.items():
     f.append(f"[voice][mus]{''.join(wh)}amix=inputs={2+n}:normalize=0:duration=longest,atrim=0:{END}[out]")
     subprocess.run(['ffmpeg','-y','-loglevel','error','-i',a.get('vp',U+a['v']),'-i',a.get('m',MUS),'-i',A+'whoosh.wav','-filter_complex',';'.join(f),'-map','[out]','-c:a','aac','-b:a','192k',A+f'audio{k}.m4a'],check=True)
 s=open('ads.tpl.html').read()
-s=s.replace('/*CATJS*/',open('cat.js').read()).replace('/*MOUTH*/[]/*/MOUTH*/',open(A+'../cat/mouth.json').read())
+s=s.replace('/*MOUTH20*/[]/*/MOUTH20*/',open(A+'../cat/mouth20.json').read()).replace('/*CATJS*/',open('cat.js').read()).replace('/*MOUTH*/[]/*/MOUTH*/',open(A+'../cat/mouth.json').read())
 s=s.replace('/*ADS*/{}/*/ADS*/','/*ADS*/'+json.dumps(out)+'/*/ADS*/')
 s=s.replace('<!--LOGO-->',open(A+'logo_svg.txt').read().replace('viewBox="0 0 1600 600"','viewBox="200 40 1500 520"'))
 import os
