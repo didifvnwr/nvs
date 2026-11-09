@@ -21,6 +21,7 @@ AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27
     '17':{'m':U+'23d20477-____________5.mp3','vp':'/home/user/nvs/mitsi-ads/audio/available-danit-take1.mp3','v':'','cuts':[0,2.85,8.45,12.53,15.86,18.66,22.62,26.98,30.66,33.65,37.36],'ids':['av1','av2','av3','av4','av5','av6','av7','av8','av9','av10','cta']},
     '17p':{'m':U+'23d20477-____________5.mp3','vp':'/home/user/nvs/mitsi-ads/audio/available-from-did.mp3','v':'','cuts':[0,2.38,7.94,11.90,15.25,17.96,22.02,26.27,29.99,33.07,36.8],'ids':['av1','av2','av3','av4','av5','av6','av7','av8','av9','av10','cta']},
     '18':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/cat-mix.wav','v':'','cuts':[0,13.1,23.62,38.2,51.0,61.4],'ids':['c1','c2','c3','c4','c5','cta']},
+    '19':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/cat-mix.wav','v':'','cuts':[0,13.1,23.62,38.2,51.0,61.4],'ids':['c1','c2','c3','c4','c5','cta']},
     '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():

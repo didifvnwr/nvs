@@ -812,9 +812,9 @@ function frame17p(t,cur,lt,jobs){
 }
 /* ---------- AD 18: Mitsi the cat (Omer), flat vector character ---------- */
 const CO=1.4; // voice offset (yawn first)
-const MOUTH=/*MOUTH*/[]/*/MOUTH*/;
+const MOUTH=/*MOUTH*/[]/*/MOUTH*/;window.MOUTH18=MOUTH;
 const SUBS=[[0.9,2.54,'תגידו, אתם לא מתעייפים?'],[3.02,4.98,'כל היום "הלו, אני אחזור אליך"'],[5.4,6.68,'"הלו, אני בפקק"...'],[7.12,8.8,'מתי נשאר לכם זמן ללטף אותי?'],[9.1,11.4,'או יותר חשוב – לפתוח לי פחית שימורים?'],[11.94,13.96,'פעם, כדי להקים מרכזייה לעסק,'],[14.04,15.22,'הייתם צריכים טכנאי,'],[15.42,17.24,'שרתים שעושים רעש של שואב אבק'],[17.56,19.0,'– ואני שונא שואבי אבק –'],[19.34,20.24,'ומשכנתא קטנה.'],[20.56,21.96,'בקיצור, כאב ראש.'],[22.46,25.1,'אז במיצי תקשורת החלטנו לעשות לזה סוף.'],[25.38,28.96,'מרכזייה וירטואלית חכמה, זולה ופשוטה בטירוף.'],[29.32,29.92,'כמה פשוטה?'],[30.32,33.94,'אתם פשוט מדברים עם ה-AI, והוא מקים ומנהל לכם הכל.'],[34.22,36.62,'בלי קוד, בלי טכנאים ובלי דרמות.'],[36.96,38.76,'רוצים תפריט קולי? תכתבו לו.'],[39.12,42.9,'ניתוב שיחות חכם או סיכום שיחה אוטומטי? תבקשו ממנו.'],[43.24,45.84,'כל אחד יכול לחבר לעצמו מערכת בדקות.'],[46.14,49.34,'אם אני מצליח בלי אגודלים – גם אתם יכולים.'],[49.84,50.74,'מיצי תקשורת.'],[50.98,54.26,'מרכזייה חכמה במחיר של שתי שקיות חטיפים פרימיום.'],[54.6,57.96,'יאללה, תתחברו, שיהיה לכם זמן לדברים החשובים באמת...'],[58.4,58.84,'כמוני.'],[59.3,59.95,'מיאו.']];
-if(AD==='18'){
+if(AD==='18'||AD==='19'){
 /*CATJS*/
 const st=$('stage');st.style.background='#f6e7d2';
 ['hud','scanl'].forEach(i=>$(i).style.display='none');
@@ -1066,8 +1066,53 @@ async function render(t){
  if(id==='u10'){jobs.push(setImg($('pu10'),PRES(t)));pop('u10b',lt,.25,.4);$('u10b').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(224,184,119,.45)`}
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
- if(AD==='18'){if(id!=='cta')draw18(id,lt,t,jobs);frame18(t,cur,lt,jobs)}
+ if(AD==='18'||AD==='19'){if(id!=='cta')draw18(id,lt,t,jobs);frame18(t,cur,lt,jobs);if(AD==='19')jobs.push(window.hook3d(t,cur,lt))}
  await Promise.all(jobs);
 }
 window.render=render;
+</script>
+<script type="importmap">{"imports":{"three":"./three/three.module.js","three/addons/":"./three/addons/"}}</script>
+<script type="module">
+if(new URLSearchParams(location.search).get('ad')==='19'){
+const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
+const cv=document.createElement('canvas');cv.id='cv3d';cv.width=1080;cv.height=1920;cv.style.cssText='position:absolute;left:0;top:0;width:720px;height:1280px;pointer-events:none';
+['c1cat','c2cat','c3cat','c4cat','c5cat','c3lap','c4yarn'].forEach(i=>{const e=document.getElementById(i);if(e)e.style.display='none'});
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:true});R.setPixelRatio(1);R.setSize(1080,1920,false);R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
+const S=new THREE.Scene();const D=3.6;const C=new THREE.PerspectiveCamera(30,720/1280,.05,50);C.position.set(0,0,D);C.lookAt(0,0,0);
+const PX=2*D*Math.tan(15*Math.PI/180)/1280; // world units per px
+S.add(new THREE.HemisphereLight(0xffffff,0x6b7a99,1.5));const key=new THREE.DirectionalLight(0xffffff,2.3);key.position.set(2,4,4);S.add(key);const rim=new THREE.DirectionalLight(0x9fdcff,1.3);rim.position.set(-3,2,-2);S.add(rim);
+const g=await new GLTFLoader().loadAsync('mitsi-cat-3d-rigged.glb');const M=g.scene;const root=new THREE.Group();root.add(M);S.add(root);
+const box=new THREE.Box3().setFromObject(M);M.position.y=-box.min.y; // feet at y=0
+const sc=document.createElement('canvas');sc.width=sc.height=128;const sx=sc.getContext('2d');const gr=sx.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(0,0,0,.45)');gr.addColorStop(1,'rgba(0,0,0,0)');sx.fillStyle=gr;sx.fillRect(0,0,128,128);
+const sh=new THREE.Mesh(new THREE.PlaneGeometry(.75,.75),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.y=.002;root.add(sh);
+const mix=new THREE.AnimationMixer(M);const A={};g.animations.forEach(c=>{const k=c.name.split('.')[0].split('_')[0];const a=mix.clipAction(c);a.play();a.setEffectiveWeight(0);A[k]={a,d:c.duration}});
+let head=null,hips=null;M.traverse(o=>{if(o.isBone&&/Head$/.test(o.name))head=o;if(o.isBone&&/Hips$/.test(o.name))hips=o});
+const v0=()=>0;let hipRest=null;
+const CO=1.4;const MOUTH=window.MOUTH18||[];
+document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
+function weights(list){let tot=0;for(const k in A){A[k].a.setEffectiveWeight(0)}for(const [k,w,tm] of list){if(!A[k]||w<=0)continue;A[k].a.time=tm%A[k].d;A[k].a.setEffectiveWeight(w)}mix.update(0)}
+function once(k,v,start){const p=v-start;if(p<0||p>A[k].d)return 0;return Math.min(ss(p/.35),ss((A[k].d-p)/.35))}
+window.hook3d=async function(t,cur,lt){
+ const id=cur[2];const v=t-CO;cv.style.opacity=id==='cta'?0:1;if(id==='cta')return;
+ let px=360,py=1060,s=.66,ry=0,list=[],walkX=null;
+ const add=(k,start)=>{const w=once(k,v,start);if(w>0)list.push([k,w,v-start]);return w};
+ if(id==='c1'){px=230;py=1045;s=.68;ry=.25+Math.sin(t*.6)*.05;add('agree',7.0)}
+ if(id==='c2'){px=175;py=1045;s=.66;ry=.55;add('wave',14.5);add('agree',20.4)}
+ if(id==='c3'){px=575;py=1060;s=.52;ry=-.35;add('agree',29.2);add('agree',33.4)}
+ if(id==='c4'){const p=cl((v-36.9)/6.3);s=.5;py=1075;px=-80+460*ss(p);walkX=p<1;ry=p<1?Math.PI/2:Math.PI/2*(1-ss((v-43.2)/.6));add('agree',47.6)}
+ if(id==='c5'){px=360;py=1115;s=.66;ry=Math.sin(t*.5)*.08;add('wave',54.4);add('agree',59.1)}
+ let wsum=list.reduce((a,b)=>a+b[1],0);
+ if(walkX){list=[['walk',1,v*1.0]]}else list.push(['idle',Math.max(0,1-wsum),t]);
+ weights(list);
+ if(hips){if(!hipRest)hipRest=hips.position.clone();hips.position.x=hipRest.x;hips.position.z=hipRest.z}
+ const fr=Math.floor(v*24);const m=v>0&&fr<MOUTH.length?MOUTH[fr]:0;
+ if(head&&!walkX){head.rotation.x+=m*.16;head.rotation.z+=Math.sin(t*3.1)*.05*m+(id==='c2'&&v>21.2&&v<22.2?Math.sin(t*22)*.18:0);head.rotation.y+=Math.sin(t*1.7)*.06*m;head.updateMatrixWorld(true)}
+ root.position.set((px-360)*PX,(640-py)*PX,0);root.scale.setScalar(s/0.98*1.0*1.0* (1/PX)*PX* (1));root.scale.setScalar(s*1.0/ (1) );root.rotation.y=ry;
+ // scale: model height .98 world; s = fraction of 1280 visible height? -> desired px height = s*650
+ root.scale.setScalar((s*650*PX)/0.98);
+ R.render(S,C);
+};
+window.ready3d=true;
+}else window.ready3d=true;
 </script></body></html>
