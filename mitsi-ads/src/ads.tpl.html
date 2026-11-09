@@ -1441,8 +1441,8 @@ async function loadChar(url,mp){
  const hr=new THREE.Vector3();hips.getWorldPosition(hr);M.position.y=fy;
  return {M,root,mix,A,head,hips,lh,rh,MO,ph,fy,rest:{x:hr.x,z:hr.z},mPrev:0};
 }
-const cm=await loadChar('cat-m.glb',{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'});
-const cf=await loadChar('cat-f.glb',{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'});
+const cm=await loadChar(AD4==='22'?'cat-m2.glb':'cat-m.glb',{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'});
+const cf=await loadChar(AD4==='22'?'cat-f2.glb':'cat-f.glb',{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'});
 const cb=AD4==='23'?await loadChar('cat-b.glb',{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'}):null;
 document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
 const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
@@ -1451,14 +1451,15 @@ function pose(ch,t,P,mouthArr){
  ch.root.visible=true;const v=t;
  const list=[];let gw=0;
  for(const g of (P.G||[])){const [k,st]=g;const x=ch.A[k];if(!x)continue;const f=g[2]??0,e=g[3]??x.d;const d=e-f,q=v-st;if(q<0||q>d)continue;const w=Math.min(ss(q/.4),ss((d-q)/.4));if(w<=0)continue;list.push([k,w,f+q]);gw=Math.max(gw,w)}
- const b=ch.A[P.base]?P.base:'standing_relax';list.push([b,1-gw,P.hold?Math.min(P.bt,ch.A[b].d-.001):(P.bt??t)%ch.A[b].d]);
+ let segw=0;for(const sg of (P.segs||[])){const [k,a,e]=sg;const x=ch.A[k];if(!x||t<a-.35||t>e+.35)continue;const w=Math.min(ss((t-a+.35)/.7),ss((e-t+.35)/.7));if(w<=0)continue;list.push([k,(1-gw)*w*(1-segw),(t-a+.35)%x.d]);segw+=w*(1-segw)}
+ const b=ch.A[P.base]?P.base:'standing_relax';list.push([b,(1-gw)*(1-segw),P.hold?Math.min(P.bt,ch.A[b].d-.001):(P.bt??t)%ch.A[b].d]);
  for(const k in ch.A)ch.A[k].a.setEffectiveWeight(0);
  for(const [k,w,tm] of list){const x=ch.A[k];x.a.time=Math.min(tm,x.d-.001);x.a.setEffectiveWeight(w)}
  const sIn=P.in!=null?ss((t-P.in)/.45):1;
  ch.root.position.set((P.px-360)*PX,(640-P.py)*PX,0);ch.root.rotation.y=P.ry||0;ch.root.scale.setScalar((P.s*650*PX)/0.98*Math.max(.001,sIn));
  ch.M.position.y=ch.fy;ch.mix.update(0);
  ch.M.position.x=0;ch.M.position.z=0;ch.root.updateMatrixWorld(true);const hp=new THREE.Vector3();ch.hips.getWorldPosition(hp);ch.root.worldToLocal(hp);ch.M.position.x=-(hp.x-ch.rest.x);ch.M.position.z=-(hp.z-ch.rest.z);
- const call=list.some(([k,w])=>w>.5&&k==='make_a_call_01'),game=list.some(([k,w])=>w>.5&&k==='play_mobile_game');ch.ph.visible=call||game;
+ const call=list.some(([k,w])=>w>.5&&['make_a_call_01','phone_talk_standing','voice_command_phone','hang_up_angry'].includes(k)),game=list.some(([k,w])=>w>.5&&['play_mobile_game','phone_scroll_standing'].includes(k));ch.ph.visible=call||game;
  if(ch.ph.visible){ch.root.updateMatrixWorld(true);const a=new THREE.Vector3(),b=new THREE.Vector3();ch.lh.getWorldPosition(a);ch.rh.getWorldPosition(b);
   const sc=ch.root.scale.x;let p,ang;if(game){p=a.clone().add(b).multiplyScalar(.5);p.y+=.03*sc;ang=0}else{const hd=new THREE.Vector3();ch.head.getWorldPosition(hd);p=(a.distanceTo(hd)<b.distanceTo(hd)?a:b).clone();ang=(p.x<hd.x?-1:1)*.35}
   p.z+=.07*sc;ch.ph.position.copy(p);ch.ph.scale.setScalar(sc*1.3);ch.ph.rotation.set(game?-.6:0,0,ang)}
@@ -1467,13 +1468,14 @@ function pose(ch,t,P,mouthArr){
 // placements per scene: F = ginger (Danit), M = Mitsi (Omer)
 function plan(id,t){
  const L={px:205,py:1085,s:.6,ry:.35},Rt={px:525,py:1085,s:.6,ry:-.35};let F=null,Mi=null;
- if(id==='dd1'){F={px:210,py:1090,s:.66,ry:.3,base:t<5.6?'make_a_call_01':'standing_relax',G:[['frustrated_01',5.9],['complain_02',8.6]]}}
- if(id==='dd2'){F={...L,base:'standing_relax',G:[['complain_01',14.6],['frustrated_01',18.2]]};Mi={...Rt,in:11.25,base:'play_mobile_game',G:[['laugh_02',20.2]]}}
- if(id==='dd3'){F={...L,base:'fold_arms'};Mi={...Rt,base:t<27.2?'play_mobile_game':'standing_relax',G:[['agree',27.2]]}}
- if(id==='dd4'){F={...L,base:t<36.9?'make_a_call_01':'standing_relax',G:[['laugh_01',37.0]]};Mi={...Rt,base:'play_mobile_game'}}
- if(id==='dd5'){F={...L,s:.56,base:'standing_relax',G:[['clap',46.2]]};Mi={...Rt,s:.58,px:540,base:t<50.0?'standing_relax':'sit',hold:t>=50,bt:t<50?t:t-50,G:[['greet_02',40.3],['agree',45.5]]}}
- if(id==='dd6'){F={...L,base:'standing_relax',G:[['look_around',52.5]]};Mi={...Rt,base:'standing_relax',G:[['laugh_02',55.0],['agree',60.2],['agree',64.2]]}}
- if(id==='dd7'){F={...L,base:'standing_relax',G:[['scratch',65.3],['cheer',71.0]]};Mi={...Rt,base:'swagger',G:[['agree',67.8]]}}
+ const IC='idle_calm';
+ if(id==='dd1'){F={px:210,py:1090,s:.66,ry:.3,base:IC,segs:[['phone_talk_standing',-1,4.4],['talk_02',5.8,11.3]],G:[['hang_up_angry',4.3],['count_fingers',7.2],['hands_up_exasperated',9.9]]}}
+ if(id==='dd2'){F={...L,base:IC,segs:[['talk_02',14.7,20.1]],G:[['hands_up_exasperated',9.9],['facepalm',14.7],['hands_up_exasperated',18.1]]};Mi={...Rt,in:11.25,base:IC,segs:[['phone_scroll_standing',10,20.0],['talk_03',20.2,23.9]],G:[['yawn',11.3],['shrug',20.1],['point_self_proud',22.5]]}}
+ if(id==='dd3'){F={...L,base:IC,segs:[['talk_03',24.0,27.2],['phone_talk_standing',28.2,31]],G:[]};Mi={...Rt,base:IC,segs:[['phone_scroll_standing',28.9,31]],G:[['point_self_proud',22.5],['point_forward',27.2]]}}
+ if(id==='dd4'){F={...L,base:IC,segs:[['phone_talk_standing',28.2,36.8],['talk_01',39.9,40.3]],G:[['surprised',36.8]]};Mi={...Rt,base:'phone_scroll_standing'}}
+ if(id==='dd5'){F={...L,s:.56,base:IC,G:[['clap',46.3,0,3.0],['thinking_chin',48.9]]};Mi={...Rt,s:.58,px:540,base:IC,segs:[['talk_02',40.2,50.4],['sit_idle',51.75,53.0]],G:[['count_fingers',40.4],['present_both_hands',45.6],['stand_to_sit',50.3]]}}
+ if(id==='dd6'){F={...L,base:IC,segs:[['talk_01',52.5,55.0]],G:[['thinking_chin',52.5],['surprised',58.1,0,2.4]]};Mi={...Rt,base:IC,segs:[['sit_idle',51.75,52.5],['talk_01',54.0,65.2]],G:[['sit_to_stand',52.45],['head_shake_no',55.0],['voice_command_phone',57.9],['voice_command_phone',61.4]]}}
+ if(id==='dd7'){F={...L,base:IC,segs:[['talk_01',65.3,67.8],['talk_02',71.0,74.1]],G:[['thinking_chin',65.3],['fist_pump',72.0]]};Mi={...Rt,base:IC,segs:[['talk_03',67.8,71.0]],G:[['point_self_proud',67.8]]}}
  if(id==='dd8'){F={px:200,py:1100,s:.6,ry:.25,base:t<84.6?'dance_01':'standing_relax',bt:t-74,G:[['heart_pose',84.8]]};Mi={px:520,py:1100,s:.6,ry:-.25,base:t<82.2?'dance_01':'standing_relax',bt:t-74.3,G:[['greet_01',82.3],['bow',86.2]]}}
  return {F,Mi};
 }
