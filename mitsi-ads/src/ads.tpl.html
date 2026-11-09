@@ -1086,7 +1086,7 @@ const box=new THREE.Box3().setFromObject(M);M.position.y=-box.min.y; // feet at 
 const sc=document.createElement('canvas');sc.width=sc.height=128;const sx=sc.getContext('2d');const gr=sx.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(0,0,0,.45)');gr.addColorStop(1,'rgba(0,0,0,0)');sx.fillStyle=gr;sx.fillRect(0,0,128,128);
 const sh=new THREE.Mesh(new THREE.PlaneGeometry(.75,.75),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.position.y=.002;root.add(sh);
 const mix=new THREE.AnimationMixer(M);const A={};g.animations.forEach(c=>{const k=c.name.split('.')[0].split('_')[0];/*keys: idle wait swagger agree walk look fold frustrated greet complain standing wave*/const a=mix.clipAction(c);a.play();a.setEffectiveWeight(0);A[k]={a,d:c.duration}});
-let head=null,hips=null,mesh=null;M.traverse(o=>{if(o.isBone&&/Head$/.test(o.name))head=o;if(o.isBone&&/Hips$/.test(o.name))hips=o;if(o.isSkinnedMesh||o.isMesh)mesh=mesh||o});
+let head=null,hips=null,mesh=null,armL=null,armR=null;M.traverse(o=>{if(o.isBone&&/LeftArm$/.test(o.name))armL=o;if(o.isBone&&/RightArm$/.test(o.name))armR=o;if(o.isBone&&/Head$/.test(o.name))head=o;if(o.isBone&&/Hips$/.test(o.name))hips=o;if(o.isSkinnedMesh||o.isMesh)mesh=mesh||o});
 M.position.y=0;mix.update(0);const a0=mix.clipAction(g.animations.find(c=>c.name.startsWith('idle')));a0.setEffectiveWeight(1);a0.time=0;mix.update(0);M.updateMatrixWorld(true);const {makeMouth}=await import('./mouth3d.js');const MO=makeMouth(THREE,M,head,mesh);a0.setEffectiveWeight(0);M.position.y=-box.min.y;let mPrev=0;
 const v0=()=>0;let hipRest=null;
 const CO=1.4;const MOUTH=window.MOUTH18||[];
@@ -1110,6 +1110,8 @@ window.hook3d=async function(t,cur,lt){
  for(const k in A)A[k].a.setEffectiveWeight(0);
  for(const [k,w,tm] of list){const x=A[k];if(!x||w<=0)continue;x.a.time=Math.min(tm,x.d-.001);x.a.setEffectiveWeight(w)}
  mix.update(0);
+ // folded arms: rotate the upper arms so the forearms cross in front of the belly instead of sinking into it
+ const fw=(!walk&&base[0]==='fold')?(1-gw):0;if(fw>0&&armL&&armR){const z=new THREE.Vector3(0,0,1);armL.rotateOnAxis(z,.3*fw);armR.rotateOnAxis(z,.3*fw)}
  if(hips){if(!hipRest)hipRest=hips.position.clone();hips.position.x=hipRest.x;hips.position.z=hipRest.z}
  const fr=Math.floor(v*24);const m=v>0&&fr<MOUTH.length?MOUTH[fr]:0;
  const mm=Math.max(m,mPrev*.55);mPrev=mm;MO.set(mm);
