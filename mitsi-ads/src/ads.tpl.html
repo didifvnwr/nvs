@@ -1210,6 +1210,64 @@ function draw23(id,lt,t,jobs){
   [...document.querySelectorAll('#eb9s .cf')].forEach((c,i)=>{const x=(i*61)%720,y=((t-73)*(120+i%5*35)+i*47)%1050-40;c.setAttribute('transform',`translate(${x+Math.sin(t*2+i)*18} ${y}) rotate(${t*160+i*40})`);c.setAttribute('opacity',v>73.5?.85:0)})}
 }
 function frame23(t,cur,lt,jobs){const s=SUBS23.find(x=>t>=x[0]-.15&&t<x[1]+.3);const sb=$('sub18t');if(s){const ic=s[2]==='f'?'🧡 ':s[2]==='m'?'🩶 ':'🕶️ ';sb.textContent=ic+s[3];sb.style.background=s[2]==='f'?'#fff1e2':s[2]==='m'?'#eef1fb':'#e9edf7';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
+/* ---------- AD 24: "the consultant" – business cat sells a giant solution, Mitsi brings the simple one ---------- */
+if(AD==='24'){
+window.MOUTH24=/*MOUTH24*/{}/*/MOUTH24*/;
+const st=$('stage');['hud','scanl'].forEach(i=>$(i).style.display='none');
+const O='#26242b';const C='left:0;right:0;text-align:center;';
+const card=(id,html,top,extra='')=>`<div class="abs" id="${id}" style="${C}top:${top}px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:10px 26px;font-size:36px;font-weight:800;box-shadow:7px 7px 0 ${O};${extra}">${html}</span></div>`;
+const SV=(id,inner)=>`<svg class="full" id="${id}" viewBox="0 0 720 1280">${inner}</svg>`;
+const SHOP=`<rect width="720" height="1280" fill="#ffeef3"/>${Array.from({length:12},(_,i)=>`<circle cx="${(i*97+30)%720}" cy="${(i*131)%880+60}" r="${14+i%3*6}" fill="#ffc9d9" opacity=".55"/>`).join('')}
+<g transform="translate(70 110)"><rect x="-20" width="270" height="66" rx="14" fill="#ff8fb1" stroke="${O}" stroke-width="5"/><text x="115" y="44" text-anchor="middle" font-size="28" font-weight="800" font-family="H" fill="#fff">🌸 הפרחים של ג׳ינג׳י</text></g>
+<rect y="960" width="720" height="320" fill="#e8c9a3"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/>
+<g transform="translate(20 860)"><rect width="140" height="100" rx="8" fill="#c58b5a" stroke="${O}" stroke-width="6"/><text x="12" y="0" font-size="50">🌷</text><text x="70" y="-6" font-size="50">🌻</text></g>`;
+const ROW=(id,ic,txt,extra='')=>`<div id="${id}" style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px dashed #bbb;padding:6px 2px;font-size:25px;font-weight:800;${extra}"><span>${ic} ${txt}</span></div>`;
+S('cs1',SV('cs1s',SHOP)+`<div class="abs" id="cs1c" style="left:150px;top:220px;width:420px;height:230px;border-radius:18px;background:linear-gradient(135deg,#1b2440,#2f3d6b);color:#fff;border:5px solid #c9a24a;box-shadow:9px 9px 0 ${O};padding:22px;box-sizing:border-box;transform:rotate(-4deg)"><div style="font-size:22px;color:#c9a24a;font-weight:800;letter-spacing:2px;font-family:Arial">CAT CORP CONSULTING</div><div style="font-size:34px;font-weight:800;margin-top:14px">🕶️ יועץ לפתרונות ארגוניים</div><div style="font-size:20px;opacity:.7;margin-top:10px;font-family:Arial">Enterprise · Strategy · Synergy™</div></div>`
++card('cs1k','"עסק קטן... שמחפש פתרון גדול"',520,'font-size:30px'));
+S('cs2',SV('cs2s',SHOP)+card('cs2a','🌸 "שיענו ללקוחות, גם כשאני עסוקה"',130,'font-size:28px')+`<div class="abs" id="cs2p" style="left:90px;right:90px;top:230px;background:#fffdf5;color:${O};border:5px solid ${O};border-radius:8px;box-shadow:9px 9px 0 ${O};padding:14px 20px 0;overflow:hidden">
+<div style="font-size:28px;font-weight:800;text-align:center;border-bottom:4px solid ${O};padding-bottom:6px">📄 הצעה ארגונית · עמוד 1 מתוך 37</div>
+${ROW('cs2r1','🖥️','חדר שרתים')}${ROW('cs2r2','👷👷👷','שלושה טכנאים')}${ROW('cs2r3','🎧×20','מוקד עם 20 נציגות')}${ROW('cs2r4','📅','הטמעה: חצי שנה')}${ROW('cs2r5','🦄','יועץ אסטרטגי (אני)')}${ROW('cs2r6','📎','נספחים א׳–ת׳',';opacity:.6')}<div id="cs2more" style="height:0"></div></div>`);
+S('cs3',SV('cs3s',SHOP)+card('cs3a','😰 "...וכמה זה עולה?"',140,'font-size:34px')+`<div class="abs" id="cs3p" style="${C}top:250px"><span style="display:inline-block;background:#1b2440;color:#ffd84a;border:6px solid ${O};border-radius:22px;box-shadow:9px 9px 0 ${O};padding:14px 30px;font-size:66px;font-weight:800;font-family:Arial;direction:ltr">₪ <span id="cs3n">0</span></span></div>`
++card('cs3b','🤫 "יש תשלומים..."',420,'font-size:32px;background:#c9a24a')+card('cs3c','😱 ÷ 120 תשלומים?!',520,'font-size:40px;background:#ff4d5e;color:#fff'));
+S('cs4',SV('cs4s',SHOP)+card('cs4a','🙄 "שוב אתה עם חדר השרתים?"',130,'font-size:30px')+`<div class="abs" id="cs4m" style="left:140px;right:140px;top:220px;background:#fff;color:${O};border:6px solid ${O};border-radius:24px;box-shadow:9px 9px 0 ${O};padding:14px 22px">
+<div style="font-size:28px;font-weight:800;text-align:center;color:#2a9be6">📱 הפתרון של "מִיצִי"</div>
+${[['cs4i1','☎️ מספר לעסק'],['cs4i2','💬 בוט וואטסאפ שעונה מיד'],['cs4i3','🎙 בוט קולי'],['cs4i4','⏺ הקלטה · 📝 תמלול · ✨ סיכום A.I']].map(x=>`<div id="${x[0]}" style="font-size:24px;font-weight:800;padding:6px 0">✅ ${x[1]}</div>`).join('')}
+<div id="cs4i5" style="font-size:24px;font-weight:800;padding:8px 0 2px;color:#d97757">✳️ מגדירים עם הסוכן החכם · ⏱ בְּדַקָּה</div></div>`
++`<div class="abs" id="cs4v" style="${C}top:640px;font-size:26px;font-weight:800;color:${O}"><span style="background:#ffe3e3;border:4px solid ${O};border-radius:14px;padding:6px 14px">📚 שלו: 37 עמודים</span> &nbsp; <span style="background:#e7ffdb;border:4px solid ${O};border-radius:14px;padding:6px 14px">📄 שלי: כרטיס אחד</span></div>`);
+S('cs5',SV('cs5s',SHOP)+card('cs5a','🤔 "ו... חדר השרתים?"',130,'font-size:32px')+`<div class="abs" id="cs5cl" style="left:390px;top:300px;width:300px;height:190px"><svg viewBox="0 0 300 190" width="300" height="190"><path d="M60 150 Q 10 150 20 110 Q 0 70 50 60 Q 60 15 120 30 Q 160 0 200 35 Q 260 25 265 80 Q 300 100 275 140 Q 270 165 230 155 Z" fill="#fff" stroke="${O}" stroke-width="6"/><text x="150" y="85" text-anchor="middle" font-size="38">🏢🛥️🖥️</text><text x="150" y="130" text-anchor="middle" font-size="22" font-weight="800" font-family="H" fill="${O}">החלומות שלו ☁️</text></svg></div>`
++card('cs5b','☁️ הכל בענן',540,'font-size:38px;background:#e7f1ff')+card('cs5c','😤 "היי!"',650,'font-size:34px;background:#c9a24a'));
+S('cs6',SV('cs6s',SHOP)+card('cs6a','💸 "וכמה זה עולה?"',130,'font-size:32px')+`<div class="abs" id="cs6l" style="left:150px;right:150px;top:230px;background:#fff;color:${O};border:6px solid ${O};border-radius:22px;box-shadow:9px 9px 0 ${O};padding:14px 22px;font-size:28px;font-weight:800;line-height:1.8">
+<div id="cs6x1">❌ <s>חדר שרתים</s></div><div id="cs6x2">❌ <s>טכנאים</s></div><div id="cs6x3">❌ <s>120 תשלומים</s></div></div>`+card('cs6k','💚 במחיר שעסק קטן אוהב',560,'font-size:36px;background:#e7ffdb'));
+S('cs7',SV('cs7s',SHOP)+card('cs7a','🏢 "גם לתאגיד שלי?"',140,'font-size:34px;background:#c9a24a')+`<div class="abs" id="cs7o" style="left:110px;right:110px;top:260px;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;box-shadow:8px 8px 0 ${O};padding:12px;text-align:center"><div style="font-size:24px;font-weight:800">📊 התאגיד · CAT CORP</div><div style="font-size:34px;margin-top:6px">🕶️🐈‍⬛ = 🕶️🐈‍⬛ = 🕶️🐈‍⬛</div><div style="font-size:22px;font-weight:800;opacity:.7">מנכ״ל · יועץ · שירות לקוחות</div></div>`+card('cs7b','🤫 "אז... כן?"',470,'font-size:34px'));
+S('cs8',SV('cs8s',`<defs><radialGradient id="g24" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#2a3f8f"/><stop offset="1" stop-color="#0a1230"/></radialGradient></defs><rect width="720" height="1280" fill="url(#g24)"/><g>${Array.from({length:36},(_,i)=>`<rect class="cf" width="12" height="20" rx="3" fill="${['#c9a24a','#3fd0ff','#ff8fb1','#28c840','#ffffff'][i%5]}"/>`).join('')}</g><rect y="980" width="720" height="300" fill="#16224f"/>`)
++`<div class="abs" id="cs8a" style="${C}top:80px;font-size:46px;font-weight:800;color:#fff">עסק קטן? 🌸</div><div class="abs" id="cs8b" style="${C}top:145px;font-size:52px;font-weight:800;color:#ffc22e">פתרון גדול. 🚀</div>
+<div class="abs" id="cs8l" style="${C}top:260px"><div class="big gt" style="font-size:84px">מיצי תקשורת</div><div style="font-size:25px;color:#cfe6f5;margin-top:4px">☎️ מספר · 💬 וואטסאפ · 🎙 בוט קולי · ✨ סיכום A.I</div></div>
+<div class="cta" id="cs8c" style="top:420px;background:linear-gradient(90deg,#3fd0ff,#2a9be6);color:#02122a;border:none">💬 שלחו לנו הודעה</div>
+<div class="abs" id="cs8p" style="${C}top:530px;font-size:30px;font-weight:800;direction:ltr;color:#fff"><span style="letter-spacing:3px">03-3826600</span> <span style="color:#3fd0ff">· mitsi.co.il</span></div>
+<div class="abs" id="cs8h" style="${C}top:600px;font-size:32px;font-weight:800;color:#ffd1e0">😂 ובלי חדר שרתים!</div>`);
+const sb=document.createElement('div');sb.id='sub18';sb.style.cssText='position:absolute;z-index:9;left:30px;right:30px;top:1150px;text-align:center;direction:rtl';sb.innerHTML='<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-size:31px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>';st.appendChild(sb);
+}
+const SUBS24=[[0.5,2.87,'b','שלום! אני יועץ לפתרונות ארגוניים.'],[3.23,6.57,'b','שמעתי שאתם עסק קטן... שמחפש פתרון גדול.'],[6.92,10.68,'f','כן! אני רוצה שיענו ללקוחות שלי, גם כשאני עסוקה.'],
+[10.98,12.43,'b','מצוין! אז ככה:'],[12.64,14.52,'b','חדר שרתים. שלושה טכנאים.'],[14.84,17.68,'b','מוקד עם עשרים נציגות. ופרויקט הטמעה...'],[17.91,18.65,'b','...של חצי שנה.'],
+[19.15,20.9,'f','...וכמה זה עולה?'],[21.2,23.31,'b','אל תדאגי... יש תשלומים. 🤫'],[23.56,25.9,'f','מאה ועשרים תשלומים?! 😱'],[26.5,28.95,'m','שוב אתה עם חדר השרתים?'],
+[29.25,31.01,'m','תראי. מספר לעסק,'],[31.22,33.78,'m','בוט וואטסאפ שעונה מיד, בוט קולי,'],[34.05,37.55,'m','הקלטות, תמלול, וסיכום A.I לכל שיחה.'],[37.89,41.34,'m','ואת הכל מגדירים עם הסוכן החכם. בְּדַקָּה.'],
+[41.74,43.71,'f','ו... חדר השרתים?'],[44.0,46.49,'m','הכל בענן. כמו החלומות שלו. ☁️'],[46.65,47.13,'b','היי!'],[47.53,48.81,'f','וכמה זה עולה?'],
+[49.11,51.6,'m','בלי חדר שרתים, בלי טכנאים,'],[51.83,53.65,'m','ובלי מאה ועשרים תשלומים.'],[53.99,55.61,'m','במחיר שעסק קטן אוהב.'],
+[56.2,58.98,'b','...רגע. אפשר לקבל את זה גם לתאגיד שלי?'],[59.28,61.18,'m','התאגיד שלך זה אתה.'],[61.53,62.71,'b','אז... כן? 🤫'],
+[63.31,65.5,'m','עסק קטן? פתרון גדול.'],[65.6,68.09,'m','"מִיצִי" תקשורת. שלחו לנו הודעה.'],[68.39,70.73,'f','ובלי חדר שרתים! 😂']];
+function draw24(id,lt,t,jobs){
+ const v=t;
+ if(id==='cs1'){sh('cs1c',v,2.7,.45,0,40);$('cs1c').style.transform+=' rotate(-4deg)';pop('cs1k',v,4.6,.35)}
+ if(id==='cs2'){pop('cs2a',v,7.0,.3);$('cs2a').style.opacity=v<10.9?$('cs2a').style.opacity:0;sh('cs2p',v,10.9,.4,0,50);[['cs2r1',12.64],['cs2r2',13.69],['cs2r3',14.84],['cs2r4',16.5],['cs2r5',17.9],['cs2r6',18.4]].forEach(([e,d])=>sh(e,v,d,.25,30,0));$('cs2p').style.transform+=v>17.9?` rotate(${Math.sin(t*3)*1}deg)`:''}
+ if(id==='cs3'){pop('cs3a',v,19.2,.3);sh('cs3p',v,19.9,.35);const k=clamp((v-19.9)/1.2);$('cs3n').textContent=Math.floor(480000*k*k).toLocaleString('en-US');$('cs3p').style.transform+=v>21.1&&v<21.6?` scale(${1+.08*Math.sin(t*30)})`:'';pop('cs3b',v,21.3,.3);pop('cs3c',v,23.6,.35);$('cs3c').style.transform+=v>23.9?` rotate(${Math.sin(t*25)*3}deg)`:''}
+ if(id==='cs4'){pop('cs4a',v,26.5,.3);$('cs4a').style.opacity=v<29.1?$('cs4a').style.opacity:0;sh('cs4m',v,29.2,.4,0,40);[['cs4i1',30.0],['cs4i2',31.2],['cs4i3',33.1],['cs4i4',34.1],['cs4i5',37.9]].forEach(([e,d])=>sh(e,v,d,.25,-30,0));sh('cs4v',v,39.0,.35)}
+ if(id==='cs5'){pop('cs5a',v,41.8,.3);pop('cs5cl',v,44.9,.4);$('cs5cl').style.transform+=` translateY(${Math.sin(t*2)*6}px)`;pop('cs5b',v,44.1,.3);pop('cs5c',v,46.6,.25);$('cs5c').style.transform+=v>46.8?` rotate(${Math.sin(t*30)*4}deg)`:''}
+ if(id==='cs6'){pop('cs6a',v,47.55,.3);sh('cs6l',v,49.1,.35,0,30);[['cs6x1',49.2],['cs6x2',50.6],['cs6x3',51.9]].forEach(([e,d])=>pop(e,v,d,.3));pop('cs6k',v,54.0,.35)}
+ if(id==='cs7'){pop('cs7a',v,56.3,.3);sh('cs7o',v,59.3,.4,0,30);pop('cs7b',v,61.55,.3)}
+ if(id==='cs8'){pop('cs8a',v,63.35,.35);pop('cs8b',v,64.3,.35);pop('cs8l',v,65.6,.4);pop('cs8c',v,66.9,.4);sh('cs8p',v,67.3,.35);pop('cs8h',v,68.4,.35);$('cs8c').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(63,208,255,.55)`;
+  [...document.querySelectorAll('#cs8s .cf')].forEach((c,i)=>{const x=(i*61)%720,y=((t-63)*(120+i%5*35)+i*47)%1050-40;c.setAttribute('transform',`translate(${x+Math.sin(t*2+i)*18} ${y}) rotate(${t*160+i*40})`);c.setAttribute('opacity',v>63.4?.85:0)})}
+}
+function frame24(t,cur,lt,jobs){const s=SUBS24.find(x=>t>=x[0]-.15&&t<x[1]+.3);const sb=$('sub18t');if(s){const ic=s[2]==='f'?'🧡 ':s[2]==='m'?'🩶 ':'🕶️ ';sb.textContent=ic+s[3];sb.style.background=s[2]==='f'?'#fff1e2':s[2]==='m'?'#eef1fb':'#e9edf7';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -1342,6 +1400,7 @@ async function render(t){
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  if(AD==='20'){draw20(id,lt,t,jobs);frame20(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
+ if(AD==='24'){draw24(id,lt,t,jobs);frame24(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='23'){draw23(id,lt,t,jobs);frame23(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='22'){draw22(id,lt,t,jobs);frame22(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='21'){draw21(id,lt,t,jobs);frame21(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
@@ -1416,10 +1475,10 @@ window.hook3d=async function(t,cur,lt,tr){
  R.render(S,C);
 };
 window.ready3d=true;
-}else if(AD3!=='22'&&AD3!=='23')window.ready3d=true;
+}else if(!['22','23','24'].includes(AD3))window.ready3d=true;
 </script>
 <script type="module">
-const AD4=new URLSearchParams(location.search).get('ad');if(AD4==='22'||AD4==='23'){
+const AD4=new URLSearchParams(location.search).get('ad');if(AD4==='22'||AD4==='23'||AD4==='24'){
 const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');const {makeMouth2}=await import('./mouth3d2.js');
 const cv=document.createElement('canvas');cv.id='cv3d';cv.width=1080;cv.height=1920;cv.style.cssText='position:absolute;left:0;top:0;width:720px;height:1280px;pointer-events:none';
 const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:true});R.setPixelRatio(1);R.setSize(1080,1920,false);R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
@@ -1441,9 +1500,9 @@ async function loadChar(url,mp){
  const hr=new THREE.Vector3();hips.getWorldPosition(hr);M.position.y=fy;
  return {M,root,mix,A,head,hips,lh,rh,MO,ph,fy,rest:{x:hr.x,z:hr.z},mPrev:0};
 }
-const cm=await loadChar(AD4==='22'?'cat-m2.glb':'cat-m.glb',{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'});
-const cf=await loadChar(AD4==='22'?'cat-f2.glb':'cat-f.glb',{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'});
-const cb=AD4==='23'?await loadChar('cat-b.glb',{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'}):null;
+const cm=await loadChar(AD4!=='23'?'cat-m2.glb':'cat-m.glb',{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'});
+const cf=await loadChar(AD4!=='23'?'cat-f2.glb':'cat-f.glb',{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'});
+const cb=AD4!=='22'?await loadChar('cat-b.glb',{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'}):null;
 document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
 const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
 function pose(ch,t,P,mouthArr){
@@ -1493,7 +1552,20 @@ function plan23(id,t){
  if(id==='eb9'){F={px:140,py:1110,s:.52,ry:.25,base:'dance_01',bt:t-73.3};Mi={px:360,py:1115,s:.54,ry:0,base:'dance_01',bt:t-73.0};B={px:585,py:1110,s:.52,ry:-.25,base:'dance_01',bt:t-73.6}}
  return {F,Mi,B};
 }
-window.hook3d22=async function(t,cur,lt){if(AD4==='23'){const p=plan23(cur[2],t);const MO=window.MOUTH23||{};pose(cf,t,p.F,MO.f);pose(cm,t,p.Mi,MO.m);pose(cb,t,p.B,MO.b);R.render(S,C);return}const p=plan(cur[2],t);const MO=window.MOUTH22||{};pose(cf,t,p.F,MO.f22);pose(cm,t,p.Mi,MO.m22);R.render(S,C)};
+function plan24(id,t){
+ const cl2=x=>Math.min(1,Math.max(0,x));const s3=x=>{x=cl2(x);return x*x*(3-2*x)};const IC='idle_calm';
+ let F=null,Mi=null,B=null;const L2={px:190,py:1095,s:.58,ry:.3},R2={px:540,py:1095,s:.58,ry:-.3};const L3={px:140,py:1100,s:.5,ry:.35},C3={px:360,py:1105,s:.5,ry:0},R3={px:585,py:1100,s:.5,ry:-.35};
+ if(id==='cs1'){const p=cl2(t/2.0);F={...L2,base:IC,G:[['surprised',0.6],['thinking_chin',3.8]]};B={px:820-280*p,py:1095,s:.58,ry:p<1?-Math.PI/2:-Math.PI/2+(Math.PI/2-.3)*s3((t-2.0)/.5),base:p<1?'walk':'standing_relax',G:[['greet_01',2.3],['agree',4.6]]}}
+ if(id==='cs2'){F={...L2,base:IC,segs:[['talk_02',6.9,10.7]],G:[['point_self_proud',7.4],['surprised',13.6],['thinking_chin',16.6]]};B={...R2,base:'wait',G:[['greet_02',10.9],['agree',13.6],['cheer',16.0,0,2.8]]}}
+ if(id==='cs3'){F={...L2,base:IC,segs:[['talk_01',19.1,21.0]],G:[['thinking_chin',19.0],['surprised',23.4]]};B={...R2,base:'wait',G:[['look_around',21.0,0,2.4]]}}
+ if(id==='cs4'){F={...L3,base:IC,G:[['facepalm',26.6],['surprised',40.6]]};Mi={...C3,in:26.35,base:IC,segs:[['talk_02',29.1,41.4]],G:[['head_shake_no',26.5],['count_fingers',30.0],['present_both_hands',34.0],['voice_command_phone',37.8]]};B={...R3,base:'wait',G:[['frustrated_01',26.8,0,2.6],['look_around',34.5,0,3.0]]}}
+ if(id==='cs5'){F={...L3,base:IC,segs:[['talk_01',41.7,43.8],['talk_01',47.5,48.9]],G:[['thinking_chin',41.7],['laugh_01',45.3,0,2.2]]};Mi={...C3,base:IC,segs:[['talk_03',44.0,46.5]],G:[['point_forward',44.4]]};B={...R3,base:'standing_relax',G:[['complain_01',46.5,0,2.6]]}}
+ if(id==='cs6'){F={...L3,base:IC,G:[['fist_pump',54.3]]};Mi={...C3,base:IC,segs:[['talk_03',49.1,55.7]],G:[['head_shake_no',49.1],['present_both_hands',53.9]]};B={...R3,base:'wait',G:[['frustrated_01',51.8,0,2.5]]}}
+ if(id==='cs7'){F={...L3,base:IC,G:[['laugh_02',61.4,0,2.6]]};Mi={...C3,base:IC,segs:[['talk_01',59.2,61.3]],G:[['shrug',59.2]]};B={...R3,base:'standing_relax',G:[['look_around',56.1,0,2.8],['agree',61.4]]}}
+ if(id==='cs8'){F={px:140,py:1110,s:.52,ry:.25,base:t<68.2?'dance_01':IC,bt:t-63.3,G:[['heart_pose',68.3]]};Mi={px:360,py:1115,s:.54,ry:0,base:'dance_01',bt:t-63.0};B={px:585,py:1110,s:.52,ry:-.25,base:'dance_01',bt:t-63.6}}
+ return {F,Mi,B};
+}
+window.hook3d22=async function(t,cur,lt){if(AD4==='24'){const p=plan24(cur[2],t);const MO=window.MOUTH24||{};pose(cf,t,p.F,MO.f);pose(cm,t,p.Mi,MO.m);pose(cb,t,p.B,MO.b);R.render(S,C);return}if(AD4==='23'){const p=plan23(cur[2],t);const MO=window.MOUTH23||{};pose(cf,t,p.F,MO.f);pose(cm,t,p.Mi,MO.m);pose(cb,t,p.B,MO.b);R.render(S,C);return}const p=plan(cur[2],t);const MO=window.MOUTH22||{};pose(cf,t,p.F,MO.f22);pose(cm,t,p.Mi,MO.m22);R.render(S,C)};
 window.ready3d=true;
 }
 </script>

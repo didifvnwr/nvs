@@ -27,6 +27,7 @@ AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27
     '21b':{'m':U+'23d20477-____________5.mp3','vp':'/home/user/nvs/mitsi-ads/audio/usnum-mix-b.wav','v':'','tail':1.6,'cuts':[0,5.6,15.6,22.0,28.3,35.6,52.5,61.2],'ids':['us1','us2','us3','us4','us5','us6','us7','us8']},
     '22':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/catduo-mix.wav','v':'','tail':1.6,'cuts':[0,11.2,23.95,29.3,40.3,52.45,65.25,74.3],'ids':['dd1','dd2','dd3','dd4','dd5','dd6','dd7','dd8']},
     '23':{'m':U+'23d20477-____________5.mp3','vp':'/home/user/nvs/mitsi-ads/audio/ceo-mix.wav','v':'','tail':1.6,'cuts':[0,4.8,12.65,20.2,28.3,45.8,53.4,67.65,73.3],'ids':['eb1','eb2','eb3','eb4','eb5','eb6','eb7','eb8','eb9']},
+    '24':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/consultant-mix.wav','v':'','tail':1.6,'cuts':[0,6.8,19.0,26.3,41.6,49.0,56.0,63.0],'ids':['cs1','cs2','cs3','cs4','cs5','cs6','cs7','cs8']},
     '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():
@@ -45,7 +46,7 @@ for k,a in AD.items():
     f.append(f"[voice][mus]{''.join(wh)}amix=inputs={2+n}:normalize=0:duration=longest,atrim=0:{END}[out]")
     subprocess.run(['ffmpeg','-y','-loglevel','error','-i',a.get('vp',U+a['v']),'-i',a.get('m',MUS),'-i',A+'whoosh.wav','-filter_complex',';'.join(f),'-map','[out]','-c:a','aac','-b:a','192k',A+f'audio{k}.m4a'],check=True)
 s=open('ads.tpl.html').read()
-s=s.replace('/*MOUTH20*/[]/*/MOUTH20*/',open(A+'../cat/mouth20.json').read()).replace('/*MOUTH21*/[]/*/MOUTH21*/',open(A+'../cat/mouth21.json').read()).replace('/*MOUTH21B*/[]/*/MOUTH21B*/',open(A+'../cat/mouth21b.json').read()).replace('/*MOUTH22*/{}/*/MOUTH22*/',open(A+'../cat/mouth22.json').read()).replace('/*MOUTH23*/{}/*/MOUTH23*/',open(A+'../cat/mouth23.json').read()).replace('/*CATJS*/',open('cat.js').read()).replace('/*MOUTH*/[]/*/MOUTH*/',open(A+'../cat/mouth.json').read())
+s=s.replace('/*MOUTH20*/[]/*/MOUTH20*/',open(A+'../cat/mouth20.json').read()).replace('/*MOUTH21*/[]/*/MOUTH21*/',open(A+'../cat/mouth21.json').read()).replace('/*MOUTH21B*/[]/*/MOUTH21B*/',open(A+'../cat/mouth21b.json').read()).replace('/*MOUTH22*/{}/*/MOUTH22*/',open(A+'../cat/mouth22.json').read()).replace('/*MOUTH23*/{}/*/MOUTH23*/',open(A+'../cat/mouth23.json').read()).replace('/*MOUTH24*/{}/*/MOUTH24*/',open(A+'../cat/mouth24.json').read()).replace('/*CATJS*/',open('cat.js').read()).replace('/*MOUTH*/[]/*/MOUTH*/',open(A+'../cat/mouth.json').read())
 s=s.replace('/*ADS*/{}/*/ADS*/','/*ADS*/'+json.dumps(out)+'/*/ADS*/')
 s=s.replace('<!--LOGO-->',open(A+'logo_svg.txt').read().replace('viewBox="0 0 1600 600"','viewBox="200 40 1500 520"'))
 import os
