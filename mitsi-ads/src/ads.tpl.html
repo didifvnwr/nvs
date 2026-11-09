@@ -991,6 +991,81 @@ function draw20(id,lt,t,jobs){
  if(id==='mm10'){pop('mm10l',v,40.8,.4);pop('mm10b',v,41.9,.4);sh('mm10p',v,42.3,.35);$('mm10b').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(63,208,255,.55)`;$('mm10z').style.opacity=v>43.8?.4+.6*Math.abs(Math.sin(t*1.5)):0}
 }
 function frame20(t,cur,lt,jobs){const v=t-0.3;const s=SUBS20.find(x=>v>=x[0]-.15&&v<x[1]+.35);const sb=$('sub18t');if(s){sb.textContent=s[2];sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
+/* ---------- AD 21: US number – American caller vs. Hebrew-speaking 3D cat ---------- */
+if(AD==='21'){
+window.CAT_CO=0;window.CAT_MOUTH=/*MOUTH21*/[]/*/MOUTH21*/;
+const st=$('stage');['hud','scanl'].forEach(i=>$(i).style.display='none');
+const O='#26242b';const C='left:0;right:0;text-align:center;';
+const card=(id,html,top,extra='')=>`<div class="abs" id="${id}" style="${C}top:${top}px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:10px 28px;font-size:40px;font-weight:800;box-shadow:7px 7px 0 ${O};${extra}">${html}</span></div>`;
+const SV=(id,inner)=>`<svg class="full" id="${id}" viewBox="0 0 720 1280">${inner}</svg>`;
+const room=(c1,c2)=>`<rect width="720" height="1280" fill="${c1}"/><rect y="960" width="720" height="320" fill="${c2}"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/>`;
+const NYC=(sky1,sky2)=>`<defs><linearGradient id="sky${sky1.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky1}"/><stop offset="1" stop-color="${sky2}"/></linearGradient></defs><rect width="720" height="1280" fill="url(#sky${sky1.slice(1)})"/>
+<circle cx="580" cy="190" r="60" fill="#fff3b0" opacity=".9"/>
+${[[0,520,90],[80,430,70],[150,600,80],[230,380,60],[290,480,90],[380,330,70],[450,560,85],[535,450,75],[610,520,110]].map(b=>`<rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${960-b[1]}" fill="#4b5d86" stroke="${O}" stroke-width="5"/>${Array.from({length:Math.floor((960-b[1])/60)},(_,j)=>`<rect x="${b[0]+14}" y="${b[1]+20+j*60}" width="${b[2]-28}" height="18" rx="3" fill="#ffe08a" opacity="${(j*7+b[0])%3?0.9:0.35}"/>`).join('')}`).join('')}
+<g transform="translate(395 330)"><rect x="-8" y="-120" width="16" height="120" fill="#8fc9b5" stroke="${O}" stroke-width="4"/><polygon points="-10,-120 0,-200 10,-120" fill="#8fc9b5" stroke="${O}" stroke-width="4"/></g>
+<rect y="960" width="720" height="320" fill="#5b6377"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/>
+${[0,1,2,3,4].map(i=>`<rect x="${i*170-20}" y="1110" width="90" height="12" rx="4" fill="#f3f3f3"/>`).join('')}`;
+const TAXI=`<g id="taxi"><rect x="-110" y="-60" width="220" height="60" rx="18" fill="#ffc22e" stroke="${O}" stroke-width="6"/><path d="M-60 -60 L-40 -100 L50 -100 L70 -60 Z" fill="#ffc22e" stroke="${O}" stroke-width="6"/><rect x="-20" y="-122" width="44" height="20" rx="4" fill="#fff" stroke="${O}" stroke-width="4"/><circle cx="-60" cy="0" r="24" fill="#333" stroke="${O}" stroke-width="5"/><circle cx="60" cy="0" r="24" fill="#333" stroke="${O}" stroke-width="5"/></g>`;
+const WOMAN=(id,x,y,s=1)=>`<g id="${id}" transform="translate(${x} ${y}) scale(${s})"><path d="M-95 260 Q -95 120 0 110 Q 95 120 95 260 Z" fill="#2f6fd6" stroke="${O}" stroke-width="7"/><path d="M-22 112 L0 160 L22 112 Z" fill="#fff" stroke="${O}" stroke-width="4"/>
+<path d="M-78 -10 Q -95 -110 0 -118 Q 95 -110 80 -10 Q 90 70 60 90 L -60 90 Q -92 70 -78 -10 Z" fill="#c7772f" stroke="${O}" stroke-width="7"/>
+<ellipse cx="0" cy="0" rx="62" ry="74" fill="#ffd9b3" stroke="${O}" stroke-width="7"/><path d="M-62 -20 Q -40 -90 30 -70 Q 60 -60 64 -20 Q 40 -60 -62 -20 Z" fill="#c7772f" stroke="${O}" stroke-width="5"/>
+<g class="eyes"><circle cx="-22" cy="4" r="8" fill="${O}"/><circle cx="22" cy="4" r="8" fill="${O}"/></g><path class="mouthW" d="M-20 38 Q 0 54 20 38" fill="none" stroke="${O}" stroke-width="6" stroke-linecap="round"/><ellipse class="mouthO" cx="0" cy="42" rx="10" ry="13" fill="${O}" opacity="0"/>
+<circle cx="-40" cy="26" r="10" fill="#ff9b9b" opacity=".6"/><circle cx="40" cy="26" r="10" fill="#ff9b9b" opacity=".6"/>
+<g class="hand" transform="translate(70 20) rotate(-12)"><rect x="-18" y="-50" width="40" height="80" rx="10" fill="#2c2c36" stroke="${O}" stroke-width="5"/><circle cx="2" cy="40" r="20" fill="#ffd9b3" stroke="${O}" stroke-width="5"/></g>
+<g class="qq" opacity="0"><text x="70" y="-110" font-size="70" font-weight="800" fill="#ff4d5e" font-family="H">?</text><text x="-110" y="-90" font-size="54" font-weight="800" fill="#ff4d5e" font-family="H">?</text><text x="110" y="-60" font-size="44" font-weight="800" fill="#ff4d5e" font-family="H">?</text></g></g>`;
+const PHONE=(id,top,inner,extra='')=>`<div class="abs" id="${id}" style="left:190px;top:${top}px;width:340px;height:600px;border-radius:52px;background:#14161f;border:7px solid ${O};box-shadow:10px 10px 0 ${O};overflow:hidden;direction:ltr;${extra}">${inner}</div>`;
+const EN=(id)=>`<div class="abs" id="${id}" style="left:40px;right:40px;top:150px;text-align:center"><span style="display:inline-block;background:#2f6fd6;color:#fff;border:5px solid ${O};border-radius:22px;padding:10px 24px;font-size:34px;font-weight:800;box-shadow:7px 7px 0 ${O};direction:ltr;font-family:Arial,Helvetica,sans-serif">🇺🇸 <span class="ent"></span></span></div>`;
+// us1: New York morning, the caller
+S('us1',SV('us1s',NYC('#ffcf9e','#ffe9d0')+`<g transform="translate(-200 1060)">${TAXI}</g>`+WOMAN('w1',360,700,1.25))+card('us1k','🗽 ניו יורק · 09:00',250,'font-size:36px;direction:ltr'));
+// us2: dialling an Israeli number
+S('us2',SV('us2s',NYC('#ffcf9e','#ffe9d0')+`<rect width="720" height="1280" fill="#000" opacity=".35"/>`)+PHONE('us2p',300,`<div style="padding-top:60px;text-align:center;color:#cfd6e0;font-size:24px;font-family:Arial,Helvetica,sans-serif">Calling…</div>
+<div id="us2n" style="text-align:center;color:#fff;font-size:40px;font-weight:800;margin-top:14px;font-family:Arial,Helvetica,sans-serif"><span id="us2c" style="display:inline-block;border-radius:12px;padding:2px 8px">+972</span> 52‑555‑0123</div>
+<div style="text-align:center;font-size:70px;margin-top:30px">🇮🇱</div>
+<div id="us2w" style="margin:30px 24px 0;border-radius:18px;background:#ffcf3f;color:#2a1a00;padding:14px;text-align:center;font-size:24px;font-weight:800;font-family:Arial,Helvetica,sans-serif">⚠️ INTERNATIONAL CALL<br><span style="font-size:20px">rates may apply 💸💸💸</span></div>
+<div id="us2e" style="position:absolute;left:0;right:0;bottom:50px;text-align:center"><span style="display:inline-block;width:90px;height:90px;border-radius:50%;background:#ff3b30;line-height:90px;font-size:44px">📵</span></div>
+<div id="us2x" style="position:absolute;inset:0;background:rgba(255,59,48,.92);display:flex;align-items:center;justify-content:center;color:#fff;font-size:44px;font-weight:800;font-family:Arial,Helvetica,sans-serif;opacity:0">Call ended ✕</div>`)+card('us2k','🤔 ‎+972 ?!',190,'font-size:44px;direction:ltr'));
+// us3: the cat explains why she ran
+S('us3',SV('us3s',room('#fdf1dc','#e7c9a0')+`<rect x="70" y="330" width="220" height="160" rx="10" fill="#bfe3ff" stroke="${O}" stroke-width="6"/><path d="M70 450 L140 390 L190 430 L240 380 L290 440 L290 490 L70 490 Z" fill="#7fc98b"/>`)+card('us3a','📉 עוד לקוחה ברחה',250)+card('us3b','💲 המחיר? ✓ בסדר',380,'font-size:34px')+card('us3c','‏הקידומת ‎+972 ✕',490,'background:#ff4d5e;color:#fff'));
+// us4: get a US number
+S('us4',SV('us4s',room('#eaf3ff','#c4d8f0'))+`<div class="abs" id="us4card" style="left:110px;top:300px;width:500px;box-sizing:border-box;padding:22px 20px;border-radius:26px;background:#fff;color:${O};border:6px solid ${O};box-shadow:10px 10px 0 ${O};text-align:center">
+<div style="font-size:30px;font-weight:800;color:#2f6fd6">🇺🇸 מספר אמריקאי</div>
+<div id="us4n" style="direction:ltr;font-size:46px;font-weight:800;margin-top:10px;font-family:Arial,Helvetica,sans-serif;color:${O}">+1 (212) 555‑0147</div>
+<div style="margin-top:12px;display:flex;gap:10px;justify-content:center"><span style="background:#e7ffdb;border:3px solid ${O};border-radius:12px;padding:4px 12px;font-size:22px;font-weight:800">✅ פעיל</span><span style="background:#eef4ff;border:3px solid ${O};border-radius:12px;padding:4px 12px;font-size:22px;font-weight:800">🗽 New York</span></div></div>`+card('us4k','⏱ לוקח דקה',560,'background:#ffc22e')+`<div class="abs" id="us4t" style="left:470px;top:680px;font-size:110px">⏱️</div>`);
+// us5: minutes, price, rings in Israel
+S('us5',SV('us5s',room('#f1fbf3','#c6e8cd')+`<path id="us5arc" d="M130 760 Q 360 520 590 760" fill="none" stroke="#2f6fd6" stroke-width="6" stroke-dasharray="14 12"/><text x="130" y="830" text-anchor="middle" font-size="70">🗽</text><text x="590" y="830" text-anchor="middle" font-size="70">📱</text><text x="130" y="880" text-anchor="middle" font-size="26" font-weight="800" font-family="H" fill="${O}">ניו יורק</text><text x="590" y="880" text-anchor="middle" font-size="26" font-weight="800" font-family="H" fill="${O}">הנייד שלכם 🇮🇱</text><circle id="us5dot" r="14" fill="#ffc22e" stroke="${O}" stroke-width="4"/>`)
++card('us5a','✅ מספר אמריקאי אמיתי',170,'font-size:34px')+card('us5b','📦 חבילת דקות',265,'font-size:34px;background:#e7ffdb')+card('us5c','💲 במחיר מעולה',360,'font-size:34px;background:#ffc22e')+card('us5d','📲 עונים מהנייד, בישראל',455,'font-size:32px;background:#2f6fd6;color:#fff'));
+// us6: she calls the new number, the cat answers in Hebrew
+S('us6',SV('us6s',NYC('#bfe3ff','#eaf6ff')+WOMAN('w6',230,640,.95))+`<div class="abs" id="us6tag" style="left:400px;top:430px;background:#e7ffdb;color:${O};border:5px solid ${O};border-radius:18px;padding:8px 16px;font-size:26px;font-weight:800;box-shadow:6px 6px 0 ${O};direction:ltr;font-family:Arial,Helvetica,sans-serif">📞 +1 (212)…<br>✅ Local call!</div>`+`<div class="abs" id="us6h" style="left:250px;top:560px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:22px;padding:10px 22px;font-size:40px;font-weight:800;box-shadow:7px 7px 0 ${O}">🇮🇱 "כן, הלו, מדבר."</span></div>`);
+// us7: confusion + checklist
+S('us7',SV('us7s',room('#f6f0ff','#d9cdf3')+WOMAN('w7',560,560,.75))+`<div class="abs" id="us7l" style="left:40px;top:330px;width:380px;padding:18px 22px;border-radius:24px;background:#fff;color:${O};border:6px solid ${O};box-shadow:9px 9px 0 ${O};font-size:32px;font-weight:800;line-height:1.7">
+<div id="us7a">✅ מספר אמריקאי</div><div id="us7b">✅ חבילת דקות</div><div id="us7c" style="color:#d6283a">❌ אנגלית</div></div>`+card('us7k','😅 את זה... תסדרו לבד',230,'font-size:36px;background:#ffc22e'));
+// us8: tagline + compact end
+S('us8',SV('us8s',`<defs><radialGradient id="g21" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#16376e"/><stop offset="1" stop-color="#050d1f"/></radialGradient></defs><rect width="720" height="1280" fill="url(#g21)"/>${Array.from({length:26},(_,i)=>`<circle cx="${(i*97)%720}" cy="${(i*53)%700+40}" r="${2+i%3}" fill="#fff" opacity=".5"/>`).join('')}`)+`<div class="abs" id="us8a" style="${C}top:110px;font-size:46px;font-weight:800;color:#fff">רוצים לנהל עסק בחו״ל? 🌍</div>
+<div class="abs" id="us8b" style="${C}top:180px;font-size:50px;font-weight:800;color:#ffc22e">תעשו את זה כמו שצריך. 🇺🇸</div>
+<div class="abs" id="us8l" style="${C}top:300px"><div class="big gt" style="font-size:80px">מיצי תקשורת</div><div style="font-size:28px;color:#cfe6f5;margin-top:4px">🇺🇸 מספר אמריקאי · דקות · מחיר מעולה</div></div>
+<div class="cta" id="us8c" style="top:480px;background:linear-gradient(90deg,#3fd0ff,#2a9be6);color:#02122a;border:none">לפרטים · מספר תוך דקה 👆</div>
+<div class="abs" id="us8p" style="${C}top:600px;font-size:30px;font-weight:800;direction:ltr"><span class="o" style="letter-spacing:3px;color:#fff">03-3826600</span> <span style="color:#3fd0ff">· mitsi.co.il</span></div>`);
+const sb=document.createElement('div');sb.id='sub18';sb.style.cssText='position:absolute;z-index:9;left:30px;right:30px;top:1150px;text-align:center;direction:rtl';sb.innerHTML='<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-size:32px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>';st.appendChild(sb);
+}
+// [start,end,text,isEnglish,hebrewTranslation]
+const SUBS21=[[1.9,5.2,"Hi! I found your company online and I'd love to...",1,'היי! מצאתי את החברה שלכם ואשמח ל...'],[5.75,8.45,'...wait. Plus nine, seven, two?',1,'רגע. קידומת 972?'],[8.95,10.7,'Is that... overseas?',1,'זה... בחו״ל?'],[11.0,14.35,'Ugh, international rates. Never mind! Bye!',1,'אוף, תעריפי חו״ל. עזבו! ביי!'],
+[15.6,17.1,'ראיתם?'],[17.46,18.98,'עוד לקוחה אמריקאית ברחה.'],[19.39,20.32,'לא בגלל המחיר.'],[20.6,21.66,'בגלל הקידומת.'],[22.04,25.7,'אם העסק שלכם עובד מול אמריקה, אתם צריכים מספר אמריקאי.'],[26.06,28.09,'עם "מִיצִי" תקשורת זה לוקח דקה.'],[28.36,31.94,'מספר אמריקאי אמיתי, עם חבילת דקות, במחיר מעולה.'],[32.22,35.55,'והשיחות? מגיעות אליכם לנייד, פה בישראל.'],
+[37.4,41.6,"Hi! I'm calling from New York, and I'd love to place an order!",1,'היי! אני מתקשרת מניו יורק ורוצה להזמין!'],[41.9,44.6,'כן, הלו, מדבר.'],[44.8,46.5,'...Sorry, what?',1,'...סליחה, מה?'],
+[46.8,48.11,'טוב.'],[48.79,50.44,'את המספר כבר סידרנו לכם.'],[50.85,52.89,'את האנגלית... תסדרו לבד.'],[53.47,55.37,'רוצים לנהל עסק בחו״ל?'],[55.63,57.09,'תעשו את זה כמו שצריך.'],[57.4,59.8,'"מִיצִי" תקשורת. לחצו לפרטים.']];
+function draw21(id,lt,t,jobs){
+ const v=t;
+ const talkW=(gid,on,conf)=>{const g=$(gid);if(!g)return;const o=g.querySelector('.mouthO'),w=g.querySelector('.mouthW');const m=on?Math.abs(Math.sin(t*13))*1:0;o.setAttribute('opacity',on?1:0);o.setAttribute('ry',4+10*m);w.setAttribute('opacity',on?0:1);g.querySelector('.qq').setAttribute('opacity',conf?.5+.5*Math.abs(Math.sin(t*5)):0)};
+ const enOn=(eid,a,b)=>{const e=$(eid);if(!e)return;const s=SUBS21.find(x=>x[3]&&v>=x[0]-.1&&v<x[1]+.3&&x[0]>=a&&x[0]<b);e.style.opacity=s?1:0;if(s)e.querySelector('.ent').textContent=s[2]};
+ if(id==='us1'){const ringOn=v<1.6;const g=$('w1');g.setAttribute('transform',`translate(${360+(ringOn?Math.sin(t*70)*3:0)} ${700+Math.sin(t*2)*4}) scale(1.25)`);talkW('w1',v>1.9&&v<5.2,false);pop('us1k',v,.1,.35);$('taxi').setAttribute('transform',`translate(${((t*160)%1100)} 0)`)}
+ if(id==='us2'){sh('us2p',lt,0,.4,0,60);const z=v>5.9&&v<9?1+.25*Math.abs(Math.sin((v-5.9)*4)):1;const c=$('us2c');c.style.background=v>5.9?'#ff3b30':'transparent';c.style.transform=`scale(${z})`;pop('us2k',v,6.1,.35);sh('us2w',v,9.0,.3);$('us2w').style.transform+=v>11?` translateX(${Math.sin(t*40)*4}px)`:'';const x=clamp((v-14.4)/.25);$('us2x').style.opacity=x;$('us2p').style.transform=`translateX(${v>14.4&&v<15.2?Math.sin(t*60)*8:0}px)`}
+ if(id==='us3'){pop('us3a',v,17.4,.35);pop('us3b',v,19.3,.35);pop('us3c',v,20.5,.35);$('us3c').firstChild.style.transform=v>20.9?`rotate(${Math.sin(t*12)*3}deg)`:''}
+ if(id==='us4'){sh('us4card',v,22.1,.45,0,50);const n='+1 (212) 555‑0147';const k=Math.floor(clamp((v-23.3)/1.6)*n.length);$('us4n').style.clipPath=`inset(0 ${100-100*clamp((v-23.3)/1.6)}% 0 0)`;pop('us4k',v,26.0,.35);pop('us4t',v,26.2,.35);$('us4t').style.transform+=` rotate(${v>26.2?Math.sin(t*6)*12:0}deg)`}
+ if(id==='us5'){pop('us5a',v,28.4,.3);pop('us5b',v,29.7,.3);pop('us5c',v,30.9,.3);const P=$('us5arc');const L=P.getTotalLength();const p=clamp((v-32.2)/1.4);const q=P.getPointAtLength(L*p);$('us5dot').setAttribute('cx',q.x);$('us5dot').setAttribute('cy',q.y);$('us5dot').setAttribute('opacity',v>32.2?1:0);P.style.strokeDashoffset=-t*30;pop('us5d',v,33.6,.35)}
+ if(id==='us6'){const ringOn=v>35.7&&v<37.3;$('w6').setAttribute('transform',`translate(${230+(ringOn?Math.sin(t*70)*3:0)} 640) scale(.95)`);talkW('w6',v>37.4&&v<41.6,v>42.3);pop('us6tag',v,36.0,.35);pop('us6h',v,41.9,.3)}
+ if(id==='us7'){talkW('w7',v>44.8&&v<46.4,v<48.6);sh('us7l',v,48.7,.35,0,30);pop('us7a',v,48.8,.3);pop('us7b',v,49.4,.3);pop('us7c',v,50.85,.3);$('us7c').style.transform+=v>51.1?` translateX(${Math.sin(t*25)*3}px)`:'';pop('us7k',v,52.0,.35)}
+ if(id==='us8'){pop('us8a',v,53.5,.35);pop('us8b',v,55.6,.35);pop('us8l',v,57.3,.4);pop('us8c',v,57.9,.4);sh('us8p',v,58.3,.35);$('us8c').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(63,208,255,.55)`}
+}
+function frame21(t,cur,lt,jobs){const v=t;const s=SUBS21.find(x=>v>=x[0]-.15&&v<x[1]+.35);const sb=$('sub18t');if(s){if(s[3]){sb.innerHTML=`<span dir="ltr" style="display:block;unicode-bidi:isolate;font-size:22px;opacity:.75;font-family:Arial,Helvetica,sans-serif">🇺🇸 ${s[2].replace(/</g,'')}</span>${s[4]}`;sb.style.background='#e4eeff'}else{sb.textContent=s[2];sb.style.background='rgba(255,255,255,.96)'}sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -1123,6 +1198,7 @@ async function render(t){
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  if(AD==='20'){draw20(id,lt,t,jobs);frame20(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
+ if(AD==='21'){draw21(id,lt,t,jobs);frame21(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
  if(AD==='18'||AD==='19'){if(id!=='cta')draw18(id,lt,t,jobs);frame18(t,cur,lt,jobs);if(AD==='19')jobs.push(window.hook3d(t,cur,lt))}
  await Promise.all(jobs);
 }
@@ -1130,7 +1206,7 @@ window.render=render;
 </script>
 <script type="importmap">{"imports":{"three":"./three/three.module.js","three/addons/":"./three/addons/"}}</script>
 <script type="module">
-const AD3=new URLSearchParams(location.search).get('ad');if(AD3==='19'||AD3==='20'){
+const AD3=new URLSearchParams(location.search).get('ad');if(AD3==='19'||AD3==='20'||AD3==='21'){
 const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
 const cv=document.createElement('canvas');cv.id='cv3d';cv.width=1080;cv.height=1920;cv.style.cssText='position:absolute;left:0;top:0;width:720px;height:1280px;pointer-events:none';
 ['c1cat','c2cat','c3cat','c4cat','c5cat','c3lap','c4yarn'].forEach(i=>{const e=document.getElementById(i);if(e)e.style.display='none'});
@@ -1146,13 +1222,13 @@ const mix=new THREE.AnimationMixer(M);const A={};g.animations.forEach(c=>{const 
 let head=null,hips=null,mesh=null,armL=null,armR=null;M.traverse(o=>{if(o.isBone&&/LeftArm$/.test(o.name))armL=o;if(o.isBone&&/RightArm$/.test(o.name))armR=o;if(o.isBone&&/Head$/.test(o.name))head=o;if(o.isBone&&/Hips$/.test(o.name))hips=o;if(o.isSkinnedMesh||o.isMesh)mesh=mesh||o});
 M.position.y=0;mix.update(0);const a0=mix.clipAction(g.animations.find(c=>c.name.startsWith('idle')));a0.setEffectiveWeight(1);a0.time=0;mix.update(0);M.updateMatrixWorld(true);const {armFix}=await import('./armfix.js');let skm=null;M.traverse(o=>{if(o.isSkinnedMesh&&!skm)skm=o});if(skm)armFix(THREE,skm);const {makeMouth}=await import('./mouth3d.js');const MO=makeMouth(THREE,M,head,mesh);a0.setEffectiveWeight(0);M.position.y=-box.min.y;let mPrev=0;
 const v0=()=>0;let hipRest=null;
-const CO=AD3==='20'?0.3:1.4;const MOUTH=AD3==='20'?(window.CAT_MOUTH||[]):(window.MOUTH18||[]);
+const CO=AD3==='20'?0.3:AD3==='21'?0:1.4;const MOUTH=(AD3==='20'||AD3==='21')?(window.CAT_MOUTH||[]):(window.MOUTH18||[]);
 document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
 const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
 function weights(list){let tot=0;for(const k in A){A[k].a.setEffectiveWeight(0)}for(const [k,w,tm] of list){if(!A[k]||w<=0)continue;A[k].a.time=tm%A[k].d;A[k].a.setEffectiveWeight(w)}mix.update(0)}
 function once(k,v,start){const p=v-start;if(p<0||p>A[k].d)return 0;return Math.min(ss(p/.35),ss((A[k].d-p)/.35))}
 window.hook3d=async function(t,cur,lt){
- const id=cur[2];const v=t-CO;cv.style.opacity=(id==='cta'||id==='mm9')?0:1;if(id==='cta'||id==='mm9')return;
+ const id=cur[2];const v=t-CO;cv.style.opacity=(id==='cta'||id==='mm9'||id==='us1'||id==='us2')?0:1;if((id==='cta'||id==='mm9'||id==='us1'||id==='us2'))return;
  // base pose per scene + gestures [voiceStart, clipFrom, clipTo]
  const foldT=5+3.5*(1-Math.cos(t*.35));
  let px=360,py=1060,s=.66,ry=0,base=['wait',t%6.0],G=[],walk=false;
@@ -1167,6 +1243,12 @@ window.hook3d=async function(t,cur,lt){
  if(id==='mm8'){px=170;py=1085;s=.6;ry=.3;base=W();G=[['agree',35.4,.8,3.0],['greet',37.1,.3,2.4]]}
  if(id==='mm9'){px=600;py=1090;s=.5;ry=-.35;base=STD;G=[['complain',38.6,2.4,4.8]]}
  if(id==='mm10'){px=200;py=1110;s=.66;ry=.25;base=STD;G=[['greet',41.8,.3,2.6]]}
+ if(id==='us3'){px=575;py=1085;s=.6;ry=-.35;base=W();G=[['frustrated',16.4,.2,3.2],['complain',20.3,2.4,4.8]]}
+ if(id==='us4'){px=130;py=1090;s=.6;ry=.4;base=STD;G=[['agree',22.2,.8,3.0],['greet',25.9,.3,2.4]]}
+ if(id==='us5'){px=360;py=1150;s=.42;ry=0;base=STD;G=[['agree',28.4,.8,3.0],['complain',31.8,2.4,4.8]]}
+ if(id==='us6'){px=575;py=1090;s=.58;ry=-.35;base=W();G=[['greet',41.7,.3,2.6]]}
+ if(id==='us7'){px=180;py=1100;s=.56;ry=.35;base=STD;G=[['frustrated',46.7,.2,3.0],['agree',48.7,.8,2.8],['complain',50.8,2.4,4.6]]}
+ if(id==='us8'){px=170;py=1110;s=.62;ry=.3;base=STD;G=[['agree',53.4,.8,3.0],['greet',57.3,.3,2.6]]}
  if(id==='c1'){px=235;py=1045;s=.68;ry=.22;G=[['complain',6.9,2.2,5.2],['agree',9.9,.8,3.6]]}
  if(id==='c2'){px=180;py=1045;s=.66;ry=.5;base=['swagger',t%3.7];G=[['complain',14.4,2.2,5.2],['frustrated',17.4,.2,3.4],['complain',20.4,2.4,5.0]]}
  if(id==='c3'){px=575;py=1060;s=.52;ry=-.35;base=['standing',t%17.6];G=[['agree',25.3,.8,3.6],['greet',29.1,.3,3.3],['agree',32.6,.8,3.0],['complain',34.0,2.4,5.2]]}
