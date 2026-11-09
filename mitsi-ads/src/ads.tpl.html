@@ -1098,24 +1098,24 @@ window.hook3d=async function(t,cur,lt){
  const id=cur[2];const v=t-CO;cv.style.opacity=id==='cta'?0:1;if(id==='cta')return;
  // base pose per scene + gestures [voiceStart, clipFrom, clipTo]
  const foldT=5+3.5*(1-Math.cos(t*.35));
- let px=360,py=1060,s=.66,ry=0,base=['fold',foldT],G=[],walk=false;
+ let px=360,py=1060,s=.66,ry=0,base=['wait',t%6.0],G=[],walk=false;
  if(id==='c1'){px=235;py=1045;s=.68;ry=.22;G=[['complain',6.9,2.2,5.2],['agree',9.9,.8,3.6]]}
  if(id==='c2'){px=180;py=1045;s=.66;ry=.5;base=['swagger',t%3.7];G=[['complain',14.4,2.2,5.2],['frustrated',17.4,.2,3.4],['complain',20.4,2.4,5.0]]}
  if(id==='c3'){px=575;py=1060;s=.52;ry=-.35;base=['standing',t%17.6];G=[['agree',25.3,.8,3.6],['greet',29.1,.3,3.3],['agree',32.6,.8,3.0],['complain',34.0,2.4,5.2]]}
- if(id==='c4'){const p=cl((v-36.9)/6.3);s=.5;py=1075;px=-80+460*ss(p);walk=p<1;ry=p<1?Math.PI/2:Math.PI/2*(1-ss((v-43.2)/.6));G=[['agree',47.4,.8,3.6]]}
- if(id==='c5'){px=360;py=1115;s=.66;ry=Math.sin(t*.4)*.06;G=[['greet',54.4,.3,3.3],['agree',58.2,.8,2.8]]}
+ if(id==='c4'){const WD=3.9,p=cl((v-36.9)/WD);s=.5;py=1075;px=-80+460*p;walk=p<1;ry=p<1?Math.PI/2:Math.PI/2*(1-ss((v-36.9-WD)/.6));base=['standing',t%17.6];G=[['agree',47.4,.8,3.6]]}
+ if(id==='c5'){px=360;py=1115;s=.66;ry=Math.sin(t*.4)*.06;base=['standing',t%17.6];G=[['greet',54.4,.3,3.3],['agree',58.2,.8,2.8]]}
  const list=[];let gw=0;
  for(const [k,st,f,e] of G){const d=e-f,q=v-st;if(q<0||q>d)continue;const w=Math.min(ss(q/.45),ss((d-q)/.45));if(w<=0)continue;list.push([k,w,f+q]);gw=Math.max(gw,w)}
  if(walk)list.push(['walk',1,v]);else list.push([base[0],1-gw,base[1]]);
  for(const k in A)A[k].a.setEffectiveWeight(0);
  for(const [k,w,tm] of list){const x=A[k];if(!x||w<=0)continue;x.a.time=Math.min(tm,x.d-.001);x.a.setEffectiveWeight(w)}
+ root.position.set((px-360)*PX,(640-py)*PX,0);root.rotation.y=ry;root.scale.setScalar((s*650*PX)/0.98);
  mix.update(0);
  // folded arms: rotate the upper arms so the forearms cross in front of the belly instead of sinking into it
  const fw=(!walk&&base[0]==='fold')?(1-gw):0;if(fw>0&&armL&&armR){const z=new THREE.Vector3(0,0,1);armL.rotateOnAxis(z,.3*fw);armR.rotateOnAxis(z,.3*fw)}
- if(hips){if(!hipRest)hipRest=hips.position.clone();hips.position.x=hipRest.x;hips.position.z=hipRest.z}
+ if(hips){M.position.x=0;M.position.z=0;root.updateMatrixWorld(true);const hp=new THREE.Vector3();hips.getWorldPosition(hp);root.worldToLocal(hp);if(!hipRest)hipRest={x:-0.048,z:0.074};M.position.x=-(hp.x-hipRest.x);M.position.z=-(hp.z-hipRest.z)}
  const fr=Math.floor(v*24);const m=v>0&&fr<MOUTH.length?MOUTH[fr]:0;
  const mm=Math.max(m,mPrev*.55);mPrev=mm;MO.set(mm);
- root.position.set((px-360)*PX,(640-py)*PX,0);root.rotation.y=ry;root.scale.setScalar((s*650*PX)/0.98);
  R.render(S,C);
 };
 window.ready3d=true;
