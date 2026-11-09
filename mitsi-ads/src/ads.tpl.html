@@ -1075,6 +1075,75 @@ function draw21b(id,t){if(id!=='us6')return;const b=[...BUB21B].reverse().find(x
  const k=b?b[0]:0;const p=clamp((t-k)/.3);$('us6h').style.transform=`scale(${t<41.9?0:(.85+.15*p)}) rotate(${t>48.7&&t<50.2?Math.sin(t*20)*2:0}deg)`;$('us6h').style.opacity=t<41.9?0:1;
  pop('us6d',t,50.2,.35);if(t>50.6)$('us6d').style.transform+=` rotate(${Math.sin(t*5)*4}deg)`}
 function frame21b(t,tt,cur,lt,jobs){if(t>=41.9&&t<52.5){const s=SUB21B.find(x=>t>=x[0]-.15&&t<x[1]+.35);const sb=$('sub18t');if(s){sb.innerHTML=s[2];sb.style.background='rgba(255,255,255,.96)';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}else frame21(tt,cur,lt,jobs)}
+/* ---------- AD 22: two cats (Mitsi = Omer, ginger = Danit) – nobody answers / the bot answers / Claude runs it ---------- */
+if(AD==='22'){
+window.MOUTH22=/*MOUTH22*/{}/*/MOUTH22*/;
+const st=$('stage');['hud','scanl'].forEach(i=>$(i).style.display='none');
+const O='#26242b';const C='left:0;right:0;text-align:center;';
+const card=(id,html,top,extra='')=>`<div class="abs" id="${id}" style="${C}top:${top}px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:10px 26px;font-size:38px;font-weight:800;box-shadow:7px 7px 0 ${O};${extra}">${html}</span></div>`;
+const chip=(id,html,x,y,bg='#fff')=>`<div class="abs" id="${id}" style="left:${x}px;top:${y}px;background:${bg};color:${O};border:4px solid ${O};border-radius:18px;padding:8px 16px;font-size:28px;font-weight:800;box-shadow:5px 5px 0 ${O};white-space:nowrap">${html}</div>`;
+const SV=(id,inner)=>`<svg class="full" id="${id}" viewBox="0 0 720 1280">${inner}</svg>`;
+// cozy room: ginger's flower counter on the left, Mitsi's sofa on the right
+const ROOM=(wall='#fff1e0',floor='#e8c9a3')=>`<rect width="720" height="1280" fill="${wall}"/>${Array.from({length:9},(_,i)=>`<rect x="${i*84}" y="0" width="42" height="960" fill="#000" opacity=".025"/>`).join('')}
+<rect x="40" y="250" width="200" height="150" rx="10" fill="#bfe3ff" stroke="${O}" stroke-width="6"/><line x1="140" y1="250" x2="140" y2="400" stroke="${O}" stroke-width="5"/>
+<g transform="translate(70 120)"><rect x="-20" width="270" height="70" rx="14" fill="#ff8fb1" stroke="${O}" stroke-width="5"/><text x="115" y="47" text-anchor="middle" font-size="30" font-weight="800" font-family="H" fill="#fff">🌸 הפרחים של ג׳ינג׳י</text></g>
+<rect y="960" width="720" height="320" fill="${floor}"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/>
+<g transform="translate(400 820)"><rect x="0" y="40" width="300" height="110" rx="26" fill="#7c8bd6" stroke="${O}" stroke-width="6"/><rect x="0" y="-30" width="300" height="90" rx="26" fill="#93a2ea" stroke="${O}" stroke-width="6"/><rect x="-20" y="20" width="50" height="130" rx="20" fill="#7c8bd6" stroke="${O}" stroke-width="6"/><rect x="270" y="20" width="50" height="130" rx="20" fill="#7c8bd6" stroke="${O}" stroke-width="6"/></g>
+<g transform="translate(40 860)"><rect width="150" height="100" rx="8" fill="#c58b5a" stroke="${O}" stroke-width="6"/><text x="30" y="0" font-size="56">🌷</text><text x="80" y="-6" font-size="56">🌻</text></g>`;
+const PHONEUI=(id,inner,x,y,w=300,h=520)=>`<div class="abs" id="${id}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:44px;background:#fff;color:${O};border:7px solid ${O};box-shadow:10px 10px 0 ${O};overflow:hidden">${inner}</div>`;
+const MISS=(i,ic,name,y)=>`<div class="abs miss" id="dd1m${i}" style="left:24px;right:24px;top:${y}px;background:#fff4f4;border:3px solid ${O};border-radius:16px;padding:8px 10px;font-size:20px;font-weight:800;display:flex;justify-content:space-between;white-space:nowrap"><span>${ic} ${name}</span><span style="color:#e0283a">✕ אין מענה</span></div>`;
+// dd1: she calls everyone, nobody answers
+S('dd1',SV('dd1s',ROOM())+PHONEUI('dd1p',`<div style="height:64px;background:#2c2c36;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800">📞 שיחות אחרונות</div>${MISS(0,'🔧','אינסטלטור',90)}${MISS(1,'🚗','מוסך',160)}${MISS(2,'🍕','פיצרייה',230)}<div id="dd1call" class="abs" style="left:0;right:0;top:330px;text-align:center"><div style="font-size:60px" id="dd1ic">📞</div><div style="font-size:26px;font-weight:800" id="dd1tx">מחייגת...</div></div>`,390,180)+card('dd1k','😤 3 שיחות. 0 תשובות.',90,'font-size:34px;background:#ff4d5e;color:#fff'));
+// dd2: Mitsi plays on his phone
+S('dd2',SV('dd2s',ROOM())+card('dd2a','😴 "עסוקים?"',160,'font-size:34px')+card('dd2b','🍕 אני רוצה לתת להם כסף! 💸',260,'font-size:32px;background:#ffc22e')+card('dd2c','😎 "מרכזייה כמו שלי"',360,'font-size:34px;background:#93a2ea'));
+// dd3: "call me"
+S('dd3',SV('dd3s',ROOM())+card('dd3a','🤨 "מה כבר יש לך שם?"',170,'font-size:34px')+card('dd3b','📲 "תתקשרי אליי."',280,'font-size:36px;background:#e7ffdb'));
+// dd4: the voice bot answers while Mitsi keeps playing
+S('dd4',SV('dd4s',ROOM())+`<div class="abs" id="dd4ring" style="left:600px;top:700px;font-size:60px">📳</div>`+PHONEUI('dd4p',`<div style="height:64px;background:linear-gradient(90deg,#7b5cff,#3fd0ff);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800">🤖 "מִיצִי" · בוט קולי</div>
+<div style="text-align:center;margin-top:20px;font-size:22px;color:#777">מחובר · 00:0<span id="dd4sec">0</span></div><div style="margin-top:14px">${waveHTML('kw4',20,80)}</div>
+<div class="bub u" id="dd4t" style="left:16px;right:16px;top:230px;font-size:22px;border:3px solid ${O};background:#f3efff">"מִיצִי" כרגע... עסוק מאוד 🎮<br>איך אפשר לעזור?</div>`,200,170,320,420)+card('dd4k','😲 הבוט עונה במקומו?!',620,'font-size:34px;background:#ffc22e'));
+// dd5: features
+const F5=[['dd5a','🎙 בוט קולי',40,170,'#f3efff'],['dd5b','💬 בוט וואטסאפ',380,170,'#e7ffdb'],['dd5c','🕐 24/7',260,265,'#fff'],['dd5d','⏺ הקלטה',40,360,'#ffe3e3'],['dd5e','📝 תמלול',265,360,'#fff'],['dd5f','✨ סיכום A.I',470,360,'#fff3c4']];
+S('dd5',SV('dd5s',ROOM())+F5.map(f=>chip(f[0],f[1],f[2],f[3],f[4])).join('')+`<div class="abs" id="dd5sum" style="left:60px;right:60px;top:470px;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:12px 18px;box-shadow:7px 7px 0 ${O};font-size:24px;font-weight:700;line-height:1.45"><div style="font-weight:800;color:#7b5cff">✨ סיכום שיחה</div>• לקוחה רוצה זר ורדים ליום שישי 🌹<br>• תקציב: עד 200 ₪<br>• לחזור אליה עד 18:00 ✅</div>`+card('dd5k','🛋 בלי לקום מהספה',640,'font-size:34px;background:#93a2ea;color:#fff'));
+// dd6: Claude chat
+S('dd6',SV('dd6s',ROOM())+card('dd6a','🧰 טכנאי?',170,'font-size:36px')+`<div class="abs" id="dd6chat" style="left:50px;right:50px;top:150px;height:540px;background:#faf7f2;color:${O};border:6px solid ${O};border-radius:28px;box-shadow:9px 9px 0 ${O};overflow:hidden">
+<div style="height:62px;background:#d97757;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800">✳️ Claude · המרכזייה של "מִיצִי"</div>
+<div class="bub u" id="dd6u1" style="right:16px;top:84px;border:3px solid ${O};font-size:24px;max-width:430px">קלוד, תוסיף שלוחה למכירות 🐾</div>
+<div class="bub" id="dd6c1" style="left:16px;top:170px;border:3px solid ${O};font-size:23px;max-width:450px;background:#fff1e8;color:${O}">✅ נוספה שלוחה 2 – מכירות.<br>"לחצו 2 למכירות"</div>
+<div class="bub u" id="dd6u2" style="right:16px;top:290px;border:3px solid ${O};font-size:24px;max-width:430px">ובלילה תעביר את השיחות לבוט 🌙</div>
+<div class="bub" id="dd6c2" style="left:16px;top:376px;border:3px solid ${O};font-size:23px;max-width:450px;background:#fff1e8;color:${O}">✅ מ-20:00 עד 08:00 השיחות עוברות לבוט הקולי 🤖</div></div>`);
+// dd7: if a cat can...
+S('dd7',SV('dd7s',ROOM())+card('dd7a','🤔 "גם אני יכולה?"',170,'font-size:34px')+card('dd7b','🐱 אם חתול יכול...',280,'font-size:40px;background:#93a2ea;color:#fff')+card('dd7c','🏪 כל עסק יכול!',390,'font-size:44px;background:#ffc22e')+card('dd7d','🚀 "מחברת את החנות. עכשיו!"',520,'font-size:32px;background:#e7ffdb'));
+// dd8: CTA – both dance
+S('dd8',SV('dd8s',`<defs><radialGradient id="g22" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#2a3f8f"/><stop offset="1" stop-color="#0a1230"/></radialGradient></defs><rect width="720" height="1280" fill="url(#g22)"/><g id="dd8conf">${Array.from({length:36},(_,i)=>`<rect class="cf" width="12" height="20" rx="3" fill="${['#ff8fb1','#3fd0ff','#ffc22e','#28c840','#b46bff'][i%5]}"/>`).join('')}</g><rect y="980" width="720" height="300" fill="#16224f"/>`)
++`<div class="abs" id="dd8t" style="${C}top:70px;font-size:46px;font-weight:800;color:#fff">📞 מרכזייה שעושה הכל</div>`
++[['dd8a','🤖 בוטים',60,150,'#f3efff'],['dd8b','⏺ הקלטות',270,150,'#ffe3e3'],['dd8c','📝 תמלול',480,150,'#fff'],['dd8d','✨ סיכום A.I',150,235,'#fff3c4'],['dd8e','✳️ פשוט אומרים לקלוד',360,235,'#fff1e8']].map(f=>chip(f[0],f[1],f[2],f[3],f[4])).join('')
++`<div class="abs" id="dd8l" style="${C}top:340px"><div class="big gt" style="font-size:84px">מיצי תקשורת</div></div>
+<div class="cta" id="dd8b2" style="top:470px;background:linear-gradient(90deg,#ff8fb1,#ffc22e);color:#2a1300;border:none">🔗 הקישור בביו</div>
+<div class="abs" id="dd8p" style="${C}top:580px;font-size:30px;font-weight:800;direction:ltr;color:#fff"><span style="letter-spacing:3px">03-3826600</span> <span style="color:#3fd0ff">· mitsi.co.il</span></div>
+<div class="abs" id="dd8h" style="${C}top:640px;font-size:34px;font-weight:800;color:#ffd1e0">💕 אף שיחה לא הולכת לאיבוד</div>`);
+const sb=document.createElement('div');sb.id='sub18';sb.style.cssText='position:absolute;z-index:9;left:30px;right:30px;top:1150px;text-align:center;direction:rtl';sb.innerHTML='<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-size:31px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>';st.appendChild(sb);
+}
+// [start,end,speaker f|m|b,text]
+const SUBS22=[[0.35,2.96,'f','נו, תענו... תענו כבר...'],[5.9,7.09,'f','שלוש שיחות!'],[7.38,9.84,'f','לאינסטלטור, למוסך, ולפיצרייה.'],[10.16,11.17,'f','אף אחד לא עונה!'],[11.37,14.57,'m','אולי הם פשוט... עסוקים? 🥱'],[14.77,15.6,'f','עסוקים?'],[15.95,18.05,'f','"מִיצִי", הפיצרייה עסוקה?'],[18.39,20.07,'f','אני רוצה לתת להם כסף!'],[20.27,23.87,'m','מה לעשות... לא לכולם יש מרכזייה כמו שלי.'],[24.07,27.16,'f','נו, ומה כבר יש לך שם, חתול?'],[27.36,29.21,'m','תתקשרי אליי. נראה אותך.'],
+[31.21,33.9,'b','שלום, הגעתם ל"מִיצִי".'],[33.9,36.86,'b','"מִיצִי" כרגע... עסוק מאוד. איך אפשר לעזור?'],[37.05,40.2,'f','רגע, הבוט עונה במקומך?!'],
+[40.42,43.12,'m','בוט קולי בטלפון, ובוט וואטסאפ בהודעות.'],[43.42,45.36,'m','עונים לכל לקוח, בכל שעה.'],[45.72,49.36,'m','וכל שיחה מוקלטת, מתומללת, ואני מקבל סיכום A.I.'],[49.76,52.34,'m','ככה אני יודע מה רצו... בלי לקום מהספה.'],
+[52.57,54.92,'f','ומי הגדיר לך את כל זה? טכנאי?'],[55.75,57.57,'m','טכנאי? אני מדבר עם קלוד.'],[57.99,61.09,'m','"קלוד, תוסיף שלוחה למכירות." והוא מוסיף.'],[61.51,65.11,'m','"קלוד, בלילה תעביר את השיחות לבוט." והוא מעביר.'],
+[65.37,67.69,'f','רגע... אז גם אני יכולה?'],[67.89,70.93,'m','אם חתול יכול... כל עסק יכול.'],[71.13,74.01,'f','טוב, אני מחברת את החנות שלי. עכשיו!'],
+[74.49,76.23,'m','מרכזייה שעושה הכל.'],[76.61,79.53,'m','בוטים, הקלטות, תמלול וסיכום A.I.'],[79.89,81.93,'m','ואת הכל... פשוט אומרים לקלוד.'],[82.47,83.41,'m','"מִיצִי" תקשורת.'],[83.69,84.67,'m','הקישור בביו.'],[84.92,87.7,'f','ומעכשיו... אף שיחה לא הולכת לאיבוד! 💕']];
+function draw22(id,lt,t,jobs){
+ const v=t;
+ if(id==='dd1'){sh('dd1p',v,.1,.4,0,50);pop('dd1m0',v,6.9,.3);pop('dd1m1',v,8.0,.3);pop('dd1m2',v,9.0,.3);const calling=v<4.6;$('dd1ic').textContent=calling?'📞':'📵';$('dd1tx').textContent=calling?'מחייגת... 🔧 אינסטלטור':'אין מענה 😩';$('dd1ic').style.transform=`rotate(${calling?Math.sin(t*25)*14:0}deg)`;$('dd1call').style.opacity=v<6.6?1:0;pop('dd1k',v,10.1,.35)}
+ if(id==='dd2'){pop('dd2a',v,12.0,.35);pop('dd2b',v,18.3,.35);pop('dd2c',v,20.9,.35);const fz=v>18.3&&v<20;$('dd2b').style.transform+=fz?` rotate(${Math.sin(t*20)*2}deg)`:''}
+ if(id==='dd3'){pop('dd3a',v,24.2,.35);pop('dd3b',v,27.4,.35)}
+ if(id==='dd4'){const r=v>29.4&&v<31.1;$('dd4ring').style.opacity=r?1:0;$('dd4ring').style.transform=`rotate(${r?Math.sin(t*40)*15:0}deg)`;sh('dd4p',v,31.0,.35,0,50);$('dd4sec').textContent=Math.max(0,Math.min(9,Math.floor(v-31.1)));animWave('kw4',t,v>31.2&&v<36.9?1:.15,40);sh('dd4t',v,33.9,.3);pop('dd4k',v,37.1,.35)}
+ if(id==='dd5'){[[ 'dd5a',40.42],['dd5b',41.7],['dd5c',43.42],['dd5d',46.0],['dd5e',46.8],['dd5f',48.2]].forEach(([e,d])=>pop(e,v,d,.3));sh('dd5sum',v,48.5,.4,0,30);pop('dd5k',v,51.3,.35)}
+ if(id==='dd6'){pop('dd6a',v,52.6,.3);const c=v>55.7;$('dd6a').style.opacity=c?0:$('dd6a').style.opacity;sh('dd6chat',v,55.75,.4,0,60);pop('dd6u1',v,58.0,.3);pop('dd6c1',v,60.4,.3);pop('dd6u2',v,61.5,.3);pop('dd6c2',v,64.4,.3)}
+ if(id==='dd7'){pop('dd7a',v,65.4,.3);pop('dd7b',v,67.9,.35);pop('dd7c',v,69.5,.35);pop('dd7d',v,71.2,.35);$('dd7c').style.transform+=v>69.9?` scale(${1+.04*Math.sin(t*6)})`:''}
+ if(id==='dd8'){sh('dd8t',v,74.5,.4);[['dd8a',76.6],['dd8b',77.3],['dd8c',78.0],['dd8d',78.6],['dd8e',80.6]].forEach(([e,d])=>pop(e,v,d,.3));pop('dd8l',v,82.4,.4);pop('dd8b2',v,83.7,.4);sh('dd8p',v,84.2,.35);pop('dd8h',v,85.0,.4);$('dd8b2').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(255,143,177,.6)`;
+  [...document.querySelectorAll('#dd8s .cf')].forEach((c,i)=>{const x=(i*61)%720,y=((t-74)*(120+i%5*35)+i*47)%1050-40;c.setAttribute('transform',`translate(${x+Math.sin(t*2+i)*18} ${y}) rotate(${t*160+i*40})`);c.setAttribute('opacity',v>74.5?.85:0)})}
+}
+function frame22(t,cur,lt,jobs){const s=SUBS22.find(x=>t>=x[0]-.15&&t<x[1]+.3);const sb=$('sub18t');if(s){const ic=s[2]==='f'?'🧡 ':s[2]==='m'?'🩶 ':'🤖 ';sb.textContent=ic+s[3];sb.style.background=s[2]==='f'?'#fff1e2':s[2]==='m'?'#eef1fb':'#f3efff';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -1207,6 +1276,7 @@ async function render(t){
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  if(AD==='20'){draw20(id,lt,t,jobs);frame20(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
+ if(AD==='22'){draw22(id,lt,t,jobs);frame22(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='21'){draw21(id,lt,t,jobs);frame21(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
  if(AD==='21b'){const tt=warp21(t);draw21(id,lt,tt,jobs);draw21b(id,t);frame21b(t,tt,cur,lt,jobs);jobs.push(window.hook3d(tt,cur,lt,t))}
  if(AD==='18'||AD==='19'){if(id!=='cta')draw18(id,lt,t,jobs);frame18(t,cur,lt,jobs);if(AD==='19')jobs.push(window.hook3d(t,cur,lt))}
@@ -1279,5 +1349,68 @@ window.hook3d=async function(t,cur,lt,tr){
  R.render(S,C);
 };
 window.ready3d=true;
-}else window.ready3d=true;
-</script></body></html>
+}else if(AD3!=='22')window.ready3d=true;
+</script>
+<script type="module">
+if(new URLSearchParams(location.search).get('ad')==='22'){
+const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');const {makeMouth2}=await import('./mouth3d2.js');
+const cv=document.createElement('canvas');cv.id='cv3d';cv.width=1080;cv.height=1920;cv.style.cssText='position:absolute;left:0;top:0;width:720px;height:1280px;pointer-events:none';
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:true});R.setPixelRatio(1);R.setSize(1080,1920,false);R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
+const S=new THREE.Scene();const D=3.6;const C=new THREE.PerspectiveCamera(30,720/1280,.05,50);C.position.set(0,0,D);C.lookAt(0,0,0);const PX=2*D*Math.tan(15*Math.PI/180)/1280;
+S.add(new THREE.HemisphereLight(0xffffff,0x6b7a99,1.5));const key=new THREE.DirectionalLight(0xffffff,2.3);key.position.set(2,4,4);S.add(key);const rim=new THREE.DirectionalLight(0xffe2c4,1.2);rim.position.set(-3,2,-2);S.add(rim);
+const sc=document.createElement('canvas');sc.width=sc.height=128;const sx=sc.getContext('2d');const gr=sx.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(0,0,0,.45)');gr.addColorStop(1,'rgba(0,0,0,0)');sx.fillStyle=gr;sx.fillRect(0,0,128,128);const shTex=new THREE.CanvasTexture(sc);
+async function loadChar(url,mp){
+ const g=await new GLTFLoader().loadAsync(url);const M=g.scene;const root=new THREE.Group();root.add(M);S.add(root);
+ const box=new THREE.Box3().setFromObject(M);const fy=-box.min.y;M.position.y=fy;
+ const shd=new THREE.Mesh(new THREE.PlaneGeometry(.75,.75),new THREE.MeshBasicMaterial({map:shTex,transparent:true,depthWrite:false}));shd.rotation.x=-Math.PI/2;shd.position.y=.002;root.add(shd);
+ const mix=new THREE.AnimationMixer(M);const A={};g.animations.forEach(c=>{const k=c.name.replace(/\.\d+$/,'');const a=mix.clipAction(c);a.play();a.setEffectiveWeight(0);A[k]={a,d:c.duration}});
+ let head,hips,lh,rh;M.traverse(o=>{if(o.isBone&&/Head$/.test(o.name))head=o;if(o.isBone&&/Hips$/.test(o.name))hips=o;if(o.isBone&&/LeftHand$/.test(o.name))lh=o;if(o.isBone&&/RightHand$/.test(o.name))rh=o});
+ for(const k in A)A[k].a.setEffectiveWeight(0);A.idle.a.setEffectiveWeight(1);A.idle.a.time=0;M.position.y=0;mix.update(0);M.updateMatrixWorld(true);
+ const MO=makeMouth2(THREE,head,mp);
+ // a small phone prop in the right hand
+ const ph=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(.055,.1,.012),new THREE.MeshStandardMaterial({color:0x22232b,roughness:.4}));const scr=new THREE.Mesh(new THREE.PlaneGeometry(.045,.085),new THREE.MeshBasicMaterial({color:0x5fd3ff}));scr.position.z=.0065;ph.add(body,scr);
+ S.add(ph);ph.visible=false;
+ // hip rest (to cancel root motion)
+ const hr=new THREE.Vector3();hips.getWorldPosition(hr);M.position.y=fy;
+ return {M,root,mix,A,head,hips,lh,rh,MO,ph,fy,rest:{x:hr.x,z:hr.z},mPrev:0};
+}
+const cm=await loadChar('cat-m.glb',{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'});
+const cf=await loadChar('cat-f.glb',{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'});
+document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
+function pose(ch,t,P,mouthArr){
+ if(!P){ch.root.visible=false;ch.ph.visible=false;return}
+ ch.root.visible=true;const v=t;
+ const list=[];let gw=0;
+ for(const g of (P.G||[])){const [k,st]=g;const x=ch.A[k];if(!x)continue;const f=g[2]??0,e=g[3]??x.d;const d=e-f,q=v-st;if(q<0||q>d)continue;const w=Math.min(ss(q/.4),ss((d-q)/.4));if(w<=0)continue;list.push([k,w,f+q]);gw=Math.max(gw,w)}
+ const b=ch.A[P.base]?P.base:'standing_relax';list.push([b,1-gw,P.hold?Math.min(P.bt,ch.A[b].d-.001):(P.bt??t)%ch.A[b].d]);
+ for(const k in ch.A)ch.A[k].a.setEffectiveWeight(0);
+ for(const [k,w,tm] of list){const x=ch.A[k];x.a.time=Math.min(tm,x.d-.001);x.a.setEffectiveWeight(w)}
+ const sIn=P.in!=null?ss((t-P.in)/.45):1;
+ ch.root.position.set((P.px-360)*PX,(640-P.py)*PX,0);ch.root.rotation.y=P.ry||0;ch.root.scale.setScalar((P.s*650*PX)/0.98*Math.max(.001,sIn));
+ ch.M.position.y=ch.fy;ch.mix.update(0);
+ ch.M.position.x=0;ch.M.position.z=0;ch.root.updateMatrixWorld(true);const hp=new THREE.Vector3();ch.hips.getWorldPosition(hp);ch.root.worldToLocal(hp);ch.M.position.x=-(hp.x-ch.rest.x);ch.M.position.z=-(hp.z-ch.rest.z);
+ const call=list.some(([k,w])=>w>.5&&k==='make_a_call_01'),game=list.some(([k,w])=>w>.5&&k==='play_mobile_game');ch.ph.visible=call||game;
+ if(ch.ph.visible){ch.root.updateMatrixWorld(true);const a=new THREE.Vector3(),b=new THREE.Vector3();ch.lh.getWorldPosition(a);ch.rh.getWorldPosition(b);
+  const sc=ch.root.scale.x;let p,ang;if(game){p=a.clone().add(b).multiplyScalar(.5);p.y+=.03*sc;ang=0}else{const hd=new THREE.Vector3();ch.head.getWorldPosition(hd);p=(a.distanceTo(hd)<b.distanceTo(hd)?a:b).clone();ang=(p.x<hd.x?-1:1)*.35}
+  p.z+=.07*sc;ch.ph.position.copy(p);ch.ph.scale.setScalar(sc*1.3);ch.ph.rotation.set(game?-.6:0,0,ang)}
+ const fr=Math.floor(t*24);const m=mouthArr&&fr<mouthArr.length?mouthArr[fr]:0;const mm=Math.max(m,ch.mPrev*.55);ch.mPrev=mm;ch.MO.set(mm);
+}
+// placements per scene: F = ginger (Danit), M = Mitsi (Omer)
+function plan(id,t){
+ const L={px:205,py:1085,s:.6,ry:.35},Rt={px:525,py:1085,s:.6,ry:-.35};let F=null,Mi=null;
+ if(id==='dd1'){F={px:210,py:1090,s:.66,ry:.3,base:t<5.6?'make_a_call_01':'standing_relax',G:[['frustrated_01',5.9],['complain_02',8.6]]}}
+ if(id==='dd2'){F={...L,base:'standing_relax',G:[['complain_01',14.6],['frustrated_01',18.2]]};Mi={...Rt,in:11.25,base:'play_mobile_game',G:[['laugh_02',20.2]]}}
+ if(id==='dd3'){F={...L,base:'fold_arms'};Mi={...Rt,base:t<27.2?'play_mobile_game':'standing_relax',G:[['agree',27.2]]}}
+ if(id==='dd4'){F={...L,base:t<36.9?'make_a_call_01':'standing_relax',G:[['laugh_01',37.0]]};Mi={...Rt,base:'play_mobile_game'}}
+ if(id==='dd5'){F={...L,s:.56,base:'standing_relax',G:[['clap',46.2]]};Mi={...Rt,s:.58,px:540,base:t<50.0?'standing_relax':'sit',hold:t>=50,bt:t<50?t:t-50,G:[['greet_02',40.3],['agree',45.5]]}}
+ if(id==='dd6'){F={...L,base:'standing_relax',G:[['look_around',52.5]]};Mi={...Rt,base:'standing_relax',G:[['laugh_02',55.0],['agree',60.2],['agree',64.2]]}}
+ if(id==='dd7'){F={...L,base:'standing_relax',G:[['scratch',65.3],['cheer',71.0]]};Mi={...Rt,base:'swagger',G:[['agree',67.8]]}}
+ if(id==='dd8'){F={px:200,py:1100,s:.6,ry:.25,base:t<84.6?'dance_01':'standing_relax',bt:t-74,G:[['heart_pose',84.8]]};Mi={px:520,py:1100,s:.6,ry:-.25,base:t<82.2?'dance_01':'standing_relax',bt:t-74.3,G:[['greet_01',82.3],['bow',86.2]]}}
+ return {F,Mi};
+}
+window.hook3d22=async function(t,cur,lt){const p=plan(cur[2],t);const MO=window.MOUTH22||{};pose(cf,t,p.F,MO.f22);pose(cm,t,p.Mi,MO.m22);R.render(S,C)};
+window.ready3d=true;
+}
+</script>
+</body></html>
