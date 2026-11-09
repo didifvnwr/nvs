@@ -1144,6 +1144,72 @@ function draw22(id,lt,t,jobs){
   [...document.querySelectorAll('#dd8s .cf')].forEach((c,i)=>{const x=(i*61)%720,y=((t-74)*(120+i%5*35)+i*47)%1050-40;c.setAttribute('transform',`translate(${x+Math.sin(t*2+i)*18} ${y}) rotate(${t*160+i*40})`);c.setAttribute('opacity',v>74.5?.85:0)})}
 }
 function frame22(t,cur,lt,jobs){const s=SUBS22.find(x=>t>=x[0]-.15&&t<x[1]+.3);const sb=$('sub18t');if(s){const ic=s[2]==='f'?'🧡 ':s[2]==='m'?'🩶 ':'🤖 ';sb.textContent=ic+s[3];sb.style.background=s[2]==='f'?'#fff1e2':s[2]==='m'?'#eef1fb':'#f3efff';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
+/* ---------- AD 23: the one-cat corporation (business cat = Itamar, Mitsi = Omer, ginger = Danit) ---------- */
+if(AD==='23'){
+window.MOUTH23=/*MOUTH23*/{}/*/MOUTH23*/;
+const st=$('stage');['hud','scanl'].forEach(i=>$(i).style.display='none');
+const O='#26242b';const C='left:0;right:0;text-align:center;';
+const card=(id,html,top,extra='')=>`<div class="abs" id="${id}" style="${C}top:${top}px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:10px 26px;font-size:38px;font-weight:800;box-shadow:7px 7px 0 ${O};${extra}">${html}</span></div>`;
+const chip=(id,html,x,y,bg='#fff',fs=28)=>`<div class="abs" id="${id}" style="left:${x}px;top:${y}px;background:${bg};color:${O};border:4px solid ${O};border-radius:18px;padding:8px 16px;font-size:${fs}px;font-weight:800;box-shadow:5px 5px 0 ${O};white-space:nowrap">${html}</div>`;
+const SV=(id,inner)=>`<svg class="full" id="${id}" viewBox="0 0 720 1280">${inner}</svg>`;
+const SKY=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="#9fd2ff" stroke="${O}" stroke-width="6"/>`+[[0,.55,.12],[.14,.35,.1],[.26,.6,.13],[.41,.25,.11],[.54,.45,.14],[.7,.3,.1],[.82,.5,.16]].map(b=>`<rect x="${x+b[0]*w}" y="${y+b[1]*h}" width="${b[2]*w}" height="${(1-b[1])*h-3}" fill="#5f7bb8"/>`).join('');
+const OFFICE=`<rect width="720" height="1280" fill="#22325a"/>${Array.from({length:8},(_,i)=>`<rect x="${i*90}" y="0" width="45" height="960" fill="#fff" opacity=".03"/>`).join('')}${SKY(60,190,600,330)}
+<g transform="translate(360 600)"><rect x="-190" y="-34" width="380" height="68" rx="10" fill="#c9a24a" stroke="${O}" stroke-width="5"/><text y="12" text-anchor="middle" font-size="22" font-weight="800" fill="#2a1d00" font-family="Arial">CAT CORP · International Holdings</text></g>
+<rect y="960" width="720" height="320" fill="#5a3b2a"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/>${Array.from({length:6},(_,i)=>`<rect x="${i*130-20}" y="960" width="8" height="320" fill="#000" opacity=".15"/>`).join('')}`;
+const SHOP=`<rect width="720" height="1280" fill="#ffe8ef"/>${Array.from({length:9},(_,i)=>`<circle cx="${(i*97)%720}" cy="${(i*131)%900+60}" r="18" fill="#ffc2d4" opacity=".6"/>`).join('')}<rect y="960" width="720" height="320" fill="#e8c9a3"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/><g transform="translate(30 880)"><rect width="150" height="80" rx="8" fill="#c58b5a" stroke="${O}" stroke-width="6"/><text x="20" y="0" font-size="52">🌷</text><text x="75" y="-6" font-size="52">🌻</text></g>`;
+// split call: left = her flower shop, right = his "corporation"
+const SPLIT=(id)=>`<svg class="full" id="${id}" viewBox="0 0 720 1280"><defs><clipPath id="${id}L"><polygon points="0,0 380,0 340,1280 0,1280"/></clipPath><clipPath id="${id}R"><polygon points="380,0 720,0 720,1280 340,1280"/></clipPath></defs><g clip-path="url(#${id}L)">${SHOP}</g><g clip-path="url(#${id}R)">${OFFICE}</g><line x1="380" y1="0" x2="340" y2="1280" stroke="#fff" stroke-width="10"/><line x1="380" y1="0" x2="340" y2="1280" stroke="${O}" stroke-width="4"/></svg>`;
+const BEACH=`<defs><linearGradient id="bsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset="1" stop-color="#d9f3ff"/></linearGradient></defs><rect width="720" height="1280" fill="url(#bsky)"/><circle cx="580" cy="180" r="70" fill="#fff3a0"/><rect y="700" width="720" height="200" fill="#2fa6d9"/>${Array.from({length:6},(_,i)=>`<path d="M${i*130} 760 q 30 -16 60 0" fill="none" stroke="#fff" stroke-width="5" opacity=".7"/>`).join('')}<rect y="900" width="720" height="380" fill="#f3d79b"/><line x1="0" y1="900" x2="720" y2="900" stroke="${O}" stroke-width="5"/>
+<g transform="translate(470 560)"><line x1="0" y1="0" x2="20" y2="420" stroke="${O}" stroke-width="10"/><path d="M-170 40 Q 0 -110 170 40 Z" fill="#ff6b7a" stroke="${O}" stroke-width="6"/><path d="M-85 40 Q 0 -110 0 40 M0 40 Q 0 -110 85 40" fill="#fff" opacity=".85"/></g><text x="80" y="1010" font-size="70">🍹</text>`;
+S('eb1',SV('eb1s',OFFICE)+card('eb1a','🕶️ המנכ״ל',150,'font-size:42px;background:#c9a24a')+`<div class="abs" id="eb1r" style="left:560px;top:760px;font-size:64px">📳</div>`);
+S('eb2',SPLIT('eb2s')+card('eb2a','📞 "מדבר המנכ״ל."',120,'font-size:34px;background:#c9a24a')+card('eb2b','🌸 "אפשר שירות לקוחות?"',225,'font-size:32px')+`<div class="abs" id="eb2h" style="left:110px;right:110px;top:350px;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;box-shadow:7px 7px 0 ${O};padding:14px 18px;text-align:center"><div style="font-size:30px;font-weight:800">🔁 מעביר לשירות לקוחות...</div><div style="height:16px;border:3px solid ${O};border-radius:10px;margin-top:10px;overflow:hidden"><div id="eb2bar" style="height:100%;width:0;background:#3fd0ff"></div></div><div style="font-size:30px;margin-top:6px" id="eb2n">🎵 🎶</div></div>`);
+S('eb3',SPLIT('eb3s')+card('eb3a','🎧 שירות לקוחות (קול אחר לגמרי)',120,'font-size:30px;background:#3fd0ff')+card('eb3b','🤨 "...זה אותו קול."',225,'font-size:34px')
++`<div class="abs" id="eb3o" style="left:60px;right:60px;top:330px;background:#fff;color:${O};border:5px solid ${O};border-radius:22px;box-shadow:8px 8px 0 ${O};padding:14px;text-align:center"><div style="font-size:28px;font-weight:800">📊 המבנה הארגוני · CAT CORP</div><div style="font-size:26px;font-weight:800;margin-top:8px">מנכ״ל<br>🕶️🐈‍⬛</div><div style="display:flex;justify-content:space-around;font-size:22px;font-weight:800;margin-top:8px">${['שירות לקוחות','כספים','שיווק','ניקיון'].map(x=>`<div>${x}<br><span style="font-size:30px">🕶️🐈‍⬛</span></div>`).join('')}</div></div>`);
+S('eb4',SV('eb4s',`<rect width="720" height="1280" fill="#cfe8ff"/>${Array.from({length:5},(_,i)=>`<ellipse cx="${(i*190+60)%720}" cy="${120+i*60}" rx="70" ry="22" fill="#fff" opacity=".8"/>`).join('')}
+<g transform="translate(250 120)"><rect width="220" height="840" fill="#3b4f86" stroke="${O}" stroke-width="7"/>${Array.from({length:13},(_,r)=>[0,1,2].map(c=>`<rect x="${22+c*66}" y="${60+r*60}" width="44" height="34" fill="${r===6&&c===1?'#ffe08a':'#9fc3ff'}" opacity="${r===6&&c===1?1:.7}"/>`).join('')).join('')}<rect x="20" y="-50" width="180" height="50" rx="8" fill="#c9a24a" stroke="${O}" stroke-width="5"/><text x="110" y="-15" text-anchor="middle" font-size="26" font-weight="800" font-family="Arial" fill="#2a1d00">CAT CORP</text></g>
+<g id="eb4pin"><text x="490" y="465" font-size="48">👈</text></g><rect y="960" width="720" height="320" fill="#9aa7b8"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/>`)+chip('eb4k','"קומה 47" 🤫',530,420,'#ffe08a',26)+card('eb4a','🐈‍⬛ "עסק של חתול אחד"',140,'font-size:34px'));
+S('eb5',SV('eb5s',OFFICE)+`<div class="abs" id="eb5w" style="left:180px;top:140px;width:360px;height:420px;border-radius:44px;background:#fff;color:${O};border:7px solid ${O};box-shadow:10px 10px 0 ${O};overflow:hidden"><div style="height:64px;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800">💬 CAT CORP · וואטסאפ</div>
+<div class="bub u" id="eb5u" style="right:14px;top:84px;font-size:22px;border:3px solid ${O};max-width:280px">היי, ניסיתי להתקשר 🙂</div><div class="bub w" id="eb5r" style="left:14px;top:170px;font-size:22px;border:3px solid ${O};max-width:300px">קיבלנו! 🙌 חוזרים אליך עוד מעט ✅<br><span style="font-size:17px;opacity:.6">הודעה אוטומטית · עכשיו</span></div>
+<div class="abs" id="eb5m" style="left:14px;right:14px;top:300px;text-align:center;font-size:22px;font-weight:800;background:#fff3c4;border:3px solid ${O};border-radius:14px;padding:6px">🕶️ המנכ״ל בפגישה</div></div>`
++`<div class="abs" id="eb5e" style="left:90px;right:90px;top:150px;background:#fff;color:${O};border:6px solid ${O};border-radius:22px;box-shadow:9px 9px 0 ${O};padding:14px 18px;font-size:23px;font-weight:700;line-height:1.5"><div style="font-weight:800;font-size:26px">📧 תמלול שיחה · 14:32</div><div style="opacity:.75">מאת: "מִיצִי" תקשורת</div><div style="margin-top:6px">⏺ הקלטה מצורפת<br>📝 "לקוחה רוצה הצעת מחיר ל-3 חדרים..."</div></div>`
++chip('eb5a','⏺ הקלטה',60,470,'#ffe3e3')+chip('eb5b','📝 תמלול',270,470,'#fff')+chip('eb5c','📧 למייל',470,470,'#e7f1ff')
++card('eb5n','☎️ מספר העסק ➜ 📱 הנייד שלך',560,'font-size:30px;background:#3fd0ff')+card('eb5p','🏖️ 🚗 ☕ איפה שלא תהיה',660,'font-size:30px'));
+S('eb6',SV('eb6s',OFFICE)+card('eb6a','💰 "וכמה עולה המגדל?"',140,'font-size:34px;background:#c9a24a')+`<div class="abs" id="eb6g" style="${C}top:250px;font-size:150px">🕶️</div>`
++card('eb6b','מרכזייה חכמה 💸 &lt; 🕶️ המשקפיים',450,'font-size:30px;background:#e7ffdb')+`<div class="abs" id="eb6c" style="left:430px;top:250px;transform:rotate(12deg)"><span style="display:inline-block;background:#fff3c4;border:4px solid ${O};border-radius:12px;padding:6px 14px;font-size:28px;font-weight:800;color:${O}">✨ מקוריות!</span></div>
+<div class="abs" id="eb6d" style="left:90px;top:300px;transform:rotate(-10deg)"><span style="display:inline-block;background:#ff4d5e;color:#fff;border:4px solid ${O};border-radius:12px;padding:8px 14px;font-size:28px;font-weight:800">🏷️ שוק הכרמל · 3 ב-100 ₪</span></div>`);
+S('eb7',SV('eb7s',OFFICE)+card('eb7a','🧑‍💻 "צריך מנהל IT?"',140,'font-size:34px')+`<div class="abs" id="eb7c" style="left:50px;right:50px;top:130px;height:470px;background:#faf7f2;color:${O};border:6px solid ${O};border-radius:28px;box-shadow:9px 9px 0 ${O};overflow:hidden">
+<div style="height:62px;background:#d97757;color:#fff;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:800">✳️ הסוכן החכם · הרשמה</div>
+<div class="bub u" id="eb7u" style="right:14px;top:80px;border:3px solid ${O};font-size:22px;max-width:450px">צריך מספר לעסק, וואטסאפ אוטומטי, והקלטות עם תמלול למייל 🕶️</div>
+<div class="bub" id="eb7r" style="left:14px;top:200px;border:3px solid ${O};font-size:22px;max-width:470px;background:#fff1e8;color:${O}">✅ הכל מוקם!<br>☎️ מספר עסק פעיל · 💬 וואטסאפ אוטומטי · 📧 תמלולים למייל</div>
+<div class="abs" id="eb7t" style="left:0;right:0;top:370px;text-align:center;font-size:30px;font-weight:800">⏱ 00:<span id="eb7sec">00</span></div></div>`+card('eb7k','🏆 שירות לקוחות 24/7',640,'font-size:36px;background:#c9a24a'));
+S('eb8',SV('eb8o',OFFICE)+SV('eb8b',BEACH).replace('class="full"','class="full" style="opacity:0"')+card('eb8a','😏 "וזה עדיין אתה?"',150,'font-size:34px')+card('eb8b2','🤖 זה הבוט. 🏖️ אני בחופשה.',260,'font-size:34px;background:#ffc22e'));
+S('eb9',SV('eb9s',`<defs><radialGradient id="g23" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#2a3f8f"/><stop offset="1" stop-color="#0a1230"/></radialGradient></defs><rect width="720" height="1280" fill="url(#g23)"/><g id="eb9conf">${Array.from({length:36},(_,i)=>`<rect class="cf" width="12" height="20" rx="3" fill="${['#c9a24a','#3fd0ff','#ff8fb1','#28c840','#ffffff'][i%5]}"/>`).join('')}</g><rect y="980" width="720" height="300" fill="#16224f"/>`)
++`<div class="abs" id="eb9a" style="${C}top:80px;font-size:44px;font-weight:800;color:#fff">עסק קטן? 🐈‍⬛</div><div class="abs" id="eb9b" style="${C}top:145px;font-size:50px;font-weight:800;color:#ffc22e">שירות של גדולים. 🏢</div>
+<div class="abs" id="eb9l" style="${C}top:260px"><div class="big gt" style="font-size:84px">מיצי תקשורת</div><div style="font-size:26px;color:#cfe6f5;margin-top:4px">💬 וואטסאפ אוטומטי · ⏺ הקלטות · 📧 תמלול למייל · 📱 בנייד</div></div>
+<div class="cta" id="eb9c" style="top:420px;background:linear-gradient(90deg,#c9a24a,#ffe08a);color:#2a1d00;border:none">💬 שלחו לנו הודעה</div>
+<div class="abs" id="eb9p" style="${C}top:530px;font-size:30px;font-weight:800;direction:ltr;color:#fff"><span style="letter-spacing:3px">03-3826600</span> <span style="color:#3fd0ff">· mitsi.co.il</span></div>`);
+const sb=document.createElement('div');sb.id='sub18';sb.style.cssText='position:absolute;z-index:9;left:30px;right:30px;top:1150px;text-align:center;direction:rtl';sb.innerHTML='<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-size:31px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>';st.appendChild(sb);
+}
+const SUBS23=[[0.4,2.5,'b','נעים מאוד. אני המנכ״ל של החברה.'],[4.85,6.52,'b','הלו, מדבר המנכ״ל.'],[6.77,9.08,'f','היי, אפשר לדבר עם שירות הלקוחות?'],[9.33,11.32,'b','בוודאי. רגע, מעביר.'],[12.71,14.7,'b','שירות לקוחות, שָׁלוֹם! 🎀'],[15.15,16.34,'f','...זה אותו קול.'],[16.69,17.91,'b','*כחכוח* כן...'],[18.17,19.79,'b','אנחנו... משפחה.'],
+[20.3,24.46,'m','אחי. כולם יודעים שאתה עסק של חתול אחד.'],[24.76,28.08,'b','ששש! הלקוחות חושבים שיש לנו קומה במגדל. 🤫'],
+[28.42,30.17,'m','אז בוא נדאג שזה ירגיש ככה.'],[30.56,34.98,'m','עם "מִיצִי" תקשורת, כשאתה בפגישה, הלקוח מקבל מיד הודעת וואטסאפ:'],[35.32,37.44,'m','"קיבלנו, חוזרים אליך עוד מעט."'],[37.75,39.76,'m','כל שיחה מוקלטת ומתומללת,'],[39.96,41.71,'m','והתמלול מחכה לך במייל.'],[42.05,44.43,'m','והמספר של העסק מצלצל לך בנייד,'],[44.63,45.63,'m','איפה שלא תהיה.'],
+[45.97,47.83,'b','...וכמה עולה כל המגדל הזה?'],[48.14,49.71,'m','פחות מהמשקפיים שלך.'],[49.85,50.94,'b','הן מקוריות!'],[51.14,53.12,'f','ראיתי אותן בשוק. 😂'],[53.63,55.96,'b','...ומי מקים לי את כל זה?'],[56.33,57.52,'b','צריך מנהל IT?'],[57.82,61.01,'m','נרשמים לבד, ואומרים לסוכן החכם מה צריך.'],[61.35,63.25,'m','הוא מקים הכל. בדקה.'],[63.54,67.52,'b','אז רשמית: שירות הלקוחות שלנו עובד 24/7.'],[67.83,69.25,'f','וזה עדיין אתה?'],[69.5,72.82,'b','לא. זה הבוט. אני בחופשה. 🏖️'],
+[73.42,75.66,'m','עסק קטן? שירות של גדולים.'],[75.99,77.15,'m','"מִיצִי" תקשורת.'],[77.4,80.02,'m','שלחו לנו הודעה, ונקים לכם את המגדל.']];
+function draw23(id,lt,t,jobs){
+ const v=t;
+ if(id==='eb1'){pop('eb1a',v,1.4,.35);const r=v>3.0&&v<4.6;$('eb1r').style.opacity=r?1:0;$('eb1r').style.transform=`rotate(${r?Math.sin(t*40)*15:0}deg)`}
+ if(id==='eb2'){pop('eb2a',v,4.9,.35);pop('eb2b',v,6.8,.35);sh('eb2h',v,11.2,.3,0,30);$('eb2bar').style.width=(100*clamp((v-11.3)/1.35))+'%';$('eb2n').style.transform=`translateY(${Math.sin(t*10)*4}px)`}
+ if(id==='eb3'){pop('eb3a',v,12.75,.35);pop('eb3b',v,15.2,.35);sh('eb3o',v,18.1,.4,0,40)}
+ if(id==='eb4'){pop('eb4a',v,21.6,.35);pop('eb4k',v,26.4,.35);$('eb4pin').setAttribute('transform',`translate(${Math.sin(t*6)*8} 0)`);$('eb4pin').setAttribute('opacity',v>26.2?1:0)}
+ if(id==='eb5'){const w=v<37.6;$('eb5w').style.display=w?'block':'none';sh('eb5w',v,28.5,.4,0,50);pop('eb5m',v,30.6,.3);pop('eb5u',v,32.0,.3);pop('eb5r',v,35.3,.35);
+  $('eb5e').style.display=w?'none':'block';sh('eb5e',v,37.75,.4,0,40);pop('eb5a',v,37.8,.3);pop('eb5b',v,38.8,.3);pop('eb5c',v,40.2,.3);pop('eb5n',v,42.1,.35);pop('eb5p',v,44.6,.35)}
+ if(id==='eb6'){pop('eb6a',v,46.0,.3);pop('eb6g',v,48.0,.35);$('eb6g').style.transform+=` rotate(${Math.sin(t*3)*6}deg)`;pop('eb6b',v,48.3,.35);const og=v>49.8&&v<51.1;pop('eb6c',v,49.85,.3);$('eb6c').style.opacity=og?1:0;pop('eb6d',v,51.15,.3);$('eb6d').style.transform+=' rotate(-10deg)'}
+ if(id==='eb7'){pop('eb7a',v,53.7,.3);$('eb7a').style.opacity=v<57.7?$('eb7a').style.opacity:0;sh('eb7c',v,57.8,.4,0,60);pop('eb7u',v,58.9,.3);pop('eb7r',v,61.35,.3);const s=Math.floor(clamp((v-58.9)/3.0)*58);$('eb7sec').textContent=String(s).padStart(2,'0');pop('eb7k',v,63.6,.35)}
+ if(id==='eb8'){const b=clamp((v-69.4)/.5);$('eb8b').style.opacity=b;$('eb8o').style.opacity=1-b;pop('eb8a',v,67.9,.3);$('eb8a').style.opacity=v<69.4?$('eb8a').style.opacity:0;pop('eb8b2',v,69.6,.35)}
+ if(id==='eb9'){pop('eb9a',v,73.45,.35);pop('eb9b',v,74.45,.35);pop('eb9l',v,76.0,.4);pop('eb9c',v,77.4,.4);sh('eb9p',v,78.0,.35);$('eb9c').style.boxShadow=`0 0 ${20+18*Math.sin(t*4)}px rgba(201,162,74,.6)`;
+  [...document.querySelectorAll('#eb9s .cf')].forEach((c,i)=>{const x=(i*61)%720,y=((t-73)*(120+i%5*35)+i*47)%1050-40;c.setAttribute('transform',`translate(${x+Math.sin(t*2+i)*18} ${y}) rotate(${t*160+i*40})`);c.setAttribute('opacity',v>73.5?.85:0)})}
+}
+function frame23(t,cur,lt,jobs){const s=SUBS23.find(x=>t>=x[0]-.15&&t<x[1]+.3);const sb=$('sub18t');if(s){const ic=s[2]==='f'?'🧡 ':s[2]==='m'?'🩶 ':'🕶️ ';sb.textContent=ic+s[3];sb.style.background=s[2]==='f'?'#fff1e2':s[2]==='m'?'#eef1fb':'#e9edf7';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
 if($('lgbox'))$('lgbox').innerHTML=$('lgbox').innerHTML; // logo svg injected at build time
 const NODES=[[200,560],[520,520],[360,640],[150,420],[580,660]];
 if($('a5s'))$('a5s').innerHTML=NODES.map((n,i)=>`<g id="nd${i}" opacity="0"><line x1="360" y1="560" x2="${n[0]}" y2="${n[1]}" stroke="#3fd0ff" stroke-width="2" stroke-dasharray="6 6"/><circle cx="${n[0]}" cy="${n[1]}" r="10" fill="#3fd0ff"/><circle cx="${n[0]}" cy="${n[1]}" r="22" fill="none" stroke="#3fd0ff" stroke-width="2" opacity=".5"/></g>`).join('')+'<circle cx="360" cy="560" r="16" fill="#e0b877"/>';
@@ -1276,6 +1342,7 @@ async function render(t){
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  if(AD==='20'){draw20(id,lt,t,jobs);frame20(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
+ if(AD==='23'){draw23(id,lt,t,jobs);frame23(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='22'){draw22(id,lt,t,jobs);frame22(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='21'){draw21(id,lt,t,jobs);frame21(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
  if(AD==='21b'){const tt=warp21(t);draw21(id,lt,tt,jobs);draw21b(id,t);frame21b(t,tt,cur,lt,jobs);jobs.push(window.hook3d(tt,cur,lt,t))}
@@ -1349,10 +1416,10 @@ window.hook3d=async function(t,cur,lt,tr){
  R.render(S,C);
 };
 window.ready3d=true;
-}else if(AD3!=='22')window.ready3d=true;
+}else if(AD3!=='22'&&AD3!=='23')window.ready3d=true;
 </script>
 <script type="module">
-if(new URLSearchParams(location.search).get('ad')==='22'){
+const AD4=new URLSearchParams(location.search).get('ad');if(AD4==='22'||AD4==='23'){
 const THREE=await import('three');const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');const {makeMouth2}=await import('./mouth3d2.js');
 const cv=document.createElement('canvas');cv.id='cv3d';cv.width=1080;cv.height=1920;cv.style.cssText='position:absolute;left:0;top:0;width:720px;height:1280px;pointer-events:none';
 const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:true});R.setPixelRatio(1);R.setSize(1080,1920,false);R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
@@ -1376,6 +1443,7 @@ async function loadChar(url,mp){
 }
 const cm=await loadChar('cat-m.glb',{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'});
 const cf=await loadChar('cat-f.glb',{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'});
+const cb=AD4==='23'?await loadChar('cat-b.glb',{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'}):null;
 document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
 const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
 function pose(ch,t,P,mouthArr){
@@ -1409,7 +1477,21 @@ function plan(id,t){
  if(id==='dd8'){F={px:200,py:1100,s:.6,ry:.25,base:t<84.6?'dance_01':'standing_relax',bt:t-74,G:[['heart_pose',84.8]]};Mi={px:520,py:1100,s:.6,ry:-.25,base:t<82.2?'dance_01':'standing_relax',bt:t-74.3,G:[['greet_01',82.3],['bow',86.2]]}}
  return {F,Mi};
 }
-window.hook3d22=async function(t,cur,lt){const p=plan(cur[2],t);const MO=window.MOUTH22||{};pose(cf,t,p.F,MO.f22);pose(cm,t,p.Mi,MO.m22);R.render(S,C)};
+function plan23(id,t){
+ const cl2=(x)=>Math.min(1,Math.max(0,x));const s3=x=>{x=cl2(x);return x*x*(3-2*x)};
+ let F=null,Mi=null,B=null;const L3={px:140,py:1100,s:.5,ry:.35},C3={px:360,py:1105,s:.5,ry:0},R3={px:585,py:1100,s:.5,ry:-.35};
+ if(id==='eb1'){const p=cl2(t/2.2);B={px:-80+440*p,py:1100,s:.66,ry:p<1?Math.PI/2:Math.PI/2*(1-s3((t-2.2)/.5)),base:p<1?'walk':'standing_relax',G:[['greet_01',2.7]]}}
+ if(id==='eb2'){F={px:180,py:1095,s:.58,ry:.25,base:t<9.1?'make_a_call_01':'standing_relax',G:[]};B={px:545,py:1095,s:.58,ry:-.25,base:'make_a_call_01',G:[['turn',10.9,0,1.75]]}}
+ if(id==='eb3'){F={px:180,py:1095,s:.58,ry:.25,base:t<15.0?'make_a_call_01':'fold_arms'};B={px:545,py:1095,s:.58,ry:-.25,base:t<15.1?'make_a_call_01':'standing_relax',G:[['look_around',16.5,0,3.4]]}}
+ if(id==='eb4'){F={...L3,base:'standing_relax',G:[['laugh_01',21.8]]};Mi={...C3,in:20.2,base:'standing_relax',G:[['frustrated_01',20.3]]};B={...R3,base:'wait',G:[['look_around',24.6,0,3.4]]}}
+ if(id==='eb5'){F={...L3,base:'standing_relax',G:[['agree',36.0]]};Mi={...C3,base:'standing_relax',G:[['greet_02',28.4],['agree',33.0],['greet_01',38.0],['agree',42.2]]};B={...R3,base:'wait',G:[['agree',41.0]]}}
+ if(id==='eb6'){F={...L3,base:'standing_relax',G:[['laugh_02',51.0]]};Mi={...C3,base:'standing_relax',G:[['agree',48.0,0,2.2]]};B={...R3,base:'standing_relax',G:[['look_around',45.9,0,2.3],['frustrated_01',49.7]]}}
+ if(id==='eb7'){F={...L3,base:'standing_relax'};Mi={...C3,base:'standing_relax',G:[['greet_02',57.8],['agree',61.2]]};B={...R3,base:'wait',G:[['complain_01',53.6,0,4.0],['agree',63.5],['greet_01',65.6]]}}
+ if(id==='eb8'){F={...L3,base:'standing_relax',G:[['laugh_01',70.4]]};Mi={...C3,px:340,base:'standing_relax',G:[['agree',71.5]]};B={...R3,px:590,base:t<69.4?'standing_relax':'sit',hold:t>=69.4,bt:t<69.4?t:t-69.4}}
+ if(id==='eb9'){F={px:140,py:1110,s:.52,ry:.25,base:'dance_01',bt:t-73.3};Mi={px:360,py:1115,s:.54,ry:0,base:'dance_01',bt:t-73.0};B={px:585,py:1110,s:.52,ry:-.25,base:'dance_01',bt:t-73.6}}
+ return {F,Mi,B};
+}
+window.hook3d22=async function(t,cur,lt){if(AD4==='23'){const p=plan23(cur[2],t);const MO=window.MOUTH23||{};pose(cf,t,p.F,MO.f);pose(cm,t,p.Mi,MO.m);pose(cb,t,p.B,MO.b);R.render(S,C);return}const p=plan(cur[2],t);const MO=window.MOUTH22||{};pose(cf,t,p.F,MO.f22);pose(cm,t,p.Mi,MO.m22);R.render(S,C)};
 window.ready3d=true;
 }
 </script>
