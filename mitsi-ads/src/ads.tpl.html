@@ -1270,7 +1270,7 @@ function draw24(id,lt,t,jobs){
 function frame24(t,cur,lt,jobs){const s=SUBS24.find(x=>t>=x[0]-.15&&t<x[1]+.3);const sb=$('sub18t');if(s){const ic=s[2]==='f'?'🧡 ':s[2]==='m'?'🩶 ':'🕶️ ';sb.textContent=ic+s[3];sb.style.background=s[2]==='f'?'#fff1e2':s[2]==='m'?'#eef1fb':'#e9edf7';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
 /* ---------- AD 25: "the professor" – St Bernard know-it-all (Herzl), Mitsi (Omer), ginger (Danit). 25 = 9:16, 25w = 16:9 ---------- */
 if(AD==='25'||AD==='25w'){
-window.MOUTH25=/*MOUTH25*/{}/*/MOUTH25*/;
+window.MOUTH25=/*MOUTH25*/{}/*/MOUTH25*/;window.W25A=/*W25*/[]/*/W25*/;
 const WIDE=AD==='25w';const SW=WIDE?1280:720,SH=WIDE?720:1280;window.SW25=SW;window.SH25=SH;
 const st=$('stage');['hud','scanl'].forEach(i=>$(i).style.display='none');
 if(WIDE){st.style.width='1280px';st.style.height='720px';document.head.insertAdjacentHTML('beforeend','<style>svg.full{width:1280px!important;height:720px!important}</style>')}
@@ -1311,18 +1311,18 @@ S('pf10',SV('pf10s',`<defs><radialGradient id="g25" cx="50%" cy="35%" r="75%"><s
 <div class="abs" id="pf10w" style="${WIDE?'left:1080px;top:300px':'left:560px;top:560px'};font-size:44px;font-weight:800;color:#ffd1e0;transform:rotate(8deg);opacity:0">הַב! 🐾</div>`);
 const sb=document.createElement('div');sb.id='sub18';sb.style.cssText=`position:absolute;z-index:9;left:30px;right:30px;top:${WIDE?648:1150}px;text-align:center;direction:rtl`;sb.innerHTML=`<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:${WIDE?'6px 18px':'10px 22px'};font-size:${WIDE?26:31}px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>`;st.appendChild(sb);
 }
-const SUBS25=[[0.5,2.47,'d','שָׁלוֹם, תַּלְמִידִים.'],[2.81,4.35,'d','אֲנִי פְּרוֹפֶסוֹר בֶּרְנַרְד.'],[4.62,7.3,'d','דּוֹקְטוֹר לְשֵׁרוּת לָקוֹחוֹת, מֻמְחֶה לִטֵלֵפוֹנְיָה…'],[7.3,10.06,'d','וּבַעַל תֹּאַר שֵׁנִי בִּנְבִיחוֹת. 🐶'],
-[10.41,11.76,'f','🤫 הוּא בֶּאֱמֶת פְּרוֹפֶסוֹר?'],[11.96,14.52,'m','🤫 הוּא קָרָא פַּעַם סֵפֶר. חֲצִי.'],
-[14.97,20.09,'d','כְּלָל רִאשׁוֹן: עוֹנִים לַטֵּלֵפוֹן עַד הַצִּלְצוּל הַשְּׁלִישִׁי!'],[20.39,25.64,'d','כְּלָל שֵׁנִי: אַף פַּעַם לֹא מַשְׁאִירִים לָקוֹחַ מְחַכֶּה.'],
-[25.94,29.23,'f','פְּרוֹפֶסוֹר… הַטֵּלֵפוֹן שֶׁלְּךָ מְצַלְצֵל.'],[29.43,32.79,'d','שֶׁקֶט! אֲנִי בְּאֶמְצַע הַרְצָאָה עַל מַעֲנֶה לְלָקוֹחוֹת!'],
-[33.34,36.92,'m','רָגוּעַ, פְּרוֹפֶסוֹר. הַבּוֹט שֶׁלִּי כְּבָר עָנָה בִּשְׁבִילְךָ.'],[37.22,42.26,'d','בּוֹט? אֲנִי סוֹמֵךְ עַל שְׁלוֹשִׁים שְׁנוֹת נִסָּיוֹן.'],
-[42.56,47.19,'m','הַבּוֹט עָנָה, רָשַׁם אֶת הַפְּרָטִים, וְשָׁלַח לְךָ תִּמְלוּל וְסִכּוּם לַמֵּיְיל.'],[47.52,49.54,'m','לִפְנֵי שֶׁסִּיַּמְתָּ אֶת הַכְּלָל הַשֵּׁנִי.'],
-[50.04,51.85,'d','…הוּא כָּתַב יוֹתֵר טוֹב מִמֶּנִּי.'],[52.15,54.75,'f','אֶפְשָׁר לְקַבֵּל אוֹתוֹ כְּמַרְצֶה? 😂'],
-[55.25,58.44,'d','טוֹב. עִדְכּוּן קָטָן לַהַרְצָאָה.'],[58.85,61.47,'d','כְּלָל מִסְפָּר אֶחָד: "מִיצִי תִּקְשֹׁרֶת".'],
-[61.77,64.03,'m','בּוֹט קוֹלִי, בּוֹט וְוַאטְסְאַפּ,'],[64.18,67.15,'m','הַקְלָטוֹת וְתִמְלוּל, וְקְלוֹד מַגְדִּיר הַכֹּל.'],[67.55,68.26,'m','בְּלִי תֹּאַר.'],
-[68.56,71.42,'d','בְּלִי תֹּאַר?! …וּמָה אֲנִי אֶעֱשֶׂה עַכְשָׁו?'],[71.72,73.83,'m','אוּלַי… תָּבִיא אֶת הַכַּדּוּר? 🎾'],
-[75.46,76.75,'d','אֲנִי פְּרוֹפֶסוֹר!'],[77.25,80.63,'d','…טוֹב, רַק פַּעַם אַחַת.'],
-[81.23,83.84,'m','לֹא צָרִיךְ דּוֹקְטוֹרָט כְּדֵי לַעֲנוֹת לְלָקוֹחוֹת.'],[84.31,85.43,'m','"מִיצִי תִּקְשֹׁרֶת".']];
+const SUBS25=[[0.4,2.9,'d','שלום תלמידים, אני פרופסור ברנרד.'],[3.06,7.64,'d','דוקטור לשירות לקוחות, מומחה לטלפוניה, ובעל תואר שני בנביחות. 🐶'],
+[7.84,9.21,'f','🤫 הוא באמת פרופסור?'],[9.33,11.29,'m','🤫 הוא קרא פעם ספר. חצי.'],
+[11.59,15.48,'d','כלל ראשון בשירות לקוחות: עונים לטלפון עד הצלצול השלישי!'],[15.68,19.96,'d','כלל שני: אף פעם, אבל אף פעם, לא משאירים לקוח מחכה.'],
+[20.16,22.41,'f','פרופסור, הטלפון שלך מצלצל.'],[22.53,25.88,'d','שקט! אני באמצע הרצאה על מענה ללקוחות!'],
+[26.18,29.13,'m','רגוע, פרופסור. הבוט שלי כבר ענה בשבילך.'],[29.34,34.11,'d','בוט? אני לא סומך על בוטים. אני סומך על שלושים שנות ניסיון.'],
+[34.31,38.85,'m','הבוט ענה, רשם את הפרטים, ושלח לך תמלול וסיכום למייל.'],[39.07,41.19,'m','לפני שסיימת את הכלל השני.'],
+[41.49,43.64,'d','…הוא כתב יותר טוב ממני.'],[43.79,46.12,'f','אפשר לקבל אותו כמרצה? 😂'],
+[46.42,49.06,'d','טוב. עדכון קטן להרצאה.'],[49.6,52.07,'d','כלל מספר אחד: "מִיצִי תִּקְשֹׁרֶת".'],
+[52.27,55.4,'m','בוט קולי, בוט וואטסאפ,'],[55.66,57.54,'m','הקלטות ותמלול, וקלוד מגדיר הכל.'],[57.54,58.23,'m','בלי תואר.'],
+[58.43,61.1,'d','בלי תואר?! …ומה אני אעשה עכשיו?'],[61.3,63.03,'m','אולי… תביא את הכדור? 🎾'],
+[64.61,65.86,'d','אני פרופסור!'],[66.21,68.59,'d','…טוב, רק פעם אחת.'],
+[69.04,71.51,'m','לא צריך דוקטורט כדי לענות ללקוחות.'],[71.95,73.02,'m','"מִיצִי תִּקְשֹׁרֶת".']];
 function draw25(id,lt,t,jobs){
  const v=t,W=window.SW25>1000;
  const ch=(e,d)=>{const x=$(e);if(!x)return;const p=clamp((v-d)/.5);x.style.opacity=p;x.style.clipPath=`inset(0 0 0 ${100-100*p}%)`};
@@ -1473,7 +1473,7 @@ async function render(t){
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  if(AD==='20'){draw20(id,lt,t,jobs);frame20(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
- if(AD==='25'||AD==='25w'){draw25(id,lt,t,jobs);frame25(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt,t))}
+ if(AD==='25'||AD==='25w'){const A=window.W25A||[];let tt=t;for(let i=1;i<A.length;i++){if(t<=A[i][0]){const[n0,o0]=A[i-1],[n1,o1]=A[i];tt=n1>n0?o0+(t-n0)*(o1-o0)/(n1-n0):o1;break}if(i===A.length-1)tt=A[i][1]+(t-A[i][0])}draw25(id,lt,tt,jobs);frame25(t,cur,lt,jobs);jobs.push(window.hook3d22(tt,cur,lt,t))}
  if(AD==='24'){const A=window.W24A||[];let tt=t;for(let i=1;i<A.length;i++){if(t<=A[i][0]){const[n0,o0]=A[i-1],[n1,o1]=A[i];tt=n1>n0?o0+(t-n0)*(o1-o0)/(n1-n0):o1;break}if(i===A.length-1)tt=A[i][1]+(t-A[i][0])}draw24(id,lt,tt,jobs);frame24(tt,cur,lt,jobs);jobs.push(window.hook3d22(tt,cur,lt,t))}
  if(AD==='23'){draw23(id,lt,t,jobs);frame23(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='22'){draw22(id,lt,t,jobs);frame22(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
