@@ -28,8 +28,8 @@ AD={'1':{'v':'f39a9c30-______1.mp3','cuts':[0,3.2,6.9,12.15,16.43,21.82,25.42,27
     '22':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/catduo-mix.wav','v':'','tail':1.6,'cuts':[0,11.2,23.95,29.3,40.3,52.45,65.25,74.3],'ids':['dd1','dd2','dd3','dd4','dd5','dd6','dd7','dd8']},
     '23':{'m':U+'23d20477-____________5.mp3','vp':'/home/user/nvs/mitsi-ads/audio/ceo-mix.wav','v':'','tail':1.6,'cuts':[0,4.8,12.65,20.2,28.3,45.8,53.4,67.65,73.3],'ids':['eb1','eb2','eb3','eb4','eb5','eb6','eb7','eb8','eb9']},
     '24':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/consultant-mix.wav','v':'','tail':1.6,'cuts':[0.0, 6.8, 19.05, 26.16, 44.11, 51.44, 58.44, 65.44],'ids':['cs1','cs2','cs3','cs4','cs5','cs6','cs7','cs8']},
-    '25':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/professor-mix.wav','v':'','tail':1.6,'cuts':[0.0, 7.72, 11.47, 20.06, 26.05, 40.36, 45.22, 57.15, 63.31, 67.77],'ids':["pf1", "pf2", "pf3", "pf4", "pf5", "pf6", "pf7", "pf8", "pf9", "pf10"]},
-    '25w':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/professor-mix.wav','v':'','tail':1.6,'cuts':[0.0, 7.72, 11.47, 20.06, 26.05, 40.36, 45.22, 57.15, 63.31, 67.77],'ids':["pf1", "pf2", "pf3", "pf4", "pf5", "pf6", "pf7", "pf8", "pf9", "pf10"]},
+    '25':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/professor-mix.wav','v':'','tail':1.6,'cuts':[0.0, 7.72, 11.47, 20.06, 26.05, 40.36, 45.22, 57.25, 63.42, 67.88],'ids':["pf1", "pf2", "pf3", "pf4", "pf5", "pf6", "pf7", "pf8", "pf9", "pf10"]},
+    '25w':{'m':U+'c7c0e382-____________3.mp3','vp':'/home/user/nvs/mitsi-ads/audio/professor-mix.wav','v':'','tail':1.6,'cuts':[0.0, 7.72, 11.47, 20.06, 26.05, 40.36, 45.22, 57.25, 63.42, 67.88],'ids':["pf1", "pf2", "pf3", "pf4", "pf5", "pf6", "pf7", "pf8", "pf9", "pf10"]},
     '4':{'m':U+'4cf73a77-____________2.mp3','v':'b8cce7dd-______4.mp3','cuts':[0,4.08,8.18,10.4,15.25,19.0],'ids':['d1','d2','d3','d4','d5','cta']}}
 out={}
 for k,a in AD.items():
