@@ -1218,7 +1218,7 @@ const O='#26242b';const C='left:0;right:0;text-align:center;';
 const card=(id,html,top,extra='')=>`<div class="abs" id="${id}" style="${C}top:${top}px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:10px 26px;font-size:36px;font-weight:800;box-shadow:7px 7px 0 ${O};${extra}">${html}</span></div>`;
 const SV=(id,inner)=>`<svg class="full" id="${id}" viewBox="0 0 720 1280">${inner}</svg>`;
 const SHOP=`<rect width="720" height="1280" fill="#ffeef3"/>${Array.from({length:12},(_,i)=>`<circle cx="${(i*97+30)%720}" cy="${(i*131)%880+60}" r="${14+i%3*6}" fill="#ffc9d9" opacity=".55"/>`).join('')}
-<g transform="translate(70 110)"><rect x="-20" width="270" height="66" rx="14" fill="#ff8fb1" stroke="${O}" stroke-width="5"/><text x="115" y="44" text-anchor="middle" font-size="28" font-weight="800" font-family="H" fill="#fff">🌸 הפרחים של ג׳ינג׳י</text></g>
+<g transform="translate(70 26)"><rect x="-20" width="270" height="66" rx="14" fill="#ff8fb1" stroke="${O}" stroke-width="5"/><text x="115" y="44" text-anchor="middle" font-size="28" font-weight="800" font-family="H" fill="#fff">🌸 הפרחים של ג׳ינג׳י</text></g>
 <rect y="960" width="720" height="320" fill="#e8c9a3"/><line x1="0" y1="960" x2="720" y2="960" stroke="${O}" stroke-width="6"/>
 <g transform="translate(20 860)"><rect width="140" height="100" rx="8" fill="#c58b5a" stroke="${O}" stroke-width="6"/><text x="12" y="0" font-size="50">🌷</text><text x="70" y="-6" font-size="50">🌻</text></g>`;
 const ROW=(id,ic,txt,extra='')=>`<div id="${id}" style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px dashed #bbb;padding:6px 2px;font-size:25px;font-weight:800;${extra}"><span>${ic} ${txt}</span></div>`;
