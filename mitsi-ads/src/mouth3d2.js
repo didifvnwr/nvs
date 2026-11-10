@@ -6,7 +6,9 @@ export function makeMouth2(THREE,head,o){
  const W=o.W,H=W/2,R=o.R||0.1,TH=W/R;
  const geo=new THREE.CylinderGeometry(R,R,H,32,1,true,-TH/2,TH);
  const mat=new THREE.MeshStandardMaterial({map:tex,transparent:true,roughness:.95,metalness:0,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-4});
- const grp=new THREE.Group();const me=new THREE.Mesh(geo,mat);grp.add(me);
+ // pull the decal toward the camera along the view ray (scaled to the object), so the cheek never hides one side of the open mouth
+ mat.onBeforeCompile=sh=>{sh.vertexShader=sh.vertexShader.replace('#include <project_vertex>','vec4 mvPosition=modelViewMatrix*vec4(transformed,1.0);float sc=length(modelMatrix[0].xyz);mvPosition.xyz+=normalize(-mvPosition.xyz)*'+(o.bias||0.06).toFixed(3)+'*sc;gl_Position=projectionMatrix*mvPosition;')};
+ const grp=new THREE.Group();const me=new THREE.Mesh(geo,mat);me.renderOrder=5;grp.add(me);
  grp.position.set(o.x0||0,o.y0-H*0.117,o.zf-R);head.attach(grp); // canvas row 98 = mouth line at y0
  let last=-1;
  function draw(m){m=Math.round(m*20)/20;if(m===last)return;last=m;cx.clearRect(0,0,512,256);
