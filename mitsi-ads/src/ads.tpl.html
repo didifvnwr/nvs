@@ -1212,7 +1212,7 @@ function draw23(id,lt,t,jobs){
 function frame23(t,cur,lt,jobs){const s=SUBS23.find(x=>t>=x[0]-.15&&t<x[1]+.3);const sb=$('sub18t');if(s){const ic=s[2]==='f'?'🧡 ':s[2]==='m'?'🩶 ':'🕶️ ';sb.textContent=ic+s[3];sb.style.background=s[2]==='f'?'#fff1e2':s[2]==='m'?'#eef1fb':'#e9edf7';sb.parentNode.style.opacity=1}else sb.parentNode.style.opacity=0}
 /* ---------- AD 24: "the consultant" – business cat sells a giant solution, Mitsi brings the simple one ---------- */
 if(AD==='24'){
-window.MOUTH24=/*MOUTH24*/{}/*/MOUTH24*/;
+window.MOUTH24=/*MOUTH24*/{}/*/MOUTH24*/;window.W24A=/*W24*/[]/*/W24*/;
 const st=$('stage');['hud','scanl'].forEach(i=>$(i).style.display='none');
 const O='#26242b';const C='left:0;right:0;text-align:center;';
 const card=(id,html,top,extra='')=>`<div class="abs" id="${id}" style="${C}top:${top}px"><span style="display:inline-block;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;padding:10px 26px;font-size:36px;font-weight:800;box-shadow:7px 7px 0 ${O};${extra}">${html}</span></div>`;
@@ -1226,12 +1226,12 @@ S('cs1',SV('cs1s',SHOP)+`<div class="abs" id="cs1c" style="left:150px;top:220px;
 +card('cs1k','"עסק קטן... שמחפש פתרון גדול"',520,'font-size:30px'));
 S('cs2',SV('cs2s',SHOP)+card('cs2a','🌸 "שיענו ללקוחות, גם כשאני עסוקה"',130,'font-size:28px')+`<div class="abs" id="cs2p" style="left:90px;right:90px;top:230px;background:#fffdf5;color:${O};border:5px solid ${O};border-radius:8px;box-shadow:9px 9px 0 ${O};padding:14px 20px 0;overflow:hidden">
 <div style="font-size:28px;font-weight:800;text-align:center;border-bottom:4px solid ${O};padding-bottom:6px">📄 הצעה ארגונית · עמוד 1 מתוך 37</div>
-${ROW('cs2r1','🖥️','חדר שרתים')}${ROW('cs2r2','👷👷👷','שלושה טכנאים')}${ROW('cs2r3','🎧×20','מוקד עם 20 נציגות')}${ROW('cs2r4','📅','הטמעה: חצי שנה')}${ROW('cs2r5','🦄','יועץ אסטרטגי (אני)')}${ROW('cs2r6','📎','נספחים א׳–ת׳',';opacity:.6')}<div id="cs2more" style="height:0"></div></div>`);
+${ROW('cs2r1','🖥️','חדר שרתים')}${ROW('cs2r2','👷👷👷','שלושה טכנאים')}${ROW('cs2r3','🎧×20','מוקד עם 20 נציגים')}${ROW('cs2r4','📅','הטמעה: חצי שנה')}${ROW('cs2r5','🦄','יועץ אסטרטגי (אני)')}${ROW('cs2r6','📎','נספחים א׳–ת׳',';opacity:.6')}<div id="cs2more" style="height:0"></div></div>`);
 S('cs3',SV('cs3s',SHOP)+card('cs3a','😰 "...וכמה זה עולה?"',140,'font-size:34px')+`<div class="abs" id="cs3p" style="${C}top:250px"><span style="display:inline-block;background:#1b2440;color:#ffd84a;border:6px solid ${O};border-radius:22px;box-shadow:9px 9px 0 ${O};padding:14px 30px;font-size:66px;font-weight:800;font-family:Arial;direction:ltr">₪ <span id="cs3n">0</span></span></div>`
 +card('cs3b','🤫 "יש תשלומים..."',420,'font-size:32px;background:#c9a24a')+card('cs3c','😱 ÷ 120 תשלומים?!',520,'font-size:40px;background:#ff4d5e;color:#fff'));
-S('cs4',SV('cs4s',SHOP)+card('cs4a','🙄 "שוב אתה עם חדר השרתים?"',130,'font-size:30px')+`<div class="abs" id="cs4m" style="left:140px;right:140px;top:220px;background:#fff;color:${O};border:6px solid ${O};border-radius:24px;box-shadow:9px 9px 0 ${O};padding:14px 22px">
+S('cs4',SV('cs4s',SHOP)+card('cs4z','😾 מְרָאוּ!!',300,'font-size:48px;background:#ff4d5e;color:#fff')+card('cs4a','🙄 "שוב אתה עם חדר השרתים?"',130,'font-size:30px')+`<div class="abs" id="cs4m" style="left:140px;right:140px;top:220px;background:#fff;color:${O};border:6px solid ${O};border-radius:24px;box-shadow:9px 9px 0 ${O};padding:14px 22px">
 <div style="font-size:28px;font-weight:800;text-align:center;color:#2a9be6">📱 הפתרון של "מִיצִי"</div>
-${[['cs4i1','☎️ מספר לעסק'],['cs4i2','💬 בוט וואטסאפ שעונה מיד'],['cs4i3','🎙 בוט קולי'],['cs4i4','⏺ הקלטה · 📝 תמלול · ✨ סיכום A.I']].map(x=>`<div id="${x[0]}" style="font-size:24px;font-weight:800;padding:6px 0">✅ ${x[1]}</div>`).join('')}
+${[['cs4i1','☎️ שלוחה אחת או מספר שלוחות'],['cs4i2','💬 בוט וואטסאפ שעונה מיד'],['cs4i3','🎙 בוט קולי'],['cs4i4','⏺ הקלטה · 📝 תמלול · ✨ סיכום A.I']].map(x=>`<div id="${x[0]}" style="font-size:24px;font-weight:800;padding:6px 0">✅ ${x[1]}</div>`).join('')}
 <div id="cs4i5" style="font-size:24px;font-weight:800;padding:8px 0 2px;color:#d97757">✳️ מגדירים עם הסוכן החכם · ⏱ בְּדַקָּה</div></div>`
 +`<div class="abs" id="cs4v" style="${C}top:640px;font-size:26px;font-weight:800;color:${O}"><span style="background:#ffe3e3;border:4px solid ${O};border-radius:14px;padding:6px 14px">📚 שלו: 37 עמודים</span> &nbsp; <span style="background:#e7ffdb;border:4px solid ${O};border-radius:14px;padding:6px 14px">📄 שלי: כרטיס אחד</span></div>`);
 S('cs5',SV('cs5s',SHOP)+card('cs5a','🤔 "ו... חדר השרתים?"',130,'font-size:32px')+`<div class="abs" id="cs5cl" style="left:390px;top:300px;width:300px;height:190px"><svg viewBox="0 0 300 190" width="300" height="190"><path d="M60 150 Q 10 150 20 110 Q 0 70 50 60 Q 60 15 120 30 Q 160 0 200 35 Q 260 25 265 80 Q 300 100 275 140 Q 270 165 230 155 Z" fill="#fff" stroke="${O}" stroke-width="6"/><text x="150" y="85" text-anchor="middle" font-size="38">🏢🛥️🖥️</text><text x="150" y="130" text-anchor="middle" font-size="22" font-weight="800" font-family="H" fill="${O}">החלומות שלו ☁️</text></svg></div>`
@@ -1241,16 +1241,16 @@ S('cs6',SV('cs6s',SHOP)+card('cs6a','💸 "וכמה זה עולה?"',130,'font-s
 S('cs7',SV('cs7s',SHOP)+card('cs7a','🏢 "גם לתאגיד שלי?"',140,'font-size:34px;background:#c9a24a')+`<div class="abs" id="cs7o" style="left:110px;right:110px;top:260px;background:#fff;color:${O};border:5px solid ${O};border-radius:20px;box-shadow:8px 8px 0 ${O};padding:12px;text-align:center"><div style="font-size:24px;font-weight:800">📊 התאגיד · CAT CORP</div><div style="font-size:34px;margin-top:6px">🕶️🐈‍⬛ = 🕶️🐈‍⬛ = 🕶️🐈‍⬛</div><div style="font-size:22px;font-weight:800;opacity:.7">מנכ״ל · יועץ · שירות לקוחות</div></div>`+card('cs7b','🤫 "אז... כן?"',470,'font-size:34px'));
 S('cs8',SV('cs8s',`<defs><radialGradient id="g24" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#2a3f8f"/><stop offset="1" stop-color="#0a1230"/></radialGradient></defs><rect width="720" height="1280" fill="url(#g24)"/><g>${Array.from({length:36},(_,i)=>`<rect class="cf" width="12" height="20" rx="3" fill="${['#c9a24a','#3fd0ff','#ff8fb1','#28c840','#ffffff'][i%5]}"/>`).join('')}</g><rect y="980" width="720" height="300" fill="#16224f"/>`)
 +`<div class="abs" id="cs8a" style="${C}top:80px;font-size:46px;font-weight:800;color:#fff">עסק קטן? 🌸</div><div class="abs" id="cs8b" style="${C}top:145px;font-size:52px;font-weight:800;color:#ffc22e">פתרון גדול. 🚀</div>
-<div class="abs" id="cs8l" style="${C}top:260px"><div class="big gt" style="font-size:84px">מיצי תקשורת</div><div style="font-size:25px;color:#cfe6f5;margin-top:4px">☎️ מספר · 💬 וואטסאפ · 🎙 בוט קולי · ✨ סיכום A.I</div></div>
+<div class="abs" id="cs8l" style="${C}top:260px"><div class="big gt" style="font-size:84px">מיצי תקשורת</div><div style="font-size:25px;color:#cfe6f5;margin-top:4px">☎️ שלוחות · 💬 וואטסאפ · 🎙 בוט קולי · ✨ סיכום A.I</div></div>
 <div class="cta" id="cs8c" style="top:420px;background:linear-gradient(90deg,#3fd0ff,#2a9be6);color:#02122a;border:none">💬 שלחו לנו הודעה</div>
 <div class="abs" id="cs8p" style="${C}top:530px;font-size:30px;font-weight:800;direction:ltr;color:#fff"><span style="letter-spacing:3px">03-3826600</span> <span style="color:#3fd0ff">· mitsi.co.il</span></div>
 <div class="abs" id="cs8h" style="${C}top:600px;font-size:32px;font-weight:800;color:#ffd1e0">😂 ובלי חדר שרתים!</div><div class="abs" id="cs8w" style="left:300px;top:700px;font-size:44px;font-weight:800;color:#fff;transform:rotate(-8deg)">מְיָאוּ! 🐾</div>`);
 const sb=document.createElement('div');sb.id='sub18';sb.style.cssText='position:absolute;z-index:9;left:30px;right:30px;top:1150px;text-align:center;direction:rtl';sb.innerHTML='<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-size:31px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>';st.appendChild(sb);
 }
 const SUBS24=[[0.5,2.87,'b','שלום! אני יועץ לפתרונות ארגוניים.'],[3.23,6.57,'b','שמעתי שאתם עסק קטן... שמחפש פתרון גדול.'],[6.92,10.68,'f','כן! אני רוצה שיענו ללקוחות שלי, גם כשאני עסוקה.'],
-[10.98,12.43,'b','מצוין! אז ככה:'],[12.64,14.52,'b','חדר שרתים. שלושה טכנאים.'],[14.84,17.68,'b','מוקד עם עשרים נציגות. ופרויקט הטמעה...'],[17.91,18.65,'b','...של חצי שנה.'],
+[10.98,12.43,'b','מצוין! אז ככה:'],[12.64,14.52,'b','חדר שרתים. שלושה טכנאים.'],[14.84,17.68,'b','מוקד עם עשרים נציגים. ופרויקט הטמעה...'],[17.91,18.65,'b','...של חצי שנה.'],
 [19.15,20.9,'f','...וכמה זה עולה?'],[21.2,23.31,'b','אל תדאגי... יש תשלומים. 🤫'],[23.56,25.9,'f','מאה ועשרים תשלומים?! 😱'],[26.5,28.95,'m','שוב אתה עם חדר השרתים?'],
-[29.25,31.0,'m','תראי. מִסְפָּר לעסק,'],[31.23,33.71,'m','בוט וואטסאפ שעונה מיד, בוט קולי,'],[33.92,37.36,'m','הקלטות, תמלול, וסיכום A.I לכל שיחה.'],[37.62,40.96,'m','ואת הכל מגדירים עם הסוכן החכם. בְּדַקָּה.'],
+[29.25,31.0,'m','תראי. שלוחה אחת, או מִסְפַּר שלוחות,'],[31.23,33.71,'m','בוט וואטסאפ שעונה מיד, בוט קולי,'],[33.92,37.36,'m','הקלטות, תמלול, וסיכום A.I לכל שיחה.'],[37.62,40.96,'m','ואת הכל מגדירים עם הסוכן החכם. בְּדַקָּה.'],
 [41.74,43.71,'f','ו... חדר השרתים?'],[44.0,46.49,'m','הכל בענן. כמו החלומות שלו. ☁️'],[46.65,47.13,'b','היי!'],[47.53,48.81,'f','וכמה זה עולה?'],
 [49.11,51.6,'m','בלי חדר שרתים, בלי טכנאים,'],[51.83,53.65,'m','ובלי מאה ועשרים תשלומים.'],[53.99,55.61,'m','במחיר שעסק קטן אוהב.'],
 [56.2,58.98,'b','...רגע. אפשר לקבל את זה גם לתאגיד שלי?'],[59.28,61.18,'m','התאגיד שלך זה אתה.'],[61.53,62.71,'b','אז... כן? 🤫'],
@@ -1260,7 +1260,7 @@ function draw24(id,lt,t,jobs){
  if(id==='cs1'){sh('cs1c',v,2.7,.45,0,40);$('cs1c').style.transform+=' rotate(-4deg)';pop('cs1k',v,4.6,.35)}
  if(id==='cs2'){pop('cs2a',v,7.0,.3);$('cs2a').style.opacity=v<10.9?$('cs2a').style.opacity:0;sh('cs2p',v,10.9,.4,0,50);[['cs2r1',12.64],['cs2r2',13.69],['cs2r3',14.84],['cs2r4',16.5],['cs2r5',17.9],['cs2r6',18.4]].forEach(([e,d])=>sh(e,v,d,.25,30,0));$('cs2p').style.transform+=v>17.9?` rotate(${Math.sin(t*3)*1}deg)`:''}
  if(id==='cs3'){pop('cs3a',v,19.2,.3);sh('cs3p',v,19.9,.35);const k=clamp((v-19.9)/1.2);$('cs3n').textContent=Math.floor(480000*k*k).toLocaleString('en-US');$('cs3p').style.transform+=v>21.1&&v<21.6?` scale(${1+.08*Math.sin(t*30)})`:'';pop('cs3b',v,21.3,.3);pop('cs3c',v,23.6,.35);$('cs3c').style.transform+=v>23.9?` rotate(${Math.sin(t*25)*3}deg)`:''}
- if(id==='cs4'){pop('cs4a',v,26.5,.3);$('cs4a').style.opacity=v<29.1?$('cs4a').style.opacity:0;sh('cs4m',v,29.2,.4,0,40);[['cs4i1',30.0],['cs4i2',31.2],['cs4i3',33.7],['cs4i4',33.95],['cs4i5',37.62]].forEach(([e,d])=>sh(e,v,d,.25,-30,0));sh('cs4v',v,39.0,.35)}
+ if(id==='cs4'){pop('cs4z',v,25.97,.25);$('cs4z').style.opacity=v<26.45?$('cs4z').style.opacity:0;$('cs4z').style.transform+=' rotate('+(Math.sin(t*30)*4)+'deg)';pop('cs4a',v,26.5,.3);$('cs4a').style.opacity=v<29.1?$('cs4a').style.opacity:0;sh('cs4m',v,29.2,.4,0,40);[['cs4i1',30.0],['cs4i2',31.2],['cs4i3',33.7],['cs4i4',33.95],['cs4i5',37.62]].forEach(([e,d])=>sh(e,v,d,.25,-30,0));sh('cs4v',v,39.0,.35)}
  if(id==='cs5'){pop('cs5a',v,41.8,.3);pop('cs5cl',v,44.9,.4);$('cs5cl').style.transform+=` translateY(${Math.sin(t*2)*6}px)`;pop('cs5b',v,44.1,.3);pop('cs5c',v,46.6,.25);$('cs5c').style.transform+=v>46.8?` rotate(${Math.sin(t*30)*4}deg)`:''}
  if(id==='cs6'){pop('cs6a',v,47.55,.3);sh('cs6l',v,49.1,.35,0,30);[['cs6x1',49.2],['cs6x2',50.6],['cs6x3',51.9]].forEach(([e,d])=>pop(e,v,d,.3));pop('cs6k',v,54.0,.35)}
  if(id==='cs7'){pop('cs7a',v,56.3,.3);sh('cs7o',v,59.3,.4,0,30);pop('cs7b',v,61.55,.3)}
@@ -1400,7 +1400,7 @@ async function render(t){
  if(AD==='16'){if(id!=='cta')draw16(id,lt,t,jobs);frame16(t,cur,lt,jobs)}
  if(AD==='17'||AD==='17p'){if(id!=='cta')draw17(id,lt,t,jobs);frame17(t,cur,lt,jobs);if(AD==='17p')frame17p(t,cur,lt,jobs)}
  if(AD==='20'){draw20(id,lt,t,jobs);frame20(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
- if(AD==='24'){draw24(id,lt,t,jobs);frame24(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
+ if(AD==='24'){const A=window.W24A||[];let tt=t;for(let i=1;i<A.length;i++){if(t<=A[i][0]){const[n0,o0]=A[i-1],[n1,o1]=A[i];tt=n1>n0?o0+(t-n0)*(o1-o0)/(n1-n0):o1;break}if(i===A.length-1)tt=A[i][1]+(t-A[i][0])}draw24(id,lt,tt,jobs);frame24(tt,cur,lt,jobs);jobs.push(window.hook3d22(tt,cur,lt,t))}
  if(AD==='23'){draw23(id,lt,t,jobs);frame23(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='22'){draw22(id,lt,t,jobs);frame22(t,cur,lt,jobs);jobs.push(window.hook3d22(t,cur,lt))}
  if(AD==='21'){draw21(id,lt,t,jobs);frame21(t,cur,lt,jobs);jobs.push(window.hook3d(t,cur,lt))}
@@ -1505,7 +1505,7 @@ const cf=await loadChar(AD4!=='23'?'cat-f2.glb':'cat-f.glb',{y0:.671,zf:.210,W:.
 const cb=AD4!=='22'?await loadChar('cat-b.glb',{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'}):null;
 document.getElementById('stage').insertBefore(cv,document.getElementById('sub18'));
 const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};
-function pose(ch,t,P,mouthArr){
+function pose(ch,t,P,mouthArr,tr){
  if(!P){ch.root.visible=false;ch.ph.visible=false;return}
  ch.root.visible=true;const v=t;
  const list=[];let gw=0;
@@ -1522,7 +1522,7 @@ function pose(ch,t,P,mouthArr){
  if(ch.ph.visible){ch.root.updateMatrixWorld(true);const a=new THREE.Vector3(),b=new THREE.Vector3();ch.lh.getWorldPosition(a);ch.rh.getWorldPosition(b);
   const sc=ch.root.scale.x;let p,ang;if(game){p=a.clone().add(b).multiplyScalar(.5);p.y+=.03*sc;ang=0}else{const hd=new THREE.Vector3();ch.head.getWorldPosition(hd);p=(a.distanceTo(hd)<b.distanceTo(hd)?a:b).clone();ang=(p.x<hd.x?-1:1)*.35}
   p.z+=.07*sc;ch.ph.position.copy(p);ch.ph.scale.setScalar(sc*1.3);ch.ph.rotation.set(game?-.6:0,0,ang)}
- const fr=Math.floor(t*24);const m=mouthArr&&fr<mouthArr.length?mouthArr[fr]:0;const mm=Math.max(m,ch.mPrev*.55);ch.mPrev=mm;ch.MO.set(mm);
+ const fr=Math.floor((tr??t)*24);const m=mouthArr&&fr<mouthArr.length?mouthArr[fr]:0;const mm=Math.max(m,ch.mPrev*.55);ch.mPrev=mm;ch.MO.set(mm);
 }
 // placements per scene: F = ginger (Danit), M = Mitsi (Omer)
 function plan(id,t){
@@ -1558,14 +1558,14 @@ function plan24(id,t){
  if(id==='cs1'){const p=cl2(t/2.0);F={...L2,base:IC,G:[['surprised',0.6],['thinking_chin',3.8]]};B={px:820-280*p,py:1095,s:.58,ry:p<1?-Math.PI/2:-Math.PI/2+(Math.PI/2-.3)*s3((t-2.0)/.5),base:p<1?'walk':'standing_relax',G:[['greet_01',2.3],['agree',4.6]]}}
  if(id==='cs2'){F={...L2,base:IC,segs:[['talk_02',6.9,10.7]],G:[['point_self_proud',7.4],['surprised',13.6],['thinking_chin',16.6]]};B={...R2,base:'wait',G:[['greet_02',10.9],['agree',13.6],['cheer',16.0,0,2.8]]}}
  if(id==='cs3'){F={...L2,base:IC,segs:[['talk_01',19.1,21.0]],G:[['thinking_chin',19.0],['surprised',23.4]]};B={...R2,base:'wait',G:[['look_around',21.0,0,2.4]]}}
- if(id==='cs4'){F={...L3,base:IC,G:[['facepalm',26.6],['surprised',40.6]]};Mi={...C3,in:26.35,base:IC,segs:[['talk_02',29.1,41.4]],G:[['head_shake_no',26.5],['count_fingers',30.0],['present_both_hands',34.0],['voice_command_phone',37.8]]};B={...R3,base:'wait',G:[['frustrated_01',26.8,0,2.6],['look_around',34.5,0,3.0]]}}
+ if(id==='cs4'){F={...L3,base:IC,G:[['facepalm',26.6],['surprised',40.6]]};Mi={...C3,in:25.96,base:IC,segs:[['talk_02',29.1,41.4]],G:[['hands_up_exasperated',25.97,0,1.6],['head_shake_no',26.5],['count_fingers',30.0],['present_both_hands',34.0],['voice_command_phone',37.8]]};B={...R3,base:'wait',G:[['frustrated_01',26.8,0,2.6],['look_around',34.5,0,3.0]]}}
  if(id==='cs5'){F={...L3,base:IC,segs:[['talk_01',41.7,43.8],['talk_01',47.5,48.9]],G:[['thinking_chin',41.7],['laugh_01',45.3,0,2.2]]};Mi={...C3,base:IC,segs:[['talk_03',44.0,46.5]],G:[['point_forward',44.4]]};B={...R3,base:'standing_relax',G:[['complain_01',46.5,0,2.6]]}}
  if(id==='cs6'){F={...L3,base:IC,G:[['fist_pump',54.3]]};Mi={...C3,base:IC,segs:[['talk_03',49.1,55.7]],G:[['head_shake_no',49.1],['present_both_hands',53.9]]};B={...R3,base:'wait',G:[['frustrated_01',51.8,0,2.5]]}}
  if(id==='cs7'){F={...L3,base:IC,G:[['laugh_02',61.4,0,2.6]]};Mi={...C3,base:IC,segs:[['talk_01',59.2,61.3]],G:[['shrug',59.2]]};B={...R3,base:'standing_relax',G:[['look_around',56.1,0,2.8],['agree',61.4]]}}
  if(id==='cs8'){F={px:140,py:1110,s:.52,ry:.25,base:t<68.2?'dance_01':IC,bt:t-63.3,G:[['heart_pose',68.3]]};Mi={px:360,py:1115,s:.54,ry:0,base:t<70.7?'dance_01':'idle_calm',bt:t-63.0,G:[['greet_02',70.8]]};B={px:585,py:1110,s:.52,ry:-.25,base:'dance_01',bt:t-63.6}}
  return {F,Mi,B};
 }
-window.hook3d22=async function(t,cur,lt){if(AD4==='24'){const p=plan24(cur[2],t);const MO=window.MOUTH24||{};pose(cf,t,p.F,MO.f);pose(cm,t,p.Mi,MO.m);pose(cb,t,p.B,MO.b);R.render(S,C);return}if(AD4==='23'){const p=plan23(cur[2],t);const MO=window.MOUTH23||{};pose(cf,t,p.F,MO.f);pose(cm,t,p.Mi,MO.m);pose(cb,t,p.B,MO.b);R.render(S,C);return}const p=plan(cur[2],t);const MO=window.MOUTH22||{};pose(cf,t,p.F,MO.f22);pose(cm,t,p.Mi,MO.m22);R.render(S,C)};
+window.hook3d22=async function(t,cur,lt,tr){if(AD4==='24'){const p=plan24(cur[2],t);const MO=window.MOUTH24||{};pose(cf,t,p.F,MO.f,tr);pose(cm,t,p.Mi,MO.m,tr);pose(cb,t,p.B,MO.b,tr);R.render(S,C);return}if(AD4==='23'){const p=plan23(cur[2],t);const MO=window.MOUTH23||{};pose(cf,t,p.F,MO.f);pose(cm,t,p.Mi,MO.m);pose(cb,t,p.B,MO.b);R.render(S,C);return}const p=plan(cur[2],t);const MO=window.MOUTH22||{};pose(cf,t,p.F,MO.f22);pose(cm,t,p.Mi,MO.m22);R.render(S,C)};
 window.ready3d=true;
 }
 </script>
