@@ -1242,9 +1242,9 @@ S('cs7',SV('cs7s',SHOP)+card('cs7a','🏢 "גם לתאגיד שלי?"',140,'font
 S('cs8',SV('cs8s',`<defs><radialGradient id="g24" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#2a3f8f"/><stop offset="1" stop-color="#0a1230"/></radialGradient></defs><rect width="720" height="1280" fill="url(#g24)"/><g>${Array.from({length:36},(_,i)=>`<rect class="cf" width="12" height="20" rx="3" fill="${['#c9a24a','#3fd0ff','#ff8fb1','#28c840','#ffffff'][i%5]}"/>`).join('')}</g><rect y="980" width="720" height="300" fill="#16224f"/>`)
 +`<div class="abs" id="cs8a" style="${C}top:80px;font-size:46px;font-weight:800;color:#fff">עסק קטן? 🌸</div><div class="abs" id="cs8b" style="${C}top:145px;font-size:52px;font-weight:800;color:#ffc22e">פתרון גדול. 🚀</div>
 <div class="abs" id="cs8l" style="${C}top:260px"><div class="big gt" style="font-size:84px">מיצי תקשורת</div><div style="font-size:25px;color:#cfe6f5;margin-top:4px">☎️ שלוחות · 💬 וואטסאפ · 🎙 בוט קולי · ✨ סיכום A.I</div></div>
-<div class="cta" id="cs8c" style="top:420px;background:linear-gradient(90deg,#3fd0ff,#2a9be6);color:#02122a;border:none">💬 שלחו לנו הודעה</div>
-<div class="abs" id="cs8p" style="${C}top:530px;font-size:30px;font-weight:800;direction:ltr;color:#fff"><span style="letter-spacing:3px">03-3826600</span> <span style="color:#3fd0ff">· mitsi.co.il</span></div>
-<div class="abs" id="cs8h" style="${C}top:600px;font-size:32px;font-weight:800;color:#ffd1e0">😂 ובלי חדר שרתים!</div><div class="abs" id="cs8w" style="left:300px;top:700px;font-size:44px;font-weight:800;color:#fff;transform:rotate(-8deg)">מְיָאוּ! 🐾</div>`);
+<div class="cta" id="cs8c" style="top:420px;display:none"></div>
+<div class="abs" id="cs8p" style="${C}top:440px;font-size:30px;font-weight:800;direction:ltr;color:#fff"><span style="letter-spacing:3px">03-3826600</span> <span style="color:#3fd0ff">· mitsi.co.il</span></div>
+<div class="abs" id="cs8h" style="${C}top:520px;font-size:32px;font-weight:800;color:#ffd1e0">😂 ובלי חדר שרתים!</div><div class="abs" id="cs8w" style="left:300px;top:700px;font-size:44px;font-weight:800;color:#fff;transform:rotate(-8deg)">מְיָאוּ! 🐾</div>`);
 const sb=document.createElement('div');sb.id='sub18';sb.style.cssText='position:absolute;z-index:9;left:30px;right:30px;top:1150px;text-align:center;direction:rtl';sb.innerHTML='<span id="sub18t" style="display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-size:31px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 #26242b"></span>';st.appendChild(sb);
 }
 const SUBS24=[[0.5,2.87,'b','שלום! אני יועץ לפתרונות ארגוניים.'],[3.23,6.57,'b','שמעתי שאתם עסק קטן... שמחפש פתרון גדול.'],[6.92,10.68,'f','כן! אני רוצה שיענו ללקוחות שלי, גם כשאני עסוקה.'],
@@ -1254,7 +1254,7 @@ const SUBS24=[[0.5,2.87,'b','שלום! אני יועץ לפתרונות ארגו
 [41.74,43.71,'f','ו... חדר השרתים?'],[44.0,46.49,'m','הכל בענן. כמו החלומות שלו. ☁️'],[46.65,47.13,'b','היי!'],[47.53,48.81,'f','וכמה זה עולה?'],
 [49.11,51.6,'m','בלי חדר שרתים, בלי טכנאים,'],[51.83,53.65,'m','ובלי מאה ועשרים תשלומים.'],[53.99,55.61,'m','במחיר שעסק קטן אוהב.'],
 [56.2,58.98,'b','...רגע. אפשר לקבל את זה גם לתאגיד שלי?'],[59.28,61.18,'m','התאגיד שלך זה אתה.'],[61.53,62.71,'b','אז... כן? 🤫'],
-[63.31,65.38,'m','עֵסֶק קָטָן, פִּתְרוֹן גָּדוֹל,'],[65.66,67.96,'m','"מִיצִי תִּקְשֹׁרֶת", שִׁלְחוּ לָנוּ הוֹדָעָה.'],[68.39,70.73,'f','ובלי חדר שרתים! 😂'],[70.95,71.8,'m','מְיָאוּ! 🐾']];
+[63.31,65.38,'m','עֵסֶק קָטָן, פִּתְרוֹן גָּדוֹל,'],[65.66,67.96,'m','"מִיצִי תִּקְשֹׁרֶת".'],[68.39,70.73,'f','ובלי חדר שרתים! 😂'],[70.95,71.8,'m','מְיָאוּ! 🐾']];
 function draw24(id,lt,t,jobs){
  const v=t;
  if(id==='cs1'){sh('cs1c',v,2.7,.45,0,40);$('cs1c').style.transform+=' rotate(-4deg)';pop('cs1k',v,4.6,.35)}
