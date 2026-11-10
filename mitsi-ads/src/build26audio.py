@@ -3,22 +3,17 @@ import json, subprocess, re, os
 SP = '/tmp/claude-0/-home-user-nvs/0f9540b5-d01e-533c-b68d-1d5a2bac763f/scratchpad'
 os.chdir('/home/user/nvs/mitsi-ads/audio/ad26')
 dur = lambda f: float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]))
-seq = [('l1', 1.6), ('r1', .3), ('l2', .3), ('r2', .2), ('l3', .3), ('m1', 1.0), ('r3', .15), ('m2', .9), ('m3', 2.7), ('a1', .3),
+seq = [('l1', 1.3), ('r1', .3), ('l2', .25), ('r2', .2), ('l3', .3), ('m1', .9), ('m2', 2.8), ('m3', .5), ('a1', .3),
        ('r4', .3), ('l4', .35), ('m4', .2), ('roar', .1), ('l5', .45), ('m5', .5)]
 t = 0; tl = []
 for k, g in seq:
     st = t + g; d = dur(k + '.wav'); tl.append([k, round(st, 3), round(d, 3)]); t = st + d
 T = {k: (s, d) for k, s, d in tl}
 end = round(t + 1.6, 2)
-fx = []
-# old phones ringing in the palace: bell bursts until Mitsi's first line
-x = 0.0
-while x < T['m1'][0] - 0.6:
-    fx.append(['bells', round(x, 3), 1.0]); x += 1.25
-fx.append(['thud', round(T['r3'][0] + T['r3'][1] + 0.05, 3), 1.0])
-fx.append(['whoosh', round(T['m2'][0] + T['m2'][1] + 0.2, 3), 1.0])
+fx = [['noise', 0.1, 2.0], ['noise2', round(T['r1'][0] + 2.4, 3), 2.0], ['noise2', round(T['r2'][0] + .6, 3), 2.0]]
+fx.append(['magic', round(T['m1'][0] + T['m1'][1] + 0.1, 3), 3.2])
 json.dump({'tl': tl, 'fx': fx, 'end': end}, open(SP + '/ads/ad26tl.json', 'w'))
-VOL = {'bells': 0.22, 'thud': 0.9, 'whoosh': 0.7, 'roar': 0.8}
+VOL = {'noise': 0.55, 'noise2': 0.55, 'magic': 0.75, 'roar': 0.8}
 def mix(keys, out, ar=44100, mono=False):
     ins = []; fl = []; n = 0
     for k, st, du in tl + fx:
