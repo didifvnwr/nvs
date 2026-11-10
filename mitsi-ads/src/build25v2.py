@@ -41,7 +41,7 @@ def mix(keys, out, ar=44100, mono=False):
         c = k[0] if k[0] in 'dfm' and k[1:].isdigit() else 'x'
         if keys and c not in keys: continue
         ins += ['-i', src.get(k, k + '.wav')]; ms = int(st * 1000)
-        pre = f'atrim=0:{du},afade=t=out:st={max(0,du-0.15)}:d=0.15,volume=0.5,' if k == 'ring' else 'volume=0.8,' if k == 'ball' else ''
+        pre = f'atrim=0:{du},afade=t=out:st={max(0,du-0.15)}:d=0.15,volume=0.22,' if k == 'ring' else 'volume=0.8,' if k == 'ball' else ''
         fl.append(f'[{n}:a]{pre}aresample={ar},adelay={ms}|{ms}[a{n}]'); n += 1
     fl.append(''.join(f'[a{i}]' for i in range(n)) + f'amix=inputs={n}:normalize=0:duration=longest' + (',pan=mono|c0=c0' if mono else '') + '[o]')
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error'] + ins + ['-filter_complex', ';'.join(fl), '-map', '[o]', '-ar', str(ar), out], check=True)
