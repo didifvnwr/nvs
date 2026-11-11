@@ -1,6 +1,6 @@
 # Ad 26 "the king's server room": sequence lines, sfx, per-character mouth envelopes
 import json, subprocess, re, os
-SP = '/tmp/claude-0/-home-user-nvs/0f9540b5-d01e-533c-b68d-1d5a2bac763f/scratchpad'
+SP = os.environ.get('MITSI_SP', '/tmp/claude-0/-home-user-nvs/0f9540b5-d01e-533c-b68d-1d5a2bac763f/scratchpad')
 os.chdir('/home/user/nvs/mitsi-ads/audio/ad26')
 dur = lambda f: float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]))
 seq = [('l1', 1.3), ('r1', .3), ('l2', .25), ('r2', .2), ('l3', .3), ('m1', .9), ('m2', 2.8), ('m3', .5), ('a1', .3),
