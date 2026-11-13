@@ -59,7 +59,7 @@ cd mitsi-ads/src && MITSI_SP=$MITSI_SP node render.js test 26 5,30   # בדיק�
 |---|---|---|---|
 | "מִיצִי" (חתול אפור עם משקפיים) | cat-m2.glb | עומר `k77ZRVqAFg9Hd0ltAuON` | `{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'}` |
 | החתולה הג'ינג'ית | cat-f2.glb | דנית `s0T0DT6EAPeX57MQpn3I` | `{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'}` |
-| חתול העסקים (עם תיק) | cat-b.glb | איתמר `l7Q9rbdCC6j3J5dNlOOg` | `{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'}` |
+| חתול העסקים (טוקסידו שחור-לבן, משקפי שמש, חליפה ותיק) | cat-b.glb | איתמר `l7Q9rbdCC6j3J5dNlOOg` | `{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'}` |
 | הכלב הפרופסור | dog.glb | הרצל בן שבת `6Ijsl5024dyMrE00loVE` | `{x0:.012,y0:.728,zf:.316,W:.12,R:.09,patch:'#d9d9d9',ink:'#2a2526'}` |
 | האריה האדיש | lion.glb | תומר `yGpVFXFoImvRvaURKypy` (עמוק, משועמם) | `{x0:-.034,y0:.663,zf:.258,W:.14,R:.1,patch:'#efe3c8',ink:'#3a2018'}` |
 | העכבר המלומד | mouse.glb | איתי `JIxTgeeS5w0UQyBxEnrl` (מהיר, חנוני) | `{x0:-.015,y0:.652,zf:.27,W:.11,R:.07,patch:'#ececf0',ink:'#2a2a2e'}` |
