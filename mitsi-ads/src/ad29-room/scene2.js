@@ -257,7 +257,7 @@ const MI = await (async () => {
   g.animations.forEach(c => { const k = c.name.replace(/\.\d+$/, ''); const a = mix.clipAction(c); a.play(); a.setEffectiveWeight(0); A[k] = { a, d: c.duration }; });
   let head, hips, lh, rh; Mo.traverse(o => { if (o.isBone && /Head$/.test(o.name)) head = o; if (o.isBone && /Hips$/.test(o.name)) hips = o; if (o.isBone && /LeftHand$/.test(o.name)) lh = o; if (o.isBone && /RightHand$/.test(o.name)) rh = o; if (o.isMesh) { o.frustumCulled = false; o.castShadow = true; } });
   A.idle.a.setEffectiveWeight(1); A.idle.a.time = 0; mix.update(0); Mo.updateMatrixWorld(true);
-  const MO = makeMouth2(THREE, head, { y0: .669, zf: .266, W: .15, R: .1, patch: '#aab2c4', ink: '#2a2328' });
+  const MO = makeMouth2(THREE, head, { x0: -.025, y0: .669, zf: .266, W: .15, R: .1, patch: '#aab2c4', ink: '#2a2328' });
   const hr = new THREE.Vector3(); hips.getWorldPosition(hr);
   for (const k in A) A[k].a.setEffectiveWeight(0); A.sit_idle.a.setEffectiveWeight(1); A.sit_idle.a.time = .5; mix.update(0); Mo.updateMatrixWorld(true);
   const hs = new THREE.Vector3(); hips.getWorldPosition(hs);
