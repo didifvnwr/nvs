@@ -8,12 +8,13 @@ t = 0; tl = []
 for k, g in seq:
     st = t + g; d = dur(k + '.wav'); tl.append([k, round(st, 3), round(d, 3)]); t = st + d
 T = {k: (s, d) for k, s, d in tl}
-end = round(t + 2.6, 2)
+roar = round(t + .25, 3)
+end = round(roar + 1.0 + .25 + 4.6, 2)
 chips = [round(T['n5'][0] + c, 3) for c in (3.4, 5.3, 6.6, 8.4)]
 fx = [['ring', round(T['n3'][0] + 0.9, 3), 2.4], ['ring', round(T['n3'][0] + 3.9, 3), 2.4], ['ring2', round(T['n4'][0] + 0.6, 3), 2.4], ['ring2', round(T['n4'][0] + 3.6, 3), 2.4],
-      ['whoosh', round(T['n5'][0] - .5, 3), 1.0], ['whoosh2', round(T['n6'][0] - .3, 3), 1.0]] + [['blip', c, .12] for c in chips]
-json.dump({'tl': tl, 'fx': fx, 'end': end, 'chips': chips}, open(SP + '/ads/ad30tl.json', 'w'))
-VOL = {'ring': 0.10, 'ring2': 0.05, 'whoosh': 0.35, 'whoosh2': 0.3, 'blip': 0.18}
+      ['whoosh', round(T['n5'][0] - .5, 3), 1.0], ['roar', roar, 1.0], ['whoosh2', round(roar + 1.0, 3), 1.0]] + [['blip', c, .12] for c in chips]
+json.dump({'tl': tl, 'fx': fx, 'end': end, 'chips': chips, 'roar': roar}, open(SP + '/ads/ad30tl.json', 'w'))
+VOL = {'roar': 0.8, 'ring': 0.10, 'ring2': 0.05, 'whoosh': 0.35, 'whoosh2': 0.3, 'blip': 0.18}
 SRC = {'ring2': 'ring', 'whoosh2': 'whoosh'}
 def mix(voice_only, out, ar=44100, mono=False):
     ins = []; fl = []; n = 0
