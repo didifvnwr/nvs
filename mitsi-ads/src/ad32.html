@@ -37,6 +37,7 @@ html,body{margin:0;background:#000}
 <script type="importmap">{"imports":{"three":"./three/three.module.js","three/addons/":"./three/addons/"}}</script>
 <script type="module">
 import * as THREE from 'three';import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';import {makeMouth2} from './mouth3d2.js';
+for(const w of [300,500,800])await document.fonts.load(w+' 40px H','אבג abc');
 const N=(location.pathname.match(/ad(\d+)/)||[0,'31'])[1];const BK=N==='31';
 const SW=720,SH=1280;
 const $=id=>document.getElementById(id);const stage=$('stage');stage.style.width=SW+'px';stage.style.height=SH+'px';
@@ -69,8 +70,8 @@ const marketTex=canvasTex(900,700,(x,w,h)=>{const g=x.createLinearGradient(0,0,0
  x.fillStyle='#e9dcc0';x.fillRect(0,250,w,300);x.fillStyle='#c9b48a';for(let i=0;i<6;i++)x.fillRect(40+i*150,290,60,90);
  for(let i=0;i<4;i++){x.fillStyle=['#d0402a','#2f7fd0','#e2a020','#2f9e58'][i];x.beginPath();x.moveTo(i*230-20,430);x.lineTo(i*230+250,430);x.lineTo(i*230+220,360);x.lineTo(i*230+10,360);x.fill();x.fillStyle='#8a5a2c';x.fillRect(i*230,430,220,270)}
  for(let i=0;i<9;i++){x.fillStyle='#2f8f3c';x.beginPath();x.ellipse(60+i*98,470+(i%2)*26,44,34,0,0,7);x.fill();x.strokeStyle='#17602a';x.lineWidth=5;for(let k=-1;k<=1;k++){x.beginPath();x.ellipse(60+i*98+k*18,470+(i%2)*26,8,32,0,0,7);x.stroke()}}
- x.fillStyle='#fff';x.strokeStyle='#222';x.lineWidth=8;x.beginPath();x.roundRect(250,60,400,130,20);x.fill();x.stroke();x.fillStyle='#d0202a';x.font='800 84px H';x.textAlign='center';x.direction='rtl';x.fillText('שוק הכרמל',450,155);
- x.fillStyle='#ffe14d';x.beginPath();x.roundRect(600,560,270,110,14);x.fill();x.stroke();x.fillStyle='#222';x.font='800 58px H';x.fillText('אבטיח 10 ₪',735,636)});
+ x.textAlign='center';x.direction='rtl';
+ x.font='800 64px H';x.lineJoin='round';x.strokeStyle='#fff';x.lineWidth=12;x.strokeText('אבטיח 10 ₪',700,640);x.fillStyle='#c0202a';x.fillText('אבטיח 10 ₪',700,640)});
 const boardTex=(lesson)=>canvasTex(1100,700,(x,w,h)=>{x.fillStyle='#fbfbf7';x.fillRect(0,0,w,h);x.textAlign='center';x.fillStyle='#1d4fa3';x.font='800 96px H';x.fillText('American Accent',w/2,130);x.fillStyle='#c0392b';x.font='800 70px H';x.fillText('Lesson '+lesson,w/2,225);x.fillStyle='#222';x.font='800 92px H';x.fillText("“What's up, dude!”",w/2,400);x.fillStyle='#2b7a3d';x.font='500 60px H';x.fillText('W = “wuh”   (not “vuh”)',w/2,540);x.fillText('🇺🇸',w/2,640);x.strokeStyle='#999';x.lineWidth=16;x.strokeRect(0,0,w,h)});
 let board=null,board2=null;
 if(BK){
@@ -170,7 +171,7 @@ const SUBS=BK?[L('b1',0,null,'שלום! קאט קורפ, משרד ניו יור�
  L('c2',0,null,'זה היה… עברית?','Was that… Hebrew?'),L('b3',0,null,'לא לא. זה… מבטא ברוקלינאי.','No no. This is… Brooklyn accent.'),L('c3',0,null,`אדוני, המספר שלך מתחיל ב-${P972}.`,'Sir, your number starts with +972.'),
  L('b4',0,null,'מה הסגיר אותי?'),L('m1',0,1.1,'הקידומת.'),L('m1',1.2,4.4,'לא צריך לשקר על ברוקלין, צריך מספר אמריקאי.'),L('m1',4.5,null,`${P1} אמיתי, עם חבילת דקות, שמצלצל אליך לנייד בישראל.`),L('m2',0,null,'ואת החלון… תסגור.')]
 :[L('r1',0,null,'חזור אחריי: מה קורה, אחי!',"Repeat after me: What's up, dude!"),L('b1',0,null,'ואטס אפ, דוּד.','Vats ap, dood.'),L('r2',0,null,'לא ״ואטס״. WHAT\'S. ווּ. ווּ!','Not “vats”. WHAT\'S. Wuh. Wuh!'),L('b2',0,null,'ווּ.','Vuh.'),
- L('b3',0,null,'שלום שותף! מה קורה, אחי!',"Howdy, partner! What's up, dude!"),L('r3',0,null,'מושלם! הוא מוכן!'),L('c1',0,null,`${P972}? לא תודה.`,'Plus nine-seven-two? Nope.'),L('b4',0,null,'אפילו לא הספקתי להגיד האודי.'),
+ L('b3',0,null,'שלום שותף! מה קורה, אחי!',"Howdy, partner! What's up, dude!"),L('r3',0,null,'מושלם! הוא מוכן להתחיל למכור ללקוחות בארצות הברית!'),L('c1',0,null,`${P972}? לא תודה.`,'Plus nine-seven-two? Nope.'),L('b4',0,null,'אפילו לא הספקתי להגיד הלו.'),
  L('m1',0,4.3,'שלושה חודשים של מבטא… במקום דקה של מספר אמריקאי.'),L('m1',4.4,null,`${P1} אמיתי, חבילת דקות, והשיחות אליך לנייד בישראל.`),L('m2',0,null,'את הכובע… תשאיר.')];
 const sub=$('sub'),subt=$('subt');
 // call card: what the American caller sees
