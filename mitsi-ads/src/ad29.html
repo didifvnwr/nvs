@@ -1,0 +1,273 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+@font-face{font-family:O;src:url(fonts/orbitron-700.ttf);font-weight:700}
+html,body{margin:0;background:#000}
+#stage{position:relative;overflow:hidden;font-family:H,sans-serif;direction:rtl;background:#000}
+#cv{position:absolute;left:0;top:0}
+#sub{position:absolute;z-index:9;left:30px;right:30px;text-align:center;direction:rtl}
+#subt{display:inline-block;background:rgba(255,255,255,.96);color:#26242b;border:4px solid #26242b;border-radius:18px;padding:10px 22px;font-weight:800;line-height:1.25;box-shadow:6px 6px 0 rgba(0,0,0,.35)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:5}
+#dim{position:absolute;inset:0;background:#070b14;opacity:0;z-index:3}
+#dial{position:absolute;z-index:6;left:50%;transform:translateX(-50%);text-align:center;opacity:0}
+#ring{border-radius:50%;background:#1fae5b;display:flex;align-items:center;justify-content:center;margin:0 auto;box-shadow:0 0 0 0 rgba(31,174,91,.6)}
+#tu{color:#fff;font-weight:800;text-shadow:0 3px 8px rgba(0,0,0,.6);margin-top:14px}
+#lcd{position:absolute;z-index:6;left:50%;transform:translateX(-50%);background:#0d1a10;border:10px solid #3a4a3c;border-radius:30px;text-align:center;opacity:0;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+#lcd .a{color:#7dff9a;font-weight:800}
+#lcd .n{font-family:O,sans-serif;color:#9dffb0;text-shadow:0 0 30px #3dff6a;direction:ltr;line-height:1}
+#lcd .w{font-weight:800}
+.chip{position:absolute;z-index:7;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.97);border:4px solid #26242b;border-radius:60px;padding:8px 22px 8px 12px;font-weight:800;color:#1b2733;box-shadow:5px 5px 0 rgba(0,0,0,.35);opacity:0;white-space:nowrap}
+.chip i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;color:#fff}
+.chip b{color:#1fae5b;font-weight:800}
+#end{position:absolute;inset:0;z-index:8;opacity:0;background:linear-gradient(160deg,#f4f9ff 0%,#dff0ff 55%,#c7e6ff 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.gt{background:linear-gradient(90deg,#1d6fe0,#2a9be6 40%,#16b8d8 75%,#0a8fc2);-webkit-background-clip:text;background-clip:text;color:transparent}
+#e3 div{background:#fff;border:3px solid #26242b;border-radius:40px;margin:10px auto;padding:8px 22px;font-weight:800;color:#16365e;box-shadow:4px 4px 0 rgba(0,0,0,.2);width:fit-content}
+.heart{position:absolute;z-index:6;opacity:0}
+</style></head><body>
+<div id="stage"><canvas id="cv"></canvas><div id="dim"></div><div id="flash"></div>
+<div id="dial"><div id="ring"><span id="hs">📞</span></div><div id="tu">טוּ… טוּ…</div></div>
+<div id="lcd"><div class="a">מיקומך בתור</div><div class="n" id="num">…</div><div class="w" id="wait"></div></div>
+<div id="end"><div id="e1" style="font-weight:800;color:#0d2b55">אף אחד לא נשאר על הקו.</div><div id="e2" class="gt" style="font-weight:800;line-height:1.05;letter-spacing:-1px">מיצי תקשורת</div>
+<div id="e3"><div>☁️ מרכזייה בענן</div><div>🤖 ניהול עצמאי עם הקלוד שלכם, או מול הצוות שלנו</div><div>🌍 שלוחות חכמות בכל העולם, גם בסלולרי</div><div>🏢 מעסק של אדם אחד ועד עשרות שלוחות</div></div>
+<div id="e4" style="font-weight:800;direction:ltr;color:#0d2b55;margin-top:14px"><span style="letter-spacing:3px">03-3826600</span> <span style="color:#1d8fe0">· mitsi.co.il</span></div></div>
+<div id="sub"><span id="subt"></span></div></div>
+<script type="importmap">{"imports":{"three":"./three/three.module.js","three/addons/":"./three/addons/"}}</script>
+<script type="module">
+import * as THREE from 'three';import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';import {makeMouth2} from './mouth3d2.js';
+const AD=new URLSearchParams(location.search).get('ad')||'29';const WIDE=AD.endsWith('w');const SW=WIDE?1280:720,SH=WIDE?720:1280;
+const $=id=>document.getElementById(id);const stage=$('stage');stage.style.width=SW+'px';stage.style.height=SH+'px';
+const cv=$('cv');cv.width=SW*1.5;cv.height=SH*1.5;cv.style.width=SW+'px';cv.style.height=SH+'px';
+const TL=await (await fetch('ad29tl.json')).json();const MOUTH=await (await fetch('mouth29.json')).json();
+const T={};for(const [k,s,d] of TL.tl)T[k]=[s,s+d];
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));const ss=x=>{x=cl(x);return x*x*(3-2*x)};const lerp=(a,b,u)=>a+(b-a)*u;
+// ---------- renderer / scene ----------
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,preserveDrawingBuffer:true});R.setPixelRatio(1);R.setSize(SW*1.5,SH*1.5,false);
+R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.0;
+const S=new THREE.Scene();S.background=new THREE.Color(0x2a2f2c);
+const C=new THREE.PerspectiveCamera(WIDE?34:50,SW/SH,.05,200);
+const hemi=new THREE.HemisphereLight(0xfff6e4,0x5a4a3a,1.35);S.add(hemi);
+const key=new THREE.DirectionalLight(0xfff0d6,1.9);key.position.set(2,6,5);S.add(key);
+const rim=new THREE.DirectionalLight(0xd8e8ff,0.8);rim.position.set(-4,3,-3);S.add(rim);
+const spot=new THREE.SpotLight(0xffe7a8,0,9,.38,.5,1.2);spot.position.set(0,4.6,.6);S.add(spot);S.add(spot.target);
+const M=(c,o={})=>new THREE.MeshStandardMaterial({color:c,roughness:o.r??.7,metalness:o.m??0,emissive:o.e??0x000000,emissiveIntensity:o.ei??1,transparent:!!o.tr,opacity:o.op??1,side:o.side??THREE.FrontSide,map:o.map||null});
+const box=(w,h,d,mat,x,y,z,p=S)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);p.add(m);return m};
+function canvasTex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');draw(x,w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
+// ---------- COMMUNITY-CENTER ROOM ----------
+const CZ=-1.7; // circle centre z
+const floorTex=canvasTex(512,512,(x)=>{for(let i=0;i<8;i++)for(let j=0;j<8;j++){x.fillStyle=(i+j)%2?'#cfc7ae':'#b3a98f';x.fillRect(i*64,j*64,64,64)}});floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping;floorTex.repeat.set(4,4);
+const fl=new THREE.Mesh(new THREE.PlaneGeometry(14,14),M(0xffffff,{map:floorTex,r:.55}));fl.rotation.x=-Math.PI/2;fl.position.set(0,0,-1);S.add(fl);
+const upM=M(0xe9ddc2,{r:.9}),lowM=M(0x5f8f86,{r:.85}),trimM=M(0x3f6b63,{r:.6});
+function wall(x,z,ry,w){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;S.add(g);box(w,1.2,.06,lowM,0,.6,0,g);box(w,2.6,.06,upM,0,2.5,0,g);box(w,.06,.1,trimM,0,1.2,.03,g);return g}
+wall(0,-5.2,0,14);wall(-5.5,-1,Math.PI/2,14);wall(5.5,-1,-Math.PI/2,14);wall(0,6,Math.PI,14);
+const ceil=new THREE.Mesh(new THREE.PlaneGeometry(14,14),M(0xd9d4c6,{r:.9}));ceil.rotation.x=Math.PI/2;ceil.position.set(0,3.8,-1);S.add(ceil);
+for(const x of [-1.6,1.6]){const l=box(1.6,.06,.3,M(0xffffff,{e:0xf4fff6,ei:1.1}),x,3.76,-1.8);}
+const lampA=new THREE.PointLight(0xf6fff2,1.6,10,1.5);lampA.position.set(0,3.4,-1.6);S.add(lampA);
+// whiteboard
+const wbTex=canvasTex(1400,800,(g,w,h)=>{g.fillStyle='#fbfbf7';g.fillRect(0,0,w,h);g.direction='rtl';g.textAlign='center';
+ g.fillStyle='#1d4fa3';g.font='800 150px H';g.fillText('קבוצת תמיכה',w/2,200);g.fillStyle='#c0392b';g.font='800 84px H';g.fillText('״ממתינים על הקו״',w/2,330);
+ g.fillStyle='#333';g.font='500 60px H';g.fillText('מפגש מס׳ 47 · נא לא לשים על ״המתנה״',w/2,450);
+ g.textAlign='right';g.font='800 54px H';g.fillStyle='#2b7a3d';g.fillText('ימים על הקו השבוע:',w-80,610);
+ g.strokeStyle='#2b7a3d';g.lineWidth=9;for(let k=0;k<3;k++){const x0=120+k*200;for(let i=0;i<4;i++){g.beginPath();g.moveTo(x0+i*30,570);g.lineTo(x0+i*30,670);g.stroke()}g.beginPath();g.moveTo(x0-15,660);g.lineTo(x0+110,580);g.stroke()}
+ g.strokeStyle='#999';g.lineWidth=16;g.strokeRect(0,0,w,h)});
+const wb=new THREE.Mesh(new THREE.PlaneGeometry(2.8,1.6),new THREE.MeshBasicMaterial({map:wbTex}));wb.position.set(0,2.25,-5.15);S.add(wb);
+// poster
+const posterTex=canvasTex(600,800,(g,w)=>{g.fillStyle='#ffd34d';g.fillRect(0,0,w,800);g.direction='rtl';g.textAlign='center';g.fillStyle='#222';g.font='800 100px H';g.fillText('אתם',w/2,200);g.fillText('לא לבד',w/2,320);g.fillText('על הקו',w/2,440);g.font='500 54px H';g.fillText('(כנראה שכן)',w/2,600)});
+const poster=new THREE.Mesh(new THREE.PlaneGeometry(.8,1.07),new THREE.MeshBasicMaterial({map:posterTex}));poster.position.set(2.45,2.2,-5.15);S.add(poster);
+// wall clock (hands spin during the queue message)
+const clock=new THREE.Group();clock.position.set(-2.3,2.6,-5.15);S.add(clock);
+{const f=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.04,40),M(0xfafafa));f.rotation.x=Math.PI/2;f.position.z=.02;clock.add(f);const rr=new THREE.Mesh(new THREE.TorusGeometry(.3,.03,8,40),M(0x222222));rr.position.z=.04;clock.add(rr)}
+const hourH=new THREE.Group(),minH=new THREE.Group();hourH.position.z=minH.position.z=.06;clock.add(hourH,minH);box(.03,.15,.01,M(0x111111),0,.07,0,hourH);box(.02,.24,.01,M(0x111111),0,.11,0,minH);
+// refreshment table + plant
+const tb=new THREE.Group();tb.position.set(3.9,0,-3.6);tb.rotation.y=-.5;S.add(tb);
+box(1.5,.05,.6,M(0x8a6a45),0,.72,0,tb);for(const [x,z] of [[-.7,-.25],[.7,-.25],[-.7,.25],[.7,.25]])box(.04,.72,.04,M(0x555555),x,.36,z,tb);
+{const urn=new THREE.Mesh(new THREE.CylinderGeometry(.14,.16,.4,20),M(0xc9ccd1,{m:.7,r:.3}));urn.position.set(-.35,.95,0);tb.add(urn);const pl=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.02,24),M(0xffffff));pl.position.set(.3,.76,0);tb.add(pl);for(let i=0;i<6;i++){const c=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.02,12),M(0xc58b45));c.position.set(.3+Math.cos(i)*.11,.78,Math.sin(i)*.11);tb.add(c)}}
+const plant=new THREE.Group();plant.position.set(-4.2,0,-4.3);S.add(plant);{const pot=new THREE.Mesh(new THREE.CylinderGeometry(.25,.2,.45,16),M(0xb5553c));pot.position.y=.22;plant.add(pot);for(let i=0;i<7;i++){const l=new THREE.Mesh(new THREE.SphereGeometry(.25,10,8),M(i%2?0x4f8a3c:0x3f7431));l.position.set(Math.sin(i*2)*.18,.65+i*.09,Math.cos(i*2)*.18);l.scale.set(.6,1.2,.6);plant.add(l)}}
+const rug=new THREE.Mesh(new THREE.CircleGeometry(2.0,48),M(0x7a3b4e,{r:.95}));rug.rotation.x=-Math.PI/2;rug.position.set(0,.005,CZ);S.add(rug);
+// ---------- characters ----------
+const sc=document.createElement('canvas');sc.width=sc.height=128;const sx=sc.getContext('2d');const gr=sx.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(0,0,0,.5)');gr.addColorStop(1,'rgba(0,0,0,0)');sx.fillStyle=gr;sx.fillRect(0,0,128,128);const shTex=new THREE.CanvasTexture(sc);
+async function loadChar(url,mp,H){
+ const g=await new GLTFLoader().loadAsync(url);const Mo=g.scene;const root=new THREE.Group();root.rotation.order='YXZ';const inner=new THREE.Group();root.add(inner);inner.add(Mo);S.add(root);
+ const bb=new THREE.Box3().setFromObject(Mo);const fy=-bb.min.y;Mo.position.y=fy;
+ const shd=new THREE.Mesh(new THREE.PlaneGeometry(.8,.8),new THREE.MeshBasicMaterial({map:shTex,transparent:true,depthWrite:false}));shd.rotation.x=-Math.PI/2;shd.position.y=.004;inner.add(shd);
+ const mix=new THREE.AnimationMixer(Mo);const A={};g.animations.forEach(c=>{const k=c.name.replace(/\.\d+$/,'');const a=mix.clipAction(c);a.play();a.setEffectiveWeight(0);A[k]={a,d:c.duration}});
+ if(!A.sit_idle&&A.sit)A.sit_idle=A.sit;if(!A.idle_calm)A.idle_calm=A.idle;
+ let head,hips,lh,rh;Mo.traverse(o=>{if(o.isBone&&/Head$/.test(o.name))head=o;if(o.isBone&&/Hips$/.test(o.name))hips=o;if(o.isBone&&/LeftHand$/.test(o.name))lh=o;if(o.isBone&&/RightHand$/.test(o.name))rh=o;if(o.isMesh)o.frustumCulled=false});
+ for(const k in A)A[k].a.setEffectiveWeight(0);A.idle.a.setEffectiveWeight(1);A.idle.a.time=0;mix.update(0);Mo.updateMatrixWorld(true);
+ const MO=makeMouth2(THREE,head,mp);
+ const hr=new THREE.Vector3();hips.getWorldPosition(hr);
+ for(const k in A)A[k].a.setEffectiveWeight(0);A.sit_idle.a.setEffectiveWeight(1);A.sit_idle.a.time=.5;mix.update(0);Mo.updateMatrixWorld(true);const hs=new THREE.Vector3();hips.getWorldPosition(hs);
+ const ph=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(.055,.1,.012),new THREE.MeshStandardMaterial({color:0x22232b,roughness:.4}));const scr=new THREE.Mesh(new THREE.PlaneGeometry(.045,.085),new THREE.MeshBasicMaterial({color:0x5fd3ff}));scr.position.z=.0065;ph.add(body,scr);S.add(ph);ph.visible=false;
+ const k=H/0.978;root.scale.setScalar(k);
+ return {Mo,root,inner,mix,A,head,hips,lh,rh,MO,ph,fy,k,rest:{x:hr.x,z:hr.z},seat:hs.y,mPrev:0,shd};
+}
+const CH={
+ dog:await loadChar('dog.glb',{x0:.012,y0:.728,zf:.316,W:.12,R:.09,patch:'#d9d9d9',ink:'#2a2526'},1.2),
+ lion:await loadChar('lion.glb',{x0:-.034,y0:.663,zf:.258,W:.14,R:.1,patch:'#efe3c8',ink:'#3a2018'},1.22),
+ mouse:await loadChar('mouse.glb',{x0:-.015,y0:.652,zf:.27,W:.11,R:.07,patch:'#ececf0',ink:'#2a2a2e'},.78),
+ biz:await loadChar('cat-b.glb',{y0:.686,zf:.203,W:.10,R:.08,patch:'#dcdce0',ink:'#2a2a2e'},.98),
+ street:await loadChar('streetcat.glb',{x0:-.008,y0:.655,zf:.282,W:.12,R:.08,patch:'#f3e6d6',ink:'#3a2418'},.98),
+ ginger:await loadChar('cat-f2.glb',{y0:.671,zf:.210,W:.11,R:.08,patch:'#f1e2cb',ink:'#4a2a22'},.95),
+ mitsi:await loadChar('cat-m2.glb',{y0:.669,zf:.266,W:.15,R:.1,patch:'#aab2c4',ink:'#2a2328'},1.0),
+};
+// seats around the circle, everyone faces the centre; Mitsi at the back facing camera
+const ORDER={mouse:-3,lion:-2,dog:-1,mitsi:0,ginger:1,biz:2,street:3};const RAD=2.05;const SEAT={};
+const chairCols=[0xe07a2e,0x2f6fb3,0xd8b62a];const legM=M(0x777777,{m:.6,r:.3});
+for(const [n,kk] of Object.entries(ORDER)){const a=Math.PI+kk*.78;const x=RAD*Math.sin(a),z=CZ+RAD*Math.cos(a);const ry=Math.atan2(-Math.sin(a),-Math.cos(a));SEAT[n]={x,z,ry};
+ const ch=CH[n];const st=ch.seat*ch.k-.06*ch.k;const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;S.add(g);const cm=M(chairCols[(kk+3)%3],{r:.45});
+ const dz=-.09*ch.k,sw=.42*ch.k,sd=.3*ch.k; // shallow seat so the legs stay visible
+ box(sw,.04,sd,cm,0,st-.02,dz,g);box(sw,.42*ch.k,.04,cm,0,st+.22*ch.k,dz-sd/2,g).rotation.x=-.08;
+ for(const [lx,lz] of [[-1,-1],[1,-1],[-1,1],[1,1]]){const l=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,st-.04),legM);l.position.set(lx*sw*.42,(st-.04)/2,dz+lz*sd*.4);g.add(l)}}
+function pose(ch,t,P,mouthArr){
+ if(!P){ch.root.visible=false;ch.ph.visible=false;return}
+ ch.root.visible=true;
+ const list=[];let gw=0;
+ for(const g of (P.G||[])){const [k,st]=g;const x=ch.A[k];if(!x)continue;const f=g[2]??0,e=g[3]??x.d;const d=e-f,q=t-st;if(q<0||q>d)continue;const w=Math.min(ss(q/.4),ss((d-q)/.4));if(w<=0)continue;list.push([k,w,f+q]);gw=Math.max(gw,w)}
+ let segw=0;for(const sg of (P.segs||[])){const [k,a,e]=sg;const x=ch.A[k];if(!x||t<a-.35||t>e+.35)continue;const w=Math.min(ss((t-a+.35)/.7),ss((e-t+.35)/.7));if(w<=0)continue;list.push([k,(1-gw)*w*(1-segw),(t-a+.35)%x.d]);segw+=w*(1-segw)}
+ const b=ch.A[P.base]?P.base:'idle';list.push([b,(1-gw)*(1-segw),P.hold?Math.min(P.bt,ch.A[b].d-.001):(P.bt??t)%ch.A[b].d]);
+ for(const k in ch.A)ch.A[k].a.setEffectiveWeight(0);
+ for(const [k,w,tm] of list){const x=ch.A[k];x.a.time=Math.min(tm,x.d-.001);x.a.setEffectiveWeight(w)}
+ ch.root.position.set(P.x,P.y??0,P.z);ch.root.rotation.y=P.ry||0;ch.root.rotation.x=0;
+ ch.root.scale.setScalar(ch.k*(P.sc??1));
+ ch.Mo.position.y=ch.fy;ch.mix.update(0);
+ ch.Mo.position.x=0;ch.Mo.position.z=0;ch.root.updateMatrixWorld(true);const hp=new THREE.Vector3();ch.hips.getWorldPosition(hp);ch.inner.worldToLocal(hp);ch.Mo.position.x=-(hp.x-ch.rest.x);ch.Mo.position.z=-(hp.z-ch.rest.z);
+ // head look / droop on top of the clip
+ if(P.yaw||P.nod){const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(P.nod||0,P.yaw||0,0,'YXZ'));ch.head.quaternion.multiply(q)}
+ ch.shd.visible=!P.noShadow;
+ const call=list.some(([k,w])=>w>.5&&['make_a_call_01','phone_talk_standing','voice_command_phone'].includes(k));ch.ph.visible=call;
+ if(call){ch.root.updateMatrixWorld(true);const a=new THREE.Vector3(),b2=new THREE.Vector3(),hd=new THREE.Vector3();ch.lh.getWorldPosition(a);ch.rh.getWorldPosition(b2);ch.head.getWorldPosition(hd);const s=ch.root.scale.x;const p=(a.distanceTo(hd)<b2.distanceTo(hd)?a:b2).clone();p.z+=.07*s;ch.ph.position.copy(p);ch.ph.scale.setScalar(s*1.3);ch.ph.rotation.set(0,P.ry||0,(p.x<hd.x?-1:1)*.35)}
+ const fr=Math.floor(t*24);const m=window.DBGM!=null?window.DBGM:(typeof mouthArr==='number'?mouthArr:(mouthArr&&fr<mouthArr.length?mouthArr[fr]:0));const mm=Math.max(m,ch.mPrev*.55);ch.mPrev=mm;ch.MO.set(mm);
+}
+// ---------- story plan ----------
+const CH5=T.c5[0];const UP=1.5;
+// stand windows [standAt, sitAt] per character (who gets up to share)
+const STAND={mouse:[[T.r1[0]-1.2,T.c1[1]+.2]],street:[[T.s1[0]-1.2,T.c3[1]+.25]],ginger:[[T.g1[0]-1.2,T.c4[1]+.2],[T.g2[0]-.9,T.m3[0]+1.75]],mitsi:[[T.m1[0]-1.3,999]]};
+for(const n of ['mouse','lion','dog','ginger','street'])STAND[n]=(STAND[n]||[]).concat([[CH5-1.25,999]]);
+const ACT={
+ dog:{segs:[['talk_01',T.d1[0],T.d1[1]]],G:[['present_both_hands',T.d1[0]+.2]]},
+ lion:{G:[['yawn',T.l1[0]+5.6]]},
+ mouse:{segs:[['talk_03',T.r1[0],T.r1[1]]],G:[['hands_up_exasperated',T.r1[0]+.2],['facepalm',T.r1[0]+3.9]]},
+ street:{segs:[['talk_02',T.s1[0],T.s1[1]]],G:[['shrug',T.s1[0]+3.6]]},
+ ginger:{segs:[['talk_01',T.g1[0],T.g1[0]+2.4]],G:[['frustrated_01',T.g1[0]+2.8],['greet_01',T.g2[0]-.1,0,3.2]]},
+ mitsi:{segs:[['phone_talk_standing',T.dial[0]-.2,T.i1[1]+.2],['talk_02',T.m2[0]+3.0,T.m2[1]]],G:[['point_forward',T.m1[0]],['present_both_hands',T.m2[0]],['count_fingers',T.m2[0]+4.9],['fist_pump',T.m2[1]-1.3],['facepalm',T.m3[0]-.1],['point_forward',T.m3[0]+1.9,0,1.6]]},
+ biz:{},
+};
+const CHEER={mouse:'cheer',lion:'laugh_01',dog:'clap',ginger:'cheer',street:'laugh_02',mitsi:'heart_pose'};
+function speakerAt(t){
+ const map={d1:'dog',l1:'lion',r1:'mouse',b1:'biz',s1:'street',g1:'ginger',m1:'mitsi',m2:'mitsi',g2:'ginger',m3:'mitsi'};
+ for(const [k,s,d] of TL.tl){if(t>=s-.2&&t<s+d+.6){if(map[k])return map[k];if(k[0]==='c'){const i=+k[1];return ['lion','mouse','biz','street','ginger','mitsi'][i]}if(k==='dial'||k==='i1')return 'mitsi'}}
+ return t<T.l1[0]?'dog':'mitsi'}
+const headW=n=>{const v=new THREE.Vector3();CH[n].head.getWorldPosition(v);return v};
+const HP={};// last head positions (from previous frame) used for look-at
+function plan(t,n){
+ const s=SEAT[n],ch=CH[n];let base='sit_idle',bt=(t*.7)%ch.A.sit_idle.d,hold=false,fwd=0;
+ for(const [a,b] of (STAND[n]||[])){
+  if(t>=a&&t<a+UP){base='sit_to_stand';bt=t-a;hold=true;fwd=ss((t-a)/UP)}
+  else if(t>=a+UP&&t<b){base='idle_calm';bt=t;fwd=1}
+  else if(t>=b&&t<b+UP){base='stand_to_sit';bt=t-b;hold=true;fwd=1-ss((t-b)/UP)}
+ }
+ if(!ch.A[base])base=n==='biz'?'sit_idle':'idle';
+ const dx=Math.sin(s.ry),dz=Math.cos(s.ry);const off=.3*ch.k*fwd;
+ const P={x:s.x+dx*off,z:s.z+dz*off,ry:s.ry,base,bt,hold,...(ACT[n]||{})};
+ const standing=base==='idle_calm';
+ if(!standing){P.segs=[];P.G=[]}
+ if(t>=CH5+.3&&standing&&CHEER[n]){P.G=[[CHEER[n],CH5+.3]];P.segs=[]}
+ // look toward the speaker
+ const sp=speakerAt(t);
+ if(sp!==n&&HP[sp]&&HP[n]){const d=HP[sp].clone().sub(HP[n]);const loc=Math.atan2(d.x,d.z)-s.ry;P.yaw=cl(Math.atan2(Math.sin(loc),Math.cos(loc)),-.8,.8)*.85}
+ // everybody droops while the queue message plays (except Mitsi)
+ const droop=ss((t-T.i1[0]-.3)/.8)*(1-ss((t-T.m2[0]+.2)/.6));if(n!=='mitsi')P.nod=(P.nod||0)+droop*.38;
+ if(n==='ginger'&&t>T.g1[0]&&t<T.c4[1]+.5)P.nod=(P.nod||0)+.18*ss((t-T.g1[0]-2.6)/.5);
+ return P;
+}
+// ---------- camera ----------
+function closeup(n,dist,side,up,push,u){const s=SEAT[n];const h=HP[n]?HP[n].clone():new THREE.Vector3(s.x,1,s.z);const fwd=new THREE.Vector3(Math.sin(s.ry),0,Math.cos(s.ry));const perp=new THREE.Vector3(fwd.z,0,-fwd.x);
+ const d=(WIDE?dist:dist*1.25)-push*u;const pos=h.clone().add(fwd.multiplyScalar(d)).add(perp.multiplyScalar(side)).add(new THREE.Vector3(0,up,0));const tg=h.clone().add(new THREE.Vector3(0,WIDE?-.12:-.32,0));return [pos,tg]}
+function wide(u,a=0){const pos=WIDE?new THREE.Vector3(Math.sin(a)*1.4,lerp(2.3,2.05,u),lerp(4.4,3.8,u)):new THREE.Vector3(Math.sin(a)*1.2,lerp(3.0,2.7,u),lerp(5.6,4.9,u));return [pos,new THREE.Vector3(0,.75,CZ-.3)]}
+const SH_=[];const shot=(s,f)=>SH_.push([s,f]);
+shot(0,u=>wide(u,0));
+shot(T.l1[0]-.2,u=>closeup('lion',1.7,.25,.1,.3,u));
+shot(T.c0[0]-.05,u=>wide(.3+u*.3,.3));
+shot(T.r1[0]-.3,u=>closeup('mouse',1.35,-.2,.05,.2,u));
+shot(T.c1[0]-.05,u=>wide(.3+u*.3,-.3));
+shot(T.b1[0]-.2,u=>closeup('biz',1.6,.25,.1,.3,u));
+shot(T.c2[0]-.05,u=>wide(.3+u*.3,.3));
+shot(T.s1[0]-.3,u=>closeup('street',1.7,-.25,.05,.3,u));
+shot(T.c3[0]-.05,u=>wide(.3+u*.3,-.3));
+shot(T.g1[0]-.3,u=>closeup('ginger',1.6,.2,.08,.3,u));
+shot(T.c4[0]-.05,u=>wide(.4+u*.3,0));
+shot(T.m1[0]-.4,u=>closeup('mitsi',1.9,0,-.05,.3,u));
+shot(T.dial[0]-.1,u=>{const [p,q]=wide(.2,0);p.y+=1.2;return [p,q]});
+shot(T.i1[0]-.1,u=>{const [p,q]=wide(.1+u*.3,Math.sin(u*2)*.3);p.y+=WIDE?.9:1.4;return [p,q]});
+shot(T.m2[0]-.2,u=>closeup('mitsi',1.85,0,.05,.35,u));
+shot(T.g2[0]-.2,u=>closeup('ginger',1.6,-.2,.05,.2,u));
+shot(T.m3[0]-.1,u=>closeup('mitsi',1.6,.15,.0,.1,u));
+shot(T.m3[0]+1.7,u=>closeup('ginger',1.7,.2,.05,.1,u));
+shot(CH5-1.3,u=>wide(.1+u*.5,0));
+function camAt(t){let i=SH_.length-1;while(i>0&&SH_[i][0]>t)i--;const nx=SH_[i+1]?SH_[i+1][0]:TL.end;const u=cl((t-SH_[i][0])/Math.max(1,nx-SH_[i][0]));return SH_[i][1](u*.85+ss(u)*.15)}
+// ---------- subtitles ----------
+const L=(k,a,b,e,txt)=>[T[k][0]+a,b==null?T[k][1]:T[k][0]+b,e,txt];
+const SUBS=[L('d1',0,null,'🐶','שלום לכולם. מי רוצה לשתף היום?'),
+ L('l1',0,2.0,'🦁','שלום, אני תומר…'),L('l1',2.3,4.7,'🦁','חיפשתי את סוכן הביטוח שלי.'),L('l1',4.94,6.7,'🦁','שלושה ימים על הקו.'),L('l1',7.0,null,'🦁','ביום השני… כבר זמזמתי עם המוזיקה.'),
+ L('c0',0,null,'💬','כולם: אוהבים אותך, תומר.'),
+ L('r1',0,4.1,'🐭','הסוכן שלי אמר: ״אחזור אליך תוך 24 שעות.״'),L('r1',4.56,null,'🐭','זה היה בפסח.'),L('c1',0,null,'💬','כולם: אוהבים אותך, איתי.'),
+ L('b1',0,3.05,'💼','אחרי יומיים על הקו, ההקלטה אמרה:'),L('b1',3.13,5.1,'💼','״שיחתך חשובה לנו״…'),L('b1',5.16,6.3,'💼','בכיתי.'),L('b1',6.3,null,'💼','זה הדבר הכי נחמד שמישהו אמר לי השנה.'),L('c2',0,null,'💬','כולם: אוהבים אותך, איתמר.'),
+ L('s1',0,3.7,'🧣','אני… חיכיתי על הקו לסוכן של ביטוח הדירה…'),L('s1',4.14,null,'🧣','עד שכבר לא הייתה דירה.'),L('c3',0,null,'💬','כולם: אוהבים אותך.'),
+ L('g1',0,2.9,'🧡','פעם… התקשרתי להזמין אוכל.'),L('g1',3.0,3.6,'🧡','לא ענו.'),L('g1',4.53,null,'🧡','נשארתי רעבה.'),L('c4',0,null,'💬','כולם: גם אוהבים אותך, ג׳ינג׳ית.'),
+ L('m1',0,null,'🩶','מכירים את הצליל הזה?'),
+ L('i1',0,2.8,'📞','מיקומך בתור: 980.'),L('i1',3.09,null,'📞','זמן המתנה משוער: שלושה ימים.'),
+ L('m2',0,2.6,'🩶','עם "מִיצִי" תקשורת — זה פשוט לא קורה.'),L('m2',2.7,4.85,'🩶','אין מענה? הבוט הקולי עונה.'),L('m2',4.95,6.1,'🩶','או בוט וואטסאפ.'),L('m2',6.2,7.95,'🩶','או הודעה מתומללת למייל.'),L('m2',8.05,9.3,'🩶','או שיחה לנייד.'),L('m2',9.3,null,'🩶','או… מה שתבחרו!'),
+ L('g2',0,null,'🧡','רגע… אז דרככם אפשר גם להזמין פיצה?'),L('m3',0,null,'🩶','ג׳ינג׳ית… שבי.'),L('c5',0,null,'💬','כולם: אוהבים אותך, "מִיצִי"!')];
+const sub=$('sub'),subt=$('subt');sub.style.top=(WIDE?606:1118)+'px';subt.style.fontSize=(WIDE?28:31)+'px';if(WIDE){sub.style.left='160px';sub.style.right='160px'}
+const COL={'🐶':'#f3ece4','🦁':'#fff4d6','🐭':'#eef1f6','💼':'#e8ecf2','🧣':'#f6e9dc','🧡':'#ffe9d6','🩶':'#eef1fb','📞':'#dcffe6','💬':'#fff7c2'};
+// chips
+const CHIPS=[['🎙️','#7b4dff','בוט קולי עונה'],['💬','#1fae5b','בוט וואטסאפ'],['✉️','#e2574c','הודעה מתומללת למייל'],['📱','#1d8fe0','שיחה לנייד'],['⭐','#f2a20c','מה שתבחרו!']];
+const chipEls=CHIPS.map(([ic,col,tx],i)=>{const d=document.createElement('div');d.className='chip';d.innerHTML=`<i style="background:${col};width:${WIDE?44:52}px;height:${WIDE?44:52}px;font-size:${WIDE?24:28}px">${ic}</i><span>${tx}</span><b>✓</b>`;d.style.fontSize=(WIDE?28:32)+'px';
+ if(WIDE){d.style.top=(70+(i%3)*70)+'px';if(i<3)d.style.right='40px';else d.style.left='40px'}else{d.style.top=(60+i*76)+'px';d.style.left='50%'}stage.appendChild(d);return d});
+// dial + lcd layout
+$('dial').style.top=(WIDE?150:330)+'px';$('ring').style.width=$('ring').style.height=(WIDE?150:180)+'px';$('hs').style.fontSize=(WIDE?80:96)+'px';$('tu').style.fontSize=(WIDE?54:64)+'px';
+const lcd=$('lcd');lcd.style.top=(WIDE?110:300)+'px';lcd.style.width=(WIDE?640:600)+'px';lcd.style.padding=(WIDE?'26px 20px':'34px 20px');lcd.querySelector('.a').style.fontSize=(WIDE?44:50)+'px';$('num').style.fontSize=(WIDE?150:170)+'px';$('wait').style.fontSize=(WIDE?38:40)+'px';
+// end card layout
+const end=$('end');$('e1').style.fontSize=(WIDE?44:48)+'px';$('e2').style.fontSize=(WIDE?110:112)+'px';$('e4').style.fontSize=(WIDE?36:38)+'px';for(const d of $('e3').children)d.style.fontSize=(WIDE?26:27)+'px';
+// hearts
+const hearts=[];for(let i=0;i<22;i++){const h=document.createElement('div');h.className='heart';h.textContent=['❤️','💛','🧡','💙'][i%4];h.style.fontSize=(26+(i*7)%24)+'px';stage.appendChild(h);hearts.push({h,x:((i*37)%100)/100,o:((i*53)%100)/100})}
+const ENDT=T.c5[1]+.5;
+// ---------- render ----------
+async function render(t){
+ // character poses (two passes so look-at uses this frame's head positions)
+ for(const pass of [0,1]){for(const n in CH){const P=plan(t,n);const key={dog:'d',lion:'l',mouse:'r',biz:'b',street:'s',ginger:'g',mitsi:'m'}[n];
+  let mo=MOUTH[key];const ch=CH[n];
+  // chorus mouth for everyone listening (not the one being addressed, all on the last one)
+  const fr=Math.floor(t*24);let mval=null;for(let i=0;i<6;i++){const k='c'+i;if(t>=T[k][0]&&t<T[k][1]){const tgt=['lion','mouse','biz','street','ginger','mitsi'][i];if(i===5?n!=='mitsi':n!==tgt)mval=(MOUTH.c[fr]||0)*.9}}
+  if(mval!=null){const own=mo&&fr<mo.length?mo[fr]:0;mo=Math.max(own,mval)}
+  if(pass===0)ch.mPrev0=ch.mPrev;else ch.mPrev=ch.mPrev0;
+  pose(ch,t,P,mo);
+  if(pass===0)HP[n]=headW(n)}}
+ // camera
+ const [cp,ct]=camAt(t);C.position.copy(cp);C.lookAt(ct);if(window.DBGCAM){C.position.set(...window.DBGCAM[0]);C.lookAt(new THREE.Vector3(...window.DBGCAM[1]))}
+ // clock + lights
+ const spin=t<T.i1[0]?t*.02:t<T.m2[0]?.02*T.i1[0]+(t-T.i1[0])*6:.02*T.i1[0]+(T.m2[0]-T.i1[0])*6+(t-T.m2[0])*.02;minH.rotation.z=-spin*12;hourH.rotation.z=-spin;
+ const dim=ss((t-T.dial[0]+.2)/.5)*(1-ss((t-T.m2[0]+.2)/.5));const flick=(t>T.i1[0]&&t<T.m2[0]&&Math.sin(t*37)>.93)?.45:1;
+ hemi.intensity=(1.35-dim*.75)*flick;key.intensity=(1.9-dim*1.1)*flick;lampA.intensity=(1.6-dim*1.2)*flick;
+ const spOn=ss((t-T.m1[0]+.4)/.4)*(1-ss((t-T.dial[0])/.3))+ss((t-T.m2[0]+.2)/.4)*(1-ss((t-T.g2[0])/.4));spot.intensity=spOn*25;spot.target.position.set(SEAT.mitsi.x,1,SEAT.mitsi.z);
+ R.render(S,C);
+ // overlays
+ $('dim').style.opacity=dim*.45;
+ const dOn=t>=T.dial[0]-.1&&t<T.i1[0]+.1;const dl=$('dial');dl.style.opacity=dOn?cl((t-T.dial[0]+.1)/.25)*cl((T.i1[0]+.1-t)/.25):0;
+ if(dOn){const lt=t-T.dial[0];const p=(lt%1.4)/1.4;$('ring').style.boxShadow=`0 0 0 ${p*60}px rgba(31,174,91,${.6*(1-p)})`;$('hs').style.transform=`rotate(${Math.sin(lt*30)*8}deg)`}
+ const iOn=t>=T.i1[0]&&t<T.i1[1]+.6;lcd.style.opacity=iOn?cl((t-T.i1[0])/.3)*cl((T.i1[1]+.6-t)/.3):0;
+ if(iOn){const lt=t-T.i1[0];$('num').textContent=lt<1.2?'…':lt<T.i1[1]-T.i1[0]-.4?'980':lt<T.i1[1]-T.i1[0]+.1?'981':'982';const w=$('wait');w.textContent=lt>3.0?'זמן המתנה משוער: 3 ימים':'';w.style.color=lt>5.2?'#ff6b6b':'#7dff9a'}
+ // chips
+ chipEls.forEach((d,i)=>{const a=TL.chips[i];const k=ss((t-a)/.25)*(1-ss((t-(T.g2[0]-.3))/.4));d.style.opacity=k;const bo=1+Math.sin(cl((t-a)/.3)*Math.PI)*.08;d.style.transform=(WIDE?'':'translateX(-50%) ')+`scale(${(.6+.4*ss((t-a)/.25))*bo})`});
+ // hearts
+ const hOn=t>=CH5;hearts.forEach(({h,x,o})=>{if(!hOn){h.style.opacity=0;return}const p=((t-CH5)*.35+o)%1;h.style.left=(x*SW*.9+SW*.05)+'px';h.style.top=(SH*(.95-p*.9))+'px';h.style.opacity=Math.sin(p*Math.PI)*cl(1-(t-ENDT)/.4)});
+ // flash + end card
+ $('flash').style.opacity=cl(1-Math.abs(t-ENDT)/.25)*.9;
+ const e=ss((t-ENDT)/.35);end.style.opacity=e;for(const [i,d] of [...$('e3').children].entries()){const k=ss((t-ENDT-.6-i*.4)/.35);d.style.opacity=k;d.style.transform=`translateY(${(1-k)*20}px)`}$('e4').style.opacity=ss((t-ENDT-2.4)/.4);
+ // subtitles
+ const s=t<ENDT?SUBS.find(x=>t>=x[0]-.1&&t<x[1]+.25):null;
+ if(s){subt.textContent=s[2]+' '+s[3];subt.style.background=COL[s[2]];sub.style.opacity=1}else sub.style.opacity=0;
+ if(t<.35){$('flash').style.background='#000';$('flash').style.opacity=1-t/.35}else $('flash').style.background='#fff';
+}
+window.SEAT=SEAT;window.HP=HP;window.render=render;await render(0);window.ready3d=true;
+</script></body></html>
