@@ -1,5 +1,5 @@
 # Futuristic promo (Hakol Hachadash + Mitsi): audio mix, timeline, graded 9:16 background track.
-import json, subprocess, os, array
+import json, subprocess, os, array, sys
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 run = lambda a: subprocess.run(a, check=True)
 dur = lambda f: float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',f]))
@@ -48,6 +48,8 @@ music = env(['-i', 'audio/music_long.wav'])
 cut = lambda k: round(T[k][0] - 0.3, 3)
 SEC = {'intro': 0, 's1': cut('n1'), 's2': cut('n2'), 's3': cut('n3'), 's4': cut('n4'), 'tech': cut('n5'), 'brands': cut('n6'), 'end': round(FILL, 3)}
 json.dump({'tl': tl, 'sec': SEC, 'fill': round(FILL, 3), 'sing': round(SING, 3), 'end': END, 'fps': FPS, 'voice': voice, 'music': music}, open('src/timeline.json', 'w'))
+if '--audio-only' in sys.argv:
+    print('audio only; end', END); sys.exit(0)
 # --- background track: crop to 9:16, grade, slow drift, glitch on the cuts ---
 order = ['intro', 's1', 's2', 's3', 's4', 'tech', 'brands', 'end']
 bound = [SEC[k] for k in order] + [END]
