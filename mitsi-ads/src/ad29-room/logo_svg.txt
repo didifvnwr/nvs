@@ -1,0 +1,83 @@
+<svg viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid meet" aria-label="מיצי תקשורת" role="img">
+    <defs>
+      <linearGradient id="catGrad" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="305">
+        <stop offset="0" style="stop-color:var(--cat-a)"/>
+        <stop offset=".5" style="stop-color:var(--cat-b)"/>
+        <stop offset="1" style="stop-color:var(--cat-c)"/>
+      </linearGradient>
+      <linearGradient id="txtGrad" gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="430">
+        <stop offset="0" style="stop-color:var(--txt-a)"/>
+        <stop offset=".45" style="stop-color:var(--txt-b)"/>
+        <stop offset="1" style="stop-color:var(--txt-c)"/>
+      </linearGradient>
+      <linearGradient id="sheen" gradientUnits="userSpaceOnUse" x1="-400" y1="0" x2="-200" y2="0">
+        <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity=".85"/>
+        <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="lineGrad" x1="0" x2="1">
+        <stop offset="0" style="stop-color:var(--accent)" stop-opacity="0"/>
+        <stop offset=".5" style="stop-color:var(--accent)" stop-opacity="1"/>
+        <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="floorGlow">
+        <stop offset="0" style="stop-color:var(--accent)" stop-opacity=".55"/>
+        <stop offset="1" style="stop-color:var(--accent)" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="7" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <clipPath id="wipe"><rect id="wipeRect" x="950" y="100" width="0" height="260"/></clipPath>
+    </defs>
+
+    <!-- ground line -->
+    <line id="horizon" x1="800" y1="422" x2="800" y2="422" stroke="url(#lineGrad)" stroke-width="2" opacity=".9"/>
+
+    <!-- wordmark -->
+    <g id="word">
+      <g clip-path="url(#wipe)">
+        <text id="glitchA" x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="#ff3d7f" opacity="0">מיצי</text>
+        <text id="glitchB" x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="#29f0ff" opacity="0">מיצי</text>
+        <text x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="url(#txtGrad)" filter="url(#softGlow)">מיצי</text>
+        <text x="560" y="318" text-anchor="middle" font-size="200" font-weight="900" fill="url(#sheen)" style="mix-blend-mode:overlay">מיצי</text>
+      </g>
+      <rect id="scan" x="950" y="110" width="4" height="230" fill="var(--accent)" filter="url(#glow)" opacity="0"/>
+      <text id="sub" x="560" y="418" text-anchor="middle" font-size="88" font-weight="300" letter-spacing="40" style="fill:var(--sub)" opacity="0">תקשורת</text>
+    </g>
+
+    <!-- cat: drawn facing right in local space, flipped to face the wordmark -->
+    <g id="catPos" transform="translate(1950 117)">
+      <g transform="scale(-1 1)">
+        <ellipse id="shadow" cx="140" cy="306" rx="135" ry="12" fill="url(#floorGlow)"/>
+        <g id="catBody" fill="url(#catGrad)">
+          <!-- far legs -->
+          <path id="legB1" opacity=".62" d="M65,200 C71,192 99,192 95,206 L87,290 Q97,292 97,298 Q96,303 87,303 L74,303 Q71,303 72,296 Z"/>
+          <path id="legF1" opacity=".62" d="M193,200 C199,192 219,192 215,206 L211,290 Q221,292 221,298 Q220,303 211,303 L198,303 Q195,303 196,296 Z"/>
+          <!-- tail -->
+          <g transform="translate(-4 14)"><path id="tail" d="M58,175 C30,168 22,132 36,110 C46,95 44,80 36,70" fill="none" stroke="url(#catGrad)" stroke-width="13" stroke-linecap="round"/></g>
+          <!-- body -->
+          <path d="M50,186 C80,156 192,150 226,160 C252,168 258,206 242,228 C206,246 100,248 66,238 C36,228 30,204 50,186 Z"/>
+          <!-- near legs -->
+          <path id="legB2" d="M86,200 C92,192 120,192 116,206 L108,290 Q118,292 118,298 Q117,303 108,303 L95,303 Q92,303 93,296 Z"/>
+          <path id="legF2" d="M211,200 C217,192 237,192 233,206 L229,290 Q239,292 239,298 Q238,303 229,303 L216,303 Q213,303 214,296 Z"/>
+          <!-- head -->
+          <g id="head"><g transform="translate(4 16)">
+            <path d="M215,158 C222,132 236,108 252,98 L258,68 L272,88 L284,70 L288,100 C301,108 304,124 296,135 C287,146 268,146 258,150 C248,166 232,172 215,165 Z"/>
+            <ellipse id="eye" cx="283" cy="113" rx="4.5" ry="4.5" fill="#e8fdff" filter="url(#softGlow)"/>
+          </g></g>
+        </g>
+        <!-- signal waves -->
+        <g transform="translate(4 16)" fill="none" stroke="url(#catGrad)" stroke-width="12" stroke-linecap="round" filter="url(#softGlow)">
+          <path id="arc0" opacity="0" d="M302.4,61.4 A40,40 0 0 1 331.8,96.5"/>
+          <path id="arc1" opacity="0" d="M310.1,32.4 A70,70 0 0 1 361.7,93.9"/>
+          <path id="arc2" opacity="0" d="M317.9,3.4 A100,100 0 0 1 391.6,91.3"/>
+        </g>
+        <circle id="ping" cx="287" cy="129" r="0" fill="none" stroke="var(--accent)" stroke-width="3" opacity="0"/>
+      </g>
+    </g>
+  </svg>

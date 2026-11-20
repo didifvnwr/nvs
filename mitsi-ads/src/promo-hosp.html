@@ -1,0 +1,75 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:H;src:url(fonts/heebo-500.ttf);font-weight:500}
+@font-face{font-family:H;src:url(fonts/heebo-800.ttf);font-weight:800}
+html,body{margin:0;background:#000}
+#st{position:relative;width:1080px;height:1080px;overflow:hidden;font-family:H,sans-serif;direction:rtl}
+#cv{position:absolute;inset:0;width:1080px;height:1080px}
+.abs{position:absolute}
+#hd{top:34px;left:40px;right:40px;text-align:center;color:#fff;text-shadow:0 3px 14px rgba(0,0,0,.55)}
+#hd .a{font-size:62px;font-weight:800;line-height:1.05}
+#hd .b{font-size:50px;font-weight:800;color:#ffd166;margin-top:6px}
+.bub{position:absolute;max-width:400px;padding:14px 20px 26px;border-radius:22px;font-size:27px;font-weight:500;line-height:1.3;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.bub .tm{position:absolute;bottom:6px;left:14px;font-size:17px;color:#6b7c85;direction:ltr}
+#q{right:34px;top:236px;background:#fff;color:#1d2b33;border-top-right-radius:6px}
+#r{right:34px;top:390px;background:#d9fdd3;color:#1d2b33;border-top-left-radius:6px}
+#r .who{font-size:19px;font-weight:800;color:#128c7e;margin-bottom:2px}
+#ft{left:0;right:0;bottom:0;height:212px;background:linear-gradient(180deg,rgba(6,22,48,.0),rgba(6,22,48,.92) 32%);text-align:center;color:#fff}
+#ft .chips{position:absolute;top:58px;left:0;right:0;font-size:25px;font-weight:500;color:#d8ecff}
+#ft .brand{position:absolute;top:96px;left:0;right:0;font-size:66px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,#ffffff,#a8f0ff 45%,#3fd0ff 85%);-webkit-background-clip:text;background-clip:text;color:transparent}
+#ft .ph{position:absolute;top:172px;left:0;right:0;font-size:28px;font-weight:800;direction:ltr;letter-spacing:1px}
+#ft .ph span{color:#3fd0ff}
+#zz{left:60px;top:250px;font-size:30px;font-weight:800;color:#fff;background:rgba(255,80,80,.92);border-radius:16px;padding:6px 14px;transform:rotate(-6deg);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+</style></head><body>
+<div id="st"><canvas id="cv"></canvas>
+<div id="hd" class="abs"><div class="a">אי אפשר להיות זמינים כל הזמן</div><div class="b">וחבל להפסיד אורחים</div></div>
+<div id="q" class="bub">היי 🙂 יש לכם צימר פנוי לסופ״ש הקרוב?<span class="tm">23:47</span></div>
+<div id="r" class="bub"><div class="who">🤖 הבוט של הצימר</div>כן! נשאר לנו צימר עם ג׳קוזי 🛁 שלחתי לך מחירים וקישור להזמנה<span class="tm">23:47 ✓✓</span></div>
+<div id="zz" class="abs">📵 בעל הצימר בג׳קוזי</div>
+<div id="ft" class="abs"><div class="chips">💬 בוט וואטסאפ 24/7 · 🎙️ בוט קולי · ⏺️ הקלטות ותמלול</div><div class="brand">מיצי תקשורת</div><div class="ph"><span>mitsi.co.il ·</span> 03-3826600</div></div>
+</div>
+<script type="importmap">{"imports":{"three":"./three/three.module.js","three/addons/":"./three/addons/"}}</script>
+<script type="module">
+import * as THREE from 'three';import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const cv=document.getElementById('cv');const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,preserveDrawingBuffer:true});R.setPixelRatio(1);R.setSize(1080,1080,false);
+R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
+const S=new THREE.Scene();const C=new THREE.PerspectiveCamera(31,1,.05,100);C.position.set(.9,2.05,5.0);C.lookAt(-.45,.85,-.6);
+S.add(new THREE.HemisphereLight(0xffe2c4,0x3a2a40,1.4));const k=new THREE.DirectionalLight(0xffc28a,2.2);k.position.set(-3,4,4);S.add(k);const k2=new THREE.DirectionalLight(0x9ab8ff,.8);k2.position.set(3,2,-2);S.add(k2);
+const tex=(w,h,d)=>{const c=document.createElement('canvas');c.width=w;c.height=h;d(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t};
+const M=(c,o={})=>new THREE.MeshStandardMaterial({color:c,roughness:o.r??.7,metalness:o.m??0,map:o.map||null,emissive:o.e??0,emissiveIntensity:o.ei??1,transparent:!!o.tr,opacity:o.op??1});
+// evening sky
+S.background=tex(4,512,(x,w,h)=>{const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'#1b2a5e');g.addColorStop(.45,'#7a4b8f');g.addColorStop(.75,'#f08a5d');g.addColorStop(1,'#ffc27a');x.fillStyle=g;x.fillRect(0,0,w,h)});
+// hills
+for(const [x,z,s,c] of [[-4,-9,5,0x3c2f55],[3,-10,6,0x33294a],[0,-12,7,0x2a2240]]){const m=new THREE.Mesh(new THREE.SphereGeometry(s,24,16),M(c,{r:1}));m.position.set(x,-s*.6,z);m.scale.y=.45;S.add(m)}
+// wooden deck
+const plank=tex(512,512,(x,w,h)=>{for(let i=0;i<8;i++){x.fillStyle=i%2?'#8a5a36':'#7b4f2f';x.fillRect(0,i*64,w,64);x.fillStyle='rgba(0,0,0,.25)';x.fillRect(0,i*64,w,3)}});plank.wrapS=plank.wrapT=THREE.RepeatWrapping;plank.repeat.set(3,3);
+const deck=new THREE.Mesh(new THREE.PlaneGeometry(10,6),M(0xffffff,{map:plank,r:.8}));deck.rotation.x=-Math.PI/2;deck.position.z=-.5;S.add(deck);
+// cabin wall (zimmer) behind
+const logs=tex(512,512,(x,w,h)=>{for(let i=0;i<10;i++){const g=x.createLinearGradient(0,i*52,0,i*52+52);g.addColorStop(0,'#a8703f');g.addColorStop(.5,'#c58a52');g.addColorStop(1,'#7a4b28');x.fillStyle=g;x.fillRect(0,i*52,w,52)}});logs.wrapS=logs.wrapT=THREE.RepeatWrapping;logs.repeat.set(2,2);
+const wall=new THREE.Mesh(new THREE.BoxGeometry(5.5,3,.3),M(0xffffff,{map:logs}));wall.position.set(-3.3,1.5,-3.9);S.add(wall);
+const win=new THREE.Mesh(new THREE.PlaneGeometry(1,.8),new THREE.MeshBasicMaterial({map:tex(256,200,(x,w,h)=>{x.fillStyle='#ffd27a';x.fillRect(0,0,w,h);x.fillStyle='#5a3420';x.fillRect(w/2-6,0,12,h);x.fillRect(0,h/2-6,w,12);x.lineWidth=18;x.strokeStyle='#5a3420';x.strokeRect(0,0,w,h)})}));win.position.set(-2.1,1.6,-3.74);S.add(win);
+const roof=new THREE.Mesh(new THREE.BoxGeometry(5.9,.2,1.6),M(0x5a3420));roof.position.set(-3.3,3.05,-3.3);roof.rotation.x=.25;S.add(roof);
+// string lights
+for(let i=0;i<14;i++){const u=i/13;const x=-3.2+u*6.4,y=2.75-Math.sin(u*Math.PI)*.45;const b=new THREE.Mesh(new THREE.SphereGeometry(.03,10,8),new THREE.MeshBasicMaterial({color:0xfff0b0}));b.position.set(x*.8-1.2,y+.1,-3.2);S.add(b)}
+const glow=new THREE.PointLight(0xffd27a,2.2,6,1.5);glow.position.set(0,2.4,-.6);S.add(glow);
+// hot tub
+const tub=new THREE.Group();tub.position.set(-.75,0,-.35);S.add(tub);
+const stave=tex(512,128,(x,w,h)=>{for(let i=0;i<32;i++){x.fillStyle=i%2?'#7a4a2a':'#8c5832';x.fillRect(i*16,0,16,h)}});stave.wrapS=THREE.RepeatWrapping;stave.repeat.set(2,1);
+const wallT=new THREE.Mesh(new THREE.CylinderGeometry(1.0,1.0,.62,48,1,true),M(0xffffff,{map:stave,r:.75}));wallT.position.y=.31;wallT.material.side=THREE.DoubleSide;tub.add(wallT);
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.0,.05,10,48),M(0x6a3e22,{r:.6}));rim.rotation.x=Math.PI/2;rim.position.y=.62;tub.add(rim);
+const water=new THREE.Mesh(new THREE.CircleGeometry(.98,48),M(0x37c6e6,{r:.15,m:.1,e:0x0a6a8a,ei:.6,tr:true,op:.9}));water.rotation.x=-Math.PI/2;water.position.y=.55;tub.add(water);
+for(let i=0;i<26;i++){const a=Math.random()*Math.PI*2,r=Math.random()*.9;const b=new THREE.Mesh(new THREE.SphereGeometry(.012+Math.random()*.018,8,6),new THREE.MeshBasicMaterial({color:0xe8fbff,transparent:true,opacity:.8}));b.position.set(Math.cos(a)*r,.56,Math.sin(a)*r);tub.add(b)}
+// rubber duck
+const duck=new THREE.Group();duck.position.set(.5,.6,.45);tub.add(duck);{const y=M(0xffd23a,{r:.4});const b=new THREE.Mesh(new THREE.SphereGeometry(.09,16,12),y);b.scale.set(1.2,.8,1);duck.add(b);const h=new THREE.Mesh(new THREE.SphereGeometry(.055,16,12),y);h.position.set(-.06,.08,0);duck.add(h);const bk=new THREE.Mesh(new THREE.ConeGeometry(.025,.06,8),M(0xff7a1a));bk.rotation.z=Math.PI/2;bk.position.set(-.12,.075,0);duck.add(bk);duck.rotation.y=-.9}
+// phone on the deck, buzzing
+const ph=new THREE.Group();ph.position.set(.62,.685,.76);ph.rotation.set(-Math.PI/2,0,.75);tub.add(ph);ph.add(new THREE.Mesh(new THREE.BoxGeometry(.16,.32,.02),M(0x1a1c22,{r:.3})));const scr=new THREE.Mesh(new THREE.PlaneGeometry(.14,.28),new THREE.MeshBasicMaterial({color:0x25d366}));scr.position.z=.011;ph.add(scr);const halo=new THREE.Mesh(new THREE.RingGeometry(.19,.23,32),new THREE.MeshBasicMaterial({color:0x25d366,transparent:true,opacity:.55}));halo.position.z=.012;ph.add(halo);
+// cocktail on the rim
+const cup=new THREE.Mesh(new THREE.CylinderGeometry(.06,.035,.16,16),M(0xff8fb0,{tr:true,op:.85,r:.2}));cup.position.set(-.93,.74,.3);tub.add(cup);const umb=new THREE.Mesh(new THREE.ConeGeometry(.08,.05,12),M(0x3fd0ff));umb.position.set(-.89,.88,.3);umb.rotation.z=.4;tub.add(umb);
+// Mitsi relaxing in the tub
+const g=await new GLTFLoader().loadAsync('cat-m2.glb');const Mo=g.scene;const root=new THREE.Group();root.add(Mo);tub.add(root);
+const bb=new THREE.Box3().setFromObject(Mo);Mo.position.y=-bb.min.y;Mo.traverse(o=>{if(o.isMesh)o.frustumCulled=false});
+const mix=new THREE.AnimationMixer(Mo);const A={};g.animations.forEach(c=>{A[c.name.replace(/\.\d+$/,'')]=mix.clipAction(c)});
+const a=A.sit_idle;a.play();a.time=1.2;mix.update(0);
+root.scale.setScalar(1.0);root.position.set(.0,.27,-.15);root.rotation.y=.35;
+R.render(S,C);window.done=true;
+</script></body></html>
